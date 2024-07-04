@@ -1,0 +1,119 @@
+@import "../_variables";
+
+#nav {
+	position: fixed;
+	top: 0;
+	width: 100%;
+	height: 150px;
+	// background: #0000005e;
+	display: flex;
+	padding-block: 2rem;
+	z-index: 5;
+	pointer-events: none;
+	// backdrop-filter: blur(5px);
+	transform: 1s;
+
+	.nav__container {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		width: $content-width;
+		max-width: 1280px;
+		margin: 0 auto;
+
+		img {
+			width: 2rem;
+			pointer-events: all;
+			// filter: invert(42%) sepia(93%) saturate(1352%) hue-rotate(87deg) brightness(119%) contrast(119%);
+		}
+
+		.menu {
+			display: flex;
+			gap: 3rem;
+
+			span {
+				a {
+					color: $primary-color-50;
+					font-family: "IBM Mono";
+					font-size: 1rem;
+					text-decoration: none;
+					text-transform: uppercase;
+					transition: color 0.2s ease-in;
+					pointer-events: auto;
+					&:hover {
+						color: $primary-color;
+						transition: color 0.2s ease-in;
+					}
+				}
+			}
+		}
+	}
+
+	@include media(">=phone", "<tablet") {
+		// left: $content-margin-mobile;
+		// width: $content-width-mobile;
+	}
+}
+
+// #footer {
+// 	// position: absolute;
+// 	// bottom: 0;
+// 	background: $tertiary-color;
+// 	width: 100%;
+// 	padding-block: 3rem;
+// 	color: $color-black;
+
+// 	.footer__wrapper {
+// 		max-width: 1280px;
+// 		margin: 0 auto;
+
+// 		.footer__container {
+// 			display: flex;
+// 			align-items: center;
+// 			justify-content: space-between;
+// 			width: $content-width;
+// 			max-width: 1280px;
+// 			margin: 0 auto;
+
+// 			span {
+// 				font-family: "IBM Mono";
+// 				font-weight: 500;
+// 			}
+
+// 			h2,
+// 			a {
+// 				font-size: 2.5rem;
+// 				font-weight: 500;
+// 				color: $color-black;
+// 				pointer-events: all;
+// 			}
+
+// 			span a {
+// 				font-size: 1rem;
+// 				font-weight: 400;
+// 			}
+// 		}
+// 	}
+// }
+
+.flag {
+	display: flex;
+	position: fixed;
+	z-index: 10;
+	bottom: 0;
+	height: 0.5rem;
+	width: 100vw;
+	pointer-events: all;
+
+	.blue {
+		height: 100%;
+		width: 50%;
+		background: #2659ac;
+	}
+
+	.yellow {
+		height: 100%;
+		width: 50%;
+		background: #f8d447;
+	}
+}

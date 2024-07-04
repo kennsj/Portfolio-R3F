@@ -1,0 +1,31 @@
+.header {
+	height: 80dvh;
+	margin: 0auto;
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	align-items: center;
+
+	// justify-content: space-between;
+	h2 {
+		// margin-right: 50px;
+		margin-top: -20px;
+		padding-left: 20px;
+	}
+}
+
+.column {
+	flex: 1;
+}
+
+.anchor {
+	border-bottom: 1px solid #fff;
+	pointer-events: all;
+	transition: 0.8s;
+
+	&:hover {
+		color: #2659ac;
+		border-bottom: 1px solid #2659ac;
+		transition: 0.8s;
+	}
+}
