@@ -1,0 +1,110 @@
+@import "styles/_variables";
+
+:root {
+	--foreground-rgb: 0, 0, 0;
+	--background-start-rgb: 214, 219, 220;
+	--background-end-rgb: 255, 255, 255;
+}
+
+@media (prefers-color-scheme: dark) {
+	:root {
+		--foreground-rgb: 255, 255, 255;
+		--background-start-rgb: 0, 0, 0;
+		--background-end-rgb: 0, 0, 0;
+	}
+}
+
+body {
+	color: rgb(var(--foreground-rgb));
+	background: #101010;
+
+	margin: 0;
+	padding: 0;
+	pointer-events: none;
+	overflow-x: hidden;
+}
+
+main {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+
+	section {
+		width: 80%;
+		width: 768px;
+	}
+}
+
+a {
+	text-decoration: none;
+	color: $tertiary-color;
+	pointer-events: all;
+	transition: color 0.2s ease-in;
+
+	&:hover {
+		color: $secondary-color;
+		transition: color 0.2s ease-in;
+	}
+}
+
+p {
+	// width: 50%;
+	// margin-top: 1rem;
+	// font-family: "TT Hoves Pro Trial";
+	font-weight: 400;
+	font-size: 1rem;
+
+	@include media("<tablet") {
+		width: 60%;
+	}
+}
+
+.highlight {
+	color: $tertiary-color;
+}
+
+h1 {
+	// font-family: "TT Hoves Pro Trial";
+	// font-weight: bold;
+	font-size: clamp(1rem, 3.5vw, 8rem);
+}
+
+h2 {
+	color: $primary-color-50;
+	font-family: sans-serif;
+	font-weight: 400;
+
+	@include media("<tablet") {
+		font-size: 2rem;
+	}
+}
+
+h3 {
+	// font-family: "ibm-plex-mono";
+	font-weight: 400;
+	// font-size: clamp(0.5rem, 2vw, 3rem);
+	font-size: 1.5rem;
+}
+
+h4 {
+	// font-family: ibm-plex-mono;
+	font-size: 2rem;
+	margin-block: 1rem;
+	font-weight: bold;
+	color: $secondary-color;
+
+	@include media("<tablet") {
+		font-size: 0.7rem;
+	}
+}
+
+#canvas {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100dvh;
+	height: 100vh;
+	z-index: -1;
+	overflow: hidden;
+}

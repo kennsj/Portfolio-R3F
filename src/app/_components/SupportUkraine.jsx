@@ -1,4 +1,4 @@
-import styles from "./styles/Styles.module.scss"
+import styles from "../styles/Styles.module.scss"
 
 const SupportUkraine = () => {
 	return (
