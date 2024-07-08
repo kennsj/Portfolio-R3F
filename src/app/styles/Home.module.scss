@@ -129,12 +129,8 @@
 					margin-top: 0.7em;
 					margin-left: 0.8em;
 				}
-				&:last-child {
-					// margin-left: 0;
-				}
 				&:last-child::after {
 					content: "";
-					// margin-left: -1em;
 				}
 			}
 		}

@@ -2,9 +2,9 @@
 
 import Link from "next/link"
 import Image from "next/image"
-import { useRef, useState } from "react"
-import styles from "./styles.module.scss"
+import { useState } from "react"
 import { motion, useMotionValueEvent, useScroll } from "framer-motion"
+import styles from "./styles.module.scss"
 
 const Nav = () => {
 	let { scrollY } = useScroll()
