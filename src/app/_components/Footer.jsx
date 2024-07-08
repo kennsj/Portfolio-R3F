@@ -1,8 +1,9 @@
+import Image from "next/image"
 import styles from "./styles.module.scss"
 
 const Footer = () => {
 	return (
-		<footer id='footer'>
+		<footer>
 			<div className={styles.footer__wrapper}>
 				<div className={styles.footer__container}>
 					<div className={styles.footer__left}>
@@ -17,8 +18,13 @@ const Footer = () => {
 						</span>
 					</div>
 					<div className={styles.footer__right}>
-						<span>Want to work with me or hire me?</span>
-						<h2>Contact me</h2>
+						<div>
+							<span>Want to work with me or hire me?</span>
+							<h2>Contact me</h2>
+						</div>
+						<a href='#'>
+							<Image src={"/icons/arrow.svg"} width={60} height={60} />
+						</a>
 					</div>
 				</div>
 			</div>

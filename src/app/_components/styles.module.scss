@@ -1,4 +1,4 @@
-@import "../_variables";
+@import "../styles/_variables";
 
 #nav {
 	position: fixed;
@@ -17,11 +17,11 @@
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
-		width: $content-width;
+		width: 80%;
 		max-width: 1280px;
 		margin: 0 auto;
 
-		img {
+		img .nav_logo {
 			width: 2rem;
 			pointer-events: all;
 			// filter: invert(42%) sepia(93%) saturate(1352%) hue-rotate(87deg) brightness(119%) contrast(119%);
@@ -33,15 +33,14 @@
 
 			span {
 				a {
-					color: $primary-color-50;
-					font-family: "IBM Mono";
+					color: $primary-color;
 					font-size: 1rem;
 					text-decoration: none;
 					text-transform: uppercase;
 					transition: color 0.2s ease-in;
-					pointer-events: auto;
+					pointer-events: all;
 					&:hover {
-						color: $primary-color;
+						color: $tertiary-color;
 						transition: color 0.2s ease-in;
 					}
 				}
@@ -49,52 +48,67 @@
 		}
 	}
 
-	@include media(">=phone", "<tablet") {
-		// left: $content-margin-mobile;
-		// width: $content-width-mobile;
-	}
+	// @include media(">=phone", "<tablet") {
+
+	// }
 }
 
-// #footer {
-// 	// position: absolute;
-// 	// bottom: 0;
-// 	background: $tertiary-color;
-// 	width: 100%;
-// 	padding-block: 3rem;
-// 	color: $color-black;
+.footer__wrapper {
+	// max-width: 1280px;
+	// background: $primary-color;
+	// margin: 0 auto;
+	// padding: 10rem auto;
+	margin: 5rem 0;
 
-// 	.footer__wrapper {
-// 		max-width: 1280px;
-// 		margin: 0 auto;
+	.footer__container {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		width: $content-width;
+		width: 50%;
+		// max-width: 1280px;
+		margin: 0 auto;
+		padding: 5rem 0;
 
-// 		.footer__container {
-// 			display: flex;
-// 			align-items: center;
-// 			justify-content: space-between;
-// 			width: $content-width;
-// 			max-width: 1280px;
-// 			margin: 0 auto;
+		@include media("<1600px") {
+			width: 80%;
+		}
 
-// 			span {
-// 				font-family: "IBM Mono";
-// 				font-weight: 500;
-// 			}
+		& span {
+			// font-family: "IBM Mono";
+			font-family: sans-serif;
+			font-weight: 500;
+		}
 
-// 			h2,
-// 			a {
-// 				font-size: 2.5rem;
-// 				font-weight: 500;
-// 				color: $color-black;
-// 				pointer-events: all;
-// 			}
+		h2,
+		a {
+			font-size: 2.5rem;
+			font-weight: 700;
+			color: $primary-color;
+			pointer-events: all;
+			margin: 1rem 0;
+		}
 
-// 			span a {
-// 				font-size: 1rem;
-// 				font-weight: 400;
-// 			}
-// 		}
-// 	}
-// }
+		span a {
+			font-size: 1rem;
+			font-weight: 400;
+		}
+
+		a:hover {
+			color: $tertiary-color;
+		}
+
+		.footer__right {
+			display: flex;
+			// align-items: center;
+
+			a,
+			img {
+				margin: 0.3rem 0 0 1rem;
+			}
+		}
+	}
+}
 
 .flag {
 	display: flex;

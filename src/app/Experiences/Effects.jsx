@@ -32,7 +32,7 @@ const Effects = (props) => {
 
 	return (
 		<EffectComposer disableNormalPass multisampling={false}>
-			<Noise premultiply blendFunction={BlendFunction.DARKEN} opacity={0.5} />
+			<Noise premultiply blendFunction={BlendFunction.DARKEN} opacity={0.4} />
 			{/* <Bloom mipmapBlur intensity={1.8} luminanceThreshold={0.9} radius={0.1} /> */}
 			<Vignette offset={0.5} darkness={0.8} eskil={true} />
 			<Wave

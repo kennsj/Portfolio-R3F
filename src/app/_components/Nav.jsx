@@ -46,6 +46,7 @@ const Nav = () => {
 			<div className={styles.nav__container}>
 				<Link href='/'>
 					<Image
+						className={styles.nav_logo}
 						src='/kj-logo.svg'
 						width={30}
 						height={30}
@@ -58,14 +59,20 @@ const Nav = () => {
 					animate={smallerNav ? "scrollDown" : "scrollUp"}
 					className={styles.menu}
 				>
-					<span>
-						<a href='/about'>About</a>
+					<span className={styles.span_link}>
+						<a className={styles.nav_link} href='#'>
+							Work
+						</a>
 					</span>
-					<span>
-						<a href='#'>Work</a>
+					<span className={styles.span_link}>
+						<a className={styles.nav_link} href='/about'>
+							About
+						</a>
 					</span>
-					<span>
-						<a href='#'>Contact</a>
+					<span className={styles.span_link}>
+						<a className={styles.nav_link} href='#'>
+							Contact
+						</a>
 					</span>
 				</motion.div>
 			</div>
