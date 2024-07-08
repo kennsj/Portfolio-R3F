@@ -238,15 +238,15 @@
 }.__className_6de1c5 {font-family: '__Cabin_6de1c5', '__Cabin_Fallback_6de1c5';font-style: normal
 }
 
-/*!**********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
-  !*** css ./node_modules/next/dist/build/webpack/loaders/css-loader/src/index.js??ruleSet[1].rules[13].oneOf[9].use[2]!./node_modules/next/dist/build/webpack/loaders/postcss-loader/src/index.js??ruleSet[1].rules[13].oneOf[9].use[3]!./node_modules/next/dist/build/webpack/loaders/resolve-url-loader/index.js??ruleSet[1].rules[13].oneOf[9].use[4]!./node_modules/next/dist/compiled/sass-loader/cjs.js??ruleSet[1].rules[13].oneOf[9].use[5]!./src/app/_components/styles.module.scss ***!
-  \**********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/*!*****************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/next/dist/build/webpack/loaders/css-loader/src/index.js??ruleSet[1].rules[13].oneOf[9].use[2]!./node_modules/next/dist/build/webpack/loaders/postcss-loader/src/index.js??ruleSet[1].rules[13].oneOf[9].use[3]!./node_modules/next/dist/build/webpack/loaders/resolve-url-loader/index.js??ruleSet[1].rules[13].oneOf[9].use[4]!./node_modules/next/dist/compiled/sass-loader/cjs.js??ruleSet[1].rules[13].oneOf[9].use[5]!./src/app/styles/Styles.module.scss ***!
+  \*****************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
 /**
 *
 * Testing
 *
 **/
-#styles_nav__zRVmi {
+#Styles_nav__l6BB_ {
   position: fixed;
   top: 0;
   width: 100%;
@@ -257,7 +257,7 @@
   pointer-events: none;
   transform: 1s;
 }
-#styles_nav__zRVmi .styles_nav__container__brDMa {
+#Styles_nav__l6BB_ .Styles_nav__container__5q3Y1 {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -265,15 +265,15 @@
   max-width: 1280px;
   margin: 0 auto;
 }
-#styles_nav__zRVmi .styles_nav__container__brDMa img .styles_nav_logo__m5RND {
+#Styles_nav__l6BB_ .Styles_nav__container__5q3Y1 img .Styles_nav_logo__dhKrp {
   width: 2rem;
   pointer-events: all;
 }
-#styles_nav__zRVmi .styles_nav__container__brDMa .styles_menu__IJC3c {
+#Styles_nav__l6BB_ .Styles_nav__container__5q3Y1 .Styles_menu__PwrTA {
   display: flex;
   gap: 3rem;
 }
-#styles_nav__zRVmi .styles_nav__container__brDMa .styles_menu__IJC3c span a {
+#Styles_nav__l6BB_ .Styles_nav__container__5q3Y1 .Styles_menu__PwrTA span a {
   color: #ccb2b2;
   font-size: 1rem;
   text-decoration: none;
@@ -281,15 +281,15 @@
   transition: color 0.2s ease-in;
   pointer-events: all;
 }
-#styles_nav__zRVmi .styles_nav__container__brDMa .styles_menu__IJC3c span a:hover {
+#Styles_nav__l6BB_ .Styles_nav__container__5q3Y1 .Styles_menu__PwrTA span a:hover {
   color: #74a36d;
   transition: color 0.2s ease-in;
 }
 
-.styles_footer__wrapper__KNaA7 {
+.Styles_footer__wrapper__ojz3G {
   margin: 5rem 0;
 }
-.styles_footer__wrapper__KNaA7 .styles_footer__container__3KesF {
+.Styles_footer__wrapper__ojz3G .Styles_footer__container__iVXJi {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -299,38 +299,38 @@
   padding: 5rem 0;
 }
 @media (max-width: 1599px) {
-  .styles_footer__wrapper__KNaA7 .styles_footer__container__3KesF {
+  .Styles_footer__wrapper__ojz3G .Styles_footer__container__iVXJi {
     width: 80%;
   }
 }
-.styles_footer__wrapper__KNaA7 .styles_footer__container__3KesF span {
+.Styles_footer__wrapper__ojz3G .Styles_footer__container__iVXJi span {
   font-family: sans-serif;
   font-weight: 500;
 }
-.styles_footer__wrapper__KNaA7 .styles_footer__container__3KesF h2,
-.styles_footer__wrapper__KNaA7 .styles_footer__container__3KesF a {
+.Styles_footer__wrapper__ojz3G .Styles_footer__container__iVXJi h2,
+.Styles_footer__wrapper__ojz3G .Styles_footer__container__iVXJi a {
   font-size: 2.5rem;
   font-weight: 700;
   color: #ccb2b2;
   pointer-events: all;
   margin: 1rem 0;
 }
-.styles_footer__wrapper__KNaA7 .styles_footer__container__3KesF span a {
+.Styles_footer__wrapper__ojz3G .Styles_footer__container__iVXJi span a {
   font-size: 1rem;
   font-weight: 400;
 }
-.styles_footer__wrapper__KNaA7 .styles_footer__container__3KesF a:hover {
+.Styles_footer__wrapper__ojz3G .Styles_footer__container__iVXJi a:hover {
   color: #74a36d;
 }
-.styles_footer__wrapper__KNaA7 .styles_footer__container__3KesF .styles_footer__right__iwx05 {
+.Styles_footer__wrapper__ojz3G .Styles_footer__container__iVXJi .Styles_footer__right__HGMYJ {
   display: flex;
 }
-.styles_footer__wrapper__KNaA7 .styles_footer__container__3KesF .styles_footer__right__iwx05 a,
-.styles_footer__wrapper__KNaA7 .styles_footer__container__3KesF .styles_footer__right__iwx05 img {
+.Styles_footer__wrapper__ojz3G .Styles_footer__container__iVXJi .Styles_footer__right__HGMYJ a,
+.Styles_footer__wrapper__ojz3G .Styles_footer__container__iVXJi .Styles_footer__right__HGMYJ img {
   margin: 0.3rem 0 0 1rem;
 }
 
-.styles_flag__6Vqev {
+.Styles_flag__w66yt {
   display: flex;
   position: fixed;
   z-index: 10;
@@ -339,12 +339,12 @@
   width: 100vw;
   pointer-events: all;
 }
-.styles_flag__6Vqev .styles_blue__t7XBe {
+.Styles_flag__w66yt .Styles_blue__SME2o {
   height: 100%;
   width: 50%;
   background: #2659ac;
 }
-.styles_flag__6Vqev .styles_yellow__Ca4sy {
+.Styles_flag__w66yt .Styles_yellow__LtvoB {
   height: 100%;
   width: 50%;
   background: #f8d447;
@@ -357,9 +357,9 @@
 * Testing
 *
 **/
-/*!*******************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
-  !*** css ./node_modules/next/dist/build/webpack/loaders/css-loader/src/index.js??ruleSet[1].rules[13].oneOf[13].use[2]!./node_modules/next/dist/build/webpack/loaders/postcss-loader/src/index.js??ruleSet[1].rules[13].oneOf[13].use[3]!./node_modules/next/dist/build/webpack/loaders/resolve-url-loader/index.js??ruleSet[1].rules[13].oneOf[13].use[4]!./node_modules/next/dist/compiled/sass-loader/cjs.js??ruleSet[1].rules[13].oneOf[13].use[5]!./src/app/Global.scss ***!
-  \*******************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/*!********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/next/dist/build/webpack/loaders/css-loader/src/index.js??ruleSet[1].rules[13].oneOf[13].use[2]!./node_modules/next/dist/build/webpack/loaders/postcss-loader/src/index.js??ruleSet[1].rules[13].oneOf[13].use[3]!./node_modules/next/dist/build/webpack/loaders/resolve-url-loader/index.js??ruleSet[1].rules[13].oneOf[13].use[4]!./node_modules/next/dist/compiled/sass-loader/cjs.js??ruleSet[1].rules[13].oneOf[13].use[5]!./src/app/Globals.scss ***!
+  \********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
 /**
 *
 * Testing

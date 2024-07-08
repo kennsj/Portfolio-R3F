@@ -8,7 +8,7 @@ import SupportUkraine from "./_components/SupportUkraine"
 import { SpeedInsights } from "@vercel/speed-insights/next"
 
 import "./styles/_variables.scss"
-import "./Global.scss"
+import "./Globals.scss"
 
 const quicksand = Quicksand({ subsets: ["latin"] })
 const ibm = IBM_Plex_Mono({ weight: ["100", "400", "700"], subsets: ["latin"] })
