@@ -70,9 +70,10 @@ const Nav = () => {
 						</a>
 					</span>
 					<span className={styles.span_link}>
-						<a className={styles.nav_link} href='#'>
+						<Link href='#footer'>Contact</Link>
+						{/* <a className={styles.nav_link} href='#footer'>
 							Contact
-						</a>
+						</a> */}
 					</span>
 				</motion.div>
 			</div>

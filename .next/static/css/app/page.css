@@ -9,7 +9,7 @@
 **/
 .Homepage_header__xtKuB {
   height: 40dvh;
-  margin-top: 22.5 rem;
+  margin-top: 22.5rem;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -32,7 +32,6 @@
   align-items: center;
   justify-content: center;
   margin-top: 10rem;
-  pointer-events: all;
 }
 .Homepage_intro__z4eR3 .Homepage_intro__title__qfF_8 {
   margin-bottom: 1rem;
