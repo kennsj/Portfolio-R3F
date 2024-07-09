@@ -1,33 +1,32 @@
-/*!***************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
-  !*** css ./node_modules/next/dist/build/webpack/loaders/css-loader/src/index.js??ruleSet[1].rules[13].oneOf[9].use[2]!./node_modules/next/dist/build/webpack/loaders/postcss-loader/src/index.js??ruleSet[1].rules[13].oneOf[9].use[3]!./node_modules/next/dist/build/webpack/loaders/resolve-url-loader/index.js??ruleSet[1].rules[13].oneOf[9].use[4]!./node_modules/next/dist/compiled/sass-loader/cjs.js??ruleSet[1].rules[13].oneOf[9].use[5]!./src/app/styles/Home.module.scss ***!
-  \***************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/*!*******************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/next/dist/build/webpack/loaders/css-loader/src/index.js??ruleSet[1].rules[13].oneOf[9].use[2]!./node_modules/next/dist/build/webpack/loaders/postcss-loader/src/index.js??ruleSet[1].rules[13].oneOf[9].use[3]!./node_modules/next/dist/build/webpack/loaders/resolve-url-loader/index.js??ruleSet[1].rules[13].oneOf[9].use[4]!./node_modules/next/dist/compiled/sass-loader/cjs.js??ruleSet[1].rules[13].oneOf[9].use[5]!./src/app/styles/Homepage.module.scss ***!
+  \*******************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
 @charset "UTF-8";
 /**
 *
 * Testing
 *
 **/
-.Home_header__PXxWO {
-  height: 80dvh;
-  margin: 0auto;
+.Homepage_header__xtKuB {
+  height: 40dvh;
+  margin-top: 22.5 rem;
   display: flex;
-  flex-direction: row;
   justify-content: center;
   align-items: center;
 }
-.Home_header__PXxWO h2 {
+.Homepage_header__xtKuB h2 {
   margin-top: -20px;
   padding-left: 20px;
 }
 
-.Home_anchor__61Tcp {
+.Homepage_anchor__KYwBA {
   border-bottom: 1px solid #fff;
   pointer-events: all;
   transition: 0.8s;
 }
 
-.Home_intro__rVQwI {
-  width: 60%;
+.Homepage_intro__z4eR3 {
+  width: 1024px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -35,38 +34,36 @@
   margin-top: 10rem;
   pointer-events: all;
 }
-.Home_intro__rVQwI .Home_intro__title__TjNMi {
+.Homepage_intro__z4eR3 .Homepage_intro__title__qfF_8 {
   margin-bottom: 1rem;
 }
-.Home_intro__rVQwI .Home_intro__description__Pwy3j {
+.Homepage_intro__z4eR3 .Homepage_intro__description__G3hTm {
   font-family: var(--font-quicksand);
+  font-size: 3rem;
+  line-height: 4.5rem;
   font-weight: 400;
   text-align: center;
   color: #ccb2b2;
 }
-.Home_intro__rVQwI .Home_intro__description__Pwy3j h1 {
+.Homepage_intro__z4eR3 .Homepage_intro__description__G3hTm h1 {
   font-size: 2rem;
 }
 
-.Home_work__section__ehK1L {
+.Homepage_work__section__Y1WC0 {
   display: flex;
   flex-direction: column;
   margin-top: 10rem;
 }
-.Home_work__section__ehK1L h3 {
-  font-size: 4rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  color: rgba(204, 178, 178, 0.4941176471);
-  opacity: 0.2;
-  margin-bottom: 1rem;
-}
-.Home_work__section__ehK1L .Home_work__item__HXXRP {
+.Homepage_work__section__Y1WC0 .Homepage_work__item__rm5b_ {
   position: relative;
   margin-bottom: 5rem;
   pointer-events: all;
 }
-.Home_work__section__ehK1L .Home_work__item__HXXRP::after {
+.Homepage_work__section__Y1WC0 .Homepage_work__item__rm5b_ .Homepage_work__image__UjW35 {
+  width: 100%;
+  height: 100%;
+}
+.Homepage_work__section__Y1WC0 .Homepage_work__item__rm5b_::after {
   content: "";
   position: absolute;
   top: -0.8%;
@@ -75,30 +72,35 @@
   width: 100%;
   height: 100%;
 }
-.Home_work__section__ehK1L .Home_work__item__HXXRP img {
+.Homepage_work__section__Y1WC0 .Homepage_work__item__rm5b_ img {
   filter: grayscale(1);
   transition: filter 0.4s ease-in;
 }
-.Home_work__section__ehK1L .Home_work__item__HXXRP img:hover {
+.Homepage_work__section__Y1WC0 .Homepage_work__item__rm5b_ img:hover {
   filter: grayscale(0);
 }
-.Home_work__section__ehK1L .Home_work__item__HXXRP .Home_work__description__G6Wdh {
+.Homepage_work__section__Y1WC0 .Homepage_work__item__rm5b_ .Homepage_work__description__250_k {
   position: absolute;
+  display: flex;
+  width: 80%;
+  justify-content: space-between;
+  align-items: center;
   bottom: 7.5%;
   left: 10%;
   z-index: 1;
+  pointer-events: all;
 }
-.Home_work__section__ehK1L .Home_work__item__HXXRP .Home_work__description__G6Wdh .Home_work__title__MhzoJ {
+.Homepage_work__section__Y1WC0 .Homepage_work__item__rm5b_ .Homepage_work__description__250_k .Homepage_work__title__fNOtd {
   font-size: 2rem;
   font-weight: bold;
   color: #74a36d;
   margin-bottom: 0.5rem;
 }
-.Home_work__section__ehK1L .Home_work__item__HXXRP .Home_work__description__G6Wdh ul {
+.Homepage_work__section__Y1WC0 .Homepage_work__item__rm5b_ .Homepage_work__description__250_k ul {
   display: flex;
   padding: 0;
 }
-.Home_work__section__ehK1L .Home_work__item__HXXRP .Home_work__description__G6Wdh li {
+.Homepage_work__section__Y1WC0 .Homepage_work__item__rm5b_ .Homepage_work__description__250_k li {
   list-style: none;
   color: #74a36d;
   font-weight: 400;
@@ -108,68 +110,78 @@
   padding: 0;
   margin-inline: 1em;
 }
-.Home_work__section__ehK1L .Home_work__item__HXXRP .Home_work__description__G6Wdh li:first-child {
+.Homepage_work__section__Y1WC0 .Homepage_work__item__rm5b_ .Homepage_work__description__250_k li:first-child {
   margin: 0;
 }
-.Home_work__section__ehK1L .Home_work__item__HXXRP .Home_work__description__G6Wdh li::after {
+.Homepage_work__section__Y1WC0 .Homepage_work__item__rm5b_ .Homepage_work__description__250_k li::after {
   position: absolute;
   content: "•";
   font-size: 0.5em;
   margin-top: 0.7em;
   margin-left: 0.8em;
 }
-.Home_work__section__ehK1L .Home_work__item__HXXRP .Home_work__description__G6Wdh li:last-child::after {
+.Homepage_work__section__Y1WC0 .Homepage_work__item__rm5b_ .Homepage_work__description__250_k li:last-child::after {
   content: "";
 }
-.Home_work__section__ehK1L .Home_work__item__HXXRP:hover > img {
+.Homepage_work__section__Y1WC0 .Homepage_work__item__rm5b_ .Homepage_work__description__250_k img {
+  filter: grayscale(0);
+}
+.Homepage_work__section__Y1WC0 .Homepage_work__item__rm5b_ a:hover > img,
+.Homepage_work__section__Y1WC0 .Homepage_work__item__rm5b_ a:focus > img {
+  color: #74a36d;
   filter: grayscale(0);
   transition: filter 0.4s ease-in;
 }
 
-.Home_about__section__UeNHP {
+.Homepage_about__section___ZJWx {
   position: relative;
   margin: 0 auto;
   color: #ccb2b2;
 }
-.Home_about__section__UeNHP p {
+.Homepage_about__section___ZJWx p {
   font-family: sans-serif;
   font-size: 1rem;
   width: 25rem;
   text-align: right;
 }
-.Home_about__section__UeNHP h3 {
-  font-size: 4rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  color: rgba(204, 178, 178, 0.4941176471);
-  opacity: 0.2;
-}
-.Home_about__section__UeNHP .Home_experience__list__Fs3mJ {
+.Homepage_about__section___ZJWx .Homepage_experience__list__WOIMV {
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 1.5rem 1rem;
   border-bottom: 1px solid rgba(204, 178, 178, 0.4941176471);
 }
-.Home_about__section__UeNHP .Home_experience__list__Fs3mJ:last-child {
+.Homepage_about__section___ZJWx .Homepage_experience__list__WOIMV:last-child {
   border-bottom: none;
 }
-.Home_about__section__UeNHP .Home_experience__list__Fs3mJ:last-child {
+.Homepage_about__section___ZJWx .Homepage_experience__list__WOIMV:last-child {
   margin-bottom: 5rem;
 }
-.Home_about__section__UeNHP .Home_experience__list__Fs3mJ .Home_experience__info__YTtAY span {
+.Homepage_about__section___ZJWx .Homepage_experience__list__WOIMV .Homepage_experience__info__tfkeP a {
+  color: #c75555;
+}
+.Homepage_about__section___ZJWx .Homepage_experience__list__WOIMV .Homepage_experience__info__tfkeP a:hover {
+  color: #74a36d;
+}
+.Homepage_about__section___ZJWx .Homepage_experience__list__WOIMV .Homepage_experience__info__tfkeP span {
   font-family: sans-serif;
   font-weight: 100;
   font-size: 1rem;
 }
-.Home_about__section__UeNHP .Home_experience__list__Fs3mJ .Home_experience__info__YTtAY span:last-child {
+.Homepage_about__section___ZJWx .Homepage_experience__list__WOIMV .Homepage_experience__info__tfkeP span:last-child {
   font-size: 0.9rem;
   color: rgba(204, 178, 178, 0.4941176471);
 }
-.Home_about__section__UeNHP .Home_experience__list__Fs3mJ .Home_experience__info__YTtAY h3 {
-  font-family: sans-serif;
-  font-size: 2rem;
-  font-weight: bold;
-  color: #c75555;
-  margin-block: 0.5rem;
+
+.Homepage_work__section__Y1WC0 h3,
+.Homepage_about__section___ZJWx h3 {
+  font-size: 5rem;
+  line-height: 5rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: rgba(204, 178, 178, 0.4941176471);
+  color: transparent;
+  -webkit-text-stroke: rgba(204, 178, 178, 0.4941176471) 1px;
+  opacity: 0.15;
+  margin-bottom: 3rem;
 }

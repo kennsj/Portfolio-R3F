@@ -22,6 +22,11 @@ body {
 	padding: 0;
 	pointer-events: none;
 	overflow-x: hidden;
+
+	@include media("<1024px") {
+		display: none;
+		// content: "Please view this site on a larger screen.";
+	}
 }
 
 main {

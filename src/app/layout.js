@@ -26,8 +26,8 @@ export default function RootLayout({ children }) {
 			<body
 				className={`${quicksand.className} ${ibm.className} ${cabin.className}`}
 			>
-				<Nav />
 				{children}
+				<Nav />
 				<Background />
 				<Footer />
 				<SupportUkraine />

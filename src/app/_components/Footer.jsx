@@ -3,7 +3,7 @@ import styles from "../styles/Styles.module.scss"
 
 const Footer = () => {
 	return (
-		<footer>
+		<footer id='#footer'>
 			<div className={styles.footer__wrapper}>
 				<div className={styles.footer__container}>
 					<div className={styles.footer__left}>
@@ -23,7 +23,12 @@ const Footer = () => {
 							<h2>Contact me</h2>
 						</div>
 						<a href='#'>
-							<Image src={"/icons/arrow.svg"} width={60} height={60} />
+							<Image
+								src={"/icons/arrow.svg"}
+								alt='Arrow icon with a link to contact me through email'
+								width={60}
+								height={60}
+							/>
 						</a>
 					</div>
 				</div>

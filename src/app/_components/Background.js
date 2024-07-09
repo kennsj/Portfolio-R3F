@@ -1,9 +1,9 @@
 "use client"
 
 // import Experience from "./Experiences/Experience"
-import Experience from "../Experiences/Experience"
+import Experience from "./Experiences/Experience"
 import { Canvas } from "@react-three/fiber"
-import LightSource from "../Experiences/LightSource"
+import LightSource from "./Experiences/LightSource"
 
 const Background = () => {
 	return (

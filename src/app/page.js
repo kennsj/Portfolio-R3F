@@ -1,7 +1,8 @@
 "use client"
 
 import Image from "next/image"
-import styles from "./styles/Home.module.scss"
+import Link from "next/link"
+import styles from "./styles/Homepage.module.scss"
 
 export default function Home() {
 	return (
@@ -10,11 +11,12 @@ export default function Home() {
 				{/* <img src={Logo} /> */}
 				<Image
 					src={"./kj-logo.svg"}
-					alt='Logo'
-					width={0}
-					height={0}
+					alt='Personal logo for Kenneth Jørgensen'
+					width={150}
+					height={200}
+					// sizes='(min-width: 768px) 50vw, 100vw'
 					// sizes='50vw'
-					style={{ width: "10%", height: "auto" }}
+					// style={{ width: "10%", height: "auto" }}
 				/>
 				<h2>
 					Multidisciplinary <br />
@@ -32,11 +34,11 @@ export default function Home() {
 			<main>
 				<section className={styles.intro}>
 					<h1 className={styles.intro__description}>
-						<span className={"highlight"}>Multidisciplinary</span> designer &
-						developer with a passion for creating exciting{" "}
-						<span className={"highlight"}>concepts</span> &{" "}
-						<span className={"highlight"}>products</span> which focuses on
-						user-engagements.
+						<span className={"highlight"}></span>Multidisciplinary designer &
+						developer with a <span className={"highlight"}>passion</span> for
+						creating impactful digital{" "}
+						<span className={"highlight"}>experiences</span> which focuses on
+						enthralling and engaging users.
 					</h1>
 					{/* <h1 className={styles.intro__description}>
 						I am Kenneth, a multidisciplinary designer and developer striving to
@@ -53,55 +55,86 @@ export default function Home() {
 					</h3>
 
 					<div className={styles.work__item}>
-						<Image
-							src={"/projects/work-preview-cinema.png"}
-							alt='Logo'
-							width={100}
-							height={100}
-							layout='responsive'
-						/>
-						<div className={styles.work__description}>
-							<h4 className={styles.work__title}>Dialog eXe</h4>
-							<ul>
-								<li>UX</li>
-								<li>UI</li>
-								{/* <li>Web</li> */}
-							</ul>
-						</div>
+						<Link href='/dx'>
+							<Image
+								className={styles.work__image}
+								src={"/projects/work-preview-cinema.png"}
+								alt='Preview image for a projected I worked with at Dialog eXe'
+								width={1024}
+								height={768}
+							/>
+							<div className={styles.work__description}>
+								<div>
+									<h4 className={styles.work__title}>Dialog eXe</h4>
+									<ul>
+										<li>UX</li>
+										<li>UI</li>
+										{/* <li>Web</li> */}
+									</ul>
+								</div>
+								<Image
+									src={"icons/arrow.svg"}
+									width={50}
+									height={50}
+									alt='Arrow icon which links to project page'
+								/>
+							</div>
+						</Link>
 					</div>
 
 					<div className={styles.work__item}>
-						<Image
-							src={"/projects/sno-preview.png"}
-							alt='Logo'
-							width={100}
-							height={100}
-							layout='responsive'
-						/>
-						<div className={styles.work__description}>
-							<h4 className={styles.work__title}>SNØ Oslo</h4>
-							<ul>
-								<li>VR</li>
-								<li>Web</li>
-							</ul>
-						</div>
-					</div>
+						<Link className={styles.work__link} href='/sno'>
+							<Image
+								className={styles.work__image}
+								src={"/projects/sno-preview.png"}
+								alt='Preview image for the concept I made for SNØ Oslo'
+								width={1024}
+								height={768}
+							/>
+							<div className={styles.work__description}>
+								<div>
+									<h4 className={styles.work__title}>SNØ Oslo</h4>
 
+									<ul>
+										<li>VR</li>
+										<li>Web</li>
+									</ul>
+								</div>
+								<Image
+									src={"icons/arrow.svg"}
+									width={50}
+									height={50}
+									alt='Arrow icon which links to project page'
+								/>
+							</div>
+						</Link>
+					</div>
 					<div className={styles.work__item}>
-						<Image
-							src={"/projects/nfe-preview.png"}
-							alt='Logo'
-							width={100}
-							height={100}
-							layout='responsive'
-						/>
-						<div className={styles.work__description}>
-							<h4 className={styles.work__title}>Norske Folkeeventyr</h4>
-							<ul>
-								<li>3D</li>
-								<li>Web</li>
-							</ul>
-						</div>
+						<Link href='/sno'>
+							<Image
+								className={styles.work__image}
+								src={"/projects/nfe-preview.png"}
+								alt='Preview image for the project Norske Folkeeventyr'
+								width={1024}
+								height={768}
+							/>
+							<div className={styles.work__description}>
+								<div>
+									<h4 className={styles.work__title}>Norske Folkeeventyr</h4>
+
+									<ul>
+										<li>3D</li>
+										<li>Web</li>
+									</ul>
+								</div>
+								<Image
+									src={"icons/arrow.svg"}
+									width={50}
+									height={50}
+									alt='Arrow icon which links to project page'
+								/>
+							</div>
+						</Link>
 					</div>
 				</section>
 
@@ -113,7 +146,9 @@ export default function Home() {
 						<div className={styles.experience__list}>
 							<div className={styles.experience__info}>
 								<span>Bodø, Norway</span>
-								<h4>Dialog eXe</h4>
+								<h4>
+									<Link href='https://www.dx.tech/'>DX</Link>
+								</h4>
 								<span>2019 - 2020</span>
 							</div>
 							<div>
@@ -129,15 +164,15 @@ export default function Home() {
 						<div className={styles.experience__list}>
 							<div className={styles.experience__info}>
 								<span>Oslo, Norway</span>
-								<h4>Unfold</h4>
+								<h4>
+									<Link href='https://www.unfold.no'>Unfold</Link>
+								</h4>
 								<span>2018</span>
 							</div>
 							<div>
 								<p>
 									Worked with concept development for SNØ - an all-year arena
 									for winter activities - where we developed a prototype in VR.
-									The prototype we developed was nominated for the school's best
-									student assignment.
 								</p>
 							</div>
 						</div>
@@ -145,7 +180,9 @@ export default function Home() {
 						<div className={styles.experience__list}>
 							<div className={styles.experience__info}>
 								<span>Oslo, Norway</span>
-								<h4>Trigger</h4>
+								<h4>
+									<Link href='https://www.trigger.no/'>Trigger</Link>
+								</h4>
 								<span>2016</span>
 							</div>
 							<div>

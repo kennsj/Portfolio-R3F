@@ -11,6 +11,18 @@
       "static/chunks/main-app.js",
       "static/css/app/layout.css",
       "static/chunks/app/layout.js"
+    ],
+    "/sno/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/css/app/sno/page.css",
+      "static/chunks/app/sno/page.js"
+    ],
+    "/dx/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/css/app/dx/page.css",
+      "static/chunks/app/dx/page.js"
     ]
   }
 }

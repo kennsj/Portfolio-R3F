@@ -50,7 +50,7 @@ const Nav = () => {
 						src='/kj-logo.svg'
 						width={30}
 						height={30}
-						alt='Logo for Kenneth Jørgensen'
+						alt='Personal logo for Kenneth Jørgensen'
 					/>
 				</Link>
 				<motion.div
@@ -60,12 +60,12 @@ const Nav = () => {
 					className={styles.menu}
 				>
 					<span className={styles.span_link}>
-						<a className={styles.nav_link} href='#'>
+						<a className={styles.nav_link} href='sno'>
 							Work
 						</a>
 					</span>
 					<span className={styles.span_link}>
-						<a className={styles.nav_link} href='/about'>
+						<a className={styles.nav_link} href='#'>
 							About
 						</a>
 					</span>

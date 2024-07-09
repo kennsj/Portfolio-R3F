@@ -386,6 +386,11 @@ body {
   pointer-events: none;
   overflow-x: hidden;
 }
+@media (max-width: 1023px) {
+  body {
+    display: none;
+  }
+}
 
 main {
   display: flex;
