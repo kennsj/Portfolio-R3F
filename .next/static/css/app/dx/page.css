@@ -1,0 +1,70 @@
+/*!**********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/next/dist/build/webpack/loaders/css-loader/src/index.js??ruleSet[1].rules[13].oneOf[9].use[2]!./node_modules/next/dist/build/webpack/loaders/postcss-loader/src/index.js??ruleSet[1].rules[13].oneOf[9].use[3]!./node_modules/next/dist/build/webpack/loaders/resolve-url-loader/index.js??ruleSet[1].rules[13].oneOf[9].use[4]!./node_modules/next/dist/compiled/sass-loader/cjs.js??ruleSet[1].rules[13].oneOf[9].use[5]!./src/app/styles/ProjectPage.module.scss ***!
+  \**********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/**
+*
+* Testing
+*
+**/
+.ProjectPage_work__header__eaGV7 {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: last baseline;
+  height: 50dvh;
+  width: 80%;
+  max-width: 1280px;
+  margin: 0 auto;
+  pointer-events: all;
+}
+.ProjectPage_work__header__eaGV7 .ProjectPage_heading__container__26v57 {
+  display: flex;
+  flex-direction: column;
+}
+.ProjectPage_work__header__eaGV7 .ProjectPage_heading__container__26v57 h1 {
+  color: #c75555;
+  font-size: 5rem;
+  font-weight: 800;
+}
+@media (max-width: 767px) {
+  .ProjectPage_work__header__eaGV7 .ProjectPage_heading__container__26v57 h1 {
+    font-size: 2rem;
+    order: 0;
+  }
+}
+.ProjectPage_work__header__eaGV7 .ProjectPage_project__info__FweP4 {
+  display: flex;
+  flex-direction: row;
+  text-align: right;
+}
+.ProjectPage_work__header__eaGV7 .ProjectPage_project__info__FweP4 div {
+  margin: 1rem;
+}
+.ProjectPage_work__header__eaGV7 .ProjectPage_project__info__FweP4 h4 {
+  margin: 0;
+}
+.ProjectPage_work__header__eaGV7 p {
+  width: 100%;
+  font-size: clamp(1rem, 4vw, 4rem);
+}
+
+.ProjectPage_work__section__wyw17 {
+  position: relative;
+  margin-top: 5rem;
+  pointer-events: all;
+}
+.ProjectPage_work__section__wyw17 .ProjectPage_image__container__MrXF_ {
+  position: relative;
+  pointer-events: all;
+  width: 100%;
+  height: 800px;
+  margin: 0 auto;
+  overflow: hidden;
+  outline: 1px solid red;
+  background-repeat: no-repeat;
+  background-position: top center;
+  background-size: cover;
+}
+.ProjectPage_work__section__wyw17 .ProjectPage_image__container__MrXF_ img {
+  margin: 0 auto;
+}
