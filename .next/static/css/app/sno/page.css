@@ -9,62 +9,64 @@
 .ProjectPage_work__header__eaGV7 {
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
   align-items: last baseline;
   height: 50dvh;
-  width: 80%;
-  max-width: 1280px;
-  margin: 0 auto;
-  pointer-events: all;
+  width: 768px;
+  margin: 10rem 0 5rem 0;
+  pointer-events: none;
 }
-.ProjectPage_work__header__eaGV7 .ProjectPage_heading__container__26v57 {
-  display: flex;
-  flex-direction: column;
+.ProjectPage_work__header__eaGV7 .ProjectPage_heading__container__26v57 h4 {
+  display: inline-block;
+  font-size: 1rem;
+  font-weight: 100;
+  color: #ccb2b2;
+  padding-bottom: 1rem;
+  border-bottom: 2px solid #c75555;
 }
 .ProjectPage_work__header__eaGV7 .ProjectPage_heading__container__26v57 h1 {
-  color: #c75555;
+  color: #74a36d;
   font-size: 5rem;
   font-weight: 800;
+  margin: 0;
 }
 @media (max-width: 767px) {
   .ProjectPage_work__header__eaGV7 .ProjectPage_heading__container__26v57 h1 {
     font-size: 2rem;
     order: 0;
+    margin: 0;
   }
 }
-.ProjectPage_work__header__eaGV7 .ProjectPage_project__info__FweP4 {
+
+.ProjectPage_work__section__wyw17 .ProjectPage_project__info__FweP4 {
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
+  margin-top: 5rem;
   text-align: right;
 }
-.ProjectPage_work__header__eaGV7 .ProjectPage_project__info__FweP4 div {
+.ProjectPage_work__section__wyw17 .ProjectPage_project__info__FweP4 div {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   margin: 1rem;
+  padding: 0 0.3rem 1.5rem 0.3rem;
+  border-bottom: 1px solid rgba(204, 178, 178, 0.4941176471);
+  font-size: 0.9rem;
+  font-weight: 200;
 }
-.ProjectPage_work__header__eaGV7 .ProjectPage_project__info__FweP4 h4 {
+.ProjectPage_work__section__wyw17 .ProjectPage_project__info__FweP4 h4 {
+  font-size: 1.5rem;
+  text-transform: uppercase;
+  color: #74a36d;
   margin: 0;
 }
-.ProjectPage_work__header__eaGV7 p {
+.ProjectPage_work__section__wyw17 .ProjectPage_project__info__FweP4 span {
+  line-height: 1.5rem;
+}
+.ProjectPage_work__section__wyw17 h2 {
+  margin: 5rem 0;
+  font-size: 2rem;
+  color: #74a36d;
+}
+.ProjectPage_work__section__wyw17 p {
   width: 100%;
-  font-size: clamp(1rem, 4vw, 4rem);
-}
-
-.ProjectPage_work__section__wyw17 {
-  position: relative;
-  margin-top: 5rem;
-  pointer-events: all;
-}
-.ProjectPage_work__section__wyw17 .ProjectPage_image__container__MrXF_ {
-  position: relative;
-  pointer-events: all;
-  width: 100%;
-  height: 800px;
-  margin: 0 auto;
-  overflow: hidden;
-  outline: 1px solid red;
-  background-repeat: no-repeat;
-  background-position: top center;
-  background-size: cover;
-}
-.ProjectPage_work__section__wyw17 .ProjectPage_image__container__MrXF_ img {
-  margin: 0 auto;
 }

@@ -203,14 +203,15 @@
 .work__section,
 .about__section {
 	h3 {
-		font-size: 5rem;
-		line-height: 5rem;
+		font-size: 6rem;
+		line-height: 4.7rem;
 		font-weight: 700;
-		text-transform: uppercase;
+		// text-transform: uppercase;
 		color: $primary-color-50;
 		color: transparent;
-		-webkit-text-stroke: $primary-color-50 1px;
-		opacity: 0.15;
+		-webkit-text-stroke: $primary-color 1px;
+		opacity: 0.1;
 		margin-bottom: 3rem;
+		margin-left: -5rem;
 	}
 }

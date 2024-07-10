@@ -110,7 +110,7 @@ export default function Home() {
 						</Link>
 					</div>
 					<div className={styles.work__item}>
-						<Link href='/sno'>
+						<Link href='/nfe'>
 							<Image
 								className={styles.work__image}
 								src={"/projects/nfe-preview.png"}

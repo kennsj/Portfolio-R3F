@@ -22,7 +22,7 @@ const Footer = () => {
 							<span>Want to work with me or hire me?</span>
 							<h2>Contact me</h2>
 						</div>
-						<a href='#'>
+						<a href='mailto:kennethsjorgensen@gmail.com'>
 							<Image
 								src={"/icons/arrow.svg"}
 								alt='Arrow icon with a link to contact me through email'
