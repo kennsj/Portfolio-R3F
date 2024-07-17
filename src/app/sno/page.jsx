@@ -41,7 +41,10 @@ const page = () => {
 					</div>
 					<div className={styles.project__tools}>
 						<h4>Tools</h4>
-						<span>Figma</span>
+						<span>
+							Unreal Engine <br />
+							HTC Vive
+						</span>
 					</div>
 				</div>
 				<h2>
@@ -57,6 +60,37 @@ const page = () => {
 					and introduce visitors to the experiences that lie within the hall and
 					set an atmosphere that separates them from the real world.
 				</p>
+
+				<figure>
+					<Image
+						width={1280}
+						height={768}
+						style={{ width: "100%", height: "auto" }}
+						src={"/projects/sno-low-fidelity.png"}
+						alt='Low fidelity model of our concept'
+					/>
+					<figcaption>Low fidelity model of our concept</figcaption>
+				</figure>
+
+				<p>
+					The portal would make it possible to create an atmosphere that can be
+					intertwined to a theme, a season, an event, etc. through the visual
+					and interactive. In addition, it could be used to manage user flow and
+					introduce users to interactive systems used elsewhere within the
+					arena.
+				</p>
+
+				<figure>
+					<Image
+						width={1280}
+						height={768}
+						style={{ width: "100%", height: "auto" }}
+						src={"/projects/sno-low-fidelity-hallway.png"}
+						alt='Low fidelity model of our concept'
+					/>
+					<figcaption>Low fidelity model of our concept</figcaption>
+				</figure>
+
 				{/* {isImage ? (
 								<img src={props.url} />
 							) : (

@@ -71,12 +71,19 @@
 
 	h2 {
 		margin: 5rem 0;
-		font-size: 2rem;
+		font-size: 2.5rem;
 		color: $tertiary-color;
 	}
 
 	p {
-		width: 100%;
-		// font-size: clamp(1rem, 4vw, 4rem);
+		// width: 100%;
+		font-size: clamp(1rem, 2rem, 4rem);
+		font-size: 1.5rem;
+		line-height: 2rem;
+	}
+
+	figcaption {
+		font-style: italic;
+		color: $primary-color-50;
 	}
 }

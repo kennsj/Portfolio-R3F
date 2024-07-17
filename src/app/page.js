@@ -2,7 +2,10 @@
 
 import Image from "next/image"
 import Link from "next/link"
+
 import styles from "./styles/Homepage.module.scss"
+import LetterAnimation from "./_components/Animations/LetterAnimation"
+import HeadingAnimation from "./_components/Animations/HeadingAnimation"
 
 export default function Home() {
 	return (
@@ -33,13 +36,17 @@ export default function Home() {
 			</header>
 			<main>
 				<section className={styles.intro}>
-					<h1 className={styles.intro__description}>
+					<HeadingAnimation
+						// htmlTag={"h1"}
+						value='Multidisciplinary designer & developer with a passion for creating impactful digital experiences which focuses on enthralling and engaging users.'
+					/>
+					{/* <h1 className={styles.intro__description}>
 						<span className={"highlight"}></span>Multidisciplinary designer &
 						developer with a <span className={"highlight"}>passion</span> for
 						creating impactful digital{" "}
 						<span className={"highlight"}>experiences</span> which focuses on
 						enthralling and engaging users.
-					</h1>
+					</h1> */}
 					{/* <h1 className={styles.intro__description}>
 						I am Kenneth, a multidisciplinary designer and developer striving to
 						create impactful digital experiences which enthralls and engages. I
@@ -52,6 +59,7 @@ export default function Home() {
 				<section className={styles.work__section}>
 					<h3>
 						Selected <br /> works
+						{/* <LetterAnimation value={"Selected" + `${(<p></p>)}` + "works"} /> */}
 					</h3>
 
 					<div className={styles.work__item}>

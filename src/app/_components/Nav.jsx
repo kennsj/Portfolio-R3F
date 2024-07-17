@@ -60,7 +60,7 @@ const Nav = () => {
 					className={styles.menu}
 				>
 					<span className={styles.span_link}>
-						<a className={styles.nav_link} href='sno'>
+						<a className={styles.nav_link} href='#'>
 							Work
 						</a>
 					</span>
