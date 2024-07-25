@@ -42,11 +42,6 @@
 		font-weight: 400;
 		text-align: center;
 		color: $primary-color;
-
-		h1 {
-			font-size: 2rem;
-			// font-family: sans-serif;
-		}
 	}
 }
 
@@ -56,10 +51,18 @@
 	// align-items: center;
 	margin-top: 10rem;
 
+	pointer-events: all;
+
 	.work__item {
 		position: relative;
 		margin-bottom: 5rem;
 		pointer-events: all;
+
+		a {
+			display: block;
+			width: 100%;
+			height: 100%;
+		}
 
 		.work__image {
 			width: 100%;
@@ -76,6 +79,8 @@
 			// border-radius: 1rem;
 			width: 100%;
 			height: 100%;
+			user-select: none;
+			pointer-events: none;
 		}
 
 		img {
@@ -150,6 +155,10 @@
 			transition: filter 0.4s ease-in;
 		}
 	}
+
+	// #button:hover:before {
+	// 	background-color: red;
+	// }
 }
 
 .about__section {

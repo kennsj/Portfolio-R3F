@@ -16,7 +16,7 @@
 
 body {
 	color: $primary-color;
-	background: #101010;
+	background: #000;
 
 	margin: 0;
 	padding: 0;
@@ -71,7 +71,7 @@ p {
 h1 {
 	// font-family: "TT Hoves Pro Trial";
 	// font-weight: bold;
-	font-size: clamp(1rem, 3.5vw, 8rem);
+	font-size: clamp(1rem, 4rem, 8rem);
 }
 
 h2 {

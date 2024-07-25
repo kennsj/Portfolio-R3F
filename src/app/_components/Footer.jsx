@@ -1,9 +1,23 @@
+"use client"
+
 import Image from "next/image"
 import styles from "../styles/Styles.module.scss"
 
+import { motion, inView } from "framer-motion"
+
 const Footer = () => {
 	return (
-		<footer id='#footer'>
+		<motion.footer
+			id='#footer'
+			initial={{ opacity: 0, y: 50 }}
+			whileInView={{ opacity: 1, y: 0 }}
+			transition={{
+				ease: "easeIn",
+				type: "tween",
+				delay: 0,
+				duration: 0.8,
+			}}
+		>
 			<div className={styles.footer__wrapper}>
 				<div className={styles.footer__container}>
 					<div className={styles.footer__left}>
@@ -33,7 +47,7 @@ const Footer = () => {
 					</div>
 				</div>
 			</div>
-		</footer>
+		</motion.footer>
 	)
 }
 

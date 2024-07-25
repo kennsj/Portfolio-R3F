@@ -9,7 +9,7 @@ const HeadingAnimation = ({ value }) => {
 	const element = useRef()
 	const { scrollYProgress } = useScroll({
 		target: element,
-		offset: ["start 0.9", "start 0.5"],
+		offset: ["start 0.8", "start 0.5"],
 	})
 
 	const words = value.split(" ") // Split the string into an array of words

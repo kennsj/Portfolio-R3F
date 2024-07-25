@@ -45,19 +45,22 @@
   text-align: center;
   color: #ccb2b2;
 }
-.Homepage_intro__z4eR3 .Homepage_intro__description__G3hTm h1 {
-  font-size: 2rem;
-}
 
 .Homepage_work__section__Y1WC0 {
   display: flex;
   flex-direction: column;
   margin-top: 10rem;
+  pointer-events: all;
 }
 .Homepage_work__section__Y1WC0 .Homepage_work__item__rm5b_ {
   position: relative;
   margin-bottom: 5rem;
   pointer-events: all;
+}
+.Homepage_work__section__Y1WC0 .Homepage_work__item__rm5b_ a {
+  display: block;
+  width: 100%;
+  height: 100%;
 }
 .Homepage_work__section__Y1WC0 .Homepage_work__item__rm5b_ .Homepage_work__image__UjW35 {
   width: 100%;
@@ -71,6 +74,10 @@
   background: linear-gradient(rgba(255, 255, 255, 0), rgba(17, 17, 17, 0.862745098));
   width: 100%;
   height: 100%;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+          user-select: none;
+  pointer-events: none;
 }
 .Homepage_work__section__Y1WC0 .Homepage_work__item__rm5b_ img {
   filter: grayscale(1);
@@ -189,11 +196,10 @@
   !*** css ./node_modules/next/dist/build/webpack/loaders/css-loader/src/index.js??ruleSet[1].rules[13].oneOf[9].use[2]!./node_modules/next/dist/build/webpack/loaders/postcss-loader/src/index.js??ruleSet[1].rules[13].oneOf[9].use[3]!./node_modules/next/dist/build/webpack/loaders/resolve-url-loader/index.js??ruleSet[1].rules[13].oneOf[9].use[4]!./node_modules/next/dist/compiled/sass-loader/cjs.js??ruleSet[1].rules[13].oneOf[9].use[5]!./src/app/styles/TextReveal.module.scss ***!
   \*********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
 .TextReveal_paragraph__SBjz5 {
-  max-width: 1280px;
-  padding: 40px;
   display: flex;
   flex-wrap: wrap;
   line-height: 1;
+  margin: 0;
 }
 .TextReveal_paragraph__SBjz5 .TextReveal_word__no7eg {
   margin-right: 12px;

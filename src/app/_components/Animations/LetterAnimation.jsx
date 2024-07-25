@@ -16,7 +16,7 @@ const HeadingAnimation = ({ value, ...props }) => {
 	console.log(props)
 
 	return (
-		<p ref={element} className={styles.paragraph}>
+		<h1 ref={element} className={styles.paragraph}>
 			{words.map((word, index) => {
 				const start = index / words.length
 				const end = start + 1 / words.length
@@ -26,7 +26,7 @@ const HeadingAnimation = ({ value, ...props }) => {
 					</Word>
 				)
 			})}
-		</p>
+		</h1>
 	)
 }
 

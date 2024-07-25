@@ -380,7 +380,7 @@
 }
 body {
   color: #ccb2b2;
-  background: #101010;
+  background: #000;
   margin: 0;
   padding: 0;
   pointer-events: none;
@@ -428,7 +428,7 @@ p {
 }
 
 h1 {
-  font-size: clamp(1rem, 3.5vw, 8rem);
+  font-size: 4rem;
 }
 
 h2 {

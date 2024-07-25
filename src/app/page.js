@@ -2,12 +2,28 @@
 
 import Image from "next/image"
 import Link from "next/link"
+import { motion, inView } from "framer-motion"
 
 import styles from "./styles/Homepage.module.scss"
 import LetterAnimation from "./_components/Animations/LetterAnimation"
 import HeadingAnimation from "./_components/Animations/HeadingAnimation"
+import WordSkew from "./_components/Animations/WordSkew"
 
 export default function Home() {
+	const variants = { hidden: { opacity: 0 }, visible: { opacity: 1 } }
+
+	const revealVariants = {
+		hidden: { opacity: 0, y: 50 },
+		visible: { opacity: 1, y: 0 },
+		transition: {
+			ease: "easeIn",
+			type: "tween",
+			delay: 1.3,
+			duration: 0.8,
+			repeat: 0,
+		},
+	}
+
 	return (
 		<>
 			<header className={styles.header}>
@@ -36,10 +52,11 @@ export default function Home() {
 			</header>
 			<main>
 				<section className={styles.intro}>
-					<HeadingAnimation
+					<WordSkew value='Multidisciplinary designer & developer with a passion for creating impactful digital experiences which focuses on enthralling and engaging users.' />
+					{/* <LetterAnimation
 						// htmlTag={"h1"}
 						value='Multidisciplinary designer & developer with a passion for creating impactful digital experiences which focuses on enthralling and engaging users.'
-					/>
+					/> */}
 					{/* <h1 className={styles.intro__description}>
 						<span className={"highlight"}></span>Multidisciplinary designer &
 						developer with a <span className={"highlight"}>passion</span> for
@@ -62,7 +79,18 @@ export default function Home() {
 						{/* <LetterAnimation value={"Selected" + `${(<p></p>)}` + "works"} /> */}
 					</h3>
 
-					<div className={styles.work__item}>
+					<motion.div
+						className={styles.work__item}
+						initial={{ opacity: 0, y: 50 }}
+						whileInView={{ opacity: 1, y: 0 }}
+						transition={{
+							ease: "easeIn",
+							type: "tween",
+							delay: 0.3,
+							duration: 0.8,
+							repeat: 0,
+						}}
+					>
 						<Link href='/dx'>
 							<Image
 								className={styles.work__image}
@@ -88,9 +116,20 @@ export default function Home() {
 								/>
 							</div>
 						</Link>
-					</div>
+					</motion.div>
 
-					<div className={styles.work__item}>
+					<motion.div
+						className={styles.work__item}
+						initial={{ opacity: 0, y: 50 }}
+						whileInView={{ opacity: 1, y: 0 }}
+						transition={{
+							ease: "easeIn",
+							type: "tween",
+							delay: 0.3,
+							duration: 0.8,
+							repeat: 0,
+						}}
+					>
 						<Link className={styles.work__link} href='/sno'>
 							<Image
 								className={styles.work__image}
@@ -116,8 +155,19 @@ export default function Home() {
 								/>
 							</div>
 						</Link>
-					</div>
-					<div className={styles.work__item}>
+					</motion.div>
+					<motion.div
+						className={styles.work__item}
+						initial={{ opacity: 0, y: 50 }}
+						whileInView={{ opacity: 1, y: 0 }}
+						transition={{
+							ease: "easeIn",
+							type: "tween",
+							delay: 0.3,
+							duration: 0.8,
+							repeat: 0,
+						}}
+					>
 						<Link href='/nfe'>
 							<Image
 								className={styles.work__image}
@@ -143,84 +193,119 @@ export default function Home() {
 								/>
 							</div>
 						</Link>
-					</div>
+					</motion.div>
 				</section>
 
-				<section className={styles.about__section}>
-					<div className='experience'>
+				<section
+					className={styles.about__section}
+					initial={{ opacity: 0, y: 50 }}
+					whileInView={{ opacity: 1, y: 0 }}
+					transition={{
+						ease: "easeIn",
+						type: "tween",
+						delay: 0.3,
+						duration: 0.8,
+						repeat: 0,
+					}}
+				>
+					<div>
 						<h3>
 							Work <br /> experience
 						</h3>
-						<div className={styles.experience__list}>
-							<div className={styles.experience__info}>
-								<span>Bodø, Norway</span>
-								<h4>
-									<Link href='https://www.dx.tech/'>DX</Link>
-								</h4>
-								<span>2019 - 2020</span>
+						<motion.div
+							initial={{ opacity: 0, y: 50 }}
+							whileInView={{ opacity: 1, y: 0 }}
+							transition={{
+								ease: "easeIn",
+								type: "tween",
+								delay: 0,
+								duration: 0.8,
+								repeat: 0,
+							}}
+						>
+							<div className={styles.experience__list}>
+								<div className={styles.experience__info}>
+									<span>Bodø, Norway</span>
+									<h4>
+										<Link href='https://www.dx.tech/'>DX</Link>
+									</h4>
+									<span>2019 - 2020</span>
+								</div>
+								<div>
+									<p>
+										Worked as a designer and a developer at DX, developing
+										websites for their cinema and culture clients across the
+										country. In addition, I worked on further developing the
+										design for the custom CMS platform.
+									</p>
+								</div>
 							</div>
-							<div>
-								<p>
-									Worked as a designer and a developer at DX, developing
-									websites for their cinema and culture clients across the
-									country. In addition, I worked on further developing the
-									design for the custom CMS platform.
-								</p>
-							</div>
-						</div>
 
-						<div className={styles.experience__list}>
-							<div className={styles.experience__info}>
-								<span>Oslo, Norway</span>
-								<h4>
-									<Link href='https://www.unfold.no'>Unfold</Link>
-								</h4>
-								<span>2018</span>
+							<div className={styles.experience__list}>
+								<div className={styles.experience__info}>
+									<span>Oslo, Norway</span>
+									<h4>
+										<Link href='https://www.unfold.no'>Unfold</Link>
+									</h4>
+									<span>2018</span>
+								</div>
+								<div>
+									<p>
+										Worked with concept development for SNØ - an all-year arena
+										for winter activities - where we developed a prototype in
+										VR.
+									</p>
+								</div>
 							</div>
-							<div>
-								<p>
-									Worked with concept development for SNØ - an all-year arena
-									for winter activities - where we developed a prototype in VR.
-								</p>
-							</div>
-						</div>
 
-						<div className={styles.experience__list}>
-							<div className={styles.experience__info}>
-								<span>Oslo, Norway</span>
-								<h4>
-									<Link href='https://www.trigger.no/'>Trigger</Link>
-								</h4>
-								<span>2016</span>
+							<div className={styles.experience__list}>
+								<div className={styles.experience__info}>
+									<span>Oslo, Norway</span>
+									<h4>
+										<Link href='https://www.trigger.no/'>Trigger</Link>
+									</h4>
+									<span>2016</span>
+								</div>
+								<div>
+									<p>
+										Worked with concept and UX/UI visualization for a social
+										platform aimed at creative people.
+									</p>
+								</div>
 							</div>
-							<div>
-								<p>
-									Worked with concept and UX/UI visualization for a social
-									platform aimed at creative people.
-								</p>
-							</div>
-						</div>
+						</motion.div>
 					</div>
 
-					<div className='education'>
+					<div>
 						<h3>Education</h3>
-						<div className={styles.experience__list}>
-							<div className={styles.experience__info}>
-								<span>Campus Kristiania</span>
-								<h4>Interaction design</h4>
-								<span>2016 - 2018</span>
+						<motion.div
+							initial={{ opacity: 0, y: 50 }}
+							whileInView={{ opacity: 1, y: 0 }}
+							transition={{
+								ease: "easeIn",
+								type: "tween",
+								delay: 0,
+								duration: 0.8,
+							}}
+						>
+							<div className={styles.experience__list}>
+								<div className={styles.experience__info}>
+									<span>Campus Kristiania</span>
+									<h4>Interaction design</h4>
+									<span>2016 - 2018</span>
+								</div>
+								<div>{/* <p>Studied interaction design</p> */}</div>
 							</div>
-							<div>{/* <p>Studied interaction design</p> */}</div>
-						</div>
 
-						<div className={styles.experience__list}>
-							<div className={styles.experience__info}>
-								<span>Campus Kristiania</span>
-								<h4>Graphic design</h4>
-								<span>2014 - 2016</span>
+							<div className={styles.experience__list}>
+								<div className={styles.experience__info}>
+									<span>Campus Kristiania</span>
+									<h4>Graphic design</h4>
+									<span>2014 - 2016</span>
+								</div>
+								<div>{/* <p>Studied graphic design</p> */}</div>
 							</div>
-							<div>{/* <p>Studied graphic design</p> */}</div>
-						</div>
+						</motion.div>
 					</div>
 				</section>
 			</main>
