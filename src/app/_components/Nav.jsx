@@ -39,9 +39,9 @@ const Nav = () => {
 	return (
 		<motion.nav
 			id={styles.nav}
-			variants={navVariant}
-			transition={{ duration: 0.4, ease: "easeInOut" }}
-			animate={smallerNav ? "scrollDown" : "scrollUp"}
+			// variants={navVariant}
+			// transition={{ duration: 0.4, ease: "easeInOut" }}
+			// animate={smallerNav ? "scrollDown" : "scrollUp"}
 		>
 			<div className={styles.nav__container}>
 				<Link href='/'>
