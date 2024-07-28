@@ -7,7 +7,7 @@ import { motion, inView } from "framer-motion"
 import styles from "./styles/Homepage.module.scss"
 import LetterAnimation from "./_components/Animations/LetterAnimation"
 import HeadingAnimation from "./_components/Animations/HeadingAnimation"
-import WordSkew from "./_components/Animations/WordSkew"
+// import WordSkew from "./_components/Animations/WordSkew"
 
 export default function Home() {
 	const variants = { hidden: { opacity: 0 }, visible: { opacity: 1 } }
@@ -42,35 +42,10 @@ export default function Home() {
 					designer and <br />
 					developer
 				</h2>
-				{/* <h2>
-						<span className={styles.highlighted}>Multidisciplinary</span>{" "}
-						designer & developer with a passion for creating exciting{" "}
-						<span className={styles.highlighted}>concepts</span> &{" "}
-						<span className={styles.highlighted}>products</span> which focuses
-						on user-engagements.
-            </h2> */}
 			</header>
 			<main>
 				<section className={styles.intro}>
-					<WordSkew value='Multidisciplinary designer & developer with a passion for creating impactful digital experiences which focuses on enthralling and engaging users.' />
-					{/* <LetterAnimation
-						// htmlTag={"h1"}
-						value='Multidisciplinary designer & developer with a passion for creating impactful digital experiences which focuses on enthralling and engaging users.'
-					/> */}
-					{/* <h1 className={styles.intro__description}>
-						<span className={"highlight"}></span>Multidisciplinary designer &
-						developer with a <span className={"highlight"}>passion</span> for
-						creating impactful digital{" "}
-						<span className={"highlight"}>experiences</span> which focuses on
-						enthralling and engaging users.
-					</h1> */}
-					{/* <h1 className={styles.intro__description}>
-						I am Kenneth, a multidisciplinary designer and developer striving to
-						create impactful digital experiences which enthralls and engages. I
-						am currently available for hire and freelance projects, drop me an{" "}
-						<a href='mailto:kennethsjorgensen@gmail.com'>email</a> if you're
-						interested in working together.
-					</h1> */}
+					<HeadingAnimation value='Multidisciplinary designer & developer with a passion for creating impactful digital experiences which focuses on enthralling and engaging users.' />
 				</section>
 
 				<section className={styles.work__section}>
