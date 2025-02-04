@@ -36,6 +36,8 @@ const Word = ({ children, range, progress }) => {
 	const amount = range[1] - range[0]
 	const step = amount / children.length
 
+	console.log(opacity)
+
 	return (
 		<span className={styles.word}>
 			<>
@@ -43,7 +45,12 @@ const Word = ({ children, range, progress }) => {
 					const start = range[0] + index * step
 					const end = range[0] + (index + 1) * step
 					return (
-						<Character key={index} range={[start, end]} progress={progress}>
+						<Character
+							key={index}
+							style={{ opacity }}
+							range={[start, end]}
+							progress={progress}
+						>
 							{character}
 						</Character>
 					)

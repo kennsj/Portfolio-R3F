@@ -60,6 +60,11 @@
 	// padding: 10rem auto;
 	margin: 5rem 0;
 
+	@media screen and (max-width: 768px) {
+		// padding: 5rem 0;
+		display: none;
+	}
+
 	.footer__container {
 		display: flex;
 		align-items: center;

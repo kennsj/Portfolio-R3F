@@ -50,6 +50,7 @@ const Nav = () => {
 						src='/kj-logo.svg'
 						width={30}
 						height={30}
+						priority={true}
 						alt='Personal logo for Kenneth Jørgensen'
 					/>
 				</Link>

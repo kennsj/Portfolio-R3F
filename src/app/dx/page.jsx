@@ -29,10 +29,7 @@ const page = () => {
 						<h4>When</h4>
 						<span>2020</span>
 					</div>
-					<div className={styles.project__who}>
-						<h4>By</h4>
-						<span>Kenneth Jørgensen</span>
-					</div>
+
 					<div className={styles.project__tools}>
 						<h4>Tools</h4>
 						<span>

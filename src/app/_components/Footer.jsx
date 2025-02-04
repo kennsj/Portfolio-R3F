@@ -9,8 +9,9 @@ const Footer = () => {
 	return (
 		<motion.footer
 			id='#footer'
-			initial={{ opacity: 0, y: 50 }}
-			whileInView={{ opacity: 1, y: 0 }}
+			// initial={{ opacity: 0, y: 50 }}
+			initial={{ opacity: 1 }}
+			// whileInView={{ opacity: 1, y: 0 }}
 			transition={{
 				ease: "easeIn",
 				type: "tween",

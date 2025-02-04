@@ -31,14 +31,7 @@ const page = () => {
 						<h4>When</h4>
 						<span>2016</span>
 					</div>
-					<div className={styles.project__who}>
-						<h4>By</h4>
-						<span>
-							Kenneth Jørgensen
-							<br />
-							Robin Ingebrigtsen
-						</span>
-					</div>
+
 					<div className={styles.project__tools}>
 						<h4>Tools</h4>
 						<span>Figma</span>
