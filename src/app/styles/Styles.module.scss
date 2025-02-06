@@ -13,6 +13,11 @@
 	// backdrop-filter: blur(5px);
 	transform: 1s;
 
+	@media screen and (max-width: 768px) {
+		height: 100px;
+		padding-block: 1rem;
+	}
+
 	.nav__container {
 		display: flex;
 		align-items: center;
@@ -61,37 +66,42 @@
 	margin: 5rem 0;
 
 	@media screen and (max-width: 768px) {
-		// padding: 5rem 0;
-		display: none;
+		padding: 0;
 	}
 
 	.footer__container {
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
-		width: $content-width;
-		width: 50%;
-		// max-width: 1280px;
+		width: 80vw;
+		max-width: 1024px;
 		margin: 0 auto;
 		padding: 5rem 0;
 
-		@include media("<1600px") {
-			width: 80%;
+		@media screen and (max-width: 768px) {
+			// flex-direction: column;
+			width: 90%;
+			padding: 0;
 		}
 
-		& span {
+		.footer__left {
+			h2,
+			a {
+				font-size: 2.5rem;
+				font-weight: 700;
+				color: $tertiary-color;
+				pointer-events: all;
+				margin: 1rem 0;
+				@media screen and (max-width: 768px) {
+					font-size: 1.5rem;
+				}
+			}
+		}
+
+		&:span {
 			// font-family: "IBM Mono";
 			font-family: sans-serif;
 			font-weight: 500;
-		}
-
-		h2,
-		a {
-			font-size: 2.5rem;
-			font-weight: 700;
-			color: $tertiary-color;
-			pointer-events: all;
-			margin: 1rem 0;
 		}
 
 		span a {
@@ -110,6 +120,9 @@
 			a,
 			img {
 				margin: 0.3rem 0 0 1rem;
+				@media screen and (max-width: 768px) {
+					display: none;
+				}
 			}
 		}
 	}

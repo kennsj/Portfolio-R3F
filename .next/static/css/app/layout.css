@@ -257,6 +257,12 @@
   pointer-events: none;
   transform: 1s;
 }
+@media screen and (max-width: 768px) {
+  #Styles_nav__l6BB_ {
+    height: 100px;
+    padding-block: 1rem;
+  }
+}
 #Styles_nav__l6BB_ .Styles_nav__container__5q3Y1 {
   display: flex;
   align-items: center;
@@ -291,34 +297,41 @@
 }
 @media screen and (max-width: 768px) {
   .Styles_footer__wrapper__ojz3G {
-    display: none;
+    padding: 0;
   }
 }
 .Styles_footer__wrapper__ojz3G .Styles_footer__container__iVXJi {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  width: 768px;
-  width: 50%;
+  width: 80vw;
+  max-width: 1024px;
   margin: 0 auto;
   padding: 5rem 0;
 }
-@media (max-width: 1599px) {
+@media screen and (max-width: 768px) {
   .Styles_footer__wrapper__ojz3G .Styles_footer__container__iVXJi {
-    width: 80%;
+    width: 90%;
+    padding: 0;
   }
 }
-.Styles_footer__wrapper__ojz3G .Styles_footer__container__iVXJi span {
-  font-family: sans-serif;
-  font-weight: 500;
-}
-.Styles_footer__wrapper__ojz3G .Styles_footer__container__iVXJi h2,
-.Styles_footer__wrapper__ojz3G .Styles_footer__container__iVXJi a {
+.Styles_footer__wrapper__ojz3G .Styles_footer__container__iVXJi .Styles_footer__left__L4lkP h2,
+.Styles_footer__wrapper__ojz3G .Styles_footer__container__iVXJi .Styles_footer__left__L4lkP a {
   font-size: 2.5rem;
   font-weight: 700;
   color: #74a36d;
   pointer-events: all;
   margin: 1rem 0;
+}
+@media screen and (max-width: 768px) {
+  .Styles_footer__wrapper__ojz3G .Styles_footer__container__iVXJi .Styles_footer__left__L4lkP h2,
+  .Styles_footer__wrapper__ojz3G .Styles_footer__container__iVXJi .Styles_footer__left__L4lkP a {
+    font-size: 1.5rem;
+  }
+}
+.Styles_footer__wrapper__ojz3G .Styles_footer__container__iVXJi:span {
+  font-family: sans-serif;
+  font-weight: 500;
 }
 .Styles_footer__wrapper__ojz3G .Styles_footer__container__iVXJi span a {
   font-size: 1rem;
@@ -333,6 +346,12 @@
 .Styles_footer__wrapper__ojz3G .Styles_footer__container__iVXJi .Styles_footer__right__HGMYJ a,
 .Styles_footer__wrapper__ojz3G .Styles_footer__container__iVXJi .Styles_footer__right__HGMYJ img {
   margin: 0.3rem 0 0 1rem;
+}
+@media screen and (max-width: 768px) {
+  .Styles_footer__wrapper__ojz3G .Styles_footer__container__iVXJi .Styles_footer__right__HGMYJ a,
+  .Styles_footer__wrapper__ojz3G .Styles_footer__container__iVXJi .Styles_footer__right__HGMYJ img {
+    display: none;
+  }
 }
 
 .Styles_flag__w66yt {
@@ -401,7 +420,7 @@ main {
 }
 main section {
   width: 80vw;
-  max-width: 1200px;
+  max-width: 1024px;
 }
 @media screen and (max-width: 768px) {
   main section {
@@ -438,7 +457,7 @@ p {
 }
 
 h1 {
-  font-size: 4rem;
+  font-size: 3rem;
 }
 
 h2 {
@@ -448,7 +467,7 @@ h2 {
 }
 @media (max-width: 767px) {
   h2 {
-    font-size: 2rem;
+    font-size: 1rem;
   }
 }
 

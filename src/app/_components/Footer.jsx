@@ -4,6 +4,7 @@ import Image from "next/image"
 import styles from "../styles/Styles.module.scss"
 
 import { motion, inView } from "framer-motion"
+import Reveal from "./Animations/Reveal"
 
 const Footer = () => {
 	return (
@@ -21,31 +22,33 @@ const Footer = () => {
 		>
 			<div className={styles.footer__wrapper}>
 				<div className={styles.footer__container}>
-					<div className={styles.footer__left}>
-						<span>Bodø, Norway</span>
-						<h2>
-							<a href='tel:004746694520'>+47 46 69 45 20</a>
-						</h2>
-						<span>
-							<a href='mailto:kennethsjorgensen@gmail.com'>
-								kennethsjorgensen@gmail.com
-							</a>
-						</span>
-					</div>
-					<div className={styles.footer__right}>
-						<div>
-							<span>Want to work with me or hire me?</span>
-							<h2>Contact me</h2>
+					<Reveal>
+						<div className={styles.footer__left}>
+							<span>Bodø, Norway</span>
+							<h2>
+								<a href='tel:004746694520'>+47 46 69 45 20</a>
+							</h2>
+							<span>
+								<a href='mailto:kennethsjorgensen@gmail.com'>
+									kennethsjorgensen@gmail.com
+								</a>
+							</span>
 						</div>
-						<a href='mailto:kennethsjorgensen@gmail.com'>
-							<Image
-								src={"/icons/arrow.svg"}
-								alt='Arrow icon with a link to contact me through email'
-								width={60}
-								height={60}
-							/>
-						</a>
-					</div>
+						<div className={styles.footer__right}>
+							<a href='mailto:kennethsjorgensen@gmail.com'>
+								<div>
+									<span>Want to work with me or hire me?</span>
+									<h2>Contact me</h2>
+								</div>
+								<Image
+									src={"/icons/arrow.svg"}
+									alt='Arrow icon with a link to contact me through email'
+									width={60}
+									height={60}
+								/>
+							</a>
+						</div>
+					</Reveal>
 				</div>
 			</div>
 		</motion.footer>

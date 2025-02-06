@@ -1,6 +1,7 @@
 import { motion } from "framer-motion"
-import styles from "../styles/ProjectPage.module.scss"
 import Image from "next/image"
+// import H1Anim from "../_components/Animations/H1Anim"
+import styles from "../styles/ProjectPage.module.scss"
 
 const page = () => {
 	return (
@@ -9,23 +10,23 @@ const page = () => {
 				<div initial={{ opacity: 0 }} className={styles.heading__container}>
 					<h4>VR / Concept</h4>
 					<h1 className={styles.highlighted}>Norske Folkeeventyr</h1>
+					{/* <H1Anim>Norske Folkeeventyr</H1Anim> */}
 					<p>
 						Building an interactive portal for visitors to transcend through
 					</p>
 				</div>
 			</header>
 
-			<Image
-				className='project_image__header'
-				width={1920}
-				height={1020}
-				sizes='50vw'
-				alt='...'
-				src={"/projects/nfe-preview.png"}
-				style={{ width: "75%", height: "auto", objectFit: "cover" }}
-			/>
-
 			<section className={styles.work__section}>
+				<Image
+					className={styles.project_image__header}
+					width={1920}
+					height={1020}
+					sizes='50vw'
+					alt='...'
+					src={"/projects/nfe-preview.png"}
+				/>
+
 				<div className={styles.project__info}>
 					<div className={styles.project__when}>
 						<h4>When</h4>
