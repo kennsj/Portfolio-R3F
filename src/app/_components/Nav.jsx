@@ -24,7 +24,7 @@ const Nav = () => {
 	const navVariant = {
 		scrollDown: { height: "70px" },
 		scrollUp: { height: "120px" },
-		initial: { height: window && window.innerWidth < 768 ? "70px" : "120px" },
+		// initial: { height: window && window.innerWidth < 768 ? "70px" : "120px" },
 	}
 
 	const navLogoVariant = {
