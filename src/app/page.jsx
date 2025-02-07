@@ -8,27 +8,30 @@ import styles from "./styles/Homepage.module.scss"
 import LetterAnimation from "./_components/Animations/LetterAnimation"
 import H1Anim from "./_components/Animations/H1Anim"
 import Reveal from "./_components/Animations/Reveal"
+import TransitionLink from "./_components/Animations/PageTransition"
 
 export default function Home() {
 	return (
 		<>
 			<header className={styles.header}>
-				{/* <img src={Logo} /> */}
-				<Image
-					src={"./kj-logo.svg"}
-					alt='Personal logo for Kenneth Jørgensen'
-					width={150}
-					height={200}
-					// fill={true}
-					sizes='(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw'
-					// sizes='50vw'
-					// style={{ width: "10%", height: "auto" }}
-				/>
-				<h2>
-					Multidisciplinary <br />
-					designer and <br />
-					developer
-				</h2>
+				<Reveal>
+					{/* <img src={Logo} /> */}
+					<Image
+						src={"./kj-logo.svg"}
+						alt='Personal logo for Kenneth Jørgensen'
+						width={150}
+						height={200}
+						// fill={true}
+						sizes='(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw'
+						// sizes='50vw'
+						// style={{ width: "10%", height: "auto" }}
+					/>
+					<h2>
+						Multidisciplinary <br />
+						designer and <br />
+						developer
+					</h2>
+				</Reveal>
 			</header>
 			<main>
 				<section className={styles.intro}>
@@ -91,11 +94,10 @@ export default function Home() {
 					}}
 				>
 					<div>
-						<h3>
-							Work <br /> experience
-						</h3>
-
 						<Reveal>
+							<h3>
+								Work <br /> experience
+							</h3>
 							<div className={styles.experience__list}>
 								<div className={styles.experience__info}>
 									<span>Bodø, Norway</span>
@@ -152,7 +154,6 @@ export default function Home() {
 					</div>
 
 					<div>
-						<h3>Education</h3>
 						<motion.div
 							initial='hidden'
 							transition={{
@@ -162,23 +163,26 @@ export default function Home() {
 								duration: 0.8,
 							}}
 						>
-							<div className={styles.experience__list}>
-								<div className={styles.experience__info}>
-									<span>Campus Kristiania</span>
-									<h4>Interaction design</h4>
-									<span>2016 - 2018</span>
+							<Reveal>
+								<h3>Education</h3>
+								<div className={styles.experience__list}>
+									<div className={styles.experience__info}>
+										<span>Campus Kristiania</span>
+										<h4>Interaction design</h4>
+										<span>2016 - 2018</span>
+									</div>
+									<div>{/* <p>Studied interaction design</p> */}</div>
 								</div>
-								<div>{/* <p>Studied interaction design</p> */}</div>
-							</div>
 
-							<div className={styles.experience__list}>
-								<div className={styles.experience__info}>
-									<span>Campus Kristiania</span>
-									<h4>Graphic design</h4>
-									<span>2014 - 2016</span>
+								<div className={styles.experience__list}>
+									<div className={styles.experience__info}>
+										<span>Campus Kristiania</span>
+										<h4>Graphic design</h4>
+										<span>2014 - 2016</span>
+									</div>
+									<div>{/* <p>Studied graphic design</p> */}</div>
 								</div>
-								<div>{/* <p>Studied graphic design</p> */}</div>
-							</div>
+							</Reveal>
 						</motion.div>
 					</div>
 				</section>
@@ -206,7 +210,7 @@ const ProjectImage = ({
 				repeat: 0,
 			}}
 		>
-			<Link href={href}>
+			<TransitionLink href={href}>
 				<Image
 					className={styles.work__image}
 					src={projectImageSrc}
@@ -233,7 +237,7 @@ const ProjectImage = ({
 						alt='Arrow icon which links to project page'
 					/>
 				</div>
-			</Link>
+			</TransitionLink>
 		</motion.div>
 	)
 }

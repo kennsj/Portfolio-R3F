@@ -457,7 +457,7 @@ p {
 }
 
 h1 {
-  font-size: 3rem;
+  font-size: 5rem;
 }
 
 h2 {
@@ -498,4 +498,10 @@ h4 {
   height: 100%;
   z-index: -1;
   overflow: hidden;
+}
+
+.page__transition {
+  opacity: 0;
+  transform: translateY(40px);
+  filter: blur(12px);
 }
