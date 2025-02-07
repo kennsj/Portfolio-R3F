@@ -115,11 +115,19 @@
 			z-index: 1;
 			pointer-events: all;
 
+			img {
+				@media screen and (max-width: 768px) {
+					display: none;
+				}
+			}
+
 			.work__title {
 				font-size: 2rem;
 				font-weight: bold;
 				color: $tertiary-color;
-				margin-bottom: 0.5rem;
+				@media screen and (max-width: 768px) {
+					font-size: 1.5rem;
+				}
 			}
 
 			ul {
@@ -137,6 +145,10 @@
 				margin-inline: 1.2em;
 				padding: 0;
 				margin-inline: 1em;
+
+				@media screen and (max-width: 768px) {
+					font-size: 0.7rem;
+				}
 
 				&:first-child {
 					margin: 0;
