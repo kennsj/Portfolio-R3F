@@ -77,7 +77,10 @@ p {
 h1 {
 	// font-family: "TT Hoves Pro Trial";
 	// font-weight: bold;
-	font-size: 5rem;
+	font-size: 3rem;
+	@media screen and (max-width: 768px) {
+		font-size: 2rem;
+	}
 }
 
 h2 {

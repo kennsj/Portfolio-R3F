@@ -48,6 +48,11 @@
   justify-content: center;
   margin-top: 10rem;
 }
+@media screen and (max-width: 768px) {
+  .Homepage_intro__z4eR3 {
+    margin-top: 5rem;
+  }
+}
 .Homepage_intro__z4eR3 .Homepage_intro__title__qfF_8 {
   margin-bottom: 1rem;
 }

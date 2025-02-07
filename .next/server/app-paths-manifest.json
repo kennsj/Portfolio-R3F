@@ -1,5 +1,6 @@
 {
-  "/manshausen/page": "app/manshausen/page.js",
   "/page": "app/page.js",
+  "/manshausen/page": "app/manshausen/page.js",
+  "/dx/page": "app/dx/page.js",
   "/favicon.ico/route": "app/favicon.ico/route.js"
 }

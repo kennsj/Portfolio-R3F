@@ -457,7 +457,12 @@ p {
 }
 
 h1 {
-  font-size: 5rem;
+  font-size: 3rem;
+}
+@media screen and (max-width: 768px) {
+  h1 {
+    font-size: 2rem;
+  }
 }
 
 h2 {

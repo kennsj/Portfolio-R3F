@@ -36,8 +36,8 @@ export default function Home() {
 			<main>
 				<section className={styles.intro}>
 					<H1Anim>
-						Multidisciplinary designer & developer creating engaging digital
-						experiences
+						I’m a multidisciplinary designer with a passion for creating
+						exciting concepts and products which focuses on engaging the users
 					</H1Anim>
 				</section>
 
