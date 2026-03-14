@@ -1,29 +1,23 @@
-"use client"
-
-import Link, { LinkProps } from "next/link"
-import { useRouter } from "next/navigation"
+import { Link, useRouter } from "@tanstack/react-router"
 
 function sleep(ms) {
 	return new Promise((resolve) => setTimeout(resolve, ms))
 }
 
-const TransitionLink = ({ children, href, className, ...props }) => {
+const TransitionLink = ({ children, to, className, ...props }) => {
 	const router = useRouter()
 
 	const handleTransition = async (e) => {
 		e.preventDefault()
 
-		// Run some exit animation
-		// Sleep for some time
 		const main = document.querySelector("main")
 
 		main?.classList.add("page__transition")
 		await sleep(500)
 
-		router.push(href)
+		router.navigate({ to })
 		await sleep(500)
 
-		// Run some enter animation
 		main?.classList.remove("page__transition")
 	}
 
@@ -31,7 +25,7 @@ const TransitionLink = ({ children, href, className, ...props }) => {
 		<Link
 			className={className}
 			onClick={handleTransition}
-			href={href}
+			to={to}
 			{...props}
 		>
 			{children}

@@ -1,7 +1,4 @@
-"use client"
-
-import Link from "next/link"
-import Image from "next/image"
+import { Link } from "@tanstack/react-router"
 import { useState } from "react"
 import { motion, useMotionValueEvent, useScroll } from "framer-motion"
 import styles from "../styles/Styles.module.scss"
@@ -24,7 +21,6 @@ const Nav = () => {
 	const navVariant = {
 		scrollDown: { height: "70px" },
 		scrollUp: { height: "120px" },
-		// initial: { height: window && window.innerWidth < 768 ? "70px" : "120px" },
 	}
 
 	const navLogoVariant = {
@@ -40,19 +36,15 @@ const Nav = () => {
 	return (
 		<motion.nav
 			id={styles.nav}
-			// variants={navVariant}
-			// transition={{ duration: 0.4, ease: "easeInOut" }}
-			// animate={smallerNav ? "scrollDown" : "scrollUp"}
 		>
 			<div className={styles.nav__container}>
-				<Link href='/'>
-					<Image
+				<Link to="/">
+					<img
 						className={styles.nav_logo}
-						src='/kj-logo.svg'
+						src="/kj-logo.svg"
 						width={30}
 						height={30}
-						priority={true}
-						alt='Personal logo for Kenneth Jørgensen'
+						alt="Personal logo for Kenneth Jørgensen"
 					/>
 				</Link>
 				<motion.div
@@ -62,20 +54,17 @@ const Nav = () => {
 					className={styles.menu}
 				>
 					<span className={styles.span_link}>
-						<a className={styles.nav_link} href='#'>
+						<a className={styles.nav_link} href="#">
 							Work
 						</a>
 					</span>
 					<span className={styles.span_link}>
-						<a className={styles.nav_link} href='#'>
+						<a className={styles.nav_link} href="#">
 							About
 						</a>
 					</span>
 					<span className={styles.span_link}>
-						<Link href='#footer'>Contact</Link>
-						{/* <a className={styles.nav_link} href='#footer'>
-							Contact
-						</a> */}
+						<Link to="/#footer">Contact</Link>
 					</span>
 				</motion.div>
 			</div>

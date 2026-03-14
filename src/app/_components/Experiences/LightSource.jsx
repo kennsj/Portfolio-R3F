@@ -1,9 +1,10 @@
 "use client"
 
-import React, { useRef, useEffect, useState } from "react"
+import React, { useRef, useState } from "react"
 import { useFrame } from "@react-three/fiber"
 import { easing } from "maath"
 import { isMobile } from "react-device-detect"
+import { pointer } from "../pointerStore"
 
 export default function LightSource() {
 	const [colors, setColors] = useState([
@@ -30,8 +31,8 @@ export default function LightSource() {
 			easing.damp3(
 				light.current.position,
 				[
-					((state.pointer.x / 2) * state.viewport.width) / 4,
-					((state.pointer.y / 2) * state.viewport.height) / 4,
+					((pointer.x / 2) * state.viewport.width) / 4,
+					((pointer.y / 2) * state.viewport.height) / 4,
 					1,
 				],
 				0.3,
