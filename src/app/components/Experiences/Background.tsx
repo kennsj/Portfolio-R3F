@@ -1,7 +1,7 @@
 // import Experience from "./Experiences/Experience"
-import Experience from "./Experiences/Experience"
+import Experience from "./Experience"
 import { Canvas } from "@react-three/fiber"
-import LightSource from "./Experiences/LightSource"
+import LightSource from "./LightSource"
 
 const Background = () => {
 	return (

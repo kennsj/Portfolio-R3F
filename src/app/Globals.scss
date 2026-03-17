@@ -1,9 +1,19 @@
-@import "styles/_variables";
-
 :root {
 	--foreground-rgb: 0, 0, 0;
 	--background-start-rgb: 214, 219, 220;
 	--background-end-rgb: 255, 255, 255;
+}
+
+a {
+	text-decoration: underline;
+	text-underline-offset: 0.2em;
+	transition:
+		color 0.2s ease,
+		opacity 0.2s ease;
+
+	&:hover {
+		opacity: 0.9;
+	}
 }
 
 @media (prefers-color-scheme: dark) {
@@ -14,119 +24,18 @@
 	}
 }
 
-body {
-	color: $primary-color;
-	background: #000;
-
-	margin: 0;
-	padding: 0;
-	pointer-events: none;
-	user-select: none;
-	overflow-x: hidden;
-
-	@include media("<1024px") {
-		// display: none;
-		// content: "Please view this site on a larger screen.";
-	}
-}
-
-main {
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-
-	section {
-		width: 80vw;
-		max-width: 1024px;
-
-		@media screen and (max-width: 768px) {
-			width: 90vw;
-		}
-	}
-}
-
-a {
-	text-decoration: none;
-	color: $tertiary-color;
-	pointer-events: all;
-	user-select: all;
-	transition: color 0.2s ease-in;
-
-	&:hover {
-		color: $secondary-color;
-		transition: color 0.2s ease-in;
-	}
-}
-
-p {
-	// width: 50%;
-	// margin-top: 1rem;
-	// font-family: "TT Hoves Pro Trial";
-	font-weight: 400;
-	font-size: 1rem;
-
-	@include media("<tablet") {
-		width: 60%;
-	}
-}
-
-.highlight {
-	color: $tertiary-color;
-}
-
-h1 {
-	// font-family: "TT Hoves Pro Trial";
-	// font-weight: bold;
-	font-size: 3rem;
-	@media screen and (max-width: 768px) {
-		font-size: 2rem;
-	}
-}
-
-h2 {
-	color: $primary-color-50;
-	font-family: sans-serif;
-	font-weight: 400;
-
-	@include media("<tablet") {
-		font-size: 1rem;
-	}
-}
-
-h3 {
-	// font-family: "ibm-plex-mono";
-	// font-family: "Playfair Display";
-	font-weight: 400;
-	// font-size: clamp(0.5rem, 2vw, 3rem);
-	font-size: 1.5rem;
-}
-
-h4 {
-	// font-family: ibm-plex-mono;
-	font-size: 2rem;
-	margin-block: 1rem;
-	font-weight: bold;
-	color: $secondary-color;
-
-	@include media("<tablet") {
-		font-size: $font-size-h4;
-		margin-block: 0.5rem;
-	}
-}
-
 #canvas {
 	position: fixed;
 	top: 0;
 	left: 0;
-	width: 100%;
-	height: 100vh;
-	height: 100%;
+	width: 100vw;
+	height: 100dvh;
 	z-index: -1;
 	overflow: hidden;
-}
 
-.page__transition {
-	opacity: 0;
-	transform: translateY(40px);
-	filter: blur(12px);
+	canvas {
+		width: 100% !important;
+		height: 100% !important;
+		display: block;
+	}
 }

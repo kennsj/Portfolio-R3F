@@ -4,7 +4,7 @@ import React, { useRef, useState } from "react"
 import { useFrame } from "@react-three/fiber"
 import { easing } from "maath"
 import { isMobile } from "react-device-detect"
-import { pointer } from "../pointerStore"
+import { pointer } from "./pointerStore"
 
 export default function LightSource() {
 	const [colors, setColors] = useState([
@@ -36,7 +36,7 @@ export default function LightSource() {
 					1,
 				],
 				0.3,
-				delta
+				delta,
 			)
 		}
 	})

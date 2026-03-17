@@ -9,7 +9,7 @@ function Experience() {
 	const viewport = useThree((state) => state.viewport)
 
 	const displacementMap = useTexture("./textures/displacement2.png")
-	const normalMap = useTexture("./textures/normal2.png")
+	const normalMap = useTexture("./textures/normal.png")
 
 	// const colors = useControls({
 	// 	value: "green",

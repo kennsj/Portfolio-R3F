@@ -4,11 +4,12 @@ import {
 	HeadContent,
 	Scripts,
 } from "@tanstack/react-router"
-import Nav from "./_components/Nav"
-import Background from "./_components/Background"
-import Footer from "./_components/Footer"
-import SupportUkraine from "./_components/SupportUkraine"
-import { PointerProvider } from "./_components/PointerContext"
+import Nav from "./components/Layout/Nav/Nav"
+import Background from "./components/Experiences/Background"
+import Footer from "./components/Layout/Footer/Footer"
+import SupportUkraine from "./components/UI/SupportUkraine/SupportUkraine"
+import { PointerProvider } from "./components/Experiences/PointerContext"
+import Header from "./components/Layout/Header/Header"
 
 import "./styles/_variables.scss"
 import "./Globals.scss"
@@ -40,7 +41,12 @@ export const Route = createRootRoute({
 			},
 			{
 				rel: "stylesheet",
-				href: "https://fonts.googleapis.com/css2?family=Cabin:wght@400;700&family=IBM+Plex+Mono:wght@100;400;700&family=Inter:wght@400;700&family=Quicksand:wght@400;700&display=swap",
+				href: "https://fonts.googleapis.com/css2?family=Syne:wght@400;700&family=IBM+Plex+Mono:wght@100;400;700&family=Inter:wght@400;700",
+			},
+			{
+				rel: "icon",
+				type: "image/x-icon",
+				href: "/favicon.ico",
 			},
 		],
 	}),
@@ -49,20 +55,29 @@ export const Route = createRootRoute({
 
 function RootLayout() {
 	return (
-		<html lang="en">
+		<html lang='en'>
 			<head>
 				<HeadContent />
 			</head>
 			<body
-				className="quicksand ibm cabin"
+				className='syne ibm'
 				style={{
-					fontFamily: "'Quicksand', 'IBM Plex Mono', 'Cabin', sans-serif",
+					fontFamily: "'IBM Plex Mono', 'Syne', sans-serif",
 				}}
 			>
 				<PointerProvider>
-					<Nav />
-					<Outlet />
+					{/* <div className='flashlight-mask' /> */}
 					<Background />
+					<Nav />
+					<Header />
+					<main>
+						<h3>About me</h3>
+						<p style={{ marginBottom: "10rem" }}>
+							I design and build digital products, from concept to code, with a
+							focus on the moments that make people stop and pay attention.
+						</p>
+					</main>
+					<Outlet />
 					<Footer />
 					<SupportUkraine />
 				</PointerProvider>

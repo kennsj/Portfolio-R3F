@@ -1,8 +1,8 @@
-import styles from "../styles/Styles.module.scss"
+import styles from "./SupportUkraine.module.scss"
 
 const SupportUkraine = () => {
 	return (
-		<a href='https://supportukrainenow.org/'>
+		<a href='https://u24.gov.ua/' target='_blank'>
 			<div className={styles.flag}>
 				<div className={styles.blue}></div>
 				<div className={styles.yellow}></div>
