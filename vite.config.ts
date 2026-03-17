@@ -1,22 +1,21 @@
 import { defineConfig } from "vite"
-import { tanstackStart } from "@tanstack/react-start/plugin/vite"
 import viteReact from "@vitejs/plugin-react"
+import tsconfigPaths from "vite-tsconfig-paths"
+import { tanstackRouter } from "@tanstack/router-plugin/vite"
 
 export default defineConfig({
-	resolve: {
-		tsconfigPaths: true,
-	},
 	server: {
 		port: 3000,
 	},
 	plugins: [
-		tanstackStart({
-			srcDirectory: "src",
-			router: {
-				routesDirectory: "app",
-				routeFileIgnorePattern: "components|styles",
-			},
+		// Must come before React plugin
+		tanstackRouter({
+			target: "react",
+			routesDirectory: "./src/app",
+			generatedRouteTree: "./src/routeTree.gen.ts",
+			routeFileIgnorePattern: "components|styles",
 		}),
 		viteReact(),
+		tsconfigPaths(),
 	],
 })

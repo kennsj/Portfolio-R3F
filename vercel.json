@@ -1,5 +1,5 @@
 {
 	"framework": null,
-	"buildCommand": "npx tsr generate && npx tsr build",
-	"outputDirectory": ".output/public"
+	"buildCommand": "npm run build",
+	"outputDirectory": "dist"
 }
