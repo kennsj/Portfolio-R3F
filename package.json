@@ -4,9 +4,9 @@
 	"private": true,
 	"type": "module",
 	"scripts": {
-		"dev": "vite dev",
-		"build": "tsr build",
-		"start": "tsr start",
+		"build": "npx tsr build",
+		"dev": "npx tsr dev",
+		"start": "npx tsr start",
 		"lint": "eslint src"
 	},
 	"dependencies": {
