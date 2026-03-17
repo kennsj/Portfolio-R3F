@@ -4,7 +4,7 @@
 	"private": true,
 	"type": "module",
 	"scripts": {
-		"build": "npx tsr build",
+		"build": "npx tsr generate && npx tsr build",
 		"dev": "npx tsr dev",
 		"start": "npx tsr start",
 		"lint": "eslint src"
