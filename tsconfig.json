@@ -1,14 +1,14 @@
 {
 	"compilerOptions": {
-		"lib": ["dom", "dom.iterable"],
+		"lib": ["dom", "dom.iterable", "esnext"],
 		"allowJs": true,
 		"skipLibCheck": true,
 		"strict": false,
 		"noEmit": true,
 		"incremental": true,
-		"module": "commonjs",
+		"module": "esnext",
 		"esModuleInterop": true,
-		"moduleResolution": "bundler",
+		"moduleResolution": "Bundler",
 		"resolveJsonModule": true,
 		"isolatedModules": true,
 		"jsx": "react-jsx",
