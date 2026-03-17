@@ -67,7 +67,6 @@ function RootLayout() {
 				}}
 			>
 				<PointerProvider>
-					{/* <div className='flashlight-mask' /> */}
 					<Background />
 					<Nav />
 					<Header />
