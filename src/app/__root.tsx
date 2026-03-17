@@ -10,6 +10,7 @@ import Footer from "./components/Layout/Footer/Footer"
 import SupportUkraine from "./components/UI/SupportUkraine/SupportUkraine"
 import { PointerProvider } from "./components/Experiences/PointerContext"
 import Header from "./components/Layout/Header/Header"
+import Projects from "./components/Layout/Project/Projects"
 
 import "./styles/_variables.scss"
 import "./Globals.scss"
@@ -76,6 +77,7 @@ function RootLayout() {
 							I design and build digital products, from concept to code, with a
 							focus on the moments that make people stop and pay attention.
 						</p>
+						<Projects />
 					</main>
 					<Outlet />
 					<Footer />
