@@ -8,8 +8,8 @@ import Effects from "./Effects"
 function Experience() {
 	const viewport = useThree((state) => state.viewport)
 
-	const displacementMap = useTexture("./textures/displacement2.png")
-	const normalMap = useTexture("./textures/normal.png")
+	const displacementMap = useTexture("/textures/displacement2.png")
+	const normalMap = useTexture("/textures/normal.png")
 
 	// const colors = useControls({
 	// 	value: "green",

@@ -6,6 +6,10 @@ import { tanstackRouter } from "@tanstack/router-plugin/vite"
 export default defineConfig({
 	server: {
 		port: 3000,
+		watch: {
+			// Prevent full reload when route tree is regenerated (e.g. after CSS/component changes)
+			ignored: ["**/routeTree.gen.ts"],
+		},
 	},
 	plugins: [
 		// Must come before React plugin

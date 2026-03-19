@@ -4,13 +4,16 @@ import tsconfigPaths from "vite-tsconfig-paths"
 export default defineConfig({
 	tsr: {
 		routesDirectory: "./src/app",
-		generatedRouteTree: "./src/routeTree.gen.ts",
+		generatedRouteTree: "./routeTree.gen.ts", // moved to root
 		routeFileIgnorePattern: "components|styles",
 	},
 	vite: {
 		plugins: [tsconfigPaths()],
 		server: {
 			port: 3000,
+			watch: {
+				ignored: ["**/routeTree.gen.ts"],
+			},
 		},
 	},
 })

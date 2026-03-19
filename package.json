@@ -4,12 +4,13 @@
 	"private": true,
 	"type": "module",
 	"scripts": {
-		"dev": "vite",
+		"dev": "tsr watch & vite",
 		"build": "vite build",
 		"start": "vite preview",
 		"lint": "eslint src"
 	},
 	"dependencies": {
+		"@gsap/react": "^2.1.2",
 		"@react-three/drei": "^9.122.0",
 		"@react-three/fiber": "^8.16.8",
 		"@react-three/postprocessing": "^2.16.2",

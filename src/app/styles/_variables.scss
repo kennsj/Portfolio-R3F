@@ -39,6 +39,11 @@ body {
 	color: var(--primary-color);
 }
 
+a {
+	text-decoration: none;
+	border: 0;
+}
+
 p {
 	font-family: var(--font-family-syne);
 	font-size: 4rem;
@@ -46,7 +51,7 @@ p {
 
 h1 {
 	font-family: var(--font-family-syne);
-	font-size: 7rem;
+	font-size: clamp(2rem, 10vw, 7rem);
 	line-height: 1.2;
 	font-weight: 400;
 	color: var(--primary-color);
@@ -54,13 +59,12 @@ h1 {
 
 h2 {
 	font-family: var(--font-family-syne);
-	font-size: 6rem;
+	font-size: clamp(3rem, 10vw, 6rem);
 	font-weight: 700;
 	color: var(--tertiary-color);
 	color: transparent;
 	-webkit-text-stroke: 1px var(--tertiary-color);
 	margin: 4rem 0;
-	transition: color 0.3s ease;
 }
 
 h3 {
@@ -73,6 +77,8 @@ h3 {
 	// font-family: "Playfair Display", serif;
 	font-weight: 700;
 	color: var(--tertiary-color);
+	color: transparent;
+	-webkit-text-stroke: 1px var(--tertiary-color);
 }
 
 main {
