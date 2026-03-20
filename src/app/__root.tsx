@@ -14,9 +14,11 @@ import Footer from "./components/Layout/Footer/Footer"
 import SupportUkraine from "./components/UI/SupportUkraine/SupportUkraine"
 import Cursor from "./components/UI/Cursor/Cursor"
 import { KpProvider } from "./hooks/KpContext"
+import { SimpleAnalytics } from "@simpleanalytics/react"
 
 import "./styles/_variables.scss"
 import "./Globals.scss"
+import { log } from "console"
 
 export const Route = createRootRoute({
 	component: RootLayout,
@@ -46,6 +48,7 @@ function RootLayout() {
 	return (
 		<PointerProvider>
 			<KpProvider>
+				<SimpleAnalytics />
 				<Background />
 				<Nav />
 				<Header />

@@ -234,7 +234,7 @@ $border-muted: color-mix(in srgb, var(--primary-color) 45%, transparent);
 		box-shadow 0.25s ease;
 
 	&:hover {
-		transform: translateY(-2px) rotate(-3deg);
+		transform: translateY(-2px);
 		filter: brightness(1.08);
 		box-shadow: 0 0 0 1px var(--primary-color);
 	}
