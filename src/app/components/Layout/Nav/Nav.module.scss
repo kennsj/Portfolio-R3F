@@ -31,3 +31,66 @@
 		}
 	}
 }
+
+.kp-indicator {
+	position: relative;
+	display: flex;
+	align-items: center;
+	margin-left: 1rem;
+	cursor: default;
+}
+
+.kp-dot {
+	width: 7px;
+	height: 7px;
+	border-radius: 50%;
+	display: block;
+	transition: background 2s ease;
+
+	@keyframes pulse {
+		0%,
+		100% {
+			opacity: 1;
+			transform: scale(1);
+		}
+		50% {
+			opacity: 0.5;
+			transform: scale(0.8);
+		}
+	}
+
+	animation: pulse 3s ease-in-out infinite;
+}
+
+.kp-tooltip {
+	position: absolute;
+	top: calc(100% + 1rem);
+	right: 0;
+	display: flex;
+	flex-direction: column;
+	gap: 0.25rem;
+	padding: 0.75rem 1rem;
+	border: 1px solid var(--primary-color);
+	background: rgba(0, 0, 0, 0.8);
+	backdrop-filter: blur(8px);
+	white-space: nowrap;
+	pointer-events: none;
+}
+
+.kp-value {
+	font-size: 0.85rem;
+	color: var(--primary-color);
+}
+
+.kp-status {
+	font-size: 0.7rem;
+	opacity: 0.6;
+	text-transform: uppercase;
+	letter-spacing: 0.08em;
+}
+
+.kp-location {
+	font-size: 0.65rem;
+	opacity: 0.4;
+	font-family: var(--font-mono);
+}

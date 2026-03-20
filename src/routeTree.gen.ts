@@ -10,33 +10,43 @@
 
 import { Route as rootRouteImport } from './app/__root'
 import { Route as IndexRouteImport } from './app/index'
+import { Route as ProjectSnoOsloRouteImport } from './app/project/sno-oslo'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ProjectSnoOsloRoute = ProjectSnoOsloRouteImport.update({
+  id: '/project/sno-oslo',
+  path: '/project/sno-oslo',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/project/sno-oslo': typeof ProjectSnoOsloRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/project/sno-oslo': typeof ProjectSnoOsloRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/project/sno-oslo': typeof ProjectSnoOsloRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths: '/' | '/project/sno-oslo'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to: '/' | '/project/sno-oslo'
+  id: '__root__' | '/' | '/project/sno-oslo'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  ProjectSnoOsloRoute: typeof ProjectSnoOsloRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -48,11 +58,19 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/project/sno-oslo': {
+      id: '/project/sno-oslo'
+      path: '/project/sno-oslo'
+      fullPath: '/project/sno-oslo'
+      preLoaderRoute: typeof ProjectSnoOsloRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  ProjectSnoOsloRoute: ProjectSnoOsloRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

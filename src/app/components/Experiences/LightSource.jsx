@@ -1,29 +1,18 @@
-"use client"
-
-import React, { useRef, useState } from "react"
+import { useRef } from "react"
 import { useFrame } from "@react-three/fiber"
 import { easing } from "maath"
 import { isMobile } from "react-device-detect"
 import { pointer } from "./pointerStore"
+import { currentColor, targetColor } from "./lightStore"
 
 export default function LightSource() {
-	const [colors, setColors] = useState([
-		"black",
-		"red",
-		"red",
-		"hotpink",
-		"#a6d59e",
-		"#a6d59e",
-		"blue",
-		"blue",
-	])
 	const light = useRef()
-	const light5 = useRef()
+	const ambient = useRef()
 
 	useFrame((state, delta) => {
-		easing.dampC(light.current.color, colors[4], 0.05, delta)
+		easing.dampC(currentColor, targetColor, 0.15, delta)
 
-		easing.dampC(light5.current.color, colors[0], 0.05, delta)
+		light.current.color.copy(currentColor)
 
 		if (isMobile) {
 			light.current.position.set(-2, Math.sin(state.clock.elapsedTime), 1)
@@ -44,8 +33,7 @@ export default function LightSource() {
 	return (
 		<>
 			<directionalLight ref={light} intensity={9.2} />
-
-			<ambientLight color={"#a6d59e"} ref={light5} intensity={2.5} />
+			<ambientLight ref={ambient} color='#a6d59e' intensity={2.5} />
 		</>
 	)
 }

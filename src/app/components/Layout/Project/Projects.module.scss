@@ -1,31 +1,15 @@
-.project-hover-shell {
-	position: fixed;
-	left: 0;
-	top: 0;
-	transform: translate(-50%, -50%);
-	pointer-events: none;
-	z-index: -1;
-	width: 300px;
-	aspect-ratio: 9 / 16;
-	overflow: hidden;
-	border-radius: 4px;
-}
-
-.project-hover {
-	width: 100%;
-	height: 100%;
-	display: block;
-	object-fit: cover;
-	opacity: 0;
-	will-change: transform, opacity;
-}
-
 .projects {
-	a {
-		text-decoration: none;
+	.projects-list {
+		.project-item {
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+			padding-inline: 2rem;
+			list-style: none;
 
-		.projects-list {
-			cursor: pointer;
+			& ~ .project-item {
+				border-top: 1px solid var(--primary-color);
+			}
 
 			h2 {
 				transition: color 0.8s ease;
@@ -37,59 +21,69 @@
 				-webkit-text-stroke: 1px var(--tertiary-color);
 			}
 
-			&:hover > .list-links > a > li > span > img {
+			&:hover .link-arrow img {
 				transform: rotate(-45deg);
-				transition: transform 0.3s ease;
 			}
 
-			.project-item ~ .project-item {
-				border-top: 1px solid var(--primary-color);
-			}
-
-			.project-item {
+			.list-links {
 				display: flex;
-				flex-direction: row;
 				align-items: center;
-				justify-content: space-between;
-				padding-inline: 2rem;
+				gap: 4rem;
+				font-weight: 400;
 
-				.list-links {
+				div {
 					display: flex;
-					gap: 4rem;
-					font-weight: 400;
+					align-items: center;
+					justify-content: space-between;
+					font-size: 1rem;
+					color: var(--primary-color);
+				}
 
-					li {
-						display: flex;
-						align-items: center;
-						justify-content: space-between;
-						font-size: 1rem;
-						color: var(--primary-color);
-					}
+				.project-work {
+					opacity: 0.5;
+				}
 
-					.work {
-						opacity: 0.5;
-					}
+				.link-arrow {
+					position: relative;
+					display: flex;
+					align-items: center;
+					justify-content: center;
+					width: 40px;
+					height: 40px;
+					background: var(--tertiary-color);
+					border-radius: 50%;
+					margin-left: 1rem;
 
-					.link-arrow {
-						position: relative;
-						display: flex;
-						align-items: center;
-						justify-content: center;
-						width: 40px;
-						height: 40px;
-						background: var(--tertiary-color);
-						border-radius: 50%;
-						margin-left: 1rem;
-
-						img {
-							display: block;
-							width: 1rem;
-							transition: transform 0.3s ease;
-							transform-origin: center center;
-						}
+					img {
+						display: block;
+						width: 1rem;
+						transition: transform 0.3s ease;
+						transform-origin: center center;
 					}
 				}
 			}
 		}
 	}
+}
+
+.project-hover-shell {
+	position: fixed;
+	left: 0;
+	top: 0;
+	transform: translate(-50%, -50%);
+	pointer-events: none;
+	z-index: -1;
+	width: 500px;
+	aspect-ratio: 16 / 9;
+	overflow: hidden;
+	border-radius: 4px;
+}
+
+.project-hover {
+	width: 100%;
+	height: 100%;
+	display: block;
+	object-fit: cover;
+	opacity: 0;
+	will-change: opacity;
 }

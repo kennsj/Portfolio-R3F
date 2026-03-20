@@ -2,7 +2,6 @@
 import Experience from "./Experience"
 import { Canvas } from "@react-three/fiber"
 import LightSource from "./LightSource"
-import { memo } from "react"
 
 const Background = () => {
 	return (
@@ -18,7 +17,7 @@ const Background = () => {
 	)
 }
 
-export default memo(Background)
+export default Background
 
 // const Background = memo(() => {
 //   return (

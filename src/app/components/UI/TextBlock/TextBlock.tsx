@@ -27,7 +27,6 @@ const TextBlock = ({ children }: { children: React.ReactNode }) => {
 						trigger: ref.current,
 						start: "bottom 85%",
 						end: "bottom 15%",
-						markers: true,
 					},
 				})
 			})

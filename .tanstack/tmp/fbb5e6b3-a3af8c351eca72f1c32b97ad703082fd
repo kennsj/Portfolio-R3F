@@ -1,0 +1,9 @@
+import { createFileRoute } from '@tanstack/react-router'
+
+export const Route = createFileRoute('/routes/project/sno')({
+  component: RouteComponent,
+})
+
+function RouteComponent() {
+  return <div>Hello "/routes/project/sno"!</div>
+}

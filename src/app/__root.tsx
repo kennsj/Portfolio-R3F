@@ -1,14 +1,19 @@
-import { createRootRoute } from "@tanstack/react-router"
+import { createRootRoute, Outlet, useLocation } from "@tanstack/react-router"
+import { useGSAP } from "@gsap/react"
+import gsap from "gsap"
+import {
+	setLightColor,
+	currentColor,
+} from "./components/Experiences/lightStore"
+import { useEffect } from "react"
+import { PointerProvider } from "./components/Experiences/PointerContext"
 import Nav from "./components/Layout/Nav/Nav"
+import Header from "./components/Layout/Header/Header"
 import Background from "./components/Experiences/Background"
 import Footer from "./components/Layout/Footer/Footer"
 import SupportUkraine from "./components/UI/SupportUkraine/SupportUkraine"
-import { PointerProvider } from "./components/Experiences/PointerContext"
-import Header from "./components/Layout/Header/Header"
-import Projects from "./components/Layout/Project/Projects"
-import ExperienceTools from "./components/Layout/ExperienceTools/ExperienceTools"
-import TextBlock from "./components/UI/TextBlock/TextBlock"
-import HeadingAnimation from "./components/UI/HeadingAnimation/HeadingAnimation"
+import Cursor from "./components/UI/Cursor/Cursor"
+import { KpProvider } from "./hooks/KpContext"
 
 import "./styles/_variables.scss"
 import "./Globals.scss"
@@ -18,25 +23,39 @@ export const Route = createRootRoute({
 })
 
 function RootLayout() {
+	const { pathname } = useLocation()
+	const isHome = pathname === "/"
+
+	useEffect(() => {
+		if (isHome) {
+			setLightColor("#a6d59e") // this is enough — just set the target
+		}
+	}, [pathname])
+
+	useGSAP(
+		() => {
+			gsap.from("main > *", {
+				opacity: 0,
+				duration: 0.6,
+				ease: "power2.out",
+			})
+		},
+		{ dependencies: [pathname] },
+	)
+
 	return (
 		<PointerProvider>
-			<Background />
-			<Nav />
-			<Header />
-			<main>
-				<section>
-					<HeadingAnimation level={3}>About me</HeadingAnimation>
-					<TextBlock>
-						I design and build digital products, from concept to code, with a
-						focus on the moments that make people stop and pay attention.
-					</TextBlock>
-				</section>
-				<h3>Featured works</h3>
-				<Projects />
-				<ExperienceTools />
-			</main>
-			<Footer />
-			<SupportUkraine />
+			<KpProvider>
+				<Background />
+				<Nav />
+				<Header />
+				<main>
+					<Outlet />
+				</main>
+				<Footer />
+				<SupportUkraine />
+				{/* <Cursor /> */}
+			</KpProvider>
 		</PointerProvider>
 	)
 }

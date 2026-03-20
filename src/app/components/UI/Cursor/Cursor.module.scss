@@ -1,0 +1,36 @@
+.dot {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 6px;
+	height: 6px;
+	border-radius: 50%;
+	background: var(--primary-color);
+	pointer-events: none;
+	z-index: 9999;
+	transform: translate(-50%, -50%);
+}
+
+.ring {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 40px;
+	height: 40px;
+	border-radius: 50%;
+	border: 1px solid var(--primary-color);
+	pointer-events: none;
+	z-index: 9999;
+	transform: translate(-50%, -50%);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.label {
+	font-size: 0.65rem;
+	color: var(--primary-color);
+	letter-spacing: 0.05em;
+	text-transform: uppercase;
+	pointer-events: none;
+}

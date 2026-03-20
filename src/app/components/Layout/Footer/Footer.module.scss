@@ -1,166 +1,263 @@
+// Matches site rhythm: Aurora labels (mono / uppercase), project list borders,
+// stroked display type from _variables h2 pattern.
+
+$border-muted: color-mix(in srgb, var(--primary-color) 45%, transparent);
+
 .footer {
-	padding: 6rem 0 4rem;
+	border-top: 1px solid var(--primary-color);
+	padding: clamp(4rem, 12vw, 6rem) 0 3rem;
+	margin-top: 2rem;
 }
 
 .inner {
 	max-width: var(--max-width);
 	margin: 0 auto;
-	padding: 0 1.5rem;
+	padding: 0 clamp(1rem, 4vw, 2rem);
 }
 
-.contactSection {
+.layout {
+	display: grid;
+	grid-template-columns: 1fr;
+	gap: clamp(2.5rem, 6vw, 4rem);
+
+	@media (min-width: 900px) {
+		grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.05fr);
+		align-items: start;
+	}
+}
+
+.lead {
 	display: flex;
 	flex-direction: column;
+	gap: 1.25rem;
 }
 
-.contactHeading {
-	color: var(--tertiary-color);
-	opacity: 1;
-	font-size: 1rem;
+.eyebrow {
+	font-family: var(--font-family-ibm);
+	font-size: 0.7rem;
+	letter-spacing: 0.15em;
+	text-transform: uppercase;
+	opacity: 0.5;
+	margin: 0;
+}
+
+.title {
+	font-family: var(--font-family-syne);
+	font-size: clamp(2.5rem, 8vw, 5rem);
+	font-weight: 700;
+	line-height: 1.05;
+	margin: 0;
+	color: transparent;
+	-webkit-text-stroke: 1px var(--tertiary-color);
+}
+
+.intro {
+	font-family: var(--font-family-syne);
+	font-size: clamp(1rem, 2.2vw, 1.2rem);
 	font-weight: 400;
-	margin-bottom: 2rem;
+	line-height: 1.5;
+	color: var(--primary-color);
+	opacity: 0.75;
+	margin: 0;
+	max-width: 28ch;
+}
+
+.formSection {
+	min-width: 0;
 }
 
 .form {
 	display: flex;
 	flex-direction: column;
-	gap: 1.25rem;
+	gap: 1.35rem;
 }
 
 .fieldGrid {
 	display: grid;
 	grid-template-columns: 1fr 1fr;
-	gap: 1.25rem;
+	gap: 1.35rem;
+
+	@media (max-width: 600px) {
+		grid-template-columns: 1fr;
+	}
 }
 
 .label {
 	display: flex;
 	flex-direction: column;
-	gap: 0.6rem;
+	gap: 0.5rem;
 	font-family: var(--font-family-ibm);
+	font-size: 0.7rem;
+	letter-spacing: 0.1em;
+	text-transform: uppercase;
 	color: var(--primary-color);
-	opacity: 0.9;
-	font-size: 1rem;
+	opacity: 0.65;
 }
 
 .label input,
 .label textarea {
 	width: 100%;
-	border: 1px solid var(--primary-color-80);
+	border: 1px solid $border-muted;
+	border-radius: 0;
 	background: transparent;
 	color: var(--primary-color);
-	padding: 0.9rem 1rem;
-	border-radius: 8px;
-	font-family: var(--font-family-ibm);
+	padding: 0.85rem 0;
+	font-family: var(--font-family-syne);
 	font-size: 1rem;
+	font-weight: 400;
+	letter-spacing: normal;
+	text-transform: none;
 	outline: none;
 	transition:
-		border-color 0.2s ease,
-		box-shadow 0.2s ease;
+		border-color 0.25s ease,
+		box-shadow 0.25s ease;
 }
 
 .label textarea {
 	resize: vertical;
 	min-height: 140px;
+	line-height: 1.5;
 }
 
 .label input:focus,
 .label textarea:focus {
 	border-color: var(--tertiary-color);
-	box-shadow: 0 0 0 2px var(--tertiary-color-50);
+	box-shadow: 0 1px 0 0 var(--tertiary-color);
+}
+
+.label input:disabled,
+.label textarea:disabled {
+	opacity: 0.45;
 }
 
 .fieldset {
-	border: 1px solid var(--primary-color-80);
-	border-radius: 8px;
-	padding: 1.25rem 1.25rem 1.1rem;
+	border: none;
+	border-top: 1px solid var(--primary-color);
+	padding: 1.5rem 0 0;
+	margin: 0.25rem 0 0;
 }
 
 .legend {
 	font-family: var(--font-family-ibm);
+	font-size: 0.7rem;
+	letter-spacing: 0.1em;
+	text-transform: uppercase;
 	color: var(--primary-color);
-	opacity: 0.9;
-	padding: 0 0.5rem;
+	opacity: 0.5;
+	padding: 0;
+	margin: 0 0 1rem;
 }
 
 .radioGroup {
 	display: flex;
-	gap: 1rem;
 	flex-wrap: wrap;
-	margin-top: 0.8rem;
+	gap: 0;
 }
 
 .radio {
 	display: inline-flex;
 	align-items: center;
-	gap: 0.6rem;
+	gap: 0.5rem;
 	font-family: var(--font-family-ibm);
+	font-size: 0.8rem;
+	letter-spacing: 0.04em;
+	text-transform: none;
 	color: var(--primary-color);
-	border: 1px solid var(--primary-color-80);
-	border-radius: 999px;
-	padding: 0.7rem 1.05rem;
-	user-select: none;
+	padding: 0.65rem 1rem;
+	border: 1px solid var(--primary-color);
+	border-right-width: 0;
 	cursor: pointer;
+	user-select: none;
 	transition:
-		border-color 0.2s ease,
-		transform 0.2s ease,
+		background 0.2s ease,
 		color 0.2s ease;
+
+	&:last-of-type {
+		border-right-width: 1px;
+	}
+
+	@media (max-width: 480px) {
+		flex: 1 1 auto;
+		min-width: 0;
+		justify-content: center;
+		border-right-width: 1px;
+	}
 }
 
 .radio input {
 	accent-color: var(--tertiary-color);
+	margin: 0;
 }
 
-.radio:hover {
-	border-color: var(--tertiary-color);
-	transform: translateY(-1px);
+.radio:has(input:checked) {
+	background: color-mix(in srgb, var(--tertiary-color) 18%, transparent);
+	color: var(--primary-color);
+}
+
+.radio:hover:not(:has(input:disabled)) {
+	background: color-mix(in srgb, var(--tertiary-color) 10%, transparent);
 }
 
 .error {
 	font-family: var(--font-family-ibm);
+	font-size: 0.85rem;
 	color: var(--secondary-color);
 }
 
 .success {
 	font-family: var(--font-family-ibm);
+	font-size: 0.85rem;
 	color: var(--tertiary-color);
-	border: 1px solid var(--tertiary-color-50);
-	border-radius: 8px;
-	padding: 1rem;
+	border-left: 2px solid var(--tertiary-color);
+	padding: 0.75rem 0 0.75rem 1rem;
 }
 
 .submit {
 	align-self: flex-start;
-	padding: 0.95rem 1.45rem;
+	margin-top: 0.25rem;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	padding: 0.95rem 1.6rem;
 	border-radius: 999px;
-	border: 1px solid var(--tertiary-color);
-	background: transparent;
-	color: var(--tertiary-color);
+	border: none;
+	background: var(--tertiary-color);
+	color: var(--color-black);
 	font-family: var(--font-family-ibm);
+	font-size: 0.75rem;
+	letter-spacing: 0.08em;
+	text-transform: uppercase;
 	cursor: pointer;
 	transition:
-		transform 0.2s ease,
-		background 0.2s ease;
-}
+		transform 0.25s ease,
+		filter 0.25s ease,
+		box-shadow 0.25s ease;
 
-.submit:hover {
-	transform: translateY(-1px);
-	background: var(--tertiary-color-50);
+	&:hover {
+		transform: translateY(-2px) rotate(-3deg);
+		filter: brightness(1.08);
+		box-shadow: 0 0 0 1px var(--primary-color);
+	}
 }
 
 .bottom {
-	margin-top: 3.5rem;
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	justify-content: space-between;
+	gap: 1rem;
+	margin-top: clamp(3rem, 8vw, 4.5rem);
+	padding-top: 2rem;
+	border-top: 1px solid var(--primary-color);
 	font-family: var(--font-family-ibm);
+	font-size: 0.75rem;
+	letter-spacing: 0.06em;
 	color: var(--primary-color);
 	opacity: 0.85;
-	font-size: 1rem;
 }
 
-@media (max-width: 900px) {
-	.fieldGrid {
-		grid-template-columns: 1fr;
-	}
-	.inner {
-		padding: 0 1rem;
-	}
+.location {
+	text-transform: uppercase;
+	opacity: 0.45;
+	letter-spacing: 0.12em;
 }

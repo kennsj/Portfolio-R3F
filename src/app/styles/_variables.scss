@@ -1,25 +1,18 @@
 :root {
 	--max-width: 1200px;
 
+	--padding-block: 5rem;
+
 	--primary-color: #ccb2b2;
 	--primary-color-50: #ccb2b27e;
-	--primary-color-80: #ccb2b228;
 
 	--secondary-color: #c75555;
-	--secondary-color-50: #3c1a1a;
 
 	--tertiary-color: #74a36d;
 	--tertiary-color-50: #74a36d80;
 
-	--link-color: #5b9cff;
 	--color-black: #111111;
 	--text-light: #e8e6e3;
-	--content-width: 60%;
-	--content-width: 768px;
-	--content-margin: 15vw;
-	--content-padding: 5vw;
-	--content-width-mobile: 90vw;
-	--content-margin-mobile: 5vw;
 
 	--font-size-h4: 2rem;
 
@@ -84,4 +77,8 @@ h3 {
 main {
 	max-width: var(--max-width);
 	margin: 0 auto;
+}
+
+section {
+	padding-block: var(--padding-block);
 }
