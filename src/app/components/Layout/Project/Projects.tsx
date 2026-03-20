@@ -1,9 +1,15 @@
-import type { MouseEvent } from "react"
+import { useRef, type MouseEvent, Fragment } from "react"
 import { useNavigate } from "@tanstack/react-router"
 import styles from "./Projects.module.scss"
 import { setLightColor } from "../../Experiences/lightStore"
 import HeadingAnimation from "../../UI/HeadingAnimation/HeadingAnimation"
 import { useProjectHoverPreview } from "./useProjectHoverPreview"
+import { useGSAP } from "@gsap/react"
+import gsap from "gsap"
+import SplitText from "gsap/SplitText"
+import { ScrollTrigger } from "gsap/ScrollTrigger"
+
+gsap.registerPlugin(ScrollTrigger, SplitText)
 
 const projects = [
 	{
@@ -56,6 +62,91 @@ const Projects = () => {
 		}, 1200)
 	}
 
+	const listRef = useRef<HTMLUListElement>(null)
+
+	useGSAP(
+		() => {
+			const list = listRef.current
+			if (!list) return
+
+			const splitInstances: SplitText[] = []
+			let cancelled = false
+
+			const rowStagger = 0.1
+
+			document.fonts.ready.then(() => {
+				if (cancelled || !list.isConnected) return
+
+				const master = gsap.timeline({
+					scrollTrigger: {
+						trigger: list,
+						start: "top 75%",
+					},
+				})
+
+				Array.from(list.children).forEach((child, i) => {
+					const at = i * rowStagger
+
+					if (child instanceof HTMLLIElement) {
+						const h2 = child.querySelector("h2")
+						const links = h2?.nextElementSibling as HTMLElement | null
+						if (!h2) return
+
+						const split = SplitText.create(h2, {
+							type: "lines",
+							mask: "lines",
+						})
+						splitInstances.push(split)
+
+						master.from(
+							split.lines,
+							{
+								opacity: 0,
+								filter: "blur(25px)",
+								yPercent: 100,
+								stagger: 0.1,
+								duration: 1,
+								ease: "power2.out",
+							},
+							at,
+						)
+
+						if (links) {
+							master.from(
+								links,
+								{
+									opacity: 0,
+									filter: "blur(25px)",
+									yPercent: 35,
+									duration: 0.9,
+									ease: "power2.out",
+								},
+								at + 0.05,
+							)
+						}
+					} else if (child instanceof HTMLHRElement) {
+						master.to(
+							child,
+							{
+								scaleX: 1,
+								transformOrigin: "left",
+								duration: 1,
+								ease: "power2.out",
+							},
+							at,
+						)
+					}
+				})
+			})
+
+			return () => {
+				cancelled = true
+				splitInstances.splice(0).forEach((s) => s.revert())
+			}
+		},
+		{ scope: listRef },
+	)
+
 	return (
 		<>
 			<section
@@ -64,29 +155,32 @@ const Projects = () => {
 				onMouseLeave={onSectionLeave}
 			>
 				<HeadingAnimation level={3}>Featured works</HeadingAnimation>
-				<ul className={styles["projects-list"]}>
+				<ul ref={listRef} className={styles["projects-list"]}>
 					{projects.map((project, index) => (
-						<li
-							key={project.url}
-							className={styles["project-item"]}
-							onClick={(e) => handleProjectClick(e, project.url)}
-							onMouseMove={onMouseMove}
-							onMouseEnter={(e) => onEnter(project, index, e)}
-							onMouseLeave={(e) => onLeave(index, e)}
-							data-project-index={index}
-							data-cursor='view'
-						>
-							<h2>{project.name}</h2>
-							<div className={styles["list-links"]}>
-								<span className={styles["project-work"]}>{project.work}</span>
-								<div>
-									Visit
-									<span className={styles["link-arrow"]}>
-										<img src='/icons/arrow.svg' alt='' />
-									</span>
+						<Fragment key={project.url}>
+							<li
+								className={styles["project-item"]}
+								onClick={(e) => handleProjectClick(e, project.url)}
+								onMouseMove={onMouseMove}
+								onMouseEnter={(e) => onEnter(project, index, e)}
+								onMouseLeave={(e) => onLeave(index, e)}
+								data-project-index={index}
+								data-cursor='view'
+							>
+								<h2>{project.name}</h2>
+								<div className={styles["list-links"]}>
+									<span className={styles["project-work"]}>{project.work}</span>
+									<div className={styles["list-links-cta"]}>
+										<span className={styles["cta-label-desktop"]}>Visit</span>
+										<span className={styles["cta-label-mobile"]}>Case study</span>
+										<span className={styles["link-arrow"]}>
+											<img src='/icons/arrow.svg' alt='' />
+										</span>
+									</div>
 								</div>
-							</div>
-						</li>
+							</li>
+							{index < projects.length - 1 ? <hr /> : null}
+						</Fragment>
 					))}
 				</ul>
 			</section>

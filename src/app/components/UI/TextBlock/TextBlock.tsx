@@ -4,6 +4,8 @@ import SplitText from "gsap/SplitText"
 import ScrollTrigger from "gsap/ScrollTrigger"
 import gsap from "gsap"
 
+import styles from "./TextBlock.module.scss"
+
 gsap.registerPlugin(SplitText, ScrollTrigger)
 
 const TextBlock = ({ children }: { children: React.ReactNode }) => {
@@ -33,7 +35,11 @@ const TextBlock = ({ children }: { children: React.ReactNode }) => {
 		},
 		{ scope: ref },
 	)
-	return <p ref={ref}>{children}</p>
+	return (
+		<p ref={ref} className={styles["text-block"]}>
+			{children}
+		</p>
+	)
 }
 
 export default TextBlock

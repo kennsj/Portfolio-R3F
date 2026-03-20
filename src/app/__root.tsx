@@ -1,10 +1,7 @@
 import { createRootRoute, Outlet, useLocation } from "@tanstack/react-router"
 import { useGSAP } from "@gsap/react"
 import gsap from "gsap"
-import {
-	setLightColor,
-	currentColor,
-} from "./components/Experiences/lightStore"
+import { setLightColor } from "./components/Experiences/lightStore"
 import { useEffect } from "react"
 import { PointerProvider } from "./components/Experiences/PointerContext"
 import Nav from "./components/Layout/Nav/Nav"
@@ -15,10 +12,10 @@ import SupportUkraine from "./components/UI/SupportUkraine/SupportUkraine"
 import Cursor from "./components/UI/Cursor/Cursor"
 import { KpProvider } from "./hooks/KpContext"
 import { SimpleAnalytics } from "@simpleanalytics/react"
+import PermissionProvider from "./components/Experiences/PermissionProvider"
 
 import "./styles/_variables.scss"
 import "./Globals.scss"
-import { log } from "console"
 
 export const Route = createRootRoute({
 	component: RootLayout,
@@ -47,6 +44,7 @@ function RootLayout() {
 
 	return (
 		<PointerProvider>
+			<PermissionProvider />
 			<KpProvider>
 				<SimpleAnalytics />
 				<Background />
@@ -55,6 +53,7 @@ function RootLayout() {
 				<main>
 					<Outlet />
 				</main>
+				{/* <DebugOrientation /> */}
 				<Footer />
 				<SupportUkraine />
 				{/* <Cursor /> */}

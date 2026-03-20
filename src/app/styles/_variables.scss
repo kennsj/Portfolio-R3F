@@ -48,6 +48,10 @@ h1 {
 	line-height: 1.2;
 	font-weight: 400;
 	color: var(--primary-color);
+
+	@media (max-width: 768px) {
+		font-size: clamp(1.5rem, 10vw, 3rem);
+	}
 }
 
 h2 {
