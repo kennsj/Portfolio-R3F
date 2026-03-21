@@ -149,40 +149,42 @@ const Projects = () => {
 
 	return (
 		<>
-			<section
-				className={styles.projects}
-				onMouseMove={onMouseMove}
-				onMouseLeave={onSectionLeave}
-			>
-				<HeadingAnimation level={3}>Featured works</HeadingAnimation>
-				<ul ref={listRef} className={styles["projects-list"]}>
-					{projects.map((project, index) => (
-						<Fragment key={project.url}>
-							<li
-								className={styles["project-item"]}
-								onClick={(e) => handleProjectClick(e, project.url)}
-								onMouseMove={onMouseMove}
-								onMouseEnter={(e) => onEnter(project, index, e)}
-								onMouseLeave={(e) => onLeave(index, e)}
-								data-project-index={index}
-								data-cursor='view'
-							>
-								<h2>{project.name}</h2>
-								<div className={styles["list-links"]}>
-									<span className={styles["project-work"]}>{project.work}</span>
-									<div className={styles["list-links-cta"]}>
-										<span className={styles["cta-label-desktop"]}>Visit</span>
-										<span className={styles["cta-label-mobile"]}>Case study</span>
-										<span className={styles["link-arrow"]}>
-											<img src='/icons/arrow.svg' alt='' />
+			<section onMouseMove={onMouseMove} onMouseLeave={onSectionLeave}>
+				<div className={styles["projects-wrapper"]}>
+					<HeadingAnimation level={3}>Selected work</HeadingAnimation>
+					<ul ref={listRef} className={styles["projects-list"]}>
+						{projects.map((project, index) => (
+							<Fragment key={project.url}>
+								<li
+									className={styles["project-item"]}
+									onClick={(e) => handleProjectClick(e, project.url)}
+									onMouseMove={onMouseMove}
+									onMouseEnter={(e) => onEnter(project, index, e)}
+									onMouseLeave={(e) => onLeave(index, e)}
+									data-project-index={index}
+									data-cursor='view'
+								>
+									<h2>{project.name}</h2>
+									<div className={styles["list-links"]}>
+										<span className={styles["project-work"]}>
+											{project.work}
 										</span>
+										<div className={styles["list-links-cta"]}>
+											<span className={styles["cta-label-desktop"]}>Visit</span>
+											<span className={styles["cta-label-mobile"]}>
+												Case study
+											</span>
+											<span className={styles["link-arrow"]}>
+												<img src='/icons/arrow.svg' alt='' />
+											</span>
+										</div>
 									</div>
-								</div>
-							</li>
-							{index < projects.length - 1 ? <hr /> : null}
-						</Fragment>
-					))}
-				</ul>
+								</li>
+								{index < projects.length - 1 ? <hr /> : null}
+							</Fragment>
+						))}
+					</ul>
+				</div>
 			</section>
 
 			<div

@@ -1,9 +1,9 @@
-.aurora {
-	padding: 3rem 2.5rem 2.5rem;
+.aurora-wrapper {
+	max-width: var(--max-width);
+	margin: 0 auto;
 	display: flex;
 	flex-direction: column;
 	justify-content: space-between;
-	min-height: 420px;
 
 	.top-label {
 		font-size: 0.7rem;

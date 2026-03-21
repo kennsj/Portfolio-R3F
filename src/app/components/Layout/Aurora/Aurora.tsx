@@ -19,7 +19,7 @@ const Aurora = () => {
 	const { label, visible } = getKpLabel(displayKp)
 
 	return (
-		<section className={styles.aurora}>
+		<div className={styles["aurora-wrapper"]}>
 			<div className={styles.topLabel}>Aurora forecast</div>
 
 			<div className={styles["main-row"]}>
@@ -57,7 +57,11 @@ const Aurora = () => {
 							}}
 						/>
 						<span className={styles["bar-time"]}>
-							{new Date(entry.time).getUTCHours().toString().padStart(2, "0")}h
+							{new Date(entry.time).toLocaleTimeString("no-NO", {
+								hour: "2-digit",
+								minute: "2-digit",
+								timeZone: "Europe/Oslo",
+							})}
 						</span>
 					</div>
 				))}
@@ -77,7 +81,7 @@ const Aurora = () => {
 					<button onClick={() => setManualKp(null)}>Reset</button>
 				)}
 			</div>
-		</section>
+		</div>
 	)
 }
 

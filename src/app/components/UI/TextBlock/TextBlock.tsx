@@ -16,7 +16,6 @@ const TextBlock = ({ children }: { children: React.ReactNode }) => {
 			document.fonts.ready.then(() => {
 				const splitP = SplitText.create(ref.current, {
 					type: "lines",
-					// mask: "lines",
 				})
 
 				gsap.from(splitP.lines, {

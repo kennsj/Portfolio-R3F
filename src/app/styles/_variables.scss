@@ -1,7 +1,9 @@
 :root {
 	--max-width: 1200px;
 
-	--padding-block: 5rem;
+	--padding-top: 10rem;
+	--padding-bottom: 10rem;
+	--margin-top: 10rem;
 
 	--primary-color: #ccb2b2;
 	--primary-color-50: #ccb2b27e;
@@ -11,7 +13,8 @@
 	--tertiary-color: #74a36d;
 	--tertiary-color-50: #74a36d80;
 
-	--color-black: #111111;
+	--color-black: #020202;
+	--color-black-90: #020202ec;
 	--text-light: #e8e6e3;
 
 	--font-size-h4: 2rem;
@@ -39,7 +42,7 @@ a {
 
 p {
 	font-family: var(--font-family-syne);
-	font-size: 4rem;
+	font-size: 18px;
 }
 
 h1 {
@@ -56,16 +59,16 @@ h1 {
 
 h2 {
 	font-family: var(--font-family-syne);
-	font-size: clamp(3rem, 10vw, 6rem);
+	font-size: clamp(1.5rem, 8vw, 3.5rem);
+	line-height: 1.2;
 	font-weight: 700;
-	color: var(--tertiary-color);
-	color: transparent;
-	-webkit-text-stroke: 1px var(--tertiary-color);
-	margin: 4rem 0;
+	color: var(--primary-color);
 }
 
 h3 {
+	font-size: 1.5rem;
 	font-weight: 400;
+	text-transform: uppercase;
 	opacity: 0.5;
 	margin-bottom: 2rem;
 }
@@ -79,10 +82,16 @@ h3 {
 }
 
 main {
-	max-width: var(--max-width);
-	margin: 0 auto;
 }
 
 section {
-	padding-block: var(--padding-block);
+	padding-top: var(--padding-top);
+	width: 100%;
+
+	&[data-background-black] {
+		background: var(--color-black-90);
+		background: var(--color-black);
+		margin-top: var(--margin-top);
+		padding-bottom: var(--padding-bottom);
+	}
 }

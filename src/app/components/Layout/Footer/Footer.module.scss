@@ -4,7 +4,6 @@
 $border-muted: color-mix(in srgb, var(--primary-color) 45%, transparent);
 
 .footer {
-	border-top: 1px solid var(--primary-color);
 	padding: clamp(4rem, 12vw, 6rem) 0 3rem;
 	margin-top: 2rem;
 }

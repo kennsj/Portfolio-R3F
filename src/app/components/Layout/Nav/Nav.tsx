@@ -38,8 +38,10 @@ const Nav = () => {
 						<span className={styles["kp-dot"]} style={{ background: color }} />
 						{tooltipVisible && (
 							<div className={styles["kp-tooltip"]}>
-								<span className={styles["kp-value"]}>Kp {kp.toFixed(1)}</span>
-								<span className={styles["kp-status"]}>{label}</span>
+								<div>
+									<span className={styles["kp-value"]}>Kp {kp.toFixed(1)}</span>
+									<span className={styles["kp-status"]}>{label}</span>
+								</div>
 								<span className={styles["kp-location"]}>Bodø, Norway</span>
 							</div>
 						)}

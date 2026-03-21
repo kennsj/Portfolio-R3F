@@ -37,4 +37,97 @@
 		font-weight: 400;
 		color: var(--primary-color);
 	}
+
+	.cta {
+		--cta-pad-y: 1rem;
+		--cta-pad-x: 1.35rem;
+		--cta-icon: 2.5rem;
+
+		display: inline-flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: 1.5rem;
+		align-self: flex-start;
+		padding: var(--cta-pad-y) var(--cta-pad-x) var(--cta-pad-y)
+			calc(var(--cta-pad-x) + 0.15rem);
+		min-width: min(100%, 17rem);
+		font-family: inherit;
+		font-size: 1rem;
+		font-weight: 600;
+		letter-spacing: 0.02em;
+		color: var(--color-black);
+		background: color-mix(in srgb, var(--tertiary-color) 92%, var(--text-light));
+		border: none;
+		border-radius: 9999px;
+		cursor: pointer;
+		transition:
+			background 0.35s ease,
+			color 0.35s ease,
+			transform 0.35s ease,
+			box-shadow 0.35s ease;
+
+		&:hover,
+		&:focus-visible {
+			background: color-mix(in srgb, var(--tertiary-color) 100%, transparent);
+			transform: translateY(1px);
+		}
+
+		&:focus-visible {
+			outline: 2px solid var(--tertiary-color);
+			outline-offset: 3px;
+		}
+
+		&:focus:not(:focus-visible) {
+			outline: none;
+		}
+	}
+
+	.ctaLabel {
+		text-align: left;
+	}
+
+	.ctaGlyph {
+		position: relative;
+		display: grid;
+		place-items: center;
+		width: var(--cta-icon);
+		height: var(--cta-icon);
+		flex-shrink: 0;
+		border-radius: 50%;
+		background: color-mix(in srgb, var(--color-black) 18%, transparent);
+		color: var(--text-light);
+		transition: background 0.35s ease;
+
+		&::before {
+			content: "";
+			grid-area: 1 / 1;
+			width: 6px;
+			height: 6px;
+			border-radius: 50%;
+			background: var(--color-black);
+			transition: opacity 0.3s ease;
+		}
+	}
+
+	.ctaArrow {
+		grid-area: 1 / 1;
+		width: 1rem;
+		height: 1rem;
+		opacity: 0;
+		transition: opacity 0.3s ease;
+	}
+
+	.cta:hover .ctaGlyph,
+	.cta:focus-visible .ctaGlyph {
+		background: var(--color-black);
+
+		&::before {
+			opacity: 0;
+		}
+	}
+
+	.cta:hover .ctaArrow,
+	.cta:focus-visible .ctaArrow {
+		opacity: 1;
+	}
 }
