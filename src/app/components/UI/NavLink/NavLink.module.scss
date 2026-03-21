@@ -1,0 +1,39 @@
+.arrow-link {
+	position: relative;
+	display: flex;
+	align-items: center;
+	width: fit-content;
+	text-decoration: none;
+	color: var(--primary-color);
+	margin-right: 2rem;
+
+	&::before {
+		content: "";
+		position: absolute;
+		bottom: 50%;
+		transform: translateY(50%);
+		width: 0.5rem;
+		height: 0.5rem;
+		border-radius: 50%;
+		background: var(--tertiary-color);
+		opacity: 0;
+		transition: opacity 0.8s cubic-bezier(0.075, 0.82, 0.165, 1);
+	}
+
+	.arrow-link-text {
+		font-style: "Syne";
+		opacity: 0.5;
+		transform: translateX(1.5rem);
+		transition: opacity 0.8s cubic-bezier(0.075, 0.82, 0.165, 1);
+
+		&:hover {
+			opacity: 1;
+			transition: opacity 0.8s cubic-bezier(0.075, 0.82, 0.165, 1);
+		}
+	}
+}
+
+.arrow-link:hover::before {
+	opacity: 1;
+	transition: opacity 0.3s cubic-bezier(0.075, 0.82, 0.165, 1);
+}

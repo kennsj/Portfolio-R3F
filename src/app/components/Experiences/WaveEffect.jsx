@@ -1,6 +1,6 @@
 "use client"
 
-import { Effect, BlendFunction } from "postprocessing"
+import { Effect } from "postprocessing"
 import { Uniform } from "three"
 
 const fragmentShader = /* glsl */ `
@@ -23,7 +23,8 @@ export default class WaveEffect extends Effect {
 		uFrequency,
 		uAmplitude,
 		pointerX,
-		blendFunction = blendFunction.MULTIPLY,
+		uSpeed = 1,
+		blendFunction,
 	}) {
 		super("WaveEffect", fragmentShader, {
 			blendFunction,
@@ -31,12 +32,14 @@ export default class WaveEffect extends Effect {
 				["uFrequency", new Uniform(uFrequency)],
 				["uAmplitude", new Uniform(uAmplitude)],
 				["uOffset", new Uniform(0)],
+				["uSpeed", new Uniform(uSpeed)],
 				["pointerX", new Uniform(pointerX)],
 			]),
 		})
 	}
 
 	update(renderer, inputBuffer, deltaTime) {
-		this.uniforms.get("uOffset").value += deltaTime
+		const speed = this.uniforms.get("uSpeed").value
+		this.uniforms.get("uOffset").value += deltaTime * speed
 	}
 }

@@ -1,0 +1,1 @@
+import{a as e,n as t,t as n}from"./jsx-runtime-D57Vegw5.js";var r=e(t(),1),i=n(),a=(0,r.createContext)({manualKp:null,setManualKp:()=>{}}),o=({children:e})=>{let[t,n]=(0,r.useState)(null);return(0,i.jsx)(a.Provider,{value:{manualKp:t,setManualKp:n},children:e})},s=()=>(0,r.useContext)(a);export{s as n,o as t};

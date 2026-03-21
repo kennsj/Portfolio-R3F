@@ -1,0 +1,1 @@
+import{t as e}from"./jsx-runtime-D57Vegw5.js";var t={flag:`_flag_1qd86_1`,blue:`_blue_1qd86_9`,yellow:`_yellow_1qd86_14`},n=e(),r=()=>(0,n.jsx)(`a`,{href:`https://u24.gov.ua/`,target:`_blank`,children:(0,n.jsxs)(`div`,{className:t.flag,children:[(0,n.jsx)(`div`,{className:t.blue}),(0,n.jsx)(`div`,{className:t.yellow})]})});export{r as default};

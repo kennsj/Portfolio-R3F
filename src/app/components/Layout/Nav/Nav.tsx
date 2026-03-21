@@ -1,8 +1,10 @@
 import { Link } from "@tanstack/react-router"
-import styles from "./Nav.module.scss"
 import { useKpIndex, getKpColor, getKpLabel } from "../../../hooks/useKpIndex"
 import { useManualKp } from "../../../hooks/KpContext"
 import { useState } from "react"
+import NavLink from "../../UI/NavLink/NavLink"
+
+import styles from "./Nav.module.scss"
 
 const Nav = () => {
 	const { data } = useKpIndex()
@@ -20,15 +22,9 @@ const Nav = () => {
 					<img src='/kj-logo.svg' alt='Kenneth Jørgensen' />
 				</Link>
 				<div className={styles["nav-links"]}>
-					<Link to='/' className={styles["nav-link"]}>
-						ABOUT
-					</Link>
-					<Link to='/' className={styles["nav-link"]}>
-						WORK
-					</Link>
-					<Link to='/#footer' className={styles["nav-link"]}>
-						CONTACT
-					</Link>
+					<NavLink href='/#about'>About</NavLink>
+					<NavLink href='/#work'>Works</NavLink>
+					<NavLink href='#contact'>Contact</NavLink>
 
 					<div
 						className={styles["kp-indicator"]}

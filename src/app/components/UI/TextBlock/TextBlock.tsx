@@ -8,7 +8,13 @@ import styles from "./TextBlock.module.scss"
 
 gsap.registerPlugin(SplitText, ScrollTrigger)
 
-const TextBlock = ({ children }: { children: React.ReactNode }) => {
+const TextBlock = ({
+	children,
+	className,
+}: {
+	children: React.ReactNode
+	className?: string
+}) => {
 	const ref = useRef<HTMLParagraphElement>(null)
 
 	useGSAP(
@@ -35,7 +41,7 @@ const TextBlock = ({ children }: { children: React.ReactNode }) => {
 		{ scope: ref },
 	)
 	return (
-		<p ref={ref} className={styles["text-block"]}>
+		<p ref={ref} className={`${styles["text-block"]} ${className}`}>
 			{children}
 		</p>
 	)

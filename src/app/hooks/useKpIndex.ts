@@ -3,13 +3,23 @@ import { useQuery } from "@tanstack/react-query"
 type KpEntry = [string, string]
 
 export const getKpColor = (kp: number) => {
-	if (kp <= 2) return "#a6d59e"
-	if (kp <= 3) return "#a6d59e"
-	if (kp <= 4) return "#b8e8a8"
-	if (kp <= 5) return "#c8f0b0"
-	if (kp <= 6) return "#d4f5b8"
-	if (kp <= 7) return "#dff7c0"
-	return "#e8fac8"
+	if (kp <= 2) return "#74a36d"
+	if (kp <= 3) return "#86b87e"
+	if (kp <= 4) return "#9acc8f"
+	if (kp <= 5) return "#aedfa0"
+	if (kp <= 6) return "#c2f0b2"
+	if (kp <= 7) return "#d4f7c4"
+	return "#e6ffd6"
+}
+
+/** Wave scroll speed: Kp 5 matches current site default (1×); lower Kp slower, higher faster. */
+export const getKpWaveSpeedMultiplier = (kp: number) => {
+	if (!Number.isFinite(kp)) return 1
+	const k = Math.min(9, Math.max(1, kp))
+	if (k <= 5) {
+		return 0.35 + (0.65 * (k - 1)) / 4
+	}
+	return 1 + (0.85 * (k - 5)) / 4
 }
 
 export const getKpLabel = (kp: number) => {

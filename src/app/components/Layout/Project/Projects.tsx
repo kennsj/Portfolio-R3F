@@ -18,6 +18,7 @@ const projects = [
 		work: "Design / Code",
 		image: "/images/verchia.png",
 		url: "/verchia",
+		urlText: "Case Study",
 	},
 	{
 		name: "Pradelna",
@@ -25,6 +26,7 @@ const projects = [
 		work: "Design / Code",
 		image: "/images/pradelna.png",
 		url: "/pradelna",
+		urlText: "Case Study",
 	},
 	{
 		name: "Dialog eXe",
@@ -32,6 +34,7 @@ const projects = [
 		work: "Design / Code",
 		image: "/images/verchia.png",
 		url: "/dialog-exe",
+		urlText: "Case Study",
 	},
 	{
 		name: "Snø Oslo",
@@ -39,6 +42,7 @@ const projects = [
 		work: "Design / Code",
 		image: "/images/verchia.png",
 		url: "/sno-oslo",
+		urlText: "Case Study",
 	},
 ] as const
 
@@ -94,7 +98,7 @@ const Projects = () => {
 
 						const split = SplitText.create(h2, {
 							type: "lines",
-							mask: "lines",
+							// mask: "lines",
 						})
 						splitInstances.push(split)
 
@@ -104,7 +108,7 @@ const Projects = () => {
 								opacity: 0,
 								filter: "blur(25px)",
 								yPercent: 100,
-								stagger: 0.1,
+								stagger: 0.001,
 								duration: 1,
 								ease: "power2.out",
 							},
@@ -128,6 +132,7 @@ const Projects = () => {
 						master.to(
 							child,
 							{
+								filter: "blur(0px)",
 								scaleX: 1,
 								transformOrigin: "left",
 								duration: 1,
@@ -169,15 +174,26 @@ const Projects = () => {
 										<span className={styles["project-work"]}>
 											{project.work}
 										</span>
-										<div className={styles["list-links-cta"]}>
-											<span className={styles["cta-label-desktop"]}>Visit</span>
-											<span className={styles["cta-label-mobile"]}>
+										<span className={styles["arrow-link"]}>
+											<span className={styles["arrow-link-text"]}>
 												Case study
 											</span>
-											<span className={styles["link-arrow"]}>
-												<img src='/icons/arrow.svg' alt='' />
+											<span className={styles["arrow-link-icon"]}>
+												<svg
+													xmlns='http://www.w3.org/2000/svg'
+													width='24'
+													height='24'
+													viewBox='0 0 24 24'
+													fill='none'
+													stroke='currentColor'
+													strokeWidth='1.5'
+													strokeLinecap='round'
+													strokeLinejoin='round'
+												>
+													<path d='M5 12h14M13 6l6 6-6 6' />
+												</svg>
 											</span>
-										</div>
+										</span>
 									</div>
 								</li>
 								{index < projects.length - 1 ? <hr /> : null}

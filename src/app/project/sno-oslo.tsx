@@ -1,9 +1,16 @@
+import { lazy, Suspense } from "react"
 import { createFileRoute } from "@tanstack/react-router"
 
-export const Route = createFileRoute("/project/sno-oslo")({
-	component: RouteComponent,
-})
+const SnoOsloPage = lazy(() => import("./SnoOsloPage"))
 
-function RouteComponent() {
-	return <div>Hello "/project/sno"!</div>
+function ProjectSnoOsloRoute() {
+	return (
+		<Suspense fallback={null}>
+			<SnoOsloPage />
+		</Suspense>
+	)
 }
+
+export const Route = createFileRoute("/project/sno-oslo")({
+	component: ProjectSnoOsloRoute,
+})

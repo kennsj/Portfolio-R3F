@@ -3,6 +3,7 @@ import SplitText from "gsap/SplitText"
 import { useGSAP } from "@gsap/react"
 import styles from "./Header.module.scss"
 import { useRef } from "react"
+import Button from "../../UI/Button/Button"
 
 gsap.registerPlugin(SplitText)
 
@@ -65,31 +66,20 @@ const Header = () => {
 				<br /> Built for the <span className='highlight'>light</span>.
 			</h1>
 			<p ref={pRef}>Based in Bodø, northern Norway</p>
-			<button
+			<Button
 				type='button'
-				className={styles.cta}
 				onClick={() =>
 					document.querySelector("main")?.scrollIntoView({
 						behavior: "smooth",
 						block: "start",
 					})
 				}
+				ariaLabel='Scroll down'
+				ariaDescribedby='scroll-down'
+				dataScrollDown
 			>
-				<span className={styles.ctaLabel}>Scroll down</span>
-				<span className={styles.ctaGlyph} aria-hidden='true'>
-					<svg
-						className={styles.ctaArrow}
-						viewBox='0 0 24 24'
-						fill='none'
-						stroke='currentColor'
-						strokeWidth='2'
-						strokeLinecap='round'
-						strokeLinejoin='round'
-					>
-						<path d='M5 12h14M13 6l6 6-6 6' />
-					</svg>
-				</span>
-			</button>
+				Go exploring
+			</Button>
 		</header>
 	)
 }

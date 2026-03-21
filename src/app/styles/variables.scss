@@ -4,9 +4,11 @@
 	--padding-top: 10rem;
 	--padding-bottom: 10rem;
 	--margin-top: 10rem;
+	--margin-block: 10rem;
+	--padding-block: 5rem;
 
 	--primary-color: #ccb2b2;
-	--primary-color-50: #ccb2b27e;
+	--primary-color-50: #ccb2b259;
 
 	--secondary-color: #c75555;
 
@@ -21,6 +23,21 @@
 
 	--font-family-syne: "Syne", sans-serif;
 	--font-family-ibm: "IBM Plex Mono", monospace;
+
+	--font-size-h1: clamp(2rem, 10vw, 7rem);
+	--font-size-h2: clamp(1.5rem, 8vw, 3.5rem);
+	--font-size-h3: 1.5rem;
+}
+
+#canvas {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100vw;
+	height: 100dvh;
+	z-index: -1;
+	overflow: hidden;
+	pointer-events: none;
 }
 
 * {
@@ -43,6 +60,7 @@ a {
 p {
 	font-family: var(--font-family-syne);
 	font-size: 18px;
+	line-height: 1.4;
 }
 
 h1 {
@@ -73,6 +91,13 @@ h3 {
 	margin-bottom: 2rem;
 }
 
+h4 {
+	font-size: 1rem;
+	font-weight: 400;
+	text-transform: uppercase;
+	opacity: 0.5;
+}
+
 .highlight {
 	// font-family: "Playfair Display", serif;
 	font-weight: 700;
@@ -82,6 +107,7 @@ h3 {
 }
 
 main {
+	// color: red;
 }
 
 section {
@@ -89,8 +115,6 @@ section {
 	width: 100%;
 
 	&[data-background-black] {
-		background: var(--color-black-90);
-		background: var(--color-black);
 		margin-top: var(--margin-top);
 		padding-bottom: var(--padding-bottom);
 	}

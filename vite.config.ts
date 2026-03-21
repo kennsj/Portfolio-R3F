@@ -20,6 +20,10 @@ export default defineConfig({
 			routesDirectory: "./src/app",
 			generatedRouteTree: "./src/routeTree.gen.ts",
 			routeFileIgnorePattern: "components|styles|hooks",
+			// Disables the separate `tanstack-router:hmr` plugin (injects import.meta.hot.accept
+			// into every route file). That injection + Vite 8 often forces full page reloads when
+			// unrelated chunks update. The code-splitter path handles route HMR instead.
+			autoCodeSplitting: true,
 		}),
 		viteReact(),
 		tsconfigPaths(),

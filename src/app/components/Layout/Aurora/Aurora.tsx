@@ -67,19 +67,36 @@ const Aurora = () => {
 				))}
 			</div>
 
-			<div className={styles["slider-row"]}>
-				<input
-					type='range'
-					min={0}
-					max={9}
-					step={0.1}
-					value={manualKp ?? data?.latest ?? 0}
-					onChange={(e) => setManualKp(parseFloat(e.target.value))}
-				/>
-				<span>{manualKp !== null ? "Manual" : "Live"}</span>
-				{manualKp !== null && (
-					<button onClick={() => setManualKp(null)}>Reset</button>
-				)}
+			<div className={styles["slider-wrapper"]}>
+				<div className={styles["slider-row"]}>
+					<input
+						type='range'
+						min={0}
+						max={9}
+						step={0.1}
+						value={manualKp ?? data?.latest ?? 0}
+						onChange={(e) => setManualKp(parseFloat(e.target.value))}
+						aria-label='Adjust the Aurora forecast'
+					/>
+					<span aria-label='Manual or Live'>
+						{manualKp !== null ? "Manual" : "Live"}
+					</span>
+					{manualKp !== null && (
+						<button
+							onClick={() => setManualKp(null)}
+							aria-label='Reset the Aurora forecast'
+						>
+							Reset
+						</button>
+					)}
+				</div>
+				<p>
+					Disclaimer: The aurora depicted in the background is an artistic
+					interpretation. Colours, speed, and behaviour may not reflect actual
+					conditions above Bodø — if you're ever lucky enough to experience a
+					cloudless day here in this city. The best chances are between
+					September and April, if the clouds cooperate.
+				</p>
 			</div>
 		</div>
 	)

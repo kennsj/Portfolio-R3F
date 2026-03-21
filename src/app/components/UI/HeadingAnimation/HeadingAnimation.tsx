@@ -1,9 +1,10 @@
 import { useGSAP } from "@gsap/react"
 import React, { useRef } from "react"
 import SplitText from "gsap/SplitText"
+import { ScrollTrigger } from "gsap/ScrollTrigger"
 import gsap from "gsap"
 
-gsap.registerPlugin(SplitText)
+gsap.registerPlugin(SplitText, ScrollTrigger)
 
 const HeadingAnimation = ({
 	level = 1,
@@ -19,15 +20,14 @@ const HeadingAnimation = ({
 		() => {
 			document.fonts.ready.then(() => {
 				const split = SplitText.create(ref.current, {
-					type: "lines",
-					mask: "lines",
+					type: "chars",
 				})
 
-				gsap.from(split.lines, {
+				gsap.from(split.chars, {
 					opacity: 0,
 					filter: "blur(25px)",
 					yPercent: 100,
-					stagger: 0.1,
+					stagger: 0.005,
 					duration: 1,
 					scrollTrigger: {
 						trigger: ref.current,

@@ -1,6 +1,8 @@
 import { Fragment } from "react"
 import HeadingAnimation from "../../UI/HeadingAnimation/HeadingAnimation"
 import styles from "./Expertise.module.scss"
+import { useGSAP } from "@gsap/react"
+import gsap from "gsap"
 
 const expertiseItems = [
 	{
@@ -52,6 +54,23 @@ const toolItems = [
 ]
 
 const ExperienceTools = () => {
+	useGSAP(() => {
+		const sections = document.querySelectorAll("[data-background-black]")
+
+		sections.forEach((section) => {
+			gsap.to(section, {
+				backgroundColor: "rgba(02, 02, 02, 0.85)",
+				ease: "none",
+				scrollTrigger: {
+					trigger: section,
+					start: "top 80%",
+					end: "top 40%",
+					scrub: true,
+				},
+			})
+		})
+	})
+
 	return (
 		<section aria-label='Experience and tools' data-background-black>
 			<div className={styles.expertise}>
