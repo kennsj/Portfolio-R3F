@@ -27,7 +27,7 @@ const AnimatedButton = ({
 	dataScrollDown,
 	ariaDescribedBy,
 	revealDelay = 0,
-	revealDuration = 0.8,
+	revealDuration = 0.1,
 }: AnimatedButtonProps) => {
 	const rootRef = useRef<HTMLButtonElement | HTMLAnchorElement>(null)
 

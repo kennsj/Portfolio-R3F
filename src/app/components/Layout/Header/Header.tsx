@@ -99,13 +99,11 @@ const Header = ({
 				Designed in the <span className='highlight'>dark</span>.
 				<br /> Built for the <span className='highlight'>light</span>.
 			</h1>
-			<p ref={pRef} id='scroll-down-desc'>
-				Based in Bodø, northern Norway
-			</p>
+			<p ref={pRef}>LOCATION 67.2829° N, 14.4151° E</p>
 			<AnimatedButton
 				label='Go exploring'
 				onClick={() =>
-					document.querySelector("main")?.scrollIntoView({
+					document.querySelector("#about")?.scrollIntoView({
 						behavior: "smooth",
 						block: "start",
 					})

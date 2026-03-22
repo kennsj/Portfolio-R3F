@@ -4,6 +4,7 @@ import gsap from "gsap"
 import { ScrollTrigger } from "gsap/ScrollTrigger"
 
 import ArrowLink from "../../UI/ArrowLink/ArrowLink"
+import Form from "./Form"
 import styles from "./Contact.module.scss"
 
 gsap.registerPlugin(ScrollTrigger)
@@ -13,25 +14,32 @@ const HeadingAnimation = lazy(
 )
 const TextBlock = lazy(() => import("../../UI/TextBlock/TextBlock"))
 const Aurora = lazy(() => import("../Aurora/Aurora"))
-const Form = lazy(() => import("./Form"))
 
 const Contact = ({ showForecast = false }: { showForecast?: boolean }) => {
-	const contactInfoRef = useRef<HTMLDivElement>(null)
+	const contactRevealRef = useRef<HTMLDivElement>(null)
 
 	useGSAP(
 		() => {
-			const root = contactInfoRef.current
-			if (!root) return
+			const wrap = contactRevealRef.current
+			if (!wrap) return
 
-			const portrait = root.querySelector<HTMLElement>(
-				"[data-contact-portrait]",
+			const form = wrap.querySelector<HTMLFormElement>("form")
+			const fields = form?.querySelectorAll<HTMLElement>("[data-contact-field]")
+			const submit = form?.querySelector<HTMLElement>(
+				'button[type="submit"]',
 			)
-			const emailCol = root.querySelector<HTMLElement>("[data-contact-email]")
-			if (!portrait || !emailCol) return
+			const formTargets: HTMLElement[] = []
+			if (fields?.length) formTargets.push(...fields)
+			if (submit) formTargets.push(submit)
+
+			const portrait = wrap.querySelector<HTMLElement>("[data-contact-portrait]")
+			const emailCol = wrap.querySelector<HTMLElement>("[data-contact-email]")
+
+			const triggerEl = form ?? wrap
 
 			const tl = gsap.timeline({
 				scrollTrigger: {
-					trigger: root,
+					trigger: triggerEl,
 					start: "top bottom",
 					toggleActions: "play none none none",
 					invalidateOnRefresh: true,
@@ -39,47 +47,68 @@ const Contact = ({ showForecast = false }: { showForecast?: boolean }) => {
 				defaults: { ease: "power2.out" },
 			})
 
-			tl.fromTo(
-				portrait,
-				{
-					clipPath: "circle(0% at 50% 50%)",
-					opacity: 0.35,
-					filter: "blur(16px)",
-				},
-				{
-					clipPath: "circle(50% at 50% 50%)",
-					opacity: 1,
-					filter: "blur(0px)",
-					duration: 1.05,
-				},
-			)
+			if (formTargets.length) {
+				tl.fromTo(
+					formTargets,
+					{
+						opacity: 0,
+						filter: "blur(22px)",
+						yPercent: 18,
+					},
+					{
+						opacity: 1,
+						filter: "blur(0px)",
+						yPercent: 0,
+						duration: 0.85,
+						stagger: 0.12,
+					},
+					0,
+				)
+			}
 
-			tl.fromTo(
-				emailCol,
-				{
-					opacity: 0,
-					filter: "blur(22px)",
-					yPercent: 22,
-				},
-				{
-					opacity: 1,
-					filter: "blur(0px)",
-					yPercent: 0,
-					duration: 0.9,
-				},
-				"-=0.55",
-			)
+			if (portrait && emailCol) {
+				tl.fromTo(
+					portrait,
+					{
+						clipPath: "circle(0% at 50% 50%)",
+						opacity: 0.35,
+						filter: "blur(16px)",
+					},
+					{
+						clipPath: "circle(50% at 50% 50%)",
+						opacity: 1,
+						filter: "blur(0px)",
+						duration: 1.05,
+					},
+					formTargets.length ? "-=0.5" : 0,
+				)
+				tl.fromTo(
+					emailCol,
+					{
+						opacity: 0,
+						filter: "blur(22px)",
+						yPercent: 22,
+					},
+					{
+						opacity: 1,
+						filter: "blur(0px)",
+						yPercent: 0,
+						duration: 0.9,
+					},
+					"-=0.55",
+				)
+			}
 
 			requestAnimationFrame(() => {
-				ScrollTrigger.refresh()
+				requestAnimationFrame(() => ScrollTrigger.refresh())
 			})
 		},
-		{ scope: contactInfoRef },
+		{ scope: contactRevealRef },
 	)
 
 	return (
 		<section aria-label='Contact'>
-			<div className={styles["contact-wrapper"]}>
+			<div ref={contactRevealRef} className={styles["contact-wrapper"]}>
 				<Suspense fallback={null}>
 					<HeadingAnimation level={3}>Contact</HeadingAnimation>
 				</Suspense>
@@ -105,10 +134,8 @@ const Contact = ({ showForecast = false }: { showForecast?: boolean }) => {
 						want to go aurora hunting!
 					</TextBlock>
 				</Suspense>
-				<Suspense fallback={null}>
-					<Form />
-				</Suspense>
-				<div ref={contactInfoRef} className={styles["contact-info"]}>
+				<Form />
+				<div className={styles["contact-info"]}>
 					<div
 						className={styles["contact-info-image"]}
 						data-contact-portrait

@@ -1,8 +1,10 @@
 import { lazy, Suspense } from "react"
 import Header from "./components/Layout/Header/Header"
+import Contact from "./components/Layout/Contact/Contact"
 
-// Lazy per block so Contact/Projects/etc. SCSS and TSX changes stay off the
-// HomePage module graph path back to index.jsx → routeTree → router → main.
+// Lazy per block so SCSS/TSX stay off the main route graph where possible.
+// Contact is eager so ScrollTrigger measures while the section is still below
+// the fold (lazy chunk + late mount was skipping reveals when scrolling in).
 const HeadingAnimation = lazy(
 	() => import("./components/UI/HeadingAnimation/HeadingAnimation"),
 )
@@ -11,13 +13,12 @@ const Projects = lazy(() => import("./components/Layout/Project/Projects"))
 const ExperienceTools = lazy(
 	() => import("./components/Layout/Expertise/Expertise"),
 )
-const Contact = lazy(() => import("./components/Layout/Contact/Contact"))
 
 export default function HomePage() {
 	return (
 		<>
 			<Header signalNavIntroAfterHero />
-			<section>
+			<section id='about'>
 				<div style={{ maxWidth: "var(--max-width)", margin: "0 auto" }}>
 					<Suspense fallback={null}>
 						<HeadingAnimation level={3}>About me</HeadingAnimation>
@@ -37,9 +38,7 @@ export default function HomePage() {
 			<Suspense fallback={null}>
 				<ExperienceTools />
 			</Suspense>
-			<Suspense fallback={null}>
-				<Contact showForecast />
-			</Suspense>
+			<Contact showForecast />
 		</>
 	)
 }
