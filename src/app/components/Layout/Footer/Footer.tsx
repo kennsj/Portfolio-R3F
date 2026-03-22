@@ -14,7 +14,7 @@ import styles from "./Footer.module.scss"
 gsap.registerPlugin(ScrollTrigger)
 
 const Footer = () => {
-	const footerRef = useRef<HTMLElement>(null)
+	const footerRevealRef = useRef<HTMLDivElement>(null)
 	const { data } = useKpIndex()
 	const { manualKp } = useManualKp()
 	const kp = manualKp ?? data?.latest ?? 0
@@ -22,53 +22,48 @@ const Footer = () => {
 
 	useGSAP(
 		() => {
-			const footer = footerRef.current
-			if (!footer) return
+			const wrap = footerRevealRef.current
+			if (!wrap) return
 
-			const sequence = footer.querySelectorAll<HTMLElement>(
+			const sequence = wrap.querySelectorAll<HTMLElement>(
 				"[data-footer-reveal]",
 			)
 			if (!sequence.length) return
 
-			gsap.fromTo(
-				sequence,
-				{
-					opacity: 0,
-					filter: "blur(16px)",
-					yPercent: 10,
+			gsap.set(sequence, {
+				opacity: 0,
+				filter: "blur(16px)",
+				yPercent: 10,
+			})
+
+			gsap.to(sequence, {
+				opacity: 1,
+				filter: "blur(0px)",
+				yPercent: 0,
+				duration: 0.8,
+				stagger: 0.11,
+				ease: "power2.out",
+				scrollTrigger: {
+					trigger: wrap,
+					start: "top 88%",
+					toggleActions: "play none none none",
+					invalidateOnRefresh: true,
 				},
-				{
-					opacity: 1,
-					filter: "blur(0px)",
-					yPercent: 0,
-					duration: 0.8,
-					stagger: 0.11,
-					ease: "power2.out",
-					scrollTrigger: {
-						trigger: footer,
-						start: "top bottom",
-						toggleActions: "play none none none",
-						invalidateOnRefresh: true,
-					},
-				},
-			)
+			})
 
 			requestAnimationFrame(() => {
-				ScrollTrigger.refresh()
+				requestAnimationFrame(() => ScrollTrigger.refresh())
 			})
 		},
-		{ scope: footerRef },
+		{ scope: footerRevealRef },
 	)
 
 	return (
-		<footer ref={footerRef} id='footer'>
-			<div className={styles["footer-wrapper"]}>
+		<footer id='footer'>
+			<div ref={footerRevealRef} className={styles["footer-wrapper"]}>
 				<hr data-footer-reveal />
 				<div className={styles["footer-wrapper-top"]}>
-					<div
-						className={styles["footer-wrapper-left"]}
-						data-footer-reveal
-					>
+					<div className={styles["footer-wrapper-left"]} data-footer-reveal>
 						<img src='/kj-logo.svg' alt='Logo' />
 						<p>
 							Designer. Developer. <br />
@@ -88,7 +83,7 @@ const Footer = () => {
 								<NavLink href='/#work'>Work</NavLink>
 							</li>
 							<li>
-								<NavLink href='#contact'>Contact</NavLink>
+								<NavLink href='/#contact'>Contact</NavLink>
 							</li>
 						</ul>
 					</div>

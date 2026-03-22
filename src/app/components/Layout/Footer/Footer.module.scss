@@ -3,6 +3,11 @@
 	margin: 0 auto;
 	font-size: 1.5rem;
 
+	/* Hidden until GSAP reveal runs (avoids full-opacity flash before useGSAP) */
+	[data-footer-reveal] {
+		opacity: 0;
+	}
+
 	hr {
 		border-block: 1px solid var(--primary-color-50);
 	}

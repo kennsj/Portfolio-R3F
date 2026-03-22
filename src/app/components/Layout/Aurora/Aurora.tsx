@@ -46,6 +46,11 @@ const Aurora = () => {
 			document.fonts.ready.then(() => {
 				if (cancelled || !wrap.isConnected) return
 
+				requestAnimationFrame(() => {
+					if (cancelled || !wrap.isConnected) return
+					ScrollTrigger.refresh()
+				})
+
 				const bars = wrap.querySelectorAll<HTMLElement>("[data-aurora-bar]")
 
 				kpEl.textContent = "0.0"
@@ -63,7 +68,9 @@ const Aurora = () => {
 				timeline = gsap.timeline({
 					scrollTrigger: {
 						trigger: wrap,
-						start: "top 80%",
+						start: "top bottom",
+						toggleActions: "play none none none",
+						invalidateOnRefresh: true,
 						once: true,
 					},
 				})
@@ -121,91 +128,100 @@ const Aurora = () => {
 		{ dependencies: [isLoading, data], scope: wrapRef },
 	)
 
-	if (isLoading) return null
-
+	const ready = !isLoading && !!data?.entries.length
 	const { label, visible } = getKpLabel(displayKp)
 
 	return (
-		<div ref={wrapRef} className={styles["aurora-wrapper"]}>
-			<div className={styles.topLabel}>Aurora forecast</div>
+		<div
+			ref={wrapRef}
+			className={styles["aurora-wrapper"]}
+			data-aurora-ready={ready ? "true" : "false"}
+		>
+			{!ready ? (
+				<div className={styles["aurora-loading"]} aria-busy='true' />
+			) : (
+				<>
+					<div className={styles.topLabel}>Aurora forecast</div>
 
-			<div className={styles["main-row"]}>
-				<div ref={locationRef} className={styles["location-label"]}>
-					Bodø,
-					<br />
-					<span className={styles.dim}>Norway</span>
-				</div>
-				<div className={styles["kp-block"]}>
-					<div className={styles["kp-meta"]}>KP Index</div>
-					<span ref={kpNumRef} className={styles["kp-num"]} />
-					<div className={styles["status-line"]}>
-						<span
-							className={styles["status-dot"]}
-							style={{ background: getKpColor(displayKp) }}
-						/>
-						<span>{label}</span>
-						{visible && (
-							<span className={styles["visible-label"]}>
-								— visible from Bodø tonight
+					<div className={styles["main-row"]}>
+						<div ref={locationRef} className={styles["location-label"]}>
+							Bodø,
+							<br />
+							<span className={styles.dim}>Norway</span>
+						</div>
+						<div className={styles["kp-block"]}>
+							<div className={styles["kp-meta"]}>KP Index</div>
+							<span ref={kpNumRef} className={styles["kp-num"]} />
+							<div className={styles["status-line"]}>
+								<span
+									className={styles["status-dot"]}
+									style={{ background: getKpColor(displayKp) }}
+								/>
+								<span>{label}</span>
+								{visible && (
+									<span className={styles["visible-label"]}>
+										— visible from Bodø tonight
+									</span>
+								)}
+							</div>
+						</div>
+					</div>
+
+					<div className={styles.bars}>
+						{data.entries.map((entry, i) => (
+							<div key={i} className={styles["bar-wrap"]}>
+								<div
+									data-aurora-bar
+									className={styles.bar}
+									style={{
+										height: `${Math.max(2, (entry.kp / 9) * 32)}px`,
+										background: getKpColor(entry.kp),
+									}}
+								/>
+								<span className={styles["bar-time"]}>
+									{new Date(entry.time).toLocaleTimeString("no-NO", {
+										hour: "2-digit",
+										minute: "2-digit",
+										timeZone: "Europe/Oslo",
+									})}
+								</span>
+							</div>
+						))}
+					</div>
+
+					<div className={styles["slider-wrapper"]}>
+						<div className={styles["slider-row"]}>
+							<input
+								type='range'
+								min={0}
+								max={9}
+								step={0.1}
+								value={manualKp ?? data.latest ?? 0}
+								onChange={(e) => setManualKp(parseFloat(e.target.value))}
+								aria-label='Adjust the Aurora forecast'
+							/>
+							<span aria-label='Manual or Live'>
+								{manualKp !== null ? "Manual" : "Live"}
 							</span>
-						)}
+							{manualKp !== null && (
+								<button
+									onClick={() => setManualKp(null)}
+									aria-label='Reset the Aurora forecast'
+								>
+									Reset
+								</button>
+							)}
+						</div>
+						<p>
+							Disclaimer: The aurora depicted in the background is an artistic
+							interpretation. Colours, speed, and behaviour may not reflect
+							actual conditions above Bodø — if you're ever lucky enough to
+							experience a cloudless day here in this city. The best chances are
+							between September and April, if the clouds cooperate.
+						</p>
 					</div>
-				</div>
-			</div>
-
-			<div className={styles.bars}>
-				{data?.entries.map((entry, i) => (
-					<div key={i} className={styles["bar-wrap"]}>
-						<div
-							data-aurora-bar
-							className={styles.bar}
-							style={{
-								height: `${Math.max(2, (entry.kp / 9) * 32)}px`,
-								background: getKpColor(entry.kp),
-							}}
-						/>
-						<span className={styles["bar-time"]}>
-							{new Date(entry.time).toLocaleTimeString("no-NO", {
-								hour: "2-digit",
-								minute: "2-digit",
-								timeZone: "Europe/Oslo",
-							})}
-						</span>
-					</div>
-				))}
-			</div>
-
-			<div className={styles["slider-wrapper"]}>
-				<div className={styles["slider-row"]}>
-					<input
-						type='range'
-						min={0}
-						max={9}
-						step={0.1}
-						value={manualKp ?? data?.latest ?? 0}
-						onChange={(e) => setManualKp(parseFloat(e.target.value))}
-						aria-label='Adjust the Aurora forecast'
-					/>
-					<span aria-label='Manual or Live'>
-						{manualKp !== null ? "Manual" : "Live"}
-					</span>
-					{manualKp !== null && (
-						<button
-							onClick={() => setManualKp(null)}
-							aria-label='Reset the Aurora forecast'
-						>
-							Reset
-						</button>
-					)}
-				</div>
-				<p>
-					Disclaimer: The aurora depicted in the background is an artistic
-					interpretation. Colours, speed, and behaviour may not reflect actual
-					conditions above Bodø — if you're ever lucky enough to experience a
-					cloudless day here in this city. The best chances are between
-					September and April, if the clouds cooperate.
-				</p>
-			</div>
+				</>
+			)}
 		</div>
 	)
 }

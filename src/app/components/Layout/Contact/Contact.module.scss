@@ -2,6 +2,16 @@
 	max-width: var(--max-width);
 	margin: 0 auto;
 
+	.form-reveal-anchor {
+		height: 1px;
+		width: 100%;
+		margin: 0;
+		padding: 0;
+		overflow: hidden;
+		visibility: hidden;
+		pointer-events: none;
+	}
+
 	.contact-text {
 		width: 100%;
 		font-size: 2rem;
@@ -13,6 +23,12 @@
 		align-items: center;
 		margin-block: var(--margin-block);
 		gap: 5rem;
+
+		/* Same as footer: no flash before GSAP sets scroll reveal state */
+		[data-contact-portrait],
+		[data-contact-email] {
+			opacity: 0;
+		}
 
 		.contact-info-image {
 			overflow: hidden;

@@ -1,145 +1,207 @@
-import { lazy, Suspense, useRef } from "react"
+import { useEffect, useLayoutEffect, useRef } from "react"
+
+import { useQueryClient } from "@tanstack/react-query"
+
 import { useGSAP } from "@gsap/react"
+
 import gsap from "gsap"
+
 import { ScrollTrigger } from "gsap/ScrollTrigger"
 
+import { kpIndexQueryOptions } from "../../../hooks/useKpIndex"
+
+import HeadingAnimation from "../../UI/HeadingAnimation/HeadingAnimation"
+
+import TextBlock from "../../UI/TextBlock/TextBlock"
+
+import Aurora from "../Aurora/Aurora"
+
 import ArrowLink from "../../UI/ArrowLink/ArrowLink"
+
 import Form from "./Form"
+
 import styles from "./Contact.module.scss"
 
 gsap.registerPlugin(ScrollTrigger)
 
-const HeadingAnimation = lazy(
-	() => import("../../UI/HeadingAnimation/HeadingAnimation"),
-)
-const TextBlock = lazy(() => import("../../UI/TextBlock/TextBlock"))
-const Aurora = lazy(() => import("../Aurora/Aurora"))
-
 const Contact = ({ showForecast = false }: { showForecast?: boolean }) => {
 	const contactRevealRef = useRef<HTMLDivElement>(null)
+
+	const formRevealAnchorRef = useRef<HTMLDivElement>(null)
+
+	const contactInfoRef = useRef<HTMLDivElement>(null)
+
+	const queryClient = useQueryClient()
+
+	useEffect(() => {
+		if (!showForecast) return
+
+		void queryClient.prefetchQuery(kpIndexQueryOptions)
+	}, [showForecast, queryClient])
+
+	useLayoutEffect(() => {
+		const id = requestAnimationFrame(() => {
+			requestAnimationFrame(() => ScrollTrigger.refresh())
+		})
+
+		return () => cancelAnimationFrame(id)
+	}, [showForecast])
 
 	useGSAP(
 		() => {
 			const wrap = contactRevealRef.current
-			if (!wrap) return
+
+			const anchor = formRevealAnchorRef.current
+
+			if (!wrap || !anchor) return
 
 			const form = wrap.querySelector<HTMLFormElement>("form")
+
 			const fields = form?.querySelectorAll<HTMLElement>("[data-contact-field]")
-			const submit = form?.querySelector<HTMLElement>(
-				'button[type="submit"]',
-			)
+
+			const submit = form?.querySelector<HTMLElement>('button[type="submit"]')
+
 			const formTargets: HTMLElement[] = []
-			if (fields?.length) formTargets.push(...fields)
+
+			if (fields?.length) formTargets.push(...Array.from(fields))
+
 			if (submit) formTargets.push(submit)
 
-			const portrait = wrap.querySelector<HTMLElement>("[data-contact-portrait]")
-			const emailCol = wrap.querySelector<HTMLElement>("[data-contact-email]")
+			if (!formTargets.length) return
 
-			const triggerEl = form ?? wrap
+			gsap.set(formTargets, {
+				opacity: 0,
+				filter: "blur(22px)",
+				yPercent: 18,
+			})
 
 			const tl = gsap.timeline({
 				scrollTrigger: {
-					trigger: triggerEl,
-					start: "top bottom",
+					trigger: anchor,
+					start: "top 88%",
 					toggleActions: "play none none none",
 					invalidateOnRefresh: true,
 				},
+
 				defaults: { ease: "power2.out" },
 			})
 
-			if (formTargets.length) {
-				tl.fromTo(
-					formTargets,
-					{
-						opacity: 0,
-						filter: "blur(22px)",
-						yPercent: 18,
-					},
-					{
-						opacity: 1,
-						filter: "blur(0px)",
-						yPercent: 0,
-						duration: 0.85,
-						stagger: 0.12,
-					},
-					0,
-				)
-			}
-
-			if (portrait && emailCol) {
-				tl.fromTo(
-					portrait,
-					{
-						clipPath: "circle(0% at 50% 50%)",
-						opacity: 0.35,
-						filter: "blur(16px)",
-					},
-					{
-						clipPath: "circle(50% at 50% 50%)",
-						opacity: 1,
-						filter: "blur(0px)",
-						duration: 1.05,
-					},
-					formTargets.length ? "-=0.5" : 0,
-				)
-				tl.fromTo(
-					emailCol,
-					{
-						opacity: 0,
-						filter: "blur(22px)",
-						yPercent: 22,
-					},
-					{
-						opacity: 1,
-						filter: "blur(0px)",
-						yPercent: 0,
-						duration: 0.9,
-					},
-					"-=0.55",
-				)
-			}
+			tl.to(formTargets, {
+				opacity: 1,
+				filter: "blur(0px)",
+				yPercent: 0,
+				duration: 0.85,
+				stagger: 0.12,
+			})
 
 			requestAnimationFrame(() => {
 				requestAnimationFrame(() => ScrollTrigger.refresh())
 			})
 		},
-		{ scope: contactRevealRef },
+
+		{ scope: contactRevealRef, dependencies: [showForecast] },
+	)
+
+	useGSAP(
+		() => {
+			const wrap = contactRevealRef.current
+
+			const info = contactInfoRef.current
+
+			if (!wrap || !info) return
+
+			const portrait = info.querySelector<HTMLElement>(
+				"[data-contact-portrait]",
+			)
+
+			const emailCol = info.querySelector<HTMLElement>("[data-contact-email]")
+
+			if (!portrait || !emailCol) return
+
+			gsap.set(portrait, {
+				opacity: 0,
+				filter: "blur(16px)",
+				clipPath: "inset(50% 50% 50% 50% round 50%)",
+			})
+			gsap.set(emailCol, {
+				opacity: 0,
+				filter: "blur(22px)",
+				yPercent: 22,
+			})
+
+			const tl = gsap.timeline({
+				scrollTrigger: {
+					trigger: info,
+
+					start: "top 88%",
+
+					toggleActions: "play none none none",
+
+					invalidateOnRefresh: true,
+				},
+
+				defaults: { ease: "power2.out" },
+			})
+
+			tl.to(portrait, {
+				opacity: 1,
+				filter: "blur(0px)",
+				clipPath: "inset(0% 0% 0% 0% round 50%)",
+				duration: 1.05,
+			})
+
+			tl.to(
+				emailCol,
+				{
+					opacity: 1,
+					filter: "blur(0px)",
+					yPercent: 0,
+					duration: 0.9,
+				},
+				"-=0.55",
+			)
+
+			requestAnimationFrame(() => {
+				requestAnimationFrame(() => ScrollTrigger.refresh())
+			})
+		},
+
+		{ scope: contactRevealRef, dependencies: [showForecast] },
 	)
 
 	return (
-		<section aria-label='Contact'>
+		<section id='contact' aria-label='Contact'>
 			<div ref={contactRevealRef} className={styles["contact-wrapper"]}>
-				<Suspense fallback={null}>
-					<HeadingAnimation level={3}>Contact</HeadingAnimation>
-				</Suspense>
+				<HeadingAnimation level={3}>Contact</HeadingAnimation>
 
 				{showForecast && (
 					<>
-						<Suspense fallback={null}>
-							<TextBlock>
-								Now you know where the background <br /> comes from. And where I
-								come from.
-							</TextBlock>
-						</Suspense>
-						<Suspense fallback={null}>
-							<Aurora />
-						</Suspense>
+						<TextBlock>
+							Now you know where the background <br /> comes from. And where I
+							come from.
+						</TextBlock>
+
+						<Aurora />
 					</>
 				)}
-				<Suspense fallback={null}>
-					<TextBlock className={styles["contact-text"]}>
-						Available for freelance projects and the right full-time role. Share
-						a bit about your project, timeline, and what a good outcome looks
-						like. I'll get back to you as soon as I can. Or let me know if you
-						want to go aurora hunting!
-					</TextBlock>
-				</Suspense>
+
+				<TextBlock className={styles["contact-text"]}>
+					Available for freelance projects and the right full-time role. Share a
+					bit about your project, timeline, and what a good outcome looks like.
+					I'll get back to you as soon as I can. Or let me know if you want to
+					go aurora hunting!
+				</TextBlock>
+
+				<div
+					ref={formRevealAnchorRef}
+					className={styles["form-reveal-anchor"]}
+					aria-hidden
+				/>
+
 				<Form />
-				<div className={styles["contact-info"]}>
-					<div
-						className={styles["contact-info-image"]}
-						data-contact-portrait
-					>
+
+				<div ref={contactInfoRef} className={styles["contact-info"]}>
+					<div className={styles["contact-info-image"]} data-contact-portrait>
 						<svg viewBox='0 0 200 200' width='250' height='250'>
 							<defs>
 								<path
@@ -172,6 +234,7 @@ const Contact = ({ showForecast = false }: { showForecast?: boolean }) => {
 							</text>
 						</svg>
 					</div>
+
 					<div className={styles["contact-info-email"]} data-contact-email>
 						<ArrowLink
 							size='48'

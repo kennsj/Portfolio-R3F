@@ -1,4 +1,5 @@
 import { useRef, Fragment } from "react"
+import { createPortal } from "react-dom"
 import styles from "./Projects.module.scss"
 import HeadingAnimation from "../../UI/HeadingAnimation/HeadingAnimation"
 import { useProjectHoverPreview } from "./useProjectHoverPreview"
@@ -146,7 +147,11 @@ const Projects = () => {
 
 	return (
 		<>
-			<section onMouseMove={onMouseMove} onMouseLeave={onSectionLeave}>
+			<section
+				id='work'
+				onMouseMove={onMouseMove}
+				onMouseLeave={onSectionLeave}
+			>
 				<div className={styles["projects-wrapper"]}>
 					<HeadingAnimation level={3}>Selected work</HeadingAnimation>
 					<ul ref={listRef} className={styles["projects-list"]}>
@@ -195,18 +200,21 @@ const Projects = () => {
 				</div>
 			</section>
 
-			<div
-				ref={shellRef}
-				className={styles["project-hover-shell"]}
-				aria-hidden='true'
-			>
-				<img
-					ref={imgRef}
-					src={currentProject.image}
-					alt={currentProject.name}
-					className={styles["project-hover"]}
-				/>
-			</div>
+			{createPortal(
+				<div
+					ref={shellRef}
+					className={styles["project-hover-shell"]}
+					aria-hidden='true'
+				>
+					<img
+						ref={imgRef}
+						src={currentProject.image}
+						alt={currentProject.name}
+						className={styles["project-hover"]}
+					/>
+				</div>,
+				document.body,
+			)}
 		</>
 	)
 }

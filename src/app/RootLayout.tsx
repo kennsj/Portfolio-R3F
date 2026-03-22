@@ -1,9 +1,14 @@
-import { lazy, Suspense } from "react"
+import { lazy, Suspense, useEffect, useLayoutEffect, useRef } from "react"
+import Footer from "./components/Layout/Footer/Footer"
 import { Outlet, useLocation } from "@tanstack/react-router"
 import { useGSAP } from "@gsap/react"
 import gsap from "gsap"
+import { ScrollTrigger } from "gsap/ScrollTrigger"
 import { setLightColor } from "./components/Experiences/lightStore"
-import { useEffect } from "react"
+import {
+	gsapScrollToHashIdWhenReady,
+	gsapScrollToTop,
+} from "./utils/gsapScroll"
 import { PointerProvider } from "./components/Experiences/PointerContext"
 import { KpProvider } from "./hooks/KpContext"
 import { HeroIntroProvider } from "./hooks/HeroIntroContext"
@@ -11,14 +16,16 @@ import { SimpleAnalytics } from "@simpleanalytics/react"
 import PermissionProvider from "./components/Experiences/PermissionProvider"
 import Background from "./components/Experiences/Background"
 const Nav = lazy(() => import("./components/Layout/Nav/Nav"))
-const Footer = lazy(() => import("./components/Layout/Footer/Footer"))
 const SupportUkraine = lazy(
 	() => import("./components/UI/SupportUkraine/SupportUkraine"),
 )
 
+gsap.registerPlugin(ScrollTrigger)
+
 export default function RootLayout() {
-	const { pathname } = useLocation()
+	const { pathname, hash: locationHash } = useLocation()
 	const isHome = pathname === "/"
+	const prevPathRef = useRef<string | null>(null)
 
 	useEffect(() => {
 		if (isHome) {
@@ -26,12 +33,40 @@ export default function RootLayout() {
 		}
 	}, [pathname])
 
+	useLayoutEffect(() => {
+		const prev = prevPathRef.current
+		prevPathRef.current = pathname
+
+		if (pathname !== "/") return
+
+		const raw = (locationHash || "").replace(/^#/, "")
+
+		const run = () => {
+			if (raw) {
+				gsapScrollToHashIdWhenReady(raw, () => ScrollTrigger.refresh())
+			} else if (prev !== null && prev !== "/") {
+				gsapScrollToTop()
+				requestAnimationFrame(() => ScrollTrigger.refresh())
+			}
+		}
+
+		requestAnimationFrame(() => {
+			requestAnimationFrame(run)
+		})
+	}, [pathname, locationHash])
+
 	useGSAP(
 		() => {
 			gsap.fromTo(
 				"main",
 				{ opacity: 0, filter: "blur(25px)" },
-				{ opacity: 1, filter: "blur(0px)", duration: 0.6, ease: "power2.out" },
+				{
+					opacity: 1,
+					filter: "blur(0px)",
+					duration: 0.6,
+					ease: "power2.out",
+					onComplete: () => ScrollTrigger.refresh(),
+				},
 			)
 		},
 		{ dependencies: [pathname] },
@@ -52,8 +87,8 @@ export default function RootLayout() {
 					<main>
 						<Outlet />
 					</main>
+					<Footer />
 					<Suspense fallback={null}>
-						<Footer />
 						<SupportUkraine />
 					</Suspense>
 					{/* <Cursor /> */}

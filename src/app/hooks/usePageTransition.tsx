@@ -1,7 +1,8 @@
-// hooks/usePageTransition.ts
-import { useNavigate } from "@tanstack/react-router"
+import { useNavigate, useLocation } from "@tanstack/react-router"
 import gsap from "gsap"
+import { ScrollTrigger } from "gsap/ScrollTrigger"
 import { setLightColor } from "../components/Experiences/lightStore"
+import { gsapScrollToTop } from "../utils/gsapScroll"
 
 const PAGE_COLORS: Record<string, string> = {
 	"/": "#a6d59e",
@@ -12,6 +13,11 @@ const PAGE_COLORS: Record<string, string> = {
 }
 
 const DEFAULT_COLOR = "#a6d59e"
+
+function normalizePath(p: string) {
+	const t = p.replace(/\/$/, "") || "/"
+	return t
+}
 
 /** Path + optional hash for TanStack Router (hash without leading #). */
 function splitInternalHref(href: string): { to: string; hash?: string } {
@@ -30,24 +36,52 @@ function splitInternalHref(href: string): { to: string; hash?: string } {
 
 export function usePageTransition() {
 	const navigate = useNavigate()
+	const { pathname } = useLocation()
 
 	function transitionTo(href: string) {
 		const { to, hash } = splitInternalHref(href)
+		const targetPath = normalizePath(to)
+		const currentPath = normalizePath(pathname)
+
 		setLightColor(PAGE_COLORS[to] ?? DEFAULT_COLOR)
+
+		// Same route: never fade main out (that left opacity at 0 when pathname did not change).
+		if (targetPath === currentPath) {
+			if (hash) {
+				void navigate({
+					to: targetPath,
+					hash,
+					replace: true,
+					resetScroll: false,
+					hashScrollIntoView: false,
+				})
+				// Smooth scroll + ScrollTrigger.refresh: RootLayout `useLayoutEffect`
+			} else {
+				void navigate({ to: targetPath, replace: true })
+				gsapScrollToTop()
+				requestAnimationFrame(() => ScrollTrigger.refresh())
+			}
+			return
+		}
 
 		gsap.to("main", {
 			opacity: 0,
 			filter: "blur(25px)",
-			duration: 0.7,
+			duration: 0.55,
 			ease: "power2.inOut",
+			onComplete: () => {
+				void navigate({
+					to,
+					...(hash
+						? {
+								hash,
+								resetScroll: false,
+								hashScrollIntoView: false,
+							}
+						: {}),
+				})
+			},
 		})
-
-		setTimeout(() => {
-			navigate({
-				to,
-				...(hash ? { hash } : {}),
-			})
-		}, 500)
 	}
 
 	return { transitionTo }

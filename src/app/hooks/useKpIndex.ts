@@ -33,7 +33,9 @@ export const getKpLabel = (kp: number) => {
 	return { label: "Severe storm", visible: true }
 }
 
-const fetchKpData = async () => {
+export const kpIndexQueryKey = ["kp-index"] as const
+
+export const fetchKpData = async () => {
 	const res = await fetch(
 		"https://services.swpc.noaa.gov/products/noaa-planetary-k-index.json",
 	)
@@ -52,10 +54,14 @@ const fetchKpData = async () => {
 	}
 }
 
+export const kpIndexQueryOptions = {
+	queryKey: kpIndexQueryKey,
+	queryFn: fetchKpData,
+	staleTime: 1000 * 60 * 15,
+} as const
+
 export const useKpIndex = () =>
 	useQuery({
-		queryKey: ["kp-index"],
-		queryFn: fetchKpData,
-		staleTime: 1000 * 60 * 15,
+		...kpIndexQueryOptions,
 		refetchInterval: 1000 * 60 * 15,
 	})

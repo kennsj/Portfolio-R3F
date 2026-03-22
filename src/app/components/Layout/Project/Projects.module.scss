@@ -200,13 +200,15 @@
 	}
 }
 
+/* Portaled to document.body so fixed + clientX/Y match the viewport.
+   (A filter on <main> would otherwise make fixed relative to main.) */
 .project-hover-shell {
 	position: fixed;
 	left: 0;
 	top: 0;
 	transform: translate(-50%, -50%);
 	pointer-events: none;
-	z-index: -1;
+	z-index: 80;
 	width: 500px;
 	aspect-ratio: 16 / 9;
 	overflow: hidden;

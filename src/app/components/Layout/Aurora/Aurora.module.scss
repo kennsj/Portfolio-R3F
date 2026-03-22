@@ -1,3 +1,7 @@
+.aurora-loading {
+	min-height: clamp(12rem, 35vw, 22rem);
+}
+
 .aurora-wrapper {
 	max-width: var(--max-width);
 	margin: 0 auto;

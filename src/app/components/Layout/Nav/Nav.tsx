@@ -33,9 +33,7 @@ const Nav = () => {
 			}
 
 			const logo = el.querySelector<HTMLElement>(":scope > a")
-			const linkRow = el.querySelector<HTMLElement>(
-				`.${styles["nav-links"]}`,
-			)
+			const linkRow = el.querySelector<HTMLElement>(`.${styles["nav-links"]}`)
 			const parts: HTMLElement[] = []
 			if (logo) parts.push(logo)
 			if (linkRow) {
@@ -78,7 +76,7 @@ const Nav = () => {
 				<div className={styles["nav-links"]}>
 					<NavLink href='/#about'>About</NavLink>
 					<NavLink href='/#work'>Works</NavLink>
-					<NavLink href='#contact'>Contact</NavLink>
+					<NavLink href='/#contact'>Contact</NavLink>
 
 					<div
 						className={styles["kp-indicator"]}
