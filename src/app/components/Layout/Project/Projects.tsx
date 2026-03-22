@@ -1,13 +1,12 @@
-import { useRef, type MouseEvent, Fragment } from "react"
-import { useNavigate } from "@tanstack/react-router"
+import { useRef, Fragment } from "react"
 import styles from "./Projects.module.scss"
-import { setLightColor } from "../../Experiences/lightStore"
 import HeadingAnimation from "../../UI/HeadingAnimation/HeadingAnimation"
 import { useProjectHoverPreview } from "./useProjectHoverPreview"
 import { useGSAP } from "@gsap/react"
 import gsap from "gsap"
 import SplitText from "gsap/SplitText"
 import { ScrollTrigger } from "gsap/ScrollTrigger"
+import { usePageTransition } from "../../../hooks/usePageTransition"
 
 gsap.registerPlugin(ScrollTrigger, SplitText)
 
@@ -47,7 +46,6 @@ const projects = [
 ] as const
 
 const Projects = () => {
-	const navigate = useNavigate()
 	const {
 		shellRef,
 		imgRef,
@@ -58,13 +56,7 @@ const Projects = () => {
 		onSectionLeave,
 	} = useProjectHoverPreview(projects)
 
-	const handleProjectClick = (e: MouseEvent, slug: string) => {
-		e.preventDefault()
-		setLightColor("#E4DCCB")
-		setTimeout(() => {
-			navigate({ to: `/project/${slug}` })
-		}, 1200)
-	}
+	const { transitionTo } = usePageTransition()
 
 	const listRef = useRef<HTMLUListElement>(null)
 
@@ -84,7 +76,7 @@ const Projects = () => {
 				const master = gsap.timeline({
 					scrollTrigger: {
 						trigger: list,
-						start: "top 75%",
+						start: "top 80%",
 					},
 				})
 
@@ -162,7 +154,7 @@ const Projects = () => {
 							<Fragment key={project.url}>
 								<li
 									className={styles["project-item"]}
-									onClick={(e) => handleProjectClick(e, project.url)}
+									onClick={() => transitionTo(`/project${project.url}`)}
 									onMouseMove={onMouseMove}
 									onMouseEnter={(e) => onEnter(project, index, e)}
 									onMouseLeave={(e) => onLeave(index, e)}

@@ -9,48 +9,98 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './app/__root'
+import { Route as ProjectRouteRouteImport } from './app/project/route'
 import { Route as IndexRouteImport } from './app/index'
+import { Route as ProjectVerchiaRouteImport } from './app/project/verchia'
 import { Route as ProjectSnoOsloRouteImport } from './app/project/sno-oslo'
+import { Route as ProjectPradelnaRouteImport } from './app/project/pradelna'
 
+const ProjectRouteRoute = ProjectRouteRouteImport.update({
+  id: '/project',
+  path: '/project',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ProjectVerchiaRoute = ProjectVerchiaRouteImport.update({
+  id: '/verchia',
+  path: '/verchia',
+  getParentRoute: () => ProjectRouteRoute,
+} as any)
 const ProjectSnoOsloRoute = ProjectSnoOsloRouteImport.update({
-  id: '/project/sno-oslo',
-  path: '/project/sno-oslo',
-  getParentRoute: () => rootRouteImport,
+  id: '/sno-oslo',
+  path: '/sno-oslo',
+  getParentRoute: () => ProjectRouteRoute,
+} as any)
+const ProjectPradelnaRoute = ProjectPradelnaRouteImport.update({
+  id: '/pradelna',
+  path: '/pradelna',
+  getParentRoute: () => ProjectRouteRoute,
 } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/project': typeof ProjectRouteRouteWithChildren
+  '/project/pradelna': typeof ProjectPradelnaRoute
   '/project/sno-oslo': typeof ProjectSnoOsloRoute
+  '/project/verchia': typeof ProjectVerchiaRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/project': typeof ProjectRouteRouteWithChildren
+  '/project/pradelna': typeof ProjectPradelnaRoute
   '/project/sno-oslo': typeof ProjectSnoOsloRoute
+  '/project/verchia': typeof ProjectVerchiaRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/project': typeof ProjectRouteRouteWithChildren
+  '/project/pradelna': typeof ProjectPradelnaRoute
   '/project/sno-oslo': typeof ProjectSnoOsloRoute
+  '/project/verchia': typeof ProjectVerchiaRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/project/sno-oslo'
+  fullPaths:
+    | '/'
+    | '/project'
+    | '/project/pradelna'
+    | '/project/sno-oslo'
+    | '/project/verchia'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/project/sno-oslo'
-  id: '__root__' | '/' | '/project/sno-oslo'
+  to:
+    | '/'
+    | '/project'
+    | '/project/pradelna'
+    | '/project/sno-oslo'
+    | '/project/verchia'
+  id:
+    | '__root__'
+    | '/'
+    | '/project'
+    | '/project/pradelna'
+    | '/project/sno-oslo'
+    | '/project/verchia'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  ProjectSnoOsloRoute: typeof ProjectSnoOsloRoute
+  ProjectRouteRoute: typeof ProjectRouteRouteWithChildren
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/project': {
+      id: '/project'
+      path: '/project'
+      fullPath: '/project'
+      preLoaderRoute: typeof ProjectRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -58,19 +108,49 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/project/verchia': {
+      id: '/project/verchia'
+      path: '/verchia'
+      fullPath: '/project/verchia'
+      preLoaderRoute: typeof ProjectVerchiaRouteImport
+      parentRoute: typeof ProjectRouteRoute
+    }
     '/project/sno-oslo': {
       id: '/project/sno-oslo'
-      path: '/project/sno-oslo'
+      path: '/sno-oslo'
       fullPath: '/project/sno-oslo'
       preLoaderRoute: typeof ProjectSnoOsloRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof ProjectRouteRoute
+    }
+    '/project/pradelna': {
+      id: '/project/pradelna'
+      path: '/pradelna'
+      fullPath: '/project/pradelna'
+      preLoaderRoute: typeof ProjectPradelnaRouteImport
+      parentRoute: typeof ProjectRouteRoute
     }
   }
 }
 
+interface ProjectRouteRouteChildren {
+  ProjectPradelnaRoute: typeof ProjectPradelnaRoute
+  ProjectSnoOsloRoute: typeof ProjectSnoOsloRoute
+  ProjectVerchiaRoute: typeof ProjectVerchiaRoute
+}
+
+const ProjectRouteRouteChildren: ProjectRouteRouteChildren = {
+  ProjectPradelnaRoute: ProjectPradelnaRoute,
+  ProjectSnoOsloRoute: ProjectSnoOsloRoute,
+  ProjectVerchiaRoute: ProjectVerchiaRoute,
+}
+
+const ProjectRouteRouteWithChildren = ProjectRouteRoute._addFileChildren(
+  ProjectRouteRouteChildren,
+)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  ProjectSnoOsloRoute: ProjectSnoOsloRoute,
+  ProjectRouteRoute: ProjectRouteRouteWithChildren,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

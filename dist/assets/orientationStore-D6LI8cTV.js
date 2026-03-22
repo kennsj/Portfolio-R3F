@@ -1,1 +1,0 @@
-var e={x:0,y:0};function t(t,n){e.x=t/window.innerWidth*2-1,e.y=-(n/window.innerHeight)*2+1}var n={beta:0,gamma:0};export{e as n,t as r,n as t};

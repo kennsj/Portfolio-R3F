@@ -1,36 +1,143 @@
-import { useEffect } from "react"
+import { useEffect, useRef } from "react"
 import styles from "./Aurora.module.scss"
 import { setLightColor } from "../../Experiences/lightStore"
 import { useKpIndex, getKpColor, getKpLabel } from "../../../hooks/useKpIndex"
 import { useManualKp } from "../../../hooks/KpContext"
+import { useGSAP } from "@gsap/react"
+import gsap from "gsap"
+import { ScrollTrigger } from "gsap/ScrollTrigger"
+
+gsap.registerPlugin(ScrollTrigger)
 
 const Aurora = () => {
 	const { data, isLoading } = useKpIndex()
 	const { manualKp, setManualKp } = useManualKp()
 
 	const displayKp = manualKp ?? data?.latest ?? 0
+	const displayKpRef = useRef(displayKp)
+	displayKpRef.current = displayKp
+
+	const wrapRef = useRef<HTMLDivElement>(null)
+	const kpNumRef = useRef<HTMLSpanElement>(null)
+	const locationRef = useRef<HTMLDivElement>(null)
+	const hasCountPlayedRef = useRef(false)
 
 	useEffect(() => {
 		setLightColor(getKpColor(displayKp))
 	}, [displayKp])
+
+	useEffect(() => {
+		if (!hasCountPlayedRef.current || !kpNumRef.current) return
+		kpNumRef.current.textContent = displayKp.toFixed(1)
+	}, [displayKp])
+
+	useGSAP(
+		() => {
+			if (isLoading || !data?.entries.length) return
+
+			const wrap = wrapRef.current
+			const kpEl = kpNumRef.current
+			const loc = locationRef.current
+			if (!wrap || !kpEl || !loc) return
+
+			let cancelled = false
+			let timeline: gsap.core.Timeline | null = null
+
+			document.fonts.ready.then(() => {
+				if (cancelled || !wrap.isConnected) return
+
+				const bars = wrap.querySelectorAll<HTMLElement>("[data-aurora-bar]")
+
+				kpEl.textContent = "0.0"
+
+				bars.forEach((bar) => {
+					gsap.set(bar, {
+						transformOrigin: "bottom center",
+						scaleY: 0,
+						opacity: 0,
+					})
+				})
+
+				const counter = { val: 0 }
+
+				timeline = gsap.timeline({
+					scrollTrigger: {
+						trigger: wrap,
+						start: "top 80%",
+						once: true,
+					},
+				})
+
+				timeline.from(loc, {
+					opacity: 0,
+					filter: "blur(25px)",
+					yPercent: 35,
+					duration: 0.9,
+					ease: "power2.out",
+				})
+
+				timeline.to(
+					bars,
+					{
+						scaleY: 1,
+						opacity: 1,
+						stagger: 0.04,
+						duration: 0.6,
+						ease: "power2.out",
+					},
+					0,
+				)
+
+				timeline.to(
+					counter,
+					{
+						val: displayKpRef.current,
+						duration: 1.2,
+						ease: "power2.out",
+						onUpdate: () => {
+							kpEl.textContent = counter.val.toFixed(1)
+						},
+						onComplete: () => {
+							hasCountPlayedRef.current = true
+						},
+					},
+					0,
+				)
+
+				if (cancelled) {
+					timeline.scrollTrigger?.kill()
+					timeline.kill()
+					timeline = null
+				}
+			})
+
+			return () => {
+				cancelled = true
+				timeline?.scrollTrigger?.kill()
+				timeline?.kill()
+				timeline = null
+			}
+		},
+		{ dependencies: [isLoading, data], scope: wrapRef },
+	)
 
 	if (isLoading) return null
 
 	const { label, visible } = getKpLabel(displayKp)
 
 	return (
-		<div className={styles["aurora-wrapper"]}>
+		<div ref={wrapRef} className={styles["aurora-wrapper"]}>
 			<div className={styles.topLabel}>Aurora forecast</div>
 
 			<div className={styles["main-row"]}>
-				<div className={styles["location-label"]}>
+				<div ref={locationRef} className={styles["location-label"]}>
 					Bodø,
 					<br />
 					<span className={styles.dim}>Norway</span>
 				</div>
 				<div className={styles["kp-block"]}>
 					<div className={styles["kp-meta"]}>KP Index</div>
-					<span className={styles["kp-num"]}>{displayKp.toFixed(1)}</span>
+					<span ref={kpNumRef} className={styles["kp-num"]} />
 					<div className={styles["status-line"]}>
 						<span
 							className={styles["status-dot"]}
@@ -50,6 +157,7 @@ const Aurora = () => {
 				{data?.entries.map((entry, i) => (
 					<div key={i} className={styles["bar-wrap"]}>
 						<div
+							data-aurora-bar
 							className={styles.bar}
 							style={{
 								height: `${Math.max(2, (entry.kp / 9) * 32)}px`,

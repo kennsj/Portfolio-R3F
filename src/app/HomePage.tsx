@@ -1,4 +1,5 @@
 import { lazy, Suspense } from "react"
+import Header from "./components/Layout/Header/Header"
 
 // Lazy per block so Contact/Projects/etc. SCSS and TSX changes stay off the
 // HomePage module graph path back to index.jsx → routeTree → router → main.
@@ -15,6 +16,7 @@ const Contact = lazy(() => import("./components/Layout/Contact/Contact"))
 export default function HomePage() {
 	return (
 		<>
+			<Header signalNavIntroAfterHero />
 			<section>
 				<div style={{ maxWidth: "var(--max-width)", margin: "0 auto" }}>
 					<Suspense fallback={null}>

@@ -1,7 +1,7 @@
 import { useGSAP } from "@gsap/react"
 import React, { useRef } from "react"
 import SplitText from "gsap/SplitText"
-import ScrollTrigger from "gsap/ScrollTrigger"
+import { ScrollTrigger } from "gsap/ScrollTrigger"
 import gsap from "gsap"
 
 import styles from "./TextBlock.module.scss"
@@ -19,29 +19,45 @@ const TextBlock = ({
 
 	useGSAP(
 		() => {
+			const block = ref.current
+			if (!block) return
+
+			const splitInstances: SplitText[] = []
+			let cancelled = false
+
 			document.fonts.ready.then(() => {
-				const splitP = SplitText.create(ref.current, {
+				if (cancelled || !block.isConnected) return
+
+				const splitP = SplitText.create(block, {
 					type: "lines",
 				})
+				splitInstances.push(splitP)
 
 				gsap.from(splitP.lines, {
 					opacity: 0,
 					filter: "blur(25px)",
-					yPercent: 100,
-					stagger: 0.1,
-					duration: 1.1,
+					yPercent: 35,
+					duration: 0.9,
+					ease: "power2.out",
 					scrollTrigger: {
-						trigger: ref.current,
-						start: "bottom 85%",
-						end: "bottom 15%",
+						trigger: block,
+						start: "top 80%",
 					},
 				})
 			})
+
+			return () => {
+				cancelled = true
+				splitInstances.splice(0).forEach((s) => s.revert())
+			}
 		},
 		{ scope: ref },
 	)
 	return (
-		<p ref={ref} className={`${styles["text-block"]} ${className}`}>
+		<p
+			ref={ref}
+			className={`${styles["text-block"]} ${className ?? ""}`.trim()}
+		>
 			{children}
 		</p>
 	)

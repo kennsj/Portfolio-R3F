@@ -1,0 +1,140 @@
+.button {
+	display: flex;
+	align-items: center;
+	width: fit-content;
+	padding: 1rem 3rem;
+	border: none;
+	border-radius: 50em;
+	background: var(--tertiary-color);
+	font-family: "Syne", sans-serif;
+	font-size: 1.5rem;
+	font-weight: 700;
+	color: var(--color-black);
+	letter-spacing: 0.05em;
+	cursor: pointer;
+	transition: all 0.3s ease;
+
+	.icon-container {
+		position: relative;
+		display: flex;
+		align-items: center;
+		justify-content: flex-end;
+		margin-left: 6rem;
+
+		.button-dot {
+			position: relative;
+			width: 0.5rem;
+			height: 0.5rem;
+			background: var(--color-black);
+			border-radius: 50%;
+			transition:
+				transform 0.4s cubic-bezier(0.075, 0.82, 0.165, 1),
+				overflow 0s 0s;
+
+			.button-arrow {
+				position: absolute;
+				top: 50%;
+				left: 50%;
+				width: 4px;
+				height: 4px;
+				overflow: hidden;
+				transform: translate(-200%, 100%);
+				opacity: 0;
+				color: var(--tertiary-color);
+				transition:
+					transform 0.35s cubic-bezier(0.075, 0.82, 0.165, 1),
+					opacity 0.35s ease;
+				transition-delay: 0.1s;
+
+				svg {
+					position: absolute;
+					top: 0;
+					left: 0;
+					width: 4px;
+					height: 4px;
+					stroke: var(--tertiary-color);
+				}
+			}
+
+			&::before {
+				content: "";
+				position: absolute;
+				width: 0.5rem;
+				height: 0.5rem;
+				background: var(--color-black);
+				border-radius: 50%;
+				top: 50%;
+				left: 50%;
+				transform: translate(-50%, -50%) scale(1);
+				opacity: 1;
+				animation: button-dot-pulse 2s cubic-bezier(0.075, 0.82, 0.165, 1)
+					infinite;
+				animation-delay: 0.5s;
+			}
+		}
+	}
+
+	&:hover {
+		.icon-container {
+			.button-dot {
+				transform: scale(4);
+				overflow: hidden;
+
+				&::before {
+					animation: none;
+					transform: translate(-50%, -50%) scale(1);
+					opacity: 1;
+				}
+
+				.button-arrow {
+					transform: translate(-50%, -50%);
+					opacity: 1;
+				}
+			}
+		}
+	}
+
+	&[data-scroll-down] {
+		.icon-container {
+			.button-dot {
+				transform: rotate(135deg);
+
+				.button-arrow {
+					transform: translate(-50%, 0%);
+				}
+			}
+		}
+
+		&:hover {
+			.icon-container {
+				.button-dot {
+					transform: rotate(135deg) scale(4);
+
+					.button-arrow {
+						transform: translate(-50%, -50%);
+						opacity: 1;
+					}
+				}
+			}
+		}
+	}
+}
+
+@keyframes button-dot-pulse {
+	0% {
+		transform: translate(-50%, -50%) scale(1);
+		opacity: 1;
+	}
+	70% {
+		transform: translate(-50%, -50%) scale(3);
+		opacity: 0;
+	}
+	71% {
+		transform: translate(-50%, -50%) scale(1);
+		opacity: 0;
+	}
+	100% {
+		transform: translate(-50%, -50%) scale(1);
+		opacity: 1;
+	}
+}

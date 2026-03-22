@@ -1,1 +1,0 @@
-import{a as e,n as t}from"./jsx-runtime-D57Vegw5.js";var n=e(t(),1),r=n.createContext(null),i=!0;function a(e,t){if(!i){if(e)return;var n=`Warning: `+t;typeof console<`u`&&console.warn(n);try{throw Error(n)}catch{}}}function o(e){let t=n.useContext(r);return a(!((e?.warn??!0)&&!t),`useRouter must be used inside a <RouterProvider> component!`),t}export{a as n,r,o as t};

@@ -1,1 +1,0 @@
-import{t as e}from"./jsx-runtime-D57Vegw5.js";import"./useStore-B2i--TD_.js";import{y as t}from"./index-CI_8XqXM.js";var n={"arrow-link":`_arrow-link_ggxhx_1`,"arrow-link-text":`_arrow-link-text_ggxhx_22`},r=e(),i=({href:e,children:i})=>(0,r.jsx)(t,{to:e,className:n[`arrow-link`],children:(0,r.jsx)(`span`,{className:n[`arrow-link-text`],children:i})});export{i as default};

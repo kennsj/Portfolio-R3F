@@ -6,16 +6,15 @@ import { setLightColor } from "./components/Experiences/lightStore"
 import { useEffect } from "react"
 import { PointerProvider } from "./components/Experiences/PointerContext"
 import { KpProvider } from "./hooks/KpContext"
+import { HeroIntroProvider } from "./hooks/HeroIntroContext"
 import { SimpleAnalytics } from "@simpleanalytics/react"
 import PermissionProvider from "./components/Experiences/PermissionProvider"
-
-// Lazy per section so edits to Nav/Footer/etc. do not invalidate this module (and
-// therefore do not bubble to __root → routeTree → router → main).
-const Background = lazy(() => import("./components/Experiences/Background"))
+import Background from "./components/Experiences/Background"
 const Nav = lazy(() => import("./components/Layout/Nav/Nav"))
-const Header = lazy(() => import("./components/Layout/Header/Header"))
 const Footer = lazy(() => import("./components/Layout/Footer/Footer"))
-const SupportUkraine = lazy(() => import("./components/UI/SupportUkraine/SupportUkraine"))
+const SupportUkraine = lazy(
+	() => import("./components/UI/SupportUkraine/SupportUkraine"),
+)
 
 export default function RootLayout() {
 	const { pathname } = useLocation()
@@ -29,11 +28,11 @@ export default function RootLayout() {
 
 	useGSAP(
 		() => {
-			gsap.from("main > *", {
-				opacity: 0,
-				duration: 0.6,
-				ease: "power2.out",
-			})
+			gsap.fromTo(
+				"main",
+				{ opacity: 0, filter: "blur(25px)" },
+				{ opacity: 1, filter: "blur(0px)", duration: 0.6, ease: "power2.out" },
+			)
 		},
 		{ dependencies: [pathname] },
 	)
@@ -42,20 +41,23 @@ export default function RootLayout() {
 		<PointerProvider>
 			<PermissionProvider />
 			<KpProvider>
-				<SimpleAnalytics />
-				<Suspense fallback={null}>
+				<HeroIntroProvider>
+					<SimpleAnalytics />
+
 					<Background />
-					<Nav />
-					<Header />
-				</Suspense>
-				<main>
-					<Outlet />
-				</main>
-				<Suspense fallback={null}>
-					<Footer />
-					<SupportUkraine />
-				</Suspense>
-				{/* <Cursor /> */}
+					<Suspense fallback={null}>
+						<Nav />
+					</Suspense>
+
+					<main>
+						<Outlet />
+					</main>
+					<Suspense fallback={null}>
+						<Footer />
+						<SupportUkraine />
+					</Suspense>
+					{/* <Cursor /> */}
+				</HeroIntroProvider>
 			</KpProvider>
 		</PointerProvider>
 	)

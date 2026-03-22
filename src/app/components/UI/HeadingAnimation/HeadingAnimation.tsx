@@ -18,23 +18,38 @@ const HeadingAnimation = ({
 
 	useGSAP(
 		() => {
-			document.fonts.ready.then(() => {
-				const split = SplitText.create(ref.current, {
-					type: "chars",
-				})
+			const heading = ref.current
+			if (!heading) return
 
-				gsap.from(split.chars, {
+			const splitInstances: SplitText[] = []
+			let cancelled = false
+
+			document.fonts.ready.then(() => {
+				if (cancelled || !heading.isConnected) return
+
+				const split = SplitText.create(heading, {
+					type: "lines",
+				})
+				splitInstances.push(split)
+
+				gsap.from(split.lines, {
 					opacity: 0,
 					filter: "blur(25px)",
 					yPercent: 100,
-					stagger: 0.005,
+					stagger: 0.001,
 					duration: 1,
+					ease: "power2.out",
 					scrollTrigger: {
-						trigger: ref.current,
-						start: "bottom 85%",
+						trigger: heading,
+						start: "top 80%",
 					},
 				})
 			})
+
+			return () => {
+				cancelled = true
+				splitInstances.splice(0).forEach((s) => s.revert())
+			}
 		},
 		{ scope: ref },
 	)

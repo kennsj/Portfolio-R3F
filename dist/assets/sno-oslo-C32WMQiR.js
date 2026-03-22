@@ -1,2 +1,0 @@
-const __vite__mapDeps=(i,m=__vite__mapDeps,d=(m.f||(m.f=["assets/SnoOsloPage-kpmNjaD_.js","assets/jsx-runtime-D57Vegw5.js"])))=>i.map(i=>d[i]);
-import{a as e,n as t,t as n}from"./jsx-runtime-D57Vegw5.js";import{_ as r}from"./index-CI_8XqXM.js";var i=e(t()),a=n(),o=(0,i.lazy)(()=>r(()=>import(`./SnoOsloPage-kpmNjaD_.js`),__vite__mapDeps([0,1])));function s(){return(0,a.jsx)(i.Suspense,{fallback:null,children:(0,a.jsx)(o,{})})}export{s as component};

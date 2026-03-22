@@ -13,4 +13,10 @@ function RootRoute() {
 
 export const Route = createRootRoute({
 	component: RootRoute,
+	errorComponent: ({ error }) => (
+		<div>
+			<p>Something went wrong</p>
+			<p>{error.message}</p>
+		</div>
+	),
 })

@@ -1,6 +1,12 @@
-import { lazy, Suspense } from "react"
+import { lazy, Suspense, useRef } from "react"
+import { useGSAP } from "@gsap/react"
+import gsap from "gsap"
+import { ScrollTrigger } from "gsap/ScrollTrigger"
 
+import ArrowLink from "../../UI/ArrowLink/ArrowLink"
 import styles from "./Contact.module.scss"
+
+gsap.registerPlugin(ScrollTrigger)
 
 const HeadingAnimation = lazy(
 	() => import("../../UI/HeadingAnimation/HeadingAnimation"),
@@ -8,9 +14,69 @@ const HeadingAnimation = lazy(
 const TextBlock = lazy(() => import("../../UI/TextBlock/TextBlock"))
 const Aurora = lazy(() => import("../Aurora/Aurora"))
 const Form = lazy(() => import("./Form"))
-const ArrowLink = lazy(() => import("../../UI/ArrowLink/ArrowLink"))
 
 const Contact = ({ showForecast = false }: { showForecast?: boolean }) => {
+	const contactInfoRef = useRef<HTMLDivElement>(null)
+
+	useGSAP(
+		() => {
+			const root = contactInfoRef.current
+			if (!root) return
+
+			const portrait = root.querySelector<HTMLElement>(
+				"[data-contact-portrait]",
+			)
+			const emailCol = root.querySelector<HTMLElement>("[data-contact-email]")
+			if (!portrait || !emailCol) return
+
+			const tl = gsap.timeline({
+				scrollTrigger: {
+					trigger: root,
+					start: "top bottom",
+					toggleActions: "play none none none",
+					invalidateOnRefresh: true,
+				},
+				defaults: { ease: "power2.out" },
+			})
+
+			tl.fromTo(
+				portrait,
+				{
+					clipPath: "circle(0% at 50% 50%)",
+					opacity: 0.35,
+					filter: "blur(16px)",
+				},
+				{
+					clipPath: "circle(50% at 50% 50%)",
+					opacity: 1,
+					filter: "blur(0px)",
+					duration: 1.05,
+				},
+			)
+
+			tl.fromTo(
+				emailCol,
+				{
+					opacity: 0,
+					filter: "blur(22px)",
+					yPercent: 22,
+				},
+				{
+					opacity: 1,
+					filter: "blur(0px)",
+					yPercent: 0,
+					duration: 0.9,
+				},
+				"-=0.55",
+			)
+
+			requestAnimationFrame(() => {
+				ScrollTrigger.refresh()
+			})
+		},
+		{ scope: contactInfoRef },
+	)
+
 	return (
 		<section aria-label='Contact'>
 			<div className={styles["contact-wrapper"]}>
@@ -33,16 +99,20 @@ const Contact = ({ showForecast = false }: { showForecast?: boolean }) => {
 				)}
 				<Suspense fallback={null}>
 					<TextBlock className={styles["contact-text"]}>
-						Share a bit about your project, timeline, and what a good outcome
-						looks like. I'll get back to you as soon as I can. Or let me know if
-						you want to go aurora hunting!
+						Available for freelance projects and the right full-time role. Share
+						a bit about your project, timeline, and what a good outcome looks
+						like. I'll get back to you as soon as I can. Or let me know if you
+						want to go aurora hunting!
 					</TextBlock>
 				</Suspense>
 				<Suspense fallback={null}>
 					<Form />
 				</Suspense>
-				<div className={styles["contact-info"]}>
-					<div className={styles["contact-info-image"]}>
+				<div ref={contactInfoRef} className={styles["contact-info"]}>
+					<div
+						className={styles["contact-info-image"]}
+						data-contact-portrait
+					>
 						<svg viewBox='0 0 200 200' width='250' height='250'>
 							<defs>
 								<path
@@ -75,16 +145,14 @@ const Contact = ({ showForecast = false }: { showForecast?: boolean }) => {
 							</text>
 						</svg>
 					</div>
-					<div className={styles["contact-info-email"]}>
-						<Suspense fallback={null}>
-							<ArrowLink
-								size='48'
-								href='mailto:hello@kj.design'
-								data-text='hello@kj.design'
-							>
-								hello@kj.design
-							</ArrowLink>
-						</Suspense>
+					<div className={styles["contact-info-email"]} data-contact-email>
+						<ArrowLink
+							size='48'
+							href='mailto:hello@kj.design'
+							data-text='hello@kj.design'
+						>
+							hello@kj.design
+						</ArrowLink>
 					</div>
 				</div>
 			</div>
