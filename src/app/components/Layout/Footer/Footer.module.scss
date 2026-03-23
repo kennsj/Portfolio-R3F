@@ -15,8 +15,11 @@
 	.footer-wrapper-top {
 		display: flex;
 		justify-content: space-between;
+		flex-wrap: wrap;
+		row-gap: clamp(2rem, 5.5vw, 3rem);
+		column-gap: clamp(1.5rem, 4vw, 2.5rem);
 		margin-top: var(--margin-block);
-		margin-bottom: 5rem;
+		margin-bottom: clamp(2.5rem, 7vw, 5rem);
 
 		ul {
 			list-style: none;
@@ -24,7 +27,7 @@
 
 			li {
 				font-family: "Syne", sans-serif;
-				margin-bottom: 1.5rem;
+				margin-bottom: clamp(1rem, 3vw, 1.5rem);
 			}
 		}
 
@@ -58,7 +61,9 @@
 	.footer-wrapper-bottom {
 		display: flex;
 		justify-content: space-between;
-		padding-block: 2rem 5rem;
+		flex-wrap: wrap;
+		gap: clamp(1rem, 3vw, 1.5rem) clamp(1.25rem, 4vw, 2rem);
+		padding-block: clamp(1.5rem, 4vw, 2rem) clamp(2.5rem, 8vw, 5rem);
 
 		.kp {
 			display: flex;

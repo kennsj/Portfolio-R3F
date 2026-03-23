@@ -94,7 +94,9 @@ const Header = ({
 
 	return (
 		<header ref={headerRef} className={styles.header}>
-			<h4 ref={h4Ref}>Designer. Developer. Occasional gamer.</h4>
+			<h4 ref={h4Ref}>
+				Designer. Developer. <br /> Occasional gamer.
+			</h4>
 			<h1 ref={h1Ref}>
 				Designed in the <span className='highlight'>dark</span>.
 				<br /> Built for the <span className='highlight'>light</span>.

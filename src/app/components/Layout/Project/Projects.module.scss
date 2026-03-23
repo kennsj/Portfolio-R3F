@@ -7,7 +7,7 @@
 			display: flex;
 			align-items: center;
 			justify-content: space-between;
-			padding-inline: 2rem;
+			padding-inline: 0;
 			list-style: none;
 
 			h2 {
@@ -17,7 +17,7 @@
 				color: var(--tertiary-color);
 				color: transparent;
 				-webkit-text-stroke: 1px var(--tertiary-color);
-				margin: 4rem 0;
+				margin-block: clamp(2.5rem, 6vw, 4rem);
 				transition: color 0.8s ease;
 			}
 
@@ -34,7 +34,7 @@
 			.list-links {
 				display: flex;
 				align-items: center;
-				gap: 4rem;
+				gap: clamp(1.5rem, 5vw, 4rem);
 				font-weight: 400;
 
 				.project-work {
@@ -111,40 +111,42 @@
 	}
 }
 
-@media (max-width: 640px) {
-	.projects .projects-list {
+/* Mobile / narrow: label → outlined title → case study + mint circle (matches design comp) */
+@media (max-width: 768px) {
+	.projects-wrapper .projects-list {
 		.project-item {
 			position: relative;
 			flex-direction: column;
 			align-items: flex-start;
 			justify-content: flex-start;
-			gap: 0.65rem;
-			padding: 1.25rem 1.5rem;
-			padding-inline: clamp(1.15rem, 5vw, 1.75rem);
+			row-gap: 0;
+			padding-block: clamp(1.35rem, 4vw, 1.75rem);
+			padding-inline: 0;
 			overflow: hidden;
 			isolation: isolate;
 			cursor: pointer;
 
 			border-bottom: 1px solid
-				color-mix(in srgb, var(--primary-color) 35%, transparent);
+				color-mix(in srgb, var(--primary-color) 32%, transparent);
 
 			h2 {
 				order: 0;
 				max-width: 100%;
-				font-size: clamp(2.15rem, 11vw, 3rem);
+				font-size: clamp(2.25rem, 10.5vw, 3.15rem);
 				font-weight: 700;
-				line-height: 0.95;
+				line-height: 0.98;
 				letter-spacing: -0.02em;
+				margin: 0.35rem 0 0.85rem;
 				color: transparent;
 				-webkit-text-stroke: 1px
-					color-mix(in srgb, var(--tertiary-color) 78%, var(--text-light));
+					color-mix(in srgb, var(--tertiary-color) 85%, var(--text-light));
 				transition: none;
 			}
 
 			&:hover h2 {
 				color: transparent;
 				-webkit-text-stroke: 1px
-					color-mix(in srgb, var(--tertiary-color) 78%, var(--text-light));
+					color-mix(in srgb, var(--tertiary-color) 85%, var(--text-light));
 			}
 
 			.list-links {
@@ -155,42 +157,70 @@
 					order: -1;
 					opacity: 1;
 					font-family: var(--font-family-ibm);
-					font-size: 0.7rem;
+					font-size: 0.68rem;
 					font-weight: 400;
-					letter-spacing: 0.1em;
+					letter-spacing: 0.12em;
 					text-transform: uppercase;
-					color: color-mix(in srgb, var(--primary-color) 72%, transparent);
+					color: color-mix(in srgb, var(--primary-color) 68%, transparent);
+					margin-bottom: 0.1rem;
 				}
 
-				.list-links-cta {
+				.arrow-link {
 					order: 1;
-					width: 100%;
-					justify-content: flex-start;
+					display: flex;
+					flex-direction: row;
+					align-items: center;
+					gap: 0.65rem;
+					width: fit-content;
 					margin-top: 0.15rem;
+					font-size: clamp(0.9rem, 3.5vw, 1rem);
 					font-family: var(--font-family-ibm);
-					font-size: 0.85rem;
 					font-weight: 400;
-					letter-spacing: 0.04em;
-					color: var(--text-light);
-				}
+					letter-spacing: 0.03em;
+					color: color-mix(in srgb, var(--text-light) 92%, transparent);
 
-				.cta-label-desktop {
-					display: none;
-				}
+					&::before {
+						display: none;
+					}
 
-				.cta-label-mobile {
-					display: inline;
-				}
+					.arrow-link-text {
+						transform: none;
+						transition: none;
+					}
 
-				.link-arrow {
-					width: 36px;
-					height: 36px;
-					margin-left: 0;
+					.arrow-link-icon {
+						display: flex;
+						align-items: center;
+						justify-content: center;
+						width: 2.25rem;
+						height: 2.25rem;
+						border-radius: 50%;
+						background: var(--tertiary-color);
+						opacity: 1;
+						transform: none;
+						transition: none;
 
-					img {
-						width: 0.9rem;
+						svg {
+							width: 0.85rem;
+							height: 0.85rem;
+							stroke: var(--color-black);
+							stroke-width: 2;
+						}
 					}
 				}
+			}
+
+			&:hover > .list-links > .arrow-link > .arrow-link-text {
+				transform: none;
+			}
+
+			&:hover > .list-links > .arrow-link > .arrow-link-icon {
+				transform: none;
+				opacity: 1;
+			}
+
+			&:hover > .list-links > .arrow-link::before {
+				opacity: 0;
 			}
 		}
 

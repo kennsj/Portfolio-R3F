@@ -30,20 +30,23 @@ const TextBlock = ({
 
 				const splitP = SplitText.create(block, {
 					type: "lines",
-				})
-				splitInstances.push(splitP)
-
-				gsap.from(splitP.lines, {
-					opacity: 0,
-					filter: "blur(25px)",
-					yPercent: 35,
-					duration: 0.9,
-					ease: "power2.out",
-					scrollTrigger: {
-						trigger: block,
-						start: "top 80%",
+					autoSplit: true,
+					onSplit(self) {
+						return gsap.from(self.lines, {
+							opacity: 0,
+							filter: "blur(25px)",
+							yPercent: 35,
+							duration: 0.9,
+							ease: "power2.out",
+							scrollTrigger: {
+								trigger: block,
+								start: "top 80%",
+								invalidateOnRefresh: true,
+							},
+						})
 					},
 				})
+				splitInstances.push(splitP)
 			})
 
 			return () => {

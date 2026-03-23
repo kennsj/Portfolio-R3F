@@ -1,11 +1,12 @@
-import { useRef, type RefObject } from "react"
+import { useRef } from "react"
 import { useGSAP } from "@gsap/react"
 import gsap from "gsap"
 import { ScrollTrigger } from "gsap/ScrollTrigger"
+import SplitText from "gsap/SplitText"
 
 import styles from "./AnimatedButton.module.scss"
 
-gsap.registerPlugin(ScrollTrigger)
+gsap.registerPlugin(ScrollTrigger, SplitText)
 
 type AnimatedButtonProps = {
 	label: string
@@ -14,7 +15,6 @@ type AnimatedButtonProps = {
 	className?: string
 	dataScrollDown?: boolean
 	ariaDescribedBy?: string
-	/** Delay after scroll trigger fires (hero CTA trails headline) */
 	revealDelay?: number
 	revealDuration?: number
 }
@@ -29,12 +29,17 @@ const AnimatedButton = ({
 	revealDelay = 0,
 	revealDuration = 0.1,
 }: AnimatedButtonProps) => {
-	const rootRef = useRef<HTMLButtonElement | HTMLAnchorElement>(null)
+	const rootRef = useRef<HTMLButtonElement>(null)
+	const anchorRef = useRef<HTMLAnchorElement>(null)
+	const labelRef = useRef<HTMLSpanElement>(null)
 
 	useGSAP(
 		() => {
-			const el = rootRef.current
-			if (!el) return
+			console.log("rootRef", rootRef.current)
+			console.log("anchorRef", anchorRef.current)
+			console.log("labelRef", labelRef.current)
+			const el = rootRef.current ?? anchorRef.current
+			console.log("el", el)
 
 			gsap.fromTo(
 				el,
@@ -50,13 +55,49 @@ const AnimatedButton = ({
 					},
 				},
 			)
+
+			const split = new SplitText(labelRef.current, { type: "chars" })
+
+			const tl = gsap.timeline({ paused: true })
+
+			tl.to(split.chars, {
+				yPercent: -100,
+				filter: "blur(8px)",
+				opacity: 0,
+				duration: 0.5,
+				stagger: 0.008,
+				ease: "power2.in",
+			})
+				.set(split.chars, { yPercent: 100 })
+				.to(split.chars, {
+					yPercent: 0,
+					filter: "blur(0px)",
+					opacity: 1,
+					duration: 0.5,
+					stagger: 0.008,
+					ease: "power2.out",
+				})
+
+			const onEnter = () => tl.play()
+			const onLeave = () => tl.reverse()
+
+			el.addEventListener("mouseenter", onEnter)
+			el.addEventListener("mouseleave", onLeave)
+
+			return () => {
+				el.removeEventListener("mouseenter", onEnter)
+				el.removeEventListener("mouseleave", onLeave)
+				split.revert()
+			}
 		},
-		{ scope: rootRef, dependencies: [revealDelay, revealDuration] },
+		{ dependencies: [revealDelay, revealDuration] }, // no scope
 	)
+
+	const cls = `${styles.button} ${className ?? ""}`.trim()
 
 	const inner = (
 		<>
-			{label}
+			<span ref={labelRef}>{label}</span>
 			<div className={styles["icon-container"]}>
 				<span className={styles["button-dot"]}>
 					<span className={styles["button-arrow"]}>
@@ -79,16 +120,14 @@ const AnimatedButton = ({
 		</>
 	)
 
-	const cls = `${styles.button} ${className ?? ""}`.trim()
-
 	if (href) {
 		return (
 			<a
-				ref={rootRef as RefObject<HTMLAnchorElement>}
+				ref={anchorRef}
 				className={cls}
 				href={href}
 				aria-label={label}
-				{...(ariaDescribedBy ? { "aria-describedby": ariaDescribedBy } : {})}
+				aria-describedby={ariaDescribedBy}
 				data-scroll-down={dataScrollDown ? true : undefined}
 			>
 				{inner}
@@ -98,12 +137,12 @@ const AnimatedButton = ({
 
 	return (
 		<button
-			ref={rootRef as RefObject<HTMLButtonElement>}
+			ref={rootRef}
 			type='button'
 			className={cls}
 			onClick={onClick}
 			aria-label={label}
-			{...(ariaDescribedBy ? { "aria-describedby": ariaDescribedBy } : {})}
+			aria-describedby={ariaDescribedBy}
 			data-scroll-down={dataScrollDown ? true : undefined}
 		>
 			{inner}

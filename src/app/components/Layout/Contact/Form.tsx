@@ -1,5 +1,4 @@
-import Button from "../../UI/Button/Button"
-
+import AnimatedButton from "../../UI/AnimatedButton/AnimatedButton"
 import styles from "./Form.module.scss"
 
 const ZWSP = "\u200b"
@@ -60,15 +59,7 @@ const Form = () => {
 				</label>
 			</div>
 
-			<Button
-				type='submit'
-				disabled={false}
-				ariaLabel='Send'
-				ariaDescribedby='contact-message'
-				ariaRequired={true}
-			>
-				Send
-			</Button>
+			<AnimatedButton label='Submit' ariaDescribedBy='contact-message' />
 		</form>
 	)
 }

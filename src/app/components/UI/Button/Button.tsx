@@ -34,7 +34,7 @@ const Button = ({
 			aria-required={ariaRequired}
 			data-scroll-down={dataScrollDown}
 		>
-			{children}
+			<span>{children}</span>
 			<div className={styles["icon-container"]}>
 				<span className={styles["button-dot"]}>
 					<span className={styles["button-arrow"]}>

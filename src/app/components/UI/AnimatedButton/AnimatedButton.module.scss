@@ -119,6 +119,14 @@
 			}
 		}
 	}
+
+	@media (max-width: 768px) {
+		padding: 1rem 2rem;
+		font-size: 1rem;
+		.icon-container {
+			margin-left: 3rem;
+		}
+	}
 }
 
 @keyframes button-dot-pulse {

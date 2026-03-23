@@ -177,8 +177,8 @@ const Contact = ({ showForecast = false }: { showForecast?: boolean }) => {
 				{showForecast && (
 					<>
 						<TextBlock>
-							Now you know where the background <br /> comes from. And where I
-							come from.
+							Now you know where the background comes from. And where I come
+							from.
 						</TextBlock>
 
 						<Aurora />

@@ -8,11 +8,12 @@
 
 	.nav-container {
 		width: var(--max-width);
+		max-width: 100%;
 		display: flex;
 		justify-content: space-between;
 		align-items: center;
 		margin: 0 auto;
-		padding: 3rem 0;
+		padding: clamp(1.5rem, 4vw, 3rem) var(--page-gutter);
 		gap: 1rem;
 
 		img {

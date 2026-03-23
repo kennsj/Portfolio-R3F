@@ -97,7 +97,9 @@ const ExperienceTools = () => {
 				const master = gsap.timeline({
 					scrollTrigger: {
 						trigger: list,
-						start: "top 80%",
+						start: "top 88%",
+						invalidateOnRefresh: true,
+						toggleActions: "play none none none",
 					},
 				})
 
@@ -114,26 +116,31 @@ const ExperienceTools = () => {
 						})
 						splitInstances.push(split)
 
-						master.from(
-							split.lines,
-							{
-								opacity: 0,
-								filter: "blur(25px)",
-								yPercent: 100,
-								stagger: 0.001,
-								duration: 1,
-								ease: "power2.out",
-							},
-							at,
-						)
+						for (const line of split.lines) {
+							line.classList.add(styles.revealTarget)
+						}
+						h2.classList.remove(styles.revealTarget)
+
+						const lineReveal = {
+							opacity: 1,
+							visibility: "visible" as const,
+							filter: "blur(0px)",
+							y: 0,
+							duration: 1,
+							stagger: 0.001,
+							ease: "power2.out" as const,
+						}
+
+						master.to(split.lines, lineReveal, at)
 
 						if (body) {
-							master.from(
+							master.to(
 								body,
 								{
-									opacity: 0,
-									filter: "blur(25px)",
-									yPercent: 35,
+									opacity: 1,
+									visibility: "visible",
+									filter: "blur(0px)",
+									y: 0,
 									duration: 0.9,
 									ease: "power2.out",
 								},
@@ -141,17 +148,11 @@ const ExperienceTools = () => {
 							)
 						}
 					} else if (child instanceof HTMLHRElement) {
-						gsap.set(child, {
-							scaleX: 0,
-							filter: "blur(4px)",
-							transformOrigin: "left",
-						})
-
 						master.to(
 							child,
 							{
-								filter: "blur(0px)",
 								scaleX: 1,
+								filter: "blur(0px)",
 								transformOrigin: "left",
 								duration: 1,
 								ease: "power2.out",
@@ -159,6 +160,21 @@ const ExperienceTools = () => {
 							at,
 						)
 					}
+				})
+
+				/* If the list is already past the trigger when ST runs (common on mobile /
+				   after resize), the timeline may never play — paragraphs would stay at
+				   opacity:0 from immediateRender. Finish the timeline when already in view. */
+				requestAnimationFrame(() => {
+					ScrollTrigger.refresh()
+					requestAnimationFrame(() => {
+						if (cancelled || !list.isConnected) return
+						const vh = window.innerHeight
+						const top = list.getBoundingClientRect().top
+						if (top <= vh * 0.88) {
+							master.progress(1, false)
+						}
+					})
 				})
 			})
 
@@ -202,8 +218,10 @@ const ExperienceTools = () => {
 					{expertiseItems.map((item, index) => (
 						<Fragment key={item.title}>
 							<li>
-								<h2>{item.title}</h2>
-								<p>{item.description}</p>
+								<h2 className={styles.revealTarget}>{item.title}</h2>
+								<p className={styles.revealTargetParagraph}>
+									{item.description}
+								</p>
 							</li>
 							{index < expertiseItems.length - 1 ? <hr /> : null}
 						</Fragment>

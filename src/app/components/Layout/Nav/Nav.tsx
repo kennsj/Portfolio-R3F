@@ -6,10 +6,14 @@ import gsap from "gsap"
 import NavLink from "../../UI/NavLink/NavLink"
 import { usePageTransition } from "../../../hooks/usePageTransition"
 import { useHeroIntro } from "../../../hooks/HeroIntroContext"
+import { ScrollTrigger } from "gsap/ScrollTrigger"
 
 import styles from "./Nav.module.scss"
 
+gsap.registerPlugin(ScrollTrigger)
+
 const Nav = () => {
+	const navRef = useRef<HTMLElement>(null)
 	const { data } = useKpIndex()
 	const { manualKp } = useManualKp()
 	const [tooltipVisible, setTooltipVisible] = useState(false)
@@ -24,6 +28,35 @@ const Nav = () => {
 
 	useGSAP(
 		() => {
+			const nav = navRef.current
+			let lastY = window.scrollY
+
+			ScrollTrigger.create({
+				onUpdate: () => {
+					const currentY = window.scrollY
+
+					if (currentY > lastY && currentY > 100) {
+						gsap.killTweensOf(navRef.current)
+						gsap.to(navRef.current, {
+							autoAlpha: 0,
+							filter: "blur(15px)",
+							duration: 0.6,
+							ease: "power2.inOut",
+						})
+					} else if (currentY < lastY) {
+						gsap.killTweensOf(navRef.current)
+						gsap.to(navRef.current, {
+							autoAlpha: 1,
+							filter: "blur(0px)",
+							duration: 0.3,
+							ease: "power2.inOut",
+						})
+					}
+
+					lastY = currentY
+				},
+			})
+
 			const el = containerRef.current
 			if (!el) return
 
@@ -63,7 +96,7 @@ const Nav = () => {
 	}
 
 	return (
-		<nav className={styles.nav}>
+		<nav ref={navRef} className={styles.nav}>
 			<nav
 				ref={containerRef}
 				className={styles["nav-container"]}

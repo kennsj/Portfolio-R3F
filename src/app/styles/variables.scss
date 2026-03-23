@@ -1,11 +1,19 @@
 :root {
 	--max-width: 1200px;
 
-	--padding-top: 10rem;
-	--padding-bottom: 10rem;
-	--margin-top: 10rem;
-	--margin-block: 10rem;
-	--padding-block: 5rem;
+	/* Horizontal inset: one rhythm for all front-page columns */
+	--page-gutter: clamp(1.25rem, 4.5vw, 2.75rem);
+
+	/* Vertical section rhythm — shorter on narrow viewports */
+	--padding-top: clamp(3.75rem, 11vw, 10rem);
+	--padding-bottom: clamp(3.75rem, 11vw, 10rem);
+	--margin-top: clamp(3.5rem, 10vw, 10rem);
+	--margin-block: clamp(3.25rem, 9vw, 10rem);
+	--padding-block: clamp(2.25rem, 6vw, 5rem);
+
+	/* Inner stacks (forms, services): slightly tighter than full section gaps */
+	--stack-gap-lg: clamp(2.5rem, 7vw, 5rem);
+	--stack-gap-md: clamp(1.5rem, 4.5vw, 2.5rem);
 
 	--primary-color: #ccb2b2;
 	--primary-color-50: #ccb2b259;
@@ -52,6 +60,10 @@ body {
 	color: var(--primary-color);
 }
 
+body {
+	background-color: var(--color-black);
+}
+
 a {
 	text-decoration: none;
 	border: 0;
@@ -71,7 +83,7 @@ h1 {
 	color: var(--primary-color);
 
 	@media (max-width: 768px) {
-		font-size: clamp(1.5rem, 10vw, 3rem);
+		font-size: clamp(2rem, 9vw, 2.5rem);
 	}
 }
 
@@ -111,10 +123,15 @@ main {
 
 section {
 	padding-top: var(--padding-top);
+	padding-inline: var(--page-gutter);
 	width: 100%;
 
 	&[data-background-black] {
 		margin-top: var(--margin-top);
 		padding-bottom: var(--padding-bottom);
 	}
+}
+
+footer {
+	padding-inline: var(--page-gutter);
 }
