@@ -1,1 +1,0 @@
-import{t as e}from"./jsx-runtime-D57Vegw5.js";import"./useStore-CDpxaqrm.js";import"./src-BuaKOVZR.js";import{t}from"./Header-ssY42BQl.js";import"./HeroIntroContext-Kt7d2dao.js";var n=e();function r(){return(0,n.jsx)(n.Fragment,{children:(0,n.jsx)(t,{})})}export{r as component};

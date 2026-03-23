@@ -1,4 +1,4 @@
-import { useRef, Fragment } from "react"
+import { useRef, Fragment, useState, useCallback } from "react"
 import { createPortal } from "react-dom"
 import styles from "./Projects.module.scss"
 import HeadingAnimation from "../../UI/HeadingAnimation/HeadingAnimation"
@@ -32,21 +32,28 @@ const projects = [
 		name: "Dialog eXe",
 		link: "https://dialog-exe.vercel.app/",
 		work: "Design / Code",
-		image: "/images/verchia.png",
+		image: "/images/dx-kino.png",
 		url: "/dialog-exe",
 		urlText: "Case Study",
 	},
-	{
-		name: "Snø Oslo",
-		link: "https://snø-oslo.vercel.app/",
-		work: "Design / Code",
-		image: "/images/verchia.png",
-		url: "/sno-oslo",
-		urlText: "Case Study",
-	},
+	// {
+	// 	name: "Snø Oslo",
+	// 	link: "https://snø-oslo.vercel.app/",
+	// 	work: "Design / Code",
+	// 	image: "/images/verchia.png",
+	// 	url: "/sno-oslo",
+	// 	urlText: "Case Study",
+	// },
 ] as const
 
+/** Match `usePageTransition` main fade-out so the hover preview exits in sync. */
+const PAGE_OUT_DURATION = 0.55
+const PAGE_OUT_EASE = "power2.inOut"
+
 const Projects = () => {
+	const [previewInteractionLocked, setPreviewInteractionLocked] =
+		useState(false)
+
 	const {
 		shellRef,
 		imgRef,
@@ -55,11 +62,31 @@ const Projects = () => {
 		onEnter,
 		onLeave,
 		onSectionLeave,
-	} = useProjectHoverPreview(projects)
+	} = useProjectHoverPreview(projects, {
+		interactionDisabled: previewInteractionLocked,
+	})
 
 	const { transitionTo } = usePageTransition()
 
 	const listRef = useRef<HTMLUListElement>(null)
+
+	const handleProjectNavigate = useCallback(
+		(projectUrl: string) => {
+			setPreviewInteractionLocked(true)
+			const img = imgRef.current
+			if (img) {
+				gsap.killTweensOf(img)
+				gsap.to(img, {
+					autoAlpha: 0,
+					filter: "blur(10px)",
+					duration: PAGE_OUT_DURATION,
+					ease: PAGE_OUT_EASE,
+				})
+			}
+			transitionTo(`/project${projectUrl}`)
+		},
+		[transitionTo],
+	)
 
 	useGSAP(
 		() => {
@@ -68,25 +95,31 @@ const Projects = () => {
 
 			const splitInstances: SplitText[] = []
 			let cancelled = false
+			let master: gsap.core.Timeline | null = null
 
 			const rowStagger = 0.1
 
 			document.fonts.ready.then(() => {
 				if (cancelled || !list.isConnected) return
 
-				const master = gsap.timeline({
+				master = gsap.timeline({
 					scrollTrigger: {
 						trigger: list,
 						start: "top 80%",
+						once: true,
+						invalidateOnRefresh: true,
+						fastScrollEnd: true,
 					},
 				})
+
+				const listLinksSel = `.${CSS.escape(styles["list-links"])}`
 
 				Array.from(list.children).forEach((child, i) => {
 					const at = i * rowStagger
 
 					if (child instanceof HTMLLIElement) {
 						const h2 = child.querySelector("h2")
-						const links = h2?.nextElementSibling as HTMLElement | null
+						const links = child.querySelector<HTMLElement>(listLinksSel)
 						if (!h2) return
 
 						const split = SplitText.create(h2, {
@@ -109,12 +142,20 @@ const Projects = () => {
 						)
 
 						if (links) {
-							master.from(
+							// fromTo: explicit end state avoids rare cases where a late
+							// ScrollTrigger refresh + timeline.from() leaves .list-links stuck
+							// at the “from” values while the title lines have already resolved.
+							master.fromTo(
 								links,
 								{
 									opacity: 0,
 									filter: "blur(25px)",
 									yPercent: 35,
+								},
+								{
+									opacity: 1,
+									filter: "blur(0px)",
+									yPercent: 0,
 									duration: 0.9,
 									ease: "power2.out",
 								},
@@ -135,10 +176,20 @@ const Projects = () => {
 						)
 					}
 				})
+
+				requestAnimationFrame(() => {
+					requestAnimationFrame(() => {
+						if (cancelled || !list.isConnected) return
+						ScrollTrigger.refresh()
+					})
+				})
 			})
 
 			return () => {
 				cancelled = true
+				master?.scrollTrigger?.kill()
+				master?.kill()
+				master = null
 				splitInstances.splice(0).forEach((s) => s.revert())
 			}
 		},
@@ -154,12 +205,15 @@ const Projects = () => {
 			>
 				<div className={styles["projects-wrapper"]}>
 					<HeadingAnimation level={3}>Selected work</HeadingAnimation>
-					<ul ref={listRef} className={styles["projects-list"]}>
+					<ul
+						ref={listRef}
+						className={`${styles["projects-list"]}${previewInteractionLocked ? ` ${styles["projects-list--transitioning"]}` : ""}`}
+					>
 						{projects.map((project, index) => (
 							<Fragment key={project.url}>
 								<li
 									className={styles["project-item"]}
-									onClick={() => transitionTo(`/project${project.url}`)}
+									onClick={() => handleProjectNavigate(project.url)}
 									onMouseMove={onMouseMove}
 									onMouseEnter={(e) => onEnter(project, index, e)}
 									onMouseLeave={(e) => onLeave(index, e)}

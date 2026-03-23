@@ -1,7 +1,7 @@
 $form-font-size-sm: clamp(1.5rem, 6vw, 2rem);
 
 @mixin field-text {
-	font-family: "Syne", sans-serif;
+	font-family: var(--font-family-syne), sans-serif;
 	font-weight: 700;
 	color: var(--primary-color);
 	letter-spacing: 0.05em;

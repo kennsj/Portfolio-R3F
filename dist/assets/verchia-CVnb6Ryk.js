@@ -1,1 +1,0 @@
-import{t as e}from"./jsx-runtime-D57Vegw5.js";var t=e();function n(){return(0,t.jsx)(`div`,{children:`Hello "/project/verchia"!`})}export{n as component};

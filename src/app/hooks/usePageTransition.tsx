@@ -2,7 +2,10 @@ import { useNavigate, useLocation } from "@tanstack/react-router"
 import gsap from "gsap"
 import { ScrollTrigger } from "gsap/ScrollTrigger"
 import { setLightColor } from "../components/Experiences/lightStore"
-import { gsapScrollToTop } from "../utils/gsapScroll"
+import {
+	GSAP_PAGE_CONTENT_SELECTOR,
+	gsapScrollToTop,
+} from "../utils/gsapScroll"
 
 const PAGE_COLORS: Record<string, string> = {
 	"/": "#a6d59e",
@@ -64,7 +67,7 @@ export function usePageTransition() {
 			return
 		}
 
-		gsap.to("main", {
+		gsap.to(GSAP_PAGE_CONTENT_SELECTOR, {
 			opacity: 0,
 			filter: "blur(25px)",
 			duration: 0.55,

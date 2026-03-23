@@ -7,6 +7,7 @@
 	z-index: 100;
 
 	.nav-container {
+		visibility: hidden;
 		width: var(--max-width);
 		max-width: 100%;
 		display: flex;
@@ -33,7 +34,18 @@
 	}
 
 	@media (max-width: 768px) {
-		display: none;
+		.nav-container {
+			.nav-links {
+				gap: 1rem;
+
+				a {
+					margin-right: 0;
+					&::before {
+						display: none;
+					}
+				}
+			}
+		}
 	}
 }
 
@@ -51,6 +63,10 @@
 	border-radius: 50%;
 	display: block;
 	transition: background 2s ease;
+
+	@media (max-width: 768px) {
+		margin-left: 1rem;
+	}
 
 	@keyframes pulse {
 		0%,
@@ -81,6 +97,10 @@
 	white-space: nowrap;
 	pointer-events: none;
 	border-radius: 10px;
+
+	@media (max-width: 768px) {
+		right: 0;
+	}
 
 	.kp-value {
 		font-size: 0.85rem;

@@ -31,9 +31,11 @@ const Aurora = () => {
 		kpNumRef.current.textContent = displayKp.toFixed(1)
 	}, [displayKp])
 
+	const hasKpEntries = Boolean(data?.entries.length)
+
 	useGSAP(
 		() => {
-			if (isLoading || !data?.entries.length) return
+			if (isLoading || !hasKpEntries) return
 
 			const wrap = wrapRef.current
 			const kpEl = kpNumRef.current
@@ -71,6 +73,7 @@ const Aurora = () => {
 						start: "top bottom",
 						toggleActions: "play none none none",
 						invalidateOnRefresh: true,
+						fastScrollEnd: true,
 						once: true,
 					},
 				})
@@ -125,7 +128,7 @@ const Aurora = () => {
 				timeline = null
 			}
 		},
-		{ dependencies: [isLoading, data], scope: wrapRef },
+		{ dependencies: [isLoading, hasKpEntries], scope: wrapRef },
 	)
 
 	const ready = !isLoading && !!data?.entries.length
@@ -153,11 +156,13 @@ const Aurora = () => {
 							<div className={styles["kp-meta"]}>KP Index</div>
 							<span ref={kpNumRef} className={styles["kp-num"]} />
 							<div className={styles["status-line"]}>
-								<span
-									className={styles["status-dot"]}
-									style={{ background: getKpColor(displayKp) }}
-								/>
-								<span>{label}</span>
+								<div className={styles["status-dot-wrap"]}>
+									<span
+										className={styles["status-dot"]}
+										style={{ background: getKpColor(displayKp) }}
+									/>
+									<span>{label}</span>
+								</div>
 								{visible && (
 									<span className={styles["visible-label"]}>
 										— visible from Bodø tonight

@@ -25,6 +25,8 @@ const Header = ({
 			const header = headerRef.current
 			if (!header) return
 
+			gsap.set(header, { autoAlpha: 0 })
+
 			const splitInstances: SplitText[] = []
 			let cancelled = false
 
@@ -35,10 +37,47 @@ const Header = ({
 				const h1 = h1Ref.current
 				const p = pRef.current
 
+				const charFrom = {
+					autoAlpha: 0,
+					filter: "blur(25px)",
+					yPercent: 20,
+				}
+
+				let splitH4: SplitText | undefined
+				let splitH1: SplitText | undefined
+				let splitP: SplitText | undefined
+
+				if (h4) {
+					splitH4 = SplitText.create(h4, {
+						type: "chars",
+					})
+					splitInstances.push(splitH4)
+				}
+
+				if (h1) {
+					splitH1 = SplitText.create(h1, {
+						type: "lines, chars",
+					})
+					splitInstances.push(splitH1)
+				}
+
+				if (p) {
+					splitP = SplitText.create(p, {
+						type: "chars",
+					})
+					splitInstances.push(splitP)
+				}
+
+				// Header shell visible; char motion is owned by the timeline only.
+				// (Pre-setting charFrom + a ScrollTrigger that never advances left text stuck hidden.)
+				gsap.set(header, { autoAlpha: 1 })
+
 				const tl = gsap.timeline({
 					scrollTrigger: {
 						trigger: header,
-						start: "top 80%",
+						// Align trigger top with viewport top on first paint so the intro can run at scrollY === 0.
+						start: "top top",
+						toggleActions: "play none none none",
 					},
 					defaults: {
 						duration: 1.2,
@@ -53,35 +92,33 @@ const Header = ({
 					},
 				})
 
-				const charFrom = {
-					opacity: 0,
-					filter: "blur(25px)",
-					yPercent: 20,
-				}
-
-				if (h4) {
-					const splitH4 = SplitText.create(h4, {
-						type: "chars",
-					})
-					splitInstances.push(splitH4)
+				if (splitH4) {
 					tl.from(splitH4.chars, { ...charFrom })
 				}
 
-				if (h1) {
-					const split = SplitText.create(h1, {
-						type: "lines, chars",
-					})
-					splitInstances.push(split)
-					tl.from(split.chars, { ...charFrom }, "<+0.5")
+				if (splitH1) {
+					tl.from(
+						splitH1.chars,
+						{ ...charFrom },
+						splitH4 ? "<+0.5" : 0,
+					)
 				}
 
-				if (p) {
-					const splitP = SplitText.create(p, {
-						type: "chars",
-					})
-					splitInstances.push(splitP)
+				if (splitP) {
 					tl.from(splitP.chars, { ...charFrom }, "<+0.2")
 				}
+
+				ScrollTrigger.refresh()
+
+				requestAnimationFrame(() => {
+					if (cancelled || !header.isConnected) return
+					const st = tl.scrollTrigger
+					if (!st || tl.progress() > 0) return
+					const rect = header.getBoundingClientRect()
+					const inView =
+						rect.top < window.innerHeight && rect.bottom > 0
+					if (inView) tl.play(0)
+				})
 			})
 
 			return () => {

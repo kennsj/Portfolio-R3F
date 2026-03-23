@@ -1,16 +1,6 @@
-import { lazy, Suspense } from "react"
 import { createFileRoute } from "@tanstack/react-router"
-
-const HomePage = lazy(() => import("./HomePage"))
-
-function IndexRoute() {
-	return (
-		<Suspense fallback={null}>
-			<HomePage />
-		</Suspense>
-	)
-}
+import HomePage from "./HomePage"
 
 export const Route = createFileRoute("/")({
-	component: IndexRoute,
+	component: HomePage,
 })

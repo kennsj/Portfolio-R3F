@@ -21,7 +21,7 @@
 	}
 
 	.arrow-link-text {
-		font-style: "Syne";
+		font-style: var(--font-family-syne), sans-serif;
 		opacity: 0.5;
 		transform: translateX(1.5rem);
 		transition: opacity 0.8s cubic-bezier(0.075, 0.82, 0.165, 1);

@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router"
 import Header from "../components/Layout/Header/Header"
 
-export const Route = createFileRoute("/project/pradelna")({
+export const Route = createFileRoute("/project/dialog-exe")({
 	component: RouteComponent,
 })
 

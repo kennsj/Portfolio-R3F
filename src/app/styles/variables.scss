@@ -96,10 +96,14 @@ h2 {
 }
 
 h3 {
-	font-size: 1.5rem;
+	font-size: var(--font-size-h3);
 	font-weight: 400;
 	text-transform: uppercase;
 	opacity: 0.5;
+
+	@media (max-width: 768px) {
+		font-size: 1rem;
+	}
 }
 
 h4 {
@@ -118,7 +122,8 @@ h4 {
 }
 
 main {
-	// color: red;
+	/* Keeps footer below the first screen while route/Suspense layout settles */
+	min-height: 100dvh;
 }
 
 section {

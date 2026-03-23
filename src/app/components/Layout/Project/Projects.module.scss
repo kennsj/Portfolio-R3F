@@ -3,12 +3,17 @@
 	margin: 0 auto;
 
 	.projects-list {
+		&--transitioning {
+			pointer-events: none;
+		}
+
 		.project-item {
 			display: flex;
 			align-items: center;
 			justify-content: space-between;
 			padding-inline: 0;
 			list-style: none;
+			cursor: pointer;
 
 			h2 {
 				font-family: var(--font-family-syne);
@@ -63,7 +68,7 @@
 					}
 
 					.arrow-link-text {
-						font-style: "Syne";
+						font-style: var(--font-family-syne), sans-serif;
 						transform: translateX(1.5rem);
 						transition: transform 0.8s cubic-bezier(0.075, 0.82, 0.165, 1);
 					}
@@ -243,6 +248,10 @@
 	aspect-ratio: 16 / 9;
 	overflow: hidden;
 	border-radius: 4px;
+
+	@media screen and (max-width: 768px) {
+		display: none;
+	}
 }
 
 .project-hover {
@@ -252,4 +261,8 @@
 	object-fit: cover;
 	opacity: 0;
 	will-change: opacity;
+
+	@media screen and (max-width: 768px) {
+		display: none;
+	}
 }

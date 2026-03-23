@@ -6,6 +6,7 @@ import gsap from "gsap"
 import { ScrollTrigger } from "gsap/ScrollTrigger"
 import { setLightColor } from "./components/Experiences/lightStore"
 import {
+	GSAP_PAGE_CONTENT_SELECTOR,
 	gsapScrollToHashIdWhenReady,
 	gsapScrollToTop,
 } from "./utils/gsapScroll"
@@ -33,6 +34,18 @@ export default function RootLayout() {
 		}
 	}, [pathname])
 
+	// One refresh after images/fonts/layout settle — avoids short-page ScrollTrigger
+	// math on first paint (same class of bug as footer/heading flashes).
+	useEffect(() => {
+		const onLoad = () => ScrollTrigger.refresh()
+		if (document.readyState === "complete") {
+			requestAnimationFrame(() => ScrollTrigger.refresh())
+		} else {
+			window.addEventListener("load", onLoad, { once: true })
+		}
+		return () => window.removeEventListener("load", onLoad)
+	}, [])
+
 	useLayoutEffect(() => {
 		const prev = prevPathRef.current
 		prevPathRef.current = pathname
@@ -58,7 +71,7 @@ export default function RootLayout() {
 	useGSAP(
 		() => {
 			gsap.fromTo(
-				"main",
+				GSAP_PAGE_CONTENT_SELECTOR,
 				{ opacity: 0, filter: "blur(25px)" },
 				{
 					opacity: 1,

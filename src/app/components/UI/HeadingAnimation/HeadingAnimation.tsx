@@ -23,6 +23,7 @@ const HeadingAnimation = ({
 
 			const splitInstances: SplitText[] = []
 			let cancelled = false
+			let introTween: gsap.core.Tween | null = null
 
 			document.fonts.ready.then(() => {
 				if (cancelled || !heading.isConnected) return
@@ -32,7 +33,7 @@ const HeadingAnimation = ({
 				})
 				splitInstances.push(split)
 
-				gsap.from(split.lines, {
+				introTween = gsap.from(split.lines, {
 					opacity: 0,
 					filter: "blur(25px)",
 					yPercent: 100,
@@ -42,12 +43,25 @@ const HeadingAnimation = ({
 					scrollTrigger: {
 						trigger: heading,
 						start: "top 80%",
+						invalidateOnRefresh: true,
+						fastScrollEnd: true,
+						once: true,
 					},
+				})
+
+				requestAnimationFrame(() => {
+					requestAnimationFrame(() => {
+						if (cancelled || !heading.isConnected) return
+						ScrollTrigger.refresh()
+					})
 				})
 			})
 
 			return () => {
 				cancelled = true
+				introTween?.scrollTrigger?.kill()
+				introTween?.kill()
+				introTween = null
 				splitInstances.splice(0).forEach((s) => s.revert())
 			}
 		},

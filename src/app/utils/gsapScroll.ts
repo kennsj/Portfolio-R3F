@@ -3,6 +3,9 @@ import ScrollToPlugin from "gsap/ScrollToPlugin"
 
 gsap.registerPlugin(ScrollToPlugin)
 
+/** Site footer is a sibling of `<main>`; fade/route transitions must target both. */
+export const GSAP_PAGE_CONTENT_SELECTOR = "main, footer"
+
 /** Fixed nav height — keeps section headings clear of the bar */
 export const SCROLL_NAV_OFFSET_PX = 96
 
@@ -13,7 +16,9 @@ function scrollWindowToElement(el: HTMLElement, onComplete?: () => void) {
 		scrollTo: {
 			y: el,
 			offsetY: SCROLL_NAV_OFFSET_PX,
-			autoKill: true,
+			// Touch devices: default autoKill stops the tween when the browser
+			// still has touch/scroll in the same gesture as the tap (link click).
+			autoKill: false,
 		},
 		onComplete,
 	})

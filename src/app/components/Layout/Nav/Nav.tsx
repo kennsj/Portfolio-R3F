@@ -61,7 +61,7 @@ const Nav = () => {
 			if (!el) return
 
 			if (!homeHeroIntroReady) {
-				gsap.set(el, { opacity: 0, pointerEvents: "none" })
+				gsap.set(el, { autoAlpha: 0, pointerEvents: "none" })
 				return
 			}
 
@@ -77,9 +77,9 @@ const Nav = () => {
 
 			if (!parts.length) return
 
-			gsap.set(el, { opacity: 1, pointerEvents: "auto" })
+			gsap.set(el, { autoAlpha: 1, pointerEvents: "auto" })
 			gsap.from(parts, {
-				opacity: 0,
+				autoAlpha: 0,
 				filter: "blur(14px)",
 				yPercent: -38,
 				duration: 0.75,

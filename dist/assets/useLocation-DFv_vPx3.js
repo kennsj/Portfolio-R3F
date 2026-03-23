@@ -1,1 +1,0 @@
-import{a as e,n as t}from"./jsx-runtime-D57Vegw5.js";import{n,t as r,v as i}from"./useStore-CDpxaqrm.js";var a=e(t(),1);function o(e){let t=n(),o=(0,a.useRef)(void 0);return r(t.stores.location,n=>{let r=e?.select?e.select(n):n;if(e?.structuralSharing??t.options.defaultStructuralSharing){let e=i(o.current,r);return o.current=e,e}return r})}export{o as t};

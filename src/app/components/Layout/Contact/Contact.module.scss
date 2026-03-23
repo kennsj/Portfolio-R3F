@@ -43,7 +43,7 @@
 
 		.contact-info-email,
 		a {
-			font-family: "Syne", sans-serif;
+			font-family: var(--font-family-syne), sans-serif;
 			font-size: clamp(1.5rem, 8vw, 3.5rem);
 			font-size: clamp(2rem, 10vw, 5rem);
 			line-height: 1.2;
@@ -68,17 +68,21 @@
 
 	@media (max-width: 768px) {
 		.contact-info {
-			flex-direction: column;
-			align-items: flex-start;
-			display: none;
-
 			svg {
-				width: 10rem;
-				height: 10rem;
+				width: 7rem;
+				height: 7rem;
 			}
 
 			.contact-info-email a {
 				font-size: 1.5rem;
+
+				&::before {
+					display: none;
+				}
+
+				svg {
+					display: none;
+				}
 			}
 		}
 	}

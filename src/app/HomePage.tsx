@@ -1,14 +1,9 @@
 import { lazy, Suspense } from "react"
 import Header from "./components/Layout/Header/Header"
 import Contact from "./components/Layout/Contact/Contact"
+import HeadingAnimation from "./components/UI/HeadingAnimation/HeadingAnimation"
+import TextBlock from "./components/UI/TextBlock/TextBlock"
 
-// Lazy per block so SCSS/TSX stay off the main route graph where possible.
-// Contact is eager so ScrollTrigger measures while the section is still below
-// the fold (lazy chunk + late mount was skipping reveals when scrolling in).
-const HeadingAnimation = lazy(
-	() => import("./components/UI/HeadingAnimation/HeadingAnimation"),
-)
-const TextBlock = lazy(() => import("./components/UI/TextBlock/TextBlock"))
 const Projects = lazy(() => import("./components/Layout/Project/Projects"))
 const ExperienceTools = lazy(
 	() => import("./components/Layout/Expertise/Expertise"),
@@ -20,22 +15,32 @@ export default function HomePage() {
 			<Header signalNavIntroAfterHero />
 			<section id='about'>
 				<div style={{ maxWidth: "var(--max-width)", margin: "0 auto" }}>
-					<Suspense fallback={null}>
-						<HeadingAnimation level={3}>About me</HeadingAnimation>
-					</Suspense>
-					<Suspense fallback={null}>
-						<TextBlock>
-							I find it hard to let go of a project until both the design and
-							the code feel right. Which is probably why I ended up doing both.
-						</TextBlock>
-					</Suspense>
+					<HeadingAnimation level={3}>About me</HeadingAnimation>
+					<TextBlock>
+						I find it hard to let go of a project until both the design and
+						the code feel right. Which is probably why I ended up doing both.
+					</TextBlock>
 				</div>
 			</section>
 
-			<Suspense fallback={null}>
+			<Suspense
+				fallback={
+					<div
+						style={{ minHeight: "clamp(28rem, 55vh, 52rem)" }}
+						aria-hidden
+					/>
+				}
+			>
 				<Projects />
 			</Suspense>
-			<Suspense fallback={null}>
+			<Suspense
+				fallback={
+					<div
+						style={{ minHeight: "clamp(22rem, 45vh, 40rem)" }}
+						aria-hidden
+					/>
+				}
+			>
 				<ExperienceTools />
 			</Suspense>
 			<Contact showForecast />

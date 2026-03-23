@@ -14,9 +14,16 @@ const FADE_IN = 1.35
 const FADE_OUT = 0.42
 const LEAVE_DELAY_MS = 50
 
+type UseProjectHoverPreviewOptions = {
+	/** When true, ignore hover/scroll preview updates (e.g. during page transition out). */
+	interactionDisabled?: boolean
+}
+
 export function useProjectHoverPreview<T extends PreviewItem>(
 	items: readonly T[],
+	options: UseProjectHoverPreviewOptions = {},
 ) {
+	const { interactionDisabled = false } = options
 	const [current, setCurrent] = useState<T>(items[0])
 
 	const shellRef = useRef<HTMLDivElement>(null)
@@ -31,6 +38,14 @@ export function useProjectHoverPreview<T extends PreviewItem>(
 	const activeIndexRef = useRef(-1)
 	const hideTimeoutRef = useRef<number | null>(null)
 	const scrollSyncRafRef = useRef<number | null>(null)
+
+	useEffect(() => {
+		if (!interactionDisabled) return
+		if (hideTimeoutRef.current) {
+			clearTimeout(hideTimeoutRef.current)
+			hideTimeoutRef.current = null
+		}
+	}, [interactionDisabled])
 
 	useEffect(() => {
 		let rafId: number
@@ -109,6 +124,7 @@ export function useProjectHoverPreview<T extends PreviewItem>(
 	 * hide only if the pointer is no longer over a project item. No fade out/in for “still hovering”.
 	 */
 	const syncUnderCursorAfterScroll = useCallback(() => {
+		if (interactionDisabled) return
 		if (!lastPointer.current) return
 		const { x, y } = lastPointer.current
 		const el = document.elementFromPoint(x, y) as HTMLElement | null
@@ -147,7 +163,7 @@ export function useProjectHoverPreview<T extends PreviewItem>(
 			gsap.killTweensOf(imgRef.current)
 			gsap.set(imgRef.current, { opacity: 1 })
 		}
-	}, [hidePreview, items, showAt])
+	}, [hidePreview, interactionDisabled, items, showAt])
 
 	useEffect(() => {
 		const scheduleSync = () => {
@@ -179,6 +195,7 @@ export function useProjectHoverPreview<T extends PreviewItem>(
 
 	const onEnter = useCallback(
 		(project: T, index: number, e: ReactMouseEvent) => {
+			if (interactionDisabled) return
 			if (hideTimeoutRef.current) {
 				clearTimeout(hideTimeoutRef.current)
 				hideTimeoutRef.current = null
@@ -201,11 +218,12 @@ export function useProjectHoverPreview<T extends PreviewItem>(
 				gsap.set(imgRef.current, { opacity: 1 })
 			}
 		},
-		[showAt],
+		[interactionDisabled, showAt],
 	)
 
 	const onLeave = useCallback(
 		(index: number, e: ReactMouseEvent) => {
+			if (interactionDisabled) return
 			const { clientX, clientY } = e
 			const el = document.elementFromPoint(
 				clientX,
@@ -232,17 +250,18 @@ export function useProjectHoverPreview<T extends PreviewItem>(
 				if (imgRef.current) fadeOut(imgRef.current)
 			}, LEAVE_DELAY_MS)
 		},
-		[fadeOut],
+		[fadeOut, interactionDisabled],
 	)
 
 	const onSectionLeave = useCallback(() => {
+		if (interactionDisabled) return
 		lastPointer.current = null
 		if (hideTimeoutRef.current) {
 			clearTimeout(hideTimeoutRef.current)
 			hideTimeoutRef.current = null
 		}
 		hidePreview()
-	}, [hidePreview])
+	}, [hidePreview, interactionDisabled])
 
 	return {
 		shellRef,

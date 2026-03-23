@@ -1,66 +1,19 @@
-import { useRef } from "react"
-import { useGSAP } from "@gsap/react"
-import gsap from "gsap"
-import { ScrollTrigger } from "gsap/ScrollTrigger"
-
 import NavLink from "../../UI/NavLink/NavLink"
 import ArrowLink from "../../UI/ArrowLink/ArrowLink"
-import HeadingAnimation from "../../UI/HeadingAnimation/HeadingAnimation"
 import { useKpIndex, getKpLabel } from "../../../hooks/useKpIndex"
 import { useManualKp } from "../../../hooks/KpContext"
 
 import styles from "./Footer.module.scss"
 
-gsap.registerPlugin(ScrollTrigger)
-
 const Footer = () => {
-	const footerRevealRef = useRef<HTMLDivElement>(null)
 	const { data } = useKpIndex()
 	const { manualKp } = useManualKp()
 	const kp = manualKp ?? data?.latest ?? 0
 	const { label } = getKpLabel(kp)
 
-	useGSAP(
-		() => {
-			const wrap = footerRevealRef.current
-			if (!wrap) return
-
-			const sequence = wrap.querySelectorAll<HTMLElement>(
-				"[data-footer-reveal]",
-			)
-			if (!sequence.length) return
-
-			gsap.set(sequence, {
-				opacity: 0,
-				filter: "blur(16px)",
-				yPercent: 10,
-			})
-
-			gsap.to(sequence, {
-				opacity: 1,
-				filter: "blur(0px)",
-				yPercent: 0,
-				duration: 0.8,
-				stagger: 0.11,
-				ease: "power2.out",
-				scrollTrigger: {
-					trigger: wrap,
-					start: "top 88%",
-					toggleActions: "play none none none",
-					invalidateOnRefresh: true,
-				},
-			})
-
-			requestAnimationFrame(() => {
-				requestAnimationFrame(() => ScrollTrigger.refresh())
-			})
-		},
-		{ scope: footerRevealRef },
-	)
-
 	return (
-		<footer id='footer'>
-			<div ref={footerRevealRef} className={styles["footer-wrapper"]}>
+		<footer>
+			<div id='footer' className={styles["footer-wrapper"]}>
 				<hr data-footer-reveal />
 				<div className={styles["footer-wrapper-top"]}>
 					<div className={styles["footer-wrapper-left"]} data-footer-reveal>
@@ -71,7 +24,8 @@ const Footer = () => {
 						</p>
 					</div>
 					<div className={styles["footer-wrapper-center"]}>
-						<HeadingAnimation level={3}>Navigation</HeadingAnimation>
+						{/* No HeadingAnimation: lazy sections keep the doc short on first paint, so ST "top 80%" would fire here at load. */}
+						<h3 className={styles.footerSectionTitle}>Navigation</h3>
 						<ul data-footer-reveal>
 							<li>
 								<NavLink href='/'>Home</NavLink>
@@ -83,12 +37,12 @@ const Footer = () => {
 								<NavLink href='/#work'>Work</NavLink>
 							</li>
 							<li>
-								<NavLink href='/#contact'>Contact</NavLink>
+								<NavLink href='#contact'>Contact</NavLink>
 							</li>
 						</ul>
 					</div>
 					<div className={styles["footer-wrapper-right"]}>
-						<HeadingAnimation level={3}>Contact</HeadingAnimation>
+						<h3 className={styles.footerSectionTitle}>Contact</h3>
 						<ul data-footer-reveal>
 							<li>
 								<ArrowLink
