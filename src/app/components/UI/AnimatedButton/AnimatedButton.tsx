@@ -43,12 +43,13 @@ const AnimatedButton = ({
 
 			gsap.fromTo(
 				el,
-				{ opacity: 0 },
+				{ opacity: 0, filter: "blur(4px)" },
 				{
 					opacity: 1,
-					duration: revealDuration,
+					filter: "blur(0px)",
+					duration: 0.5,
 					delay: revealDelay,
-					ease: "power2.out",
+					ease: "easeOutQuad",
 					scrollTrigger: {
 						trigger: el,
 						start: "top 85%",

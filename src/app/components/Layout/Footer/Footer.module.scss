@@ -130,6 +130,7 @@
 			line-height: 1.4;
 			text-align: right;
 			color: #e6dada;
+			text-transform: uppercase;
 
 			@media (max-width: 768px) {
 				font-size: 0.75rem;
@@ -167,6 +168,8 @@
 				font-weight: 400;
 				line-height: inherit;
 				color: inherit;
+				opacity: 0.4;
+				text-transform: none;
 			}
 		}
 	}

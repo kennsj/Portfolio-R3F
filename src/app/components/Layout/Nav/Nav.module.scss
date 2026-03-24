@@ -92,7 +92,7 @@
 	gap: 0.25rem;
 	padding: 0.75rem 1rem;
 	border: 1px solid var(--primary-color);
-	background: var(--color-black);
+	background: var(--color-black-90);
 	backdrop-filter: blur(18px);
 	white-space: nowrap;
 	pointer-events: none;
@@ -104,7 +104,6 @@
 
 	.kp-value {
 		font-size: 0.85rem;
-		font-weight: 700;
 		color: var(--primary-color);
 
 		&::after {
@@ -120,8 +119,7 @@
 	}
 
 	.kp-status {
-		font-size: 0.7rem;
-		// opacity: 0.6;
+		font-size: 0.75rem;
 		text-transform: uppercase;
 		letter-spacing: 0.08em;
 		margin-left: 0.5rem;

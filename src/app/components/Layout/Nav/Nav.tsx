@@ -28,7 +28,6 @@ const Nav = () => {
 
 	useGSAP(
 		() => {
-			const nav = navRef.current
 			let lastY = window.scrollY
 
 			ScrollTrigger.create({
@@ -90,7 +89,7 @@ const Nav = () => {
 		{ scope: containerRef, dependencies: [homeHeroIntroReady] },
 	)
 
-	const onLogoClick = (e: MouseEvent<HTMLAnchorElement>) => {
+	const onLogoClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
 		e.preventDefault()
 		transitionTo("/")
 	}

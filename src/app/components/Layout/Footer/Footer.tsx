@@ -2,6 +2,7 @@ import NavLink from "../../UI/NavLink/NavLink"
 import ArrowLink from "../../UI/ArrowLink/ArrowLink"
 import { useKpIndex, getKpLabel } from "../../../hooks/useKpIndex"
 import { useManualKp } from "../../../hooks/KpContext"
+import { usePageTransition } from "@/app/hooks/usePageTransition"
 
 import styles from "./Footer.module.scss"
 
@@ -11,13 +12,23 @@ const Footer = () => {
 	const kp = manualKp ?? data?.latest ?? 0
 	const { label } = getKpLabel(kp)
 
+	const { transitionTo } = usePageTransition()
+
+	const onLogoClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
+		e.preventDefault()
+		transitionTo("/")
+	}
+
 	return (
 		<footer>
 			<div id='footer' className={styles["footer-wrapper"]}>
 				<hr data-footer-reveal />
 				<div className={styles["footer-wrapper-top"]}>
 					<div className={styles["footer-wrapper-left"]} data-footer-reveal>
-						<img src='/kj-logo.svg' alt='Logo' />
+						<a href='/' onClick={onLogoClick}>
+							<img src='/kj-logo.svg' alt='Logo' />
+						</a>
+
 						<p>
 							Designer. Developer. <br />
 							Occasional gamer.

@@ -48,77 +48,86 @@ const Aurora = () => {
 			document.fonts.ready.then(() => {
 				if (cancelled || !wrap.isConnected) return
 
+				const setup = () => {
+					if (cancelled || !wrap.isConnected) return
+
+					ScrollTrigger.refresh()
+
+					const bars = wrap.querySelectorAll<HTMLElement>("[data-aurora-bar]")
+
+					kpEl.textContent = "0.0"
+
+					bars.forEach((bar) => {
+						gsap.set(bar, {
+							transformOrigin: "bottom center",
+							scaleY: 0,
+							opacity: 0,
+						})
+					})
+
+					const counter = { val: 0 }
+
+					timeline = gsap.timeline({
+						scrollTrigger: {
+							trigger: wrap,
+							start: "top bottom",
+							toggleActions: "play none none none",
+							invalidateOnRefresh: true,
+							fastScrollEnd: true,
+							once: true,
+						},
+					})
+
+					timeline.from(loc, {
+						opacity: 0,
+						filter: "blur(25px)",
+						yPercent: 35,
+						duration: 0.9,
+						ease: "power2.out",
+						immediateRender: false,
+					})
+
+					timeline.to(
+						bars,
+						{
+							scaleY: 1,
+							opacity: 1,
+							stagger: 0.04,
+							duration: 0.6,
+							ease: "power2.out",
+						},
+						0,
+					)
+
+					timeline.to(
+						counter,
+						{
+							val: displayKpRef.current,
+							duration: 1.2,
+							ease: "power2.out",
+							onUpdate: () => {
+								kpEl.textContent = counter.val.toFixed(1)
+							},
+							onComplete: () => {
+								hasCountPlayedRef.current = true
+							},
+						},
+						0,
+					)
+
+					ScrollTrigger.refresh()
+
+					if (cancelled) {
+						timeline.scrollTrigger?.kill()
+						timeline.kill()
+						timeline = null
+					}
+				}
+
 				requestAnimationFrame(() => {
 					if (cancelled || !wrap.isConnected) return
-					ScrollTrigger.refresh()
+					requestAnimationFrame(setup)
 				})
-
-				const bars = wrap.querySelectorAll<HTMLElement>("[data-aurora-bar]")
-
-				kpEl.textContent = "0.0"
-
-				bars.forEach((bar) => {
-					gsap.set(bar, {
-						transformOrigin: "bottom center",
-						scaleY: 0,
-						opacity: 0,
-					})
-				})
-
-				const counter = { val: 0 }
-
-				timeline = gsap.timeline({
-					scrollTrigger: {
-						trigger: wrap,
-						start: "top bottom",
-						toggleActions: "play none none none",
-						invalidateOnRefresh: true,
-						fastScrollEnd: true,
-						once: true,
-					},
-				})
-
-				timeline.from(loc, {
-					opacity: 0,
-					filter: "blur(25px)",
-					yPercent: 35,
-					duration: 0.9,
-					ease: "power2.out",
-				})
-
-				timeline.to(
-					bars,
-					{
-						scaleY: 1,
-						opacity: 1,
-						stagger: 0.04,
-						duration: 0.6,
-						ease: "power2.out",
-					},
-					0,
-				)
-
-				timeline.to(
-					counter,
-					{
-						val: displayKpRef.current,
-						duration: 1.2,
-						ease: "power2.out",
-						onUpdate: () => {
-							kpEl.textContent = counter.val.toFixed(1)
-						},
-						onComplete: () => {
-							hasCountPlayedRef.current = true
-						},
-					},
-					0,
-				)
-
-				if (cancelled) {
-					timeline.scrollTrigger?.kill()
-					timeline.kill()
-					timeline = null
-				}
 			})
 
 			return () => {
@@ -220,9 +229,8 @@ const Aurora = () => {
 						<p>
 							Disclaimer: The aurora depicted in the background is an artistic
 							interpretation. Colours, speed, and behaviour may not reflect
-							actual conditions above Bodø — if you're ever lucky enough to
-							experience a cloudless day here in this city. The best chances are
-							between September and April, if the clouds cooperate.
+							actual conditions above Bodø. The best chances are between
+							September and April, if the clouds cooperate, which is rarely.
 						</p>
 					</div>
 				</>

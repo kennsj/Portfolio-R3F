@@ -121,7 +121,6 @@ const Contact = ({ showForecast = false }: { showForecast?: boolean }) => {
 			gsap.set(portrait, {
 				opacity: 0,
 				filter: "blur(16px)",
-				clipPath: "inset(50% 50% 50% 50% round 50%)",
 			})
 			gsap.set(emailCol, {
 				opacity: 0,
@@ -146,7 +145,6 @@ const Contact = ({ showForecast = false }: { showForecast?: boolean }) => {
 			tl.to(portrait, {
 				opacity: 1,
 				filter: "blur(0px)",
-				clipPath: "inset(0% 0% 0% 0% round 50%)",
 				duration: 1.05,
 			})
 
