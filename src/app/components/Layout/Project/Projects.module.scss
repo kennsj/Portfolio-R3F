@@ -11,7 +11,7 @@
 			display: flex;
 			align-items: center;
 			justify-content: space-between;
-			padding-inline: 0;
+			padding-inline: 1rem;
 			list-style: none;
 			cursor: pointer;
 
@@ -112,6 +112,11 @@
 			pointer-events: none;
 			margin-top: -1px;
 			filter: blur(4px);
+			opacity: 0.3;
+
+			&:last-of-type {
+				display: none;
+			}
 		}
 	}
 }
@@ -126,13 +131,9 @@
 			justify-content: flex-start;
 			row-gap: 0;
 			padding-block: clamp(1.35rem, 4vw, 1.75rem);
-			padding-inline: 0;
 			overflow: hidden;
 			isolation: isolate;
 			cursor: pointer;
-
-			border-bottom: 1px solid
-				color-mix(in srgb, var(--primary-color) 32%, transparent);
 
 			h2 {
 				order: 0;
@@ -227,10 +228,6 @@
 			&:hover > .list-links > .arrow-link::before {
 				opacity: 0;
 			}
-		}
-
-		.project-item ~ hr {
-			display: none;
 		}
 	}
 }

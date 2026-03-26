@@ -170,33 +170,76 @@ const Contact = ({ showForecast = false }: { showForecast?: boolean }) => {
 	return (
 		<section id='contact' aria-label='Contact'>
 			<div ref={contactRevealRef} className={styles["contact-wrapper"]}>
-				<HeadingAnimation level={3}>Contact</HeadingAnimation>
+				<HeadingAnimation level={3}>
+					Let's make something worth looking at
+				</HeadingAnimation>
 
-				{showForecast && (
-					<>
-						<TextBlock>
+				<div className={styles["contact-content"]}>
+					<div className={styles["contact-text-container"]}>
+						<TextBlock className={styles["contact-text"]} textSize='md'>
 							Now you know where the background comes from. And where I come
 							from.
 						</TextBlock>
+						<TextBlock textSize='sm' className={styles["contact-text-small"]}>
+							Available for hire — anywhere.
+						</TextBlock>
+						<div className={styles["contact-info-email"]} data-contact-email>
+							<ArrowLink
+								size='48'
+								href='mailto:hei@kennethjorgensen.no'
+								data-text='hei@kennethjorgensen.no'
+							>
+								hei
+								<span className='highlight'>@</span>
+								kennethjorgensen.no
+							</ArrowLink>
+						</div>
+						<TextBlock textSize='sm' className={styles["contact-email-note"]}>
+							I'll get back to you quickly. Or we can skip the email and go
+							aurora hunting!
+						</TextBlock>
+					</div>
+					<div className={styles["contact-image"]}>
+						<svg viewBox='0 0 300 200' width='250' height='250'>
+							<defs>
+								<path
+									id='circle-path'
+									d='M 100,100 m -80,0 a 80,80 0 1,1 160,0 a 80,80 0 1,1 -160,0'
+								/>
+							</defs>
+							Available for hire — anywhere.
+							<image
+								href='/images/y-so-serious.png'
+								x='25'
+								y='25'
+								width='150'
+								height='150'
+								clipPath='url(#clip)'
+							/>
+							<clipPath id='clip'>
+								<circle cx='100' cy='100' r='75' />
+							</clipPath>
+							<text fontSize='12' fill='#888' letterSpacing='1'>
+								<textPath
+									href='#circle-path'
+									startOffset='15%'
+									textAnchor='start'
+								>
+									My serious face, let's talk
+								</textPath>
+							</text>
+						</svg>
+					</div>
+				</div>
 
-						<Aurora />
-					</>
-				)}
-
-				<TextBlock className={styles["contact-text"]}>
-					Available for freelance projects and the right full-time role. Share a
-					bit about your project, timeline, and what a good outcome looks like.
-					I'll get back to you as soon as I can. Or let me know if you want to
-					go aurora hunting!
-				</TextBlock>
+				{showForecast && <Aurora />}
+				{/* 
 
 				<div
 					ref={formRevealAnchorRef}
 					className={styles["form-reveal-anchor"]}
 					aria-hidden
-				/>
-
-				<Form />
+					/>
 
 				<div ref={contactInfoRef} className={styles["contact-info"]}>
 					<div className={styles["contact-info-image"]} data-contact-portrait>
@@ -236,13 +279,15 @@ const Contact = ({ showForecast = false }: { showForecast?: boolean }) => {
 					<div className={styles["contact-info-email"]} data-contact-email>
 						<ArrowLink
 							size='48'
-							href='mailto:hello@kj.design'
-							data-text='hello@kj.design'
+							href='mailto:hei@kennethjorgensen.no'
+							data-text='hei@kennethjorgensen.no'
 						>
-							hello@kj.design
+							hei
+							<span className='highlight'>@</span>
+							kennethjorgensen.no
 						</ArrowLink>
 					</div>
-				</div>
+				</div> */}
 			</div>
 		</section>
 	)

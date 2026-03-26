@@ -24,62 +24,95 @@ const expertiseItems = [
 		description:
 			"I approach visual identity the same way I approach code; I can't let it go until it feels exactly right. It shows.",
 	},
+	{
+		title: "Tools",
+		tools: [
+			{
+				name: "Figma",
+				img: "/icons/tools/figma.png",
+			},
+			{
+				name: "Adobe CC",
+				img: "/icons/tools/adobecc.png",
+			},
+			{
+				name: "Framer",
+				img: "/icons/tools/framer.png",
+			},
+			{
+				name: "React",
+				img: "/icons/tools/react.png",
+			},
+			{
+				name: "Sanity",
+				img: "/icons/tools/sanity.png",
+			},
+			{
+				name: "GSAP",
+				img: "/icons/tools/gsap.png",
+			},
+			{
+				name: "Shopify",
+				img: "/icons/tools/shopify.png",
+			},
+		],
+	},
 ]
 
-const toolItems = [
-	{
-		title: "Figma",
-		img: "/icons/tools/figma.png",
-	},
-	{
-		title: "Adobe CC",
-		img: "/icons/tools/adobecc.png",
-	},
-	{
-		title: "Framer",
-		img: "/icons/tools/framer.png",
-	},
-	{
-		title: "React",
-		img: "/icons/tools/react.png",
-	},
-	{
-		title: "Sanity",
-		img: "/icons/tools/sanity.png",
-	},
-	{
-		title: "GSAP",
-		img: "/icons/tools/gsap.png",
-	},
-	{
-		title: "Shopify",
-		img: "/icons/tools/shopify.png",
-	},
-]
+// const toolItems = [
+// 	{
+// 		title: "Figma",
+// 		img: "/icons/tools/figma.png",
+// 	},
+// 	{
+// 		title: "Adobe CC",
+// 		img: "/icons/tools/adobecc.png",
+// 	},
+// 	{
+// 		title: "Framer",
+// 		img: "/icons/tools/framer.png",
+// 	},
+// 	{
+// 		title: "React",
+// 		img: "/icons/tools/react.png",
+// 	},
+// 	{
+// 		title: "Sanity",
+// 		img: "/icons/tools/sanity.png",
+// 	},
+// 	{
+// 		title: "GSAP",
+// 		img: "/icons/tools/gsap.png",
+// 	},
+// 	{
+// 		title: "Shopify",
+// 		img: "/icons/tools/shopify.png",
+// 	},
+// ]
 
-const ExperienceTools = () => {
+const Expertise = () => {
 	const sectionRef = useRef<HTMLElement>(null)
 	const listRef = useRef<HTMLUListElement>(null)
 	const toolsListRef = useRef<HTMLUListElement>(null)
 
-	useGSAP(
-		() => {
-			const section = sectionRef.current
-			if (!section) return
+	// useGSAP(
+	// 	() => {
+	// 		const section = sectionRef.current
+	// 		if (!section) return
 
-			gsap.to(section, {
-				backgroundColor: "rgba(02, 02, 02, 0.85)",
-				ease: "none",
-				scrollTrigger: {
-					trigger: section,
-					start: "top 80%",
-					end: "top 40%",
-					scrub: true,
-				},
-			})
-		},
-		{ scope: sectionRef },
-	)
+	// 		gsap.to(section, {
+	// 			backgroundColor: "rgba(02, 02, 02, 0.85)",
+	// 			ease: "none",
+	// 			scrollTrigger: {
+	// 				trigger: section,
+	// 				start: "top 80%",
+	// 				end: "top 40%",
+	// 				scrub: true,
+	// 			},
+	// 		})
+	// 	},
+	// 	{ scope: sectionRef },
+	// )
 
 	useGSAP(
 		() => {
@@ -211,7 +244,7 @@ const ExperienceTools = () => {
 	)
 
 	return (
-		<section ref={sectionRef} aria-label='Experience and tools' data-background-black>
+		<section ref={sectionRef} aria-label='Expertise'>
 			<div className={styles.expertise}>
 				<HeadingAnimation level={3}>Expertise</HeadingAnimation>
 				<ul ref={listRef} className={styles["experience-list"]}>
@@ -219,15 +252,26 @@ const ExperienceTools = () => {
 						<Fragment key={item.title}>
 							<li>
 								<h2 className={styles.revealTarget}>{item.title}</h2>
-								<p className={styles.revealTargetParagraph}>
-									{item.description}
-								</p>
+								{item.description ? (
+									<p className={styles.revealTargetParagraph}>
+										{item.description}
+									</p>
+								) : null}
+								{item.tools ? (
+									<ul className={styles["tool-icons"]}>
+										{item.tools.map((tool) => (
+											<li className={styles["tool-icon"]}>
+												<img src={tool.img} alt={tool.name} />
+											</li>
+										))}
+									</ul>
+								) : null}
 							</li>
 							{index < expertiseItems.length - 1 ? <hr /> : null}
 						</Fragment>
 					))}
 				</ul>
-				<div className={styles["tools-container"]}>
+				{/* <div className={styles["tools-container"]}>
 					<HeadingAnimation level={3}>Tools</HeadingAnimation>
 					<ul ref={toolsListRef}>
 						{toolItems.map((item) => (
@@ -241,10 +285,10 @@ const ExperienceTools = () => {
 							</Fragment>
 						))}
 					</ul>
-				</div>
+				</div> */}
 			</div>
 		</section>
 	)
 }
 
-export default ExperienceTools
+export default Expertise

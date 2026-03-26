@@ -23,7 +23,7 @@ const projects = [
 	{
 		name: "Pradelna",
 		link: "https://pradelna.vercel.app/",
-		work: "Design / Code",
+		work: "Code",
 		image: "/images/pradelna.png",
 		url: "/pradelna",
 		urlText: "Case Study",
@@ -31,19 +31,11 @@ const projects = [
 	{
 		name: "Dialog eXe",
 		link: "https://dialog-exe.vercel.app/",
-		work: "Design / Code",
+		work: "UX/UI",
 		image: "/images/dx-kino.png",
 		url: "/dialog-exe",
 		urlText: "Case Study",
 	},
-	// {
-	// 	name: "Snø Oslo",
-	// 	link: "https://snø-oslo.vercel.app/",
-	// 	work: "Design / Code",
-	// 	image: "/images/verchia.png",
-	// 	url: "/sno-oslo",
-	// 	urlText: "Case Study",
-	// },
 ] as const
 
 /** Match `usePageTransition` main fade-out so the hover preview exits in sync. */
@@ -247,7 +239,8 @@ const Projects = () => {
 										</span>
 									</div>
 								</li>
-								{index < projects.length - 1 ? <hr /> : null}
+								<hr />
+								{/* {index < projects.length - 1 ? <hr /> : null} */}
 							</Fragment>
 						))}
 					</ul>

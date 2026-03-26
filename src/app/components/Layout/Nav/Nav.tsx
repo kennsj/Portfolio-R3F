@@ -28,39 +28,50 @@ const Nav = () => {
 
 	useGSAP(
 		() => {
-			let lastY = window.scrollY
+			const navEl = navRef.current
+			let hidden = false
 
-			ScrollTrigger.create({
-				onUpdate: () => {
-					const currentY = window.scrollY
+			const fadeNav = (nextHidden: boolean) => {
+				if (!navEl) return
+				hidden = nextHidden
+				gsap.to(navEl, {
+					autoAlpha: nextHidden ? 0 : 1,
+					filter: nextHidden ? "blur(15px)" : "blur(0px)",
+					// near-immediate: respond to direction change, not scroll progress
+					duration: nextHidden ? 0.52 : 0.52,
+					ease: "power2.out",
+					overwrite: "auto",
+				})
+			}
 
-					if (currentY > lastY && currentY > 100) {
-						gsap.killTweensOf(navRef.current)
-						gsap.to(navRef.current, {
-							autoAlpha: 0,
-							filter: "blur(15px)",
-							duration: 0.6,
-							ease: "power2.inOut",
-						})
-					} else if (currentY < lastY) {
-						gsap.killTweensOf(navRef.current)
-						gsap.to(navRef.current, {
-							autoAlpha: 1,
-							filter: "blur(0px)",
-							duration: 0.3,
-							ease: "power2.inOut",
-						})
+			const st = ScrollTrigger.create({
+				onUpdate: (self) => {
+					const y = window.scrollY
+
+					// Always show at the very top.
+					if (y <= window.innerHeight) {
+						if (hidden) fadeNav(false)
+						return
 					}
 
-					lastY = currentY
+					// direction: 1 = scrolling down, -1 = scrolling up
+					if (self.direction === 1) {
+						if (!hidden) fadeNav(true)
+					} else if (self.direction === -1) {
+						if (hidden) fadeNav(false)
+					}
 				},
 			})
 
 			const el = containerRef.current
-			if (!el) return
+			if (!el) {
+				st.kill()
+				return
+			}
 
 			if (!homeHeroIntroReady) {
 				gsap.set(el, { autoAlpha: 0, pointerEvents: "none" })
+				st.kill()
 				return
 			}
 
@@ -76,6 +87,21 @@ const Nav = () => {
 
 			if (!parts.length) return
 
+			gsap.to(
+				navRef.current,
+
+				{
+					background: "#1010101a",
+					boxShadow:
+						"inset 0 1px 0 rgba(255, 255, 255, 0.08), 0 8px 32px rgba(0, 0, 0, 0.2)",
+					backdropFilter: "blur(12px)",
+					"-webkit-backdrop-filter": "blur(12px)",
+					duration: 0.5,
+					ease: "power2.out",
+					overwrite: "auto",
+				},
+			)
+
 			gsap.set(el, { autoAlpha: 1, pointerEvents: "auto" })
 			gsap.from(parts, {
 				autoAlpha: 0,
@@ -85,6 +111,10 @@ const Nav = () => {
 				stagger: 0.09,
 				ease: "power2.out",
 			})
+
+			return () => {
+				st.kill()
+			}
 		},
 		{ scope: containerRef, dependencies: [homeHeroIntroReady] },
 	)

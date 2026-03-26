@@ -5,6 +5,8 @@
 	width: 100%;
 	height: 100px;
 	z-index: 100;
+	display: flex;
+	align-items: center;
 
 	.nav-container {
 		visibility: hidden;
@@ -43,6 +45,10 @@
 					&::before {
 						display: none;
 					}
+
+					* {
+						transform: none;
+					}
 				}
 			}
 		}
@@ -55,6 +61,10 @@
 	align-items: center;
 	margin-left: 1rem;
 	cursor: default;
+	@media (max-width: 768px) {
+		margin-left: 1rem;
+		// display: none;
+	}
 }
 
 .kp-dot {
@@ -66,6 +76,7 @@
 
 	@media (max-width: 768px) {
 		margin-left: 1rem;
+		// display: none;
 	}
 
 	@keyframes pulse {

@@ -11,9 +11,11 @@ gsap.registerPlugin(SplitText, ScrollTrigger)
 const TextBlock = ({
 	children,
 	className,
+	textSize = "md",
 }: {
 	children: React.ReactNode
 	className?: string
+	textSize?: "sm" | "md" | "lg"
 }) => {
 	const ref = useRef<HTMLParagraphElement>(null)
 
@@ -59,7 +61,7 @@ const TextBlock = ({
 	return (
 		<p
 			ref={ref}
-			className={`${styles["text-block"]} ${className ?? ""}`.trim()}
+			className={`${styles["text-block"]} ${styles[textSize]} ${className ?? ""}`.trim()}
 		>
 			{children}
 		</p>

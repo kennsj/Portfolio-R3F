@@ -153,13 +153,13 @@ const Aurora = () => {
 				<div className={styles["aurora-loading"]} aria-busy='true' />
 			) : (
 				<>
-					<div className={styles.topLabel}>Aurora forecast</div>
+					{/* <div className={styles.topLabel}>Aurora forecast</div> */}
 
 					<div className={styles["main-row"]}>
 						<div ref={locationRef} className={styles["location-label"]}>
 							Bodø,
 							<br />
-							<span className={styles.dim}>Norway</span>
+							<span className={styles.dim}>Norway — 67°N</span>
 						</div>
 						<div className={styles["kp-block"]}>
 							<div className={styles["kp-meta"]}>KP Index</div>

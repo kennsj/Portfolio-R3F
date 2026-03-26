@@ -73,6 +73,10 @@ p {
 	font-family: var(--font-family-syne);
 	font-size: 18px;
 	line-height: 1.4;
+
+	@media (max-width: 768px) {
+		font-size: 16px;
+	}
 }
 
 h1 {
@@ -93,6 +97,10 @@ h2 {
 	line-height: 1.2;
 	font-weight: 700;
 	color: var(--primary-color);
+
+	@media (max-width: 768px) {
+		font-size: clamp(1.5rem, 6vw, 2rem);
+	}
 }
 
 h3 {
@@ -102,7 +110,7 @@ h3 {
 	opacity: 0.5;
 
 	@media (max-width: 768px) {
-		font-size: 1rem;
+		font-size: 0.75rem;
 	}
 }
 
@@ -134,6 +142,10 @@ section {
 	&[data-background-black] {
 		margin-top: var(--margin-top);
 		padding-bottom: var(--padding-bottom);
+	}
+
+	&[data-background-dark] {
+		background: var(--color-black-90);
 	}
 }
 

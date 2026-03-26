@@ -4,6 +4,8 @@ import SplitText from "gsap/SplitText"
 import { ScrollTrigger } from "gsap/ScrollTrigger"
 import gsap from "gsap"
 
+import styles from "./Heading.module.scss"
+
 gsap.registerPlugin(SplitText, ScrollTrigger)
 
 const HeadingAnimation = ({
@@ -68,7 +70,11 @@ const HeadingAnimation = ({
 		{ scope: ref },
 	)
 
-	return <Tag ref={ref}>{children}</Tag>
+	return (
+		<Tag ref={ref} className={styles["heading"]}>
+			{children}
+		</Tag>
+	)
 }
 
 export default HeadingAnimation
