@@ -1,6 +1,12 @@
-import type { MouseEvent } from "react"
+import { useRef, type MouseEvent } from "react"
+import { useGSAP } from "@gsap/react"
+import gsap from "gsap"
+import SplitText from "gsap/SplitText"
 import { usePageTransition } from "../../../hooks/usePageTransition"
 import styles from "./ArrowLink.module.scss"
+import { ScrollTrigger } from "gsap/ScrollTrigger"
+
+gsap.registerPlugin(SplitText, ScrollTrigger)
 
 function isExternalHref(href: string, target?: string) {
 	if (target === "_blank") return true
@@ -35,6 +41,27 @@ const ArrowLink = ({
 		}
 	}
 
+	const linkRef = useRef<HTMLSpanElement>(null)
+
+	useGSAP(
+		() => {
+			const splitLink = new SplitText(linkRef.current, { type: "chars" })
+			gsap.to(splitLink.chars, {
+				opacity: 1,
+				filter: "blur(0px)",
+				stagger: 0.001,
+				duration: 0.9,
+				ease: "power2.out",
+				scrollTrigger: {
+					trigger: linkRef.current,
+					start: "top 80%",
+					invalidateOnRefresh: true,
+				},
+			})
+		},
+		{ dependencies: [linkRef] },
+	)
+
 	return (
 		<a
 			href={href}
@@ -43,7 +70,9 @@ const ArrowLink = ({
 			rel={target === "_blank" ? "noreferrer noopener" : undefined}
 			onClick={onClick}
 		>
-			<span className={styles["arrow-link-text"]}>{children}</span>
+			<span ref={linkRef} className={styles["arrow-link-text"]}>
+				{children}
+			</span>
 			<span className={styles["arrow-link-icon"]}>
 				<svg
 					xmlns='http://www.w3.org/2000/svg'
