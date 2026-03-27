@@ -65,7 +65,7 @@ const ArrowLink = ({
 				ease: "power2.out",
 				scrollTrigger: {
 					trigger: el,
-					start: "top 80%",
+					start: "top 100%",
 					once: true,
 					invalidateOnRefresh: true,
 					toggleActions: "play none none none",
