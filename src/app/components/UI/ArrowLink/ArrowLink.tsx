@@ -45,7 +45,18 @@ const ArrowLink = ({
 
 	useGSAP(
 		() => {
-			const splitLink = new SplitText(linkRef.current, { type: "chars" })
+			const el = linkRef.current
+			if (!el) return
+
+			const splitLink = new SplitText(el, { type: "chars" })
+
+			// Apply hidden state immediately so chars never flash at full opacity first.
+			// fromTo + ScrollTrigger can defer the "from" render and show the end state briefly.
+			gsap.set(splitLink.chars, {
+				opacity: 0,
+				filter: "blur(25px)",
+			})
+
 			gsap.to(splitLink.chars, {
 				opacity: 1,
 				filter: "blur(0px)",
@@ -53,11 +64,15 @@ const ArrowLink = ({
 				duration: 0.9,
 				ease: "power2.out",
 				scrollTrigger: {
-					trigger: linkRef.current,
+					trigger: el,
 					start: "top 80%",
+					once: true,
 					invalidateOnRefresh: true,
+					toggleActions: "play none none none",
 				},
 			})
+
+			return () => splitLink.revert()
 		},
 		{ dependencies: [linkRef] },
 	)
