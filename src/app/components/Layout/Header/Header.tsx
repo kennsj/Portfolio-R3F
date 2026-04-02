@@ -6,6 +6,7 @@ import styles from "./Header.module.scss"
 import { useRef } from "react"
 import AnimatedButton from "../../UI/AnimatedButton/AnimatedButton"
 import { useHeroIntro } from "../../../hooks/HeroIntroContext"
+import { useI18n } from "../../../hooks/useI18n"
 
 gsap.registerPlugin(SplitText, ScrollTrigger)
 
@@ -15,6 +16,7 @@ const Header = ({
 	signalNavIntroAfterHero?: boolean
 }) => {
 	const { markHomeHeroIntroComplete } = useHeroIntro()
+	const { t } = useI18n()
 	const headerRef = useRef<HTMLElement>(null)
 	const h4Ref = useRef<HTMLHeadingElement>(null)
 	const h1Ref = useRef<HTMLHeadingElement>(null)
@@ -132,15 +134,18 @@ const Header = ({
 	return (
 		<header ref={headerRef} className={styles.header}>
 			<h4 ref={h4Ref}>
-				Designer. Developer. <br /> Occasional gamer.
+				{t.headerTagline}
 			</h4>
 			<h1 ref={h1Ref}>
-				Designed in the <span className='highlight'>dark</span>.
-				<br /> Built for the <span className='highlight'>light</span>.
+				{t.headerTitleDesignedPrefix}
+				<span className='highlight'>{t.headerDarkWord}</span>.
+				<br />
+				{t.headerTitleBuiltPrefix}
+				<span className='highlight'>{t.headerLightWord}</span>.
 			</h1>
-			<p ref={pRef}>LOCATION 67.2829° N, 14.4151° E</p>
+			<p ref={pRef}>{t.headerLocation}</p>
 			<AnimatedButton
-				label='Go exploring'
+				label={t.headerExplore}
 				onClick={() =>
 					document.querySelector("#about")?.scrollIntoView({
 						behavior: "smooth",

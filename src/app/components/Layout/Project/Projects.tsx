@@ -8,43 +8,44 @@ import gsap from "gsap"
 import SplitText from "gsap/SplitText"
 import { ScrollTrigger } from "gsap/ScrollTrigger"
 import { usePageTransition } from "../../../hooks/usePageTransition"
+import { useI18n } from "../../../hooks/useI18n"
 
 gsap.registerPlugin(ScrollTrigger, SplitText)
-
-const projects = [
-	{
-		name: "Verchia",
-		link: "https://verchia.vercel.app/",
-		work: "Design / Code",
-		image: "/images/verchia.png",
-		url: "/verchia",
-		urlText: "Case Study",
-	},
-	{
-		name: "Pradelna",
-		link: "https://pradelna.vercel.app/",
-		work: "Code",
-		image: "/images/pradelna.png",
-		url: "/pradelna",
-		urlText: "Case Study",
-	},
-	{
-		name: "Dialog eXe",
-		link: "https://dialog-exe.vercel.app/",
-		work: "UX/UI",
-		image: "/images/dx-kino.png",
-		url: "/dialog-exe",
-		urlText: "Case Study",
-	},
-] as const
 
 /** Match `usePageTransition` main fade-out so the hover preview exits in sync. */
 const PAGE_OUT_DURATION = 0.55
 const PAGE_OUT_EASE = "power2.inOut"
 
 const Projects = () => {
+	const { locale, t } = useI18n()
 	const [previewInteractionLocked, setPreviewInteractionLocked] =
 		useState(false)
+	const projects = [
+		{
+			name: "Verchia",
+			link: "https://verchia.vercel.app/",
+			work: locale === "nb" ? "Design / Kode" : "Design / Code",
+			image: "/images/verchia.png",
+			url: "/verchia",
+			urlText: "Case Study",
+		},
+		{
+			name: "Pradelna",
+			link: "https://pradelna.vercel.app/",
+			work: locale === "nb" ? "Kode" : "Code",
+			image: "/images/pradelna.png",
+			url: "/pradelna",
+			urlText: "Case Study",
+		},
+		{
+			name: "Dialog eXe",
+			link: "https://dialog-exe.vercel.app/",
+			work: "UX/UI",
+			image: "/images/dx-kino.png",
+			url: "/dialog-exe",
+			urlText: "Case Study",
+		},
+	] as const
 
 	const {
 		shellRef,
@@ -196,7 +197,7 @@ const Projects = () => {
 				onMouseLeave={onSectionLeave}
 			>
 				<div className={styles["projects-wrapper"]}>
-					<HeadingAnimation level={3}>Selected work</HeadingAnimation>
+					<HeadingAnimation level={3}>{t.projectsTitle}</HeadingAnimation>
 					<ul
 						ref={listRef}
 						className={`${styles["projects-list"]}${previewInteractionLocked ? ` ${styles["projects-list--transitioning"]}` : ""}`}
@@ -218,9 +219,7 @@ const Projects = () => {
 											{project.work}
 										</span>
 										<span className={styles["arrow-link"]}>
-											<span className={styles["arrow-link-text"]}>
-												Case study
-											</span>
+											<span className={styles["arrow-link-text"]}>{t.projectCaseStudy}</span>
 											<span className={styles["arrow-link-icon"]}>
 												<svg
 													xmlns='http://www.w3.org/2000/svg'

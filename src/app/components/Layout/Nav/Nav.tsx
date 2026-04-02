@@ -7,6 +7,7 @@ import NavLink from "../../UI/NavLink/NavLink"
 import { usePageTransition } from "../../../hooks/usePageTransition"
 import { useHeroIntro } from "../../../hooks/HeroIntroContext"
 import { ScrollTrigger } from "gsap/ScrollTrigger"
+import { useI18n } from "../../../hooks/useI18n"
 
 import styles from "./Nav.module.scss"
 
@@ -17,10 +18,11 @@ const Nav = () => {
 	const { data } = useKpIndex()
 	const { manualKp } = useManualKp()
 	const [tooltipVisible, setTooltipVisible] = useState(false)
+	const { locale, t } = useI18n()
 
 	const kp = manualKp ?? data?.latest ?? 0
 	const color = getKpColor(kp)
-	const { label } = getKpLabel(kp)
+	const { label } = getKpLabel(kp, locale)
 
 	const { transitionTo } = usePageTransition()
 	const containerRef = useRef<HTMLElement>(null)
@@ -135,9 +137,9 @@ const Nav = () => {
 					<img src='/kj-logo.svg' alt='Kenneth Jørgensen' />
 				</a>
 				<div className={styles["nav-links"]}>
-					<NavLink href='/#about'>About</NavLink>
-					<NavLink href='/#work'>Works</NavLink>
-					<NavLink href='/#contact'>Contact</NavLink>
+					<NavLink href='/#about'>{t.navAbout}</NavLink>
+					<NavLink href='/#work'>{t.navWork}</NavLink>
+					<NavLink href='/#contact'>{t.navContact}</NavLink>
 
 					<div
 						className={styles["kp-indicator"]}
@@ -151,7 +153,7 @@ const Nav = () => {
 									<span className={styles["kp-value"]}>Kp {kp.toFixed(1)}</span>
 									<span className={styles["kp-status"]}>{label}</span>
 								</div>
-								<span className={styles["kp-location"]}>Bodø, Norway</span>
+								<span className={styles["kp-location"]}>{t.kpLocation}</span>
 							</div>
 						)}
 					</div>

@@ -6,12 +6,14 @@ import { useManualKp } from "../../../hooks/KpContext"
 import { useGSAP } from "@gsap/react"
 import gsap from "gsap"
 import { ScrollTrigger } from "gsap/ScrollTrigger"
+import { useI18n } from "../../../hooks/useI18n"
 
 gsap.registerPlugin(ScrollTrigger)
 
 const Aurora = () => {
 	const { data, isLoading } = useKpIndex()
 	const { manualKp, setManualKp } = useManualKp()
+	const { locale, t } = useI18n()
 
 	const rawDisplayKp = manualKp ?? data?.latest
 	const displayKp = Number.isFinite(rawDisplayKp as number)
@@ -144,7 +146,7 @@ const Aurora = () => {
 	)
 
 	const ready = !isLoading && !!data?.entries.length
-	const { label, visible } = getKpLabel(displayKp)
+	const { label, visible } = getKpLabel(displayKp, locale)
 
 	return (
 		<div
@@ -160,12 +162,12 @@ const Aurora = () => {
 
 					<div className={styles["main-row"]}>
 						<div ref={locationRef} className={styles["location-label"]}>
-							Bodø,
+							{t.auroraLocationCity}
 							<br />
-							<span className={styles.dim}>Norway — 67°N</span>
+							<span className={styles.dim}>{t.auroraLocationRegion}</span>
 						</div>
 						<div className={styles["kp-block"]}>
-							<div className={styles["kp-meta"]}>KP Index</div>
+							<div className={styles["kp-meta"]}>{t.auroraKpIndex}</div>
 							<span ref={kpNumRef} className={styles["kp-num"]} />
 							<div className={styles["status-line"]}>
 								<div className={styles["status-dot-wrap"]}>
@@ -177,7 +179,7 @@ const Aurora = () => {
 								</div>
 								{visible && (
 									<span className={styles["visible-label"]}>
-										— visible from Bodø tonight
+										{t.auroraVisibleTonight}
 									</span>
 								)}
 							</div>
@@ -199,11 +201,14 @@ const Aurora = () => {
 									}}
 								/>
 								<span className={styles["bar-time"]}>
-									{new Date(entry.time).toLocaleTimeString("no-NO", {
+									{new Date(entry.time).toLocaleTimeString(
+										locale === "nb" ? "nb-NO" : "en-GB",
+										{
 										hour: "2-digit",
 										minute: "2-digit",
 										timeZone: "Europe/Oslo",
-									})}
+										},
+									)}
 								</span>
 							</div>
 								)
@@ -223,26 +228,21 @@ const Aurora = () => {
 									const next = Number(e.target.value)
 									setManualKp(Number.isFinite(next) ? next : 0)
 								}}
-								aria-label='Adjust the Aurora forecast'
+								aria-label={t.auroraSliderLabel}
 							/>
-							<span aria-label='Manual or Live'>
-								{manualKp !== null ? "Manual" : "Live"}
+							<span aria-label={t.auroraModeAria}>
+								{manualKp !== null ? t.auroraModeManual : t.auroraModeLive}
 							</span>
 							{manualKp !== null && (
 								<button
 									onClick={() => setManualKp(null)}
-									aria-label='Reset the Aurora forecast'
+									aria-label={t.auroraResetAria}
 								>
-									Reset
+									{t.auroraReset}
 								</button>
 							)}
 						</div>
-						<p>
-							Disclaimer: The aurora depicted in the background is an artistic
-							interpretation. Colours, speed, and behaviour may not reflect
-							actual conditions above Bodø. The best chances are between
-							September and April, if the clouds cooperate, which is rarely.
-						</p>
+						<p>{t.auroraDisclaimer}</p>
 					</div>
 				</>
 			)}

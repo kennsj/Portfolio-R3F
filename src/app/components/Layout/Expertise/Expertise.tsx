@@ -5,59 +5,9 @@ import { useGSAP } from "@gsap/react"
 import gsap from "gsap"
 import SplitText from "gsap/SplitText"
 import { ScrollTrigger } from "gsap/ScrollTrigger"
+import { useI18n } from "../../../hooks/useI18n"
 
 gsap.registerPlugin(ScrollTrigger, SplitText)
-
-const expertiseItems = [
-	{
-		title: "Web design",
-		description:
-			"I obsess over the details most people won't notice — but will feel. The spacing, the timing, the way a page guides you without you realising it. I can't help it.",
-	},
-	{
-		title: "Web development",
-		description:
-			"I write the code myself, because I've never found a shortcut that doesn't show up somewhere. React and custom development primarily. Webflow and Framer when it genuinely serves the project better.",
-	},
-	{
-		title: "Graphic design",
-		description:
-			"I approach visual identity the same way I approach code; I can't let it go until it feels exactly right. It shows.",
-	},
-	{
-		title: "Tools",
-		tools: [
-			{
-				name: "Figma",
-				img: "/icons/tools/figma.png",
-			},
-			{
-				name: "Adobe CC",
-				img: "/icons/tools/adobecc.png",
-			},
-			{
-				name: "Framer",
-				img: "/icons/tools/framer.png",
-			},
-			{
-				name: "React",
-				img: "/icons/tools/react.png",
-			},
-			{
-				name: "Sanity",
-				img: "/icons/tools/sanity.png",
-			},
-			{
-				name: "GSAP",
-				img: "/icons/tools/gsap.png",
-			},
-			{
-				name: "Shopify",
-				img: "/icons/tools/shopify.png",
-			},
-		],
-	},
-]
 
 // const toolItems = [
 // 	{
@@ -91,9 +41,36 @@ const expertiseItems = [
 // ]
 
 const Expertise = () => {
+	const { t } = useI18n()
 	const sectionRef = useRef<HTMLElement>(null)
 	const listRef = useRef<HTMLUListElement>(null)
 	const toolsListRef = useRef<HTMLUListElement>(null)
+	const expertiseItems = [
+		{
+			title: t.expertiseWebDesignTitle,
+			description: t.expertiseWebDesignDescription,
+		},
+		{
+			title: t.expertiseWebDevTitle,
+			description: t.expertiseWebDevDescription,
+		},
+		{
+			title: t.expertiseGraphicTitle,
+			description: t.expertiseGraphicDescription,
+		},
+		{
+			title: t.expertiseToolsTitle,
+			tools: [
+				{ name: "Figma", img: "/icons/tools/figma.png" },
+				{ name: "Adobe CC", img: "/icons/tools/adobecc.png" },
+				{ name: "Framer", img: "/icons/tools/framer.png" },
+				{ name: "React", img: "/icons/tools/react.png" },
+				{ name: "Sanity", img: "/icons/tools/sanity.png" },
+				{ name: "GSAP", img: "/icons/tools/gsap.png" },
+				{ name: "Shopify", img: "/icons/tools/shopify.png" },
+			],
+		},
+	]
 
 	// useGSAP(
 	// 	() => {
@@ -246,7 +223,7 @@ const Expertise = () => {
 	return (
 		<section ref={sectionRef} aria-label='Expertise'>
 			<div className={styles.expertise}>
-				<HeadingAnimation level={3}>Expertise</HeadingAnimation>
+				<HeadingAnimation level={3}>{t.expertiseTitle}</HeadingAnimation>
 				<ul ref={listRef} className={styles["experience-list"]}>
 					{expertiseItems.map((item, index) => (
 						<Fragment key={item.title}>

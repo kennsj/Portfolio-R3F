@@ -19,12 +19,14 @@ import Aurora from "../Aurora/Aurora"
 import ArrowLink from "../../UI/ArrowLink/ArrowLink"
 
 import Form from "./Form"
+import { useI18n } from "../../../hooks/useI18n"
 
 import styles from "./Contact.module.scss"
 
 gsap.registerPlugin(ScrollTrigger)
 
 const Contact = ({ showForecast = false }: { showForecast?: boolean }) => {
+	const { t } = useI18n()
 	const contactRevealRef = useRef<HTMLDivElement>(null)
 
 	const formRevealAnchorRef = useRef<HTMLDivElement>(null)
@@ -168,20 +170,17 @@ const Contact = ({ showForecast = false }: { showForecast?: boolean }) => {
 	)
 
 	return (
-		<section id='contact' aria-label='Contact'>
+		<section id='contact' aria-label={t.navContact}>
 			<div ref={contactRevealRef} className={styles["contact-wrapper"]}>
-				<HeadingAnimation level={3}>
-					Let's make something worth looking at
-				</HeadingAnimation>
+				<HeadingAnimation level={3}>{t.contactTitle}</HeadingAnimation>
 
 				<div className={styles["contact-content"]}>
 					<div className={styles["contact-text-container"]}>
 						<TextBlock className={styles["contact-text"]} textSize='md'>
-							Now you know where the background comes from. And where I come
-							from.
+							{t.contactIntro}
 						</TextBlock>
 						<TextBlock textSize='sm' className={styles["contact-text-small"]}>
-							Available for hire — anywhere.
+							{t.contactAvailability}
 						</TextBlock>
 						<div className={styles["contact-info-email"]} data-contact-email>
 							<ArrowLink
@@ -195,8 +194,7 @@ const Contact = ({ showForecast = false }: { showForecast?: boolean }) => {
 							</ArrowLink>
 						</div>
 						<TextBlock textSize='sm' className={styles["contact-email-note"]}>
-							I'll get back to you quickly. Or we can skip the email and go
-							aurora hunting!
+							{t.contactEmailNote}
 						</TextBlock>
 					</div>
 					<div className={styles["contact-image"]}>
@@ -207,7 +205,7 @@ const Contact = ({ showForecast = false }: { showForecast?: boolean }) => {
 									d='M 100,100 m -80,0 a 80,80 0 1,1 160,0 a 80,80 0 1,1 -160,0'
 								/>
 							</defs>
-							Available for hire — anywhere.
+							{t.contactAvailability}
 							<image
 								href='/images/y-so-serious.png'
 								x='25'
@@ -225,7 +223,7 @@ const Contact = ({ showForecast = false }: { showForecast?: boolean }) => {
 									startOffset='15%'
 									textAnchor='start'
 								>
-									My serious face, let's talk
+									{t.contactPortraitText}
 								</textPath>
 							</text>
 						</svg>

@@ -16,6 +16,7 @@ import { HeroIntroProvider } from "./hooks/HeroIntroContext"
 import { SimpleAnalytics } from "@simpleanalytics/react"
 import PermissionProvider from "./components/Experiences/PermissionProvider"
 import Background from "./components/Experiences/Background"
+import { useI18n } from "./hooks/useI18n"
 const Nav = lazy(() => import("./components/Layout/Nav/Nav"))
 const SupportUkraine = lazy(
 	() => import("./components/UI/SupportUkraine/SupportUkraine"),
@@ -25,8 +26,104 @@ gsap.registerPlugin(ScrollTrigger)
 
 export default function RootLayout() {
 	const { pathname, hash: locationHash } = useLocation()
+	const { locale, t } = useI18n()
 	const isHome = pathname === "/"
 	const prevPathRef = useRef<string | null>(null)
+
+	useEffect(() => {
+		document.title = t.seoTitle
+
+		const ensureMeta = (key: "name" | "property", value: string) => {
+			let meta = document.head.querySelector<HTMLMetaElement>(
+				`meta[${key}="${value}"]`,
+			)
+			if (!meta) {
+				meta = document.createElement("meta")
+				meta.setAttribute(key, value)
+				document.head.appendChild(meta)
+			}
+			return meta
+		}
+
+		ensureMeta("name", "description").content = t.seoDescription
+		ensureMeta("name", "keywords").content = t.seoKeywords
+		ensureMeta("property", "og:title").content = t.seoTitle
+		ensureMeta("property", "og:site_name").content = t.seoSiteName
+		ensureMeta("property", "og:description").content = t.seoDescription
+		ensureMeta("property", "og:locale").content =
+			locale === "nb" ? "nb_NO" : "en_US"
+		ensureMeta("property", "og:type").content = "website"
+		ensureMeta("property", "og:url").content = `${window.location.origin}${pathname}`
+		ensureMeta("name", "twitter:card").content = "summary_large_image"
+		ensureMeta("name", "twitter:title").content = t.seoTitle
+		ensureMeta("name", "twitter:description").content = t.seoDescription
+
+		let canonical = document.head.querySelector<HTMLLinkElement>(
+			'link[rel="canonical"]',
+		)
+		if (!canonical) {
+			canonical = document.createElement("link")
+			canonical.setAttribute("rel", "canonical")
+			document.head.appendChild(canonical)
+		}
+		canonical.href = `${window.location.origin}${pathname}`
+
+		const setAlternate = (lang: "en" | "nb", href: string) => {
+			let link = document.head.querySelector<HTMLLinkElement>(
+				`link[rel="alternate"][hreflang="${lang}"]`,
+			)
+			if (!link) {
+				link = document.createElement("link")
+				link.setAttribute("rel", "alternate")
+				link.setAttribute("hreflang", lang)
+				document.head.appendChild(link)
+			}
+			link.href = href
+		}
+
+		const basePath = `${window.location.origin}${pathname}`
+		setAlternate("en", `${basePath}?lang=en`)
+		setAlternate("nb", `${basePath}?lang=nb`)
+
+		let xDefault = document.head.querySelector<HTMLLinkElement>(
+			'link[rel="alternate"][hreflang="x-default"]',
+		)
+		if (!xDefault) {
+			xDefault = document.createElement("link")
+			xDefault.setAttribute("rel", "alternate")
+			xDefault.setAttribute("hreflang", "x-default")
+			document.head.appendChild(xDefault)
+		}
+		xDefault.href = `${basePath}?lang=en`
+
+		const id = "schema-local-business"
+		let schemaScript = document.getElementById(id) as HTMLScriptElement | null
+		if (!schemaScript) {
+			schemaScript = document.createElement("script")
+			schemaScript.id = id
+			schemaScript.type = "application/ld+json"
+			document.head.appendChild(schemaScript)
+		}
+
+		schemaScript.text = JSON.stringify({
+			"@context": "https://schema.org",
+			"@type": "ProfessionalService",
+			name: "Kenneth Jorgensen",
+			url: window.location.origin,
+			description: t.seoDescription,
+			areaServed: "Bodo, Norway",
+			address: {
+				"@type": "PostalAddress",
+				addressLocality: "Bodo",
+				addressCountry: "NO",
+			},
+			email: "hei@kennethjorgensen.no",
+			sameAs: [
+				"https://www.linkedin.com/in/kennethstrandjorgensen/",
+				"https://github.com/kennsj",
+			],
+		})
+	}, [locale, pathname, t.seoDescription, t.seoKeywords, t.seoSiteName, t.seoTitle])
 
 	useEffect(() => {
 		if (isHome) {

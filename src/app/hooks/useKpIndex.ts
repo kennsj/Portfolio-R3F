@@ -1,4 +1,5 @@
 import { useQuery } from "@tanstack/react-query"
+import type { AppLocale } from "./useI18n"
 
 type KpEntryLegacy = [string, string]
 type KpEntryObject = { time_tag?: unknown; Kp?: unknown }
@@ -23,15 +24,36 @@ export const getKpWaveSpeedMultiplier = (kp: number) => {
 	return 1 + (0.85 * (k - 5)) / 4
 }
 
-export const getKpLabel = (kp: number) => {
-	if (kp <= 1) return { label: "Quiet", visible: false }
-	if (kp <= 2) return { label: "Quiet", visible: false }
-	if (kp <= 3) return { label: "Low activity", visible: false }
-	if (kp <= 4) return { label: "Moderate", visible: true }
-	if (kp <= 5) return { label: "Active", visible: true }
-	if (kp <= 6) return { label: "Minor storm", visible: true }
-	if (kp <= 7) return { label: "Strong storm", visible: true }
-	return { label: "Severe storm", visible: true }
+export const getKpLabel = (kp: number, locale: AppLocale = "en") => {
+	const labels =
+		locale === "nb"
+			? {
+					quiet: "Rolig",
+					low: "Lav aktivitet",
+					moderate: "Moderat",
+					active: "Aktiv",
+					minor: "Mindre storm",
+					strong: "Sterk storm",
+					severe: "Kraftig storm",
+				}
+			: {
+					quiet: "Quiet",
+					low: "Low activity",
+					moderate: "Moderate",
+					active: "Active",
+					minor: "Minor storm",
+					strong: "Strong storm",
+					severe: "Severe storm",
+				}
+
+	if (kp <= 1) return { label: labels.quiet, visible: false }
+	if (kp <= 2) return { label: labels.quiet, visible: false }
+	if (kp <= 3) return { label: labels.low, visible: false }
+	if (kp <= 4) return { label: labels.moderate, visible: true }
+	if (kp <= 5) return { label: labels.active, visible: true }
+	if (kp <= 6) return { label: labels.minor, visible: true }
+	if (kp <= 7) return { label: labels.strong, visible: true }
+	return { label: labels.severe, visible: true }
 }
 
 export const kpIndexQueryKey = ["kp-index"] as const
@@ -63,8 +85,7 @@ export const fetchKpData = async () => {
 		return (rows as KpEntryObject[]).slice(-8).map((entry) => ({
 			time: typeof entry?.time_tag === "string" ? entry.time_tag : "",
 			kp: (() => {
-				const n =
-					typeof entry?.Kp === "number" ? entry.Kp : Number(entry?.Kp)
+				const n = typeof entry?.Kp === "number" ? entry.Kp : Number(entry?.Kp)
 				return Number.isFinite(n) ? n : 0
 			})(),
 		}))

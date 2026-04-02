@@ -3,14 +3,16 @@ import ArrowLink from "../../UI/ArrowLink/ArrowLink"
 import { useKpIndex, getKpLabel } from "../../../hooks/useKpIndex"
 import { useManualKp } from "../../../hooks/KpContext"
 import { usePageTransition } from "@/app/hooks/usePageTransition"
+import { useI18n } from "../../../hooks/useI18n"
 
 import styles from "./Footer.module.scss"
 
 const Footer = () => {
+	const { locale, t, renderText } = useI18n()
 	const { data } = useKpIndex()
 	const { manualKp } = useManualKp()
 	const kp = manualKp ?? data?.latest ?? 0
-	const { label } = getKpLabel(kp)
+	const { label } = getKpLabel(kp, locale)
 
 	const { transitionTo } = usePageTransition()
 
@@ -29,31 +31,31 @@ const Footer = () => {
 							<img src='/kj-logo.svg' alt='Logo' />
 						</a>
 
-						<p>
-							Designer. Developer. <br />
-							Occasional gamer.
-						</p>
+						<p>{renderText(t.footerTagline)}</p>
 					</div>
 					<div className={styles["footer-wrapper-center"]}>
 						{/* No HeadingAnimation: lazy sections keep the doc short on first paint, so ST "top 80%" would fire here at load. */}
-						<h3 className={styles.footerSectionTitle}>Navigation</h3>
+						<h3 className={styles.footerSectionTitle}>{t.footerNavTitle}</h3>
 						<ul data-footer-reveal>
 							<li>
-								<NavLink href='/'>Home</NavLink>
+								<NavLink href='/'>{t.footerHome}</NavLink>
 							</li>
 							<li>
-								<NavLink href='/#about'>About</NavLink>
+								<NavLink href='/#about'>{t.footerAbout}</NavLink>
 							</li>
 							<li>
-								<NavLink href='/#work'>Work</NavLink>
+								<NavLink href='/#work'>{t.footerWork}</NavLink>
 							</li>
+
 							<li>
-								<NavLink href='#contact'>Contact</NavLink>
+								<NavLink href='#contact'>{t.footerContact}</NavLink>
 							</li>
 						</ul>
 					</div>
 					<div className={styles["footer-wrapper-right"]}>
-						<h3 className={styles.footerSectionTitle}>Contact</h3>
+						<h3 className={styles.footerSectionTitle}>
+							{t.footerContactTitle}
+						</h3>
 						<ul data-footer-reveal>
 							<li>
 								<ArrowLink
@@ -70,12 +72,12 @@ const Footer = () => {
 							</li>
 							<li>
 								<ArrowLink href='#' target='_blank'>
-									CV / Resume
+									{t.footerResume}
 								</ArrowLink>
 							</li>
 							<li>
-								<ArrowLink href='mailto:hello@kj.design'>
-									hello@kj.design
+								<ArrowLink href='mailto:hei@kennethjorgensen.no'>
+									Mail
 								</ArrowLink>
 							</li>
 						</ul>
@@ -90,7 +92,7 @@ const Footer = () => {
 							<span className={styles["kp-dot"]} aria-hidden />
 							<span className={styles["kp-status"]}>{label}</span>
 						</div>
-						<p className={styles["kp-location"]}>Bodø, Norway</p>
+						<p className={styles["kp-location"]}>{t.kpLocation}</p>
 					</div>
 				</div>
 			</div>
