@@ -260,7 +260,7 @@ const Expertise = () => {
 								{item.tools ? (
 									<ul className={styles["tool-icons"]}>
 										{item.tools.map((tool) => (
-											<li className={styles["tool-icon"]}>
+											<li key={tool.name} className={styles["tool-icon"]}>
 												<img src={tool.img} alt={tool.name} />
 											</li>
 										))}

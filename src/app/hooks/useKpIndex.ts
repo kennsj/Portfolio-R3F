@@ -1,6 +1,7 @@
 import { useQuery } from "@tanstack/react-query"
 
-type KpEntry = [string, string]
+type KpEntryLegacy = [string, string]
+type KpEntryObject = { time_tag?: unknown; Kp?: unknown }
 
 export const getKpColor = (kp: number) => {
 	if (kp <= 2) return "#74a36d"
@@ -40,17 +41,39 @@ export const fetchKpData = async () => {
 		"https://services.swpc.noaa.gov/products/noaa-planetary-k-index.json",
 	)
 	if (!res.ok) throw new Error("Failed to fetch Kp data")
-	const data: KpEntry[] = await res.json()
-	const readings = data
-		.slice(1)
-		.slice(-8)
-		.map((entry) => ({
-			time: entry[0],
-			kp: parseFloat(entry[1]),
+	const raw: unknown = await res.json()
+	const rows = Array.isArray(raw) ? raw : []
+
+	const readings = (() => {
+		// Legacy format: [time, kpString] with a header row at index 0
+		if (Array.isArray(rows[0])) {
+			return (rows as KpEntryLegacy[])
+				.slice(1)
+				.slice(-8)
+				.map((entry) => ({
+					time: String(entry[0] ?? ""),
+					kp: (() => {
+						const n = Number(entry[1])
+						return Number.isFinite(n) ? n : 0
+					})(),
+				}))
+		}
+
+		// Current format: { time_tag: "...", Kp: 2.67, ... }
+		return (rows as KpEntryObject[]).slice(-8).map((entry) => ({
+			time: typeof entry?.time_tag === "string" ? entry.time_tag : "",
+			kp: (() => {
+				const n =
+					typeof entry?.Kp === "number" ? entry.Kp : Number(entry?.Kp)
+				return Number.isFinite(n) ? n : 0
+			})(),
 		}))
+	})()
+
+	const latest = readings.length ? readings[readings.length - 1].kp : 0
 	return {
 		entries: readings,
-		latest: readings[readings.length - 1].kp,
+		latest,
 	}
 }
 

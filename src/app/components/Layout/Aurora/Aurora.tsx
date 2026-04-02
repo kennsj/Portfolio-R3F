@@ -13,7 +13,10 @@ const Aurora = () => {
 	const { data, isLoading } = useKpIndex()
 	const { manualKp, setManualKp } = useManualKp()
 
-	const displayKp = manualKp ?? data?.latest ?? 0
+	const rawDisplayKp = manualKp ?? data?.latest
+	const displayKp = Number.isFinite(rawDisplayKp as number)
+		? (rawDisplayKp as number)
+		: 0
 	const displayKpRef = useRef(displayKp)
 	displayKpRef.current = displayKp
 
@@ -183,13 +186,16 @@ const Aurora = () => {
 
 					<div className={styles.bars}>
 						{data.entries.map((entry, i) => (
+							(() => {
+								const kp = Number.isFinite(entry.kp) ? entry.kp : 0
+								return (
 							<div key={i} className={styles["bar-wrap"]}>
 								<div
 									data-aurora-bar
 									className={styles.bar}
 									style={{
-										height: `${Math.max(2, (entry.kp / 9) * 32)}px`,
-										background: getKpColor(entry.kp),
+										height: `${Math.max(2, (kp / 9) * 32)}px`,
+										background: getKpColor(kp),
 									}}
 								/>
 								<span className={styles["bar-time"]}>
@@ -200,6 +206,8 @@ const Aurora = () => {
 									})}
 								</span>
 							</div>
+								)
+							})()
 						))}
 					</div>
 
@@ -210,8 +218,11 @@ const Aurora = () => {
 								min={0}
 								max={9}
 								step={0.1}
-								value={manualKp ?? data.latest ?? 0}
-								onChange={(e) => setManualKp(parseFloat(e.target.value))}
+								value={displayKp}
+								onChange={(e) => {
+									const next = Number(e.target.value)
+									setManualKp(Number.isFinite(next) ? next : 0)
+								}}
 								aria-label='Adjust the Aurora forecast'
 							/>
 							<span aria-label='Manual or Live'>

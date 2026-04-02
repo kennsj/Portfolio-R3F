@@ -35,11 +35,7 @@ const AnimatedButton = ({
 
 	useGSAP(
 		() => {
-			console.log("rootRef", rootRef.current)
-			console.log("anchorRef", anchorRef.current)
-			console.log("labelRef", labelRef.current)
 			const el = rootRef.current ?? anchorRef.current
-			console.log("el", el)
 
 			gsap.fromTo(
 				el,
