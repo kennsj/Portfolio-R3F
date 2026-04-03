@@ -9,37 +9,6 @@ import { useI18n } from "../../../hooks/useI18n"
 
 gsap.registerPlugin(ScrollTrigger, SplitText)
 
-// const toolItems = [
-// 	{
-// 		title: "Figma",
-// 		img: "/icons/tools/figma.png",
-// 	},
-// 	{
-// 		title: "Adobe CC",
-// 		img: "/icons/tools/adobecc.png",
-// 	},
-// 	{
-// 		title: "Framer",
-// 		img: "/icons/tools/framer.png",
-// 	},
-// 	{
-// 		title: "React",
-// 		img: "/icons/tools/react.png",
-// 	},
-// 	{
-// 		title: "Sanity",
-// 		img: "/icons/tools/sanity.png",
-// 	},
-// 	{
-// 		title: "GSAP",
-// 		img: "/icons/tools/gsap.png",
-// 	},
-// 	{
-// 		title: "Shopify",
-// 		img: "/icons/tools/shopify.png",
-// 	},
-// ]
-
 const Expertise = () => {
 	const { t } = useI18n()
 	const sectionRef = useRef<HTMLElement>(null)

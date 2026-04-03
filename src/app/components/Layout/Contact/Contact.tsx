@@ -198,7 +198,7 @@ const Contact = ({ showForecast = false }: { showForecast?: boolean }) => {
 							</defs>
 							{t.contactAvailability}
 							<image
-								href='/images/y-so-serious.png'
+								href='/images/y-so-serious.webp'
 								x='25'
 								y='25'
 								width='150'
