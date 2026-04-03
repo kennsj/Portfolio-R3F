@@ -14,8 +14,7 @@ const NORWEGIAN_PREFIXES = ["nb", "nn", "no"] as const
 
 function isNorwegianLanguageTag(tag: string) {
 	const lower = tag.toLowerCase()
-	// return NORWEGIAN_PREFIXES.some((prefix) => lower.startsWith(prefix))
-	return
+	return NORWEGIAN_PREFIXES.some((prefix) => lower.startsWith(prefix))
 }
 
 function detectLocale(): AppLocale {
