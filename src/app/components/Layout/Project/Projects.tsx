@@ -25,7 +25,7 @@ const Projects = () => {
 			name: "Verchia",
 			link: "https://verchia.vercel.app/",
 			work: locale === "nb" ? "Design / Kode" : "Design / Code",
-			image: "/images/verchia.png",
+			image: "/images/verchia.webp",
 			url: "/verchia",
 			urlText: "Case Study",
 		},
@@ -33,7 +33,7 @@ const Projects = () => {
 			name: "Pradelna",
 			link: "https://pradelna.vercel.app/",
 			work: locale === "nb" ? "Kode" : "Code",
-			image: "/images/pradelna.png",
+			image: "/images/pradelna.webp",
 			url: "/pradelna",
 			urlText: "Case Study",
 		},
@@ -41,7 +41,7 @@ const Projects = () => {
 			name: "Dialog eXe",
 			link: "https://dialog-exe.vercel.app/",
 			work: "UX/UI",
-			image: "/images/dx-kino.png",
+			image: "/images/dx-kino.webp",
 			url: "/dialog-exe",
 			urlText: "Case Study",
 		},
@@ -219,7 +219,9 @@ const Projects = () => {
 											{project.work}
 										</span>
 										<span className={styles["arrow-link"]}>
-											<span className={styles["arrow-link-text"]}>{t.projectCaseStudy}</span>
+											<span className={styles["arrow-link-text"]}>
+												{t.projectCaseStudy}
+											</span>
 											<span className={styles["arrow-link-icon"]}>
 												<svg
 													xmlns='http://www.w3.org/2000/svg'
