@@ -41,9 +41,20 @@
 	position: fixed;
 	top: 0;
 	left: 0;
-	width: 100vw;
+	width: 100%;
+	max-width: 100vw;
+	/* vh first: browsers that don't support dvh still get a real height */
+	height: 100vh;
 	height: 100dvh;
-	z-index: -1;
+	min-height: 100vh;
+	min-height: 100dvh;
+	/*
+	 * Avoid z-index: -1 here. On iOS Safari, fixed layers with negative z-index
+	 * often paint behind the root/body background, so the scene "vanishes" on
+	 * phone while desktop still looks fine. Keep the canvas at 0 and stack page
+	 * content above it instead.
+	 */
+	z-index: 0;
 	overflow: hidden;
 	pointer-events: none;
 }
@@ -130,7 +141,10 @@ h4 {
 }
 
 main {
+	position: relative;
+	z-index: 1;
 	/* Keeps footer below the first screen while route/Suspense layout settles */
+	min-height: 100vh;
 	min-height: 100dvh;
 }
 
@@ -150,5 +164,7 @@ section {
 }
 
 footer {
+	position: relative;
+	z-index: 1;
 	padding-inline: var(--page-gutter);
 }

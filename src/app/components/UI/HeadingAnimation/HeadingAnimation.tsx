@@ -11,9 +11,11 @@ gsap.registerPlugin(SplitText, ScrollTrigger)
 const HeadingAnimation = ({
 	level = 1,
 	children,
+	className,
 }: {
 	level: 1 | 2 | 3 | 4 | 5 | 6
 	children: React.ReactNode
+	className?: string
 }) => {
 	const Tag = `h${level}` as `h${typeof level}`
 	const ref = useRef<HTMLHeadingElement>(null)
@@ -71,7 +73,7 @@ const HeadingAnimation = ({
 	)
 
 	return (
-		<Tag ref={ref} className={styles["heading"]}>
+		<Tag ref={ref} className={`${styles["heading"]} ${className ?? ""}`.trim()}>
 			{children}
 		</Tag>
 	)

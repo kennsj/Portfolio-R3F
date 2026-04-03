@@ -124,9 +124,9 @@ const translations: Record<AppLocale, Translations> = {
 			"Now you know where the background comes from. And where I come from.",
 		contactAvailability: "Available for hire - anywhere.",
 		contactEmailNote:
-			"I will get back to you quickly. Or we can skip the email and go aurora hunting!",
-		contactPortraitText: "My serious face, let's talk",
-		footerTagline: "Designer. Developer. Occasional gamer.",
+			"Share a bit about your project, timeline and what a good outcome looks like. I'll get back to you quickly. Or we can skip the email and go aurora hunting!",
+		contactPortraitText: "My serious face, let's have a chat",
+		footerTagline: "Designer. Developer. <br /> Occasional gamer.",
 		footerNavTitle: "Navigation",
 		footerHome: "Home",
 		footerAbout: "About",
@@ -200,8 +200,8 @@ const translations: Record<AppLocale, Translations> = {
 			"Nå vet du hvor bakgrunnen kommer fra. Og hvor jeg kommer fra.",
 		contactAvailability: "Tilgjengelig for oppdrag - hvor som helst.",
 		contactEmailNote:
-			"Jeg svarer så raskt som mulig. Eller så kan vi hoppe over e-posten og dra på nordlysjakt!",
-		contactPortraitText: "Mitt alvorlige ansikt, la oss snakke sammen",
+			"Fortell litt om prosjektet ditt, tidsplanen og hva et godt utfall vil se ut for deg. Jeg svarer så raskt som mulig. Eller så kan vi hoppe over e-posten og dra på nordlysjakt!",
+		contactPortraitText: "Det alvorlige trynet mitt, la oss ta en prat!",
 		footerTagline: "Designer. Utvikler. <br /> Sporadisk gamer.",
 		footerNavTitle: "Navigasjon",
 		footerHome: "Hjem",

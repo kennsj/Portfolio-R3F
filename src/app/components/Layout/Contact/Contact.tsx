@@ -1,39 +1,34 @@
 import { useEffect, useLayoutEffect, useRef } from "react"
-
 import { useQueryClient } from "@tanstack/react-query"
-
 import { useGSAP } from "@gsap/react"
-
 import gsap from "gsap"
-
 import { ScrollTrigger } from "gsap/ScrollTrigger"
-
-import { kpIndexQueryOptions } from "../../../hooks/useKpIndex"
-
+import {
+	getKpColor,
+	kpIndexQueryOptions,
+	useKpIndex,
+} from "../../../hooks/useKpIndex"
 import HeadingAnimation from "../../UI/HeadingAnimation/HeadingAnimation"
-
 import TextBlock from "../../UI/TextBlock/TextBlock"
-
 import Aurora from "../Aurora/Aurora"
-
 import ArrowLink from "../../UI/ArrowLink/ArrowLink"
-
-import Form from "./Form"
 import { useI18n } from "../../../hooks/useI18n"
 
 import styles from "./Contact.module.scss"
+import { useManualKp } from "@/app/hooks/KpContext"
 
 gsap.registerPlugin(ScrollTrigger)
 
 const Contact = ({ showForecast = false }: { showForecast?: boolean }) => {
 	const { t } = useI18n()
 	const contactRevealRef = useRef<HTMLDivElement>(null)
-
 	const formRevealAnchorRef = useRef<HTMLDivElement>(null)
-
 	const contactInfoRef = useRef<HTMLDivElement>(null)
-
 	const queryClient = useQueryClient()
+	const { data } = useKpIndex()
+	const { manualKp } = useManualKp()
+	const kp = manualKp ?? data?.latest ?? 0
+	const color = getKpColor(kp)
 
 	useEffect(() => {
 		if (!showForecast) return
@@ -52,23 +47,15 @@ const Contact = ({ showForecast = false }: { showForecast?: boolean }) => {
 	useGSAP(
 		() => {
 			const wrap = contactRevealRef.current
-
 			const anchor = formRevealAnchorRef.current
-
 			if (!wrap || !anchor) return
-
 			const form = wrap.querySelector<HTMLFormElement>("form")
-
 			const fields = form?.querySelectorAll<HTMLElement>("[data-contact-field]")
-
 			const submit = form?.querySelector<HTMLElement>('button[type="submit"]')
-
 			const formTargets: HTMLElement[] = []
 
 			if (fields?.length) formTargets.push(...Array.from(fields))
-
 			if (submit) formTargets.push(submit)
-
 			if (!formTargets.length) return
 
 			gsap.set(formTargets, {
@@ -107,15 +94,11 @@ const Contact = ({ showForecast = false }: { showForecast?: boolean }) => {
 	useGSAP(
 		() => {
 			const wrap = contactRevealRef.current
-
 			const info = contactInfoRef.current
-
 			if (!wrap || !info) return
-
 			const portrait = info.querySelector<HTMLElement>(
 				"[data-contact-portrait]",
 			)
-
 			const emailCol = info.querySelector<HTMLElement>("[data-contact-email]")
 
 			if (!portrait || !emailCol) return
@@ -172,16 +155,24 @@ const Contact = ({ showForecast = false }: { showForecast?: boolean }) => {
 	return (
 		<section id='contact' aria-label={t.navContact}>
 			<div ref={contactRevealRef} className={styles["contact-wrapper"]}>
-				<HeadingAnimation level={3}>{t.contactTitle}</HeadingAnimation>
+				<HeadingAnimation level={3} className={styles["contact-title"]}>
+					{t.contactTitle}
+				</HeadingAnimation>
 
 				<div className={styles["contact-content"]}>
 					<div className={styles["contact-text-container"]}>
 						<TextBlock className={styles["contact-text"]} textSize='md'>
 							{t.contactIntro}
 						</TextBlock>
-						<TextBlock textSize='sm' className={styles["contact-text-small"]}>
-							{t.contactAvailability}
-						</TextBlock>
+						<div className={styles["contact-text-small-container"]}>
+							<span
+								className={styles["kp-dot"]}
+								style={{ background: color }}
+							/>
+							<TextBlock textSize='sm' className={styles["contact-text-small"]}>
+								{t.contactAvailability}
+							</TextBlock>
+						</div>
 						<div className={styles["contact-info-email"]} data-contact-email>
 							<ArrowLink
 								size='48'
@@ -231,61 +222,6 @@ const Contact = ({ showForecast = false }: { showForecast?: boolean }) => {
 				</div>
 
 				{showForecast && <Aurora />}
-				{/* 
-
-				<div
-					ref={formRevealAnchorRef}
-					className={styles["form-reveal-anchor"]}
-					aria-hidden
-					/>
-
-				<div ref={contactInfoRef} className={styles["contact-info"]}>
-					<div className={styles["contact-info-image"]} data-contact-portrait>
-						<svg viewBox='0 0 200 200' width='250' height='250'>
-							<defs>
-								<path
-									id='circle-path'
-									d='M 100,100 m -80,0 a 80,80 0 1,1 160,0 a 80,80 0 1,1 -160,0'
-								/>
-							</defs>
-
-							<image
-								href='/images/y-so-serious.png'
-								x='25'
-								y='25'
-								width='150'
-								height='150'
-								clipPath='url(#clip)'
-							/>
-
-							<clipPath id='clip'>
-								<circle cx='100' cy='100' r='75' />
-							</clipPath>
-
-							<text fontSize='12' fill='#888' letterSpacing='1'>
-								<textPath
-									href='#circle-path'
-									startOffset='15%'
-									textAnchor='start'
-								>
-									My serious face, let's talk
-								</textPath>
-							</text>
-						</svg>
-					</div>
-
-					<div className={styles["contact-info-email"]} data-contact-email>
-						<ArrowLink
-							size='48'
-							href='mailto:hei@kennethjorgensen.no'
-							data-text='hei@kennethjorgensen.no'
-						>
-							hei
-							<span className='highlight'>@</span>
-							kennethjorgensen.no
-						</ArrowLink>
-					</div>
-				</div> */}
 			</div>
 		</section>
 	)

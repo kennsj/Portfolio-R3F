@@ -7,7 +7,7 @@ const Background = () => {
 	return (
 		<div>
 			<div id='canvas'>
-				<Canvas>
+				<Canvas style={{ width: "100%", height: "100%", display: "block" }}>
 					<LightSource />
 					<Experience />
 					{/* <Preload all /> */}
