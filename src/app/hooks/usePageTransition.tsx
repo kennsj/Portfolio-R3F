@@ -9,6 +9,7 @@ import {
 
 const PAGE_COLORS: Record<string, string> = {
 	"/": "#a6d59e",
+	"/about": "#a6d59e",
 	"/project/verchia": "#E4DCCB",
 	"/project/pradelna": "#E4DCCB",
 	"/project/dialog-exe": "#E4DCCB",

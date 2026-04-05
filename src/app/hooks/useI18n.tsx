@@ -80,8 +80,18 @@ type Translations = {
 	auroraDisclaimer: string
 	seoTitle: string
 	seoDescription: string
+	seoAboutTitle: string
+	seoAboutDescription: string
 	seoSiteName: string
 	seoKeywords: string
+	aboutPageEyebrow: string
+	aboutPageHeading: string
+	aboutPageLead: string
+	aboutPageIntro: string
+	aboutPageBody2: string
+	aboutPageBody3: string
+	aboutPageCtaHome: string
+	aboutPageCtaWork: string
 	designBodoTitle: string
 	designBodoIntro: string
 	designBodoServicesTitle: string
@@ -154,6 +164,9 @@ const translations: Record<AppLocale, Translations> = {
 		seoTitle: "Web Developer & Digital Designer from Bodø - Kenneth Jørgensen",
 		seoDescription:
 			"Kenneth Jørgensen is a web developer and digital designer from Bodø, Norway, available for local projects and international collaborations.",
+		seoAboutTitle: "About — Kenneth Jørgensen",
+		seoAboutDescription:
+			"Designer and developer based in Bodø, Norway. How I work, what I care about, and how we might collaborate.",
 		seoSiteName: "Kenneth Jørgensen Portfolio",
 		seoKeywords:
 			"web developer bodø, web designer bodø, digital designer bodø, design bodø, web design norge, international web designer",
@@ -167,6 +180,17 @@ const translations: Record<AppLocale, Translations> = {
 			"Brand-focused digital experiences for local businesses and teams",
 		designBodoCta:
 			"Need design in Bodø? Send me an email at hei@kennethjorgensen.no.",
+		aboutPageEyebrow: "The longer version",
+		aboutPageHeading: "About",
+		aboutPageLead: "BASED IN BODØ — WORKING WITH TEAMS NEAR AND FAR",
+		aboutPageIntro:
+			"I find it hard to let go of a project until both the design and the code feel right. Which is probably why I ended up doing both.",
+		aboutPageBody2:
+			"I care about the small things: rhythm in a layout, honest typography, performance you notice when it is missing, and interfaces that respect people's attention. Most of my work is built with React and custom front ends; I reach for Webflow or Framer when that is the better tool for the job.",
+		aboutPageBody3:
+			"When you hire me, you get one person who can take a concept from sketch to shipped site — and who will still be tweaking the details long after most people would have called it done.",
+		aboutPageCtaHome: "Back to home",
+		aboutPageCtaWork: "Selected work",
 	},
 	nb: {
 		aboutText:
@@ -230,6 +254,9 @@ const translations: Record<AppLocale, Translations> = {
 		seoTitle: "Webutvikler og digital designer fra Bodø - Kenneth Jørgensen",
 		seoDescription:
 			"Kenneth Jørgensen er webutvikler og digital designer fra Bodø, tilgjengelig for både lokale prosjekter og internasjonale samarbeid.",
+		seoAboutTitle: "Om meg — Kenneth Jørgensen",
+		seoAboutDescription:
+			"Designer og utvikler i Bodø. Hvordan jeg jobber, hva jeg bryr meg om, og hvordan vi kan samarbeide.",
 		seoSiteName: "Kenneth Jørgensen Portfolio",
 		seoKeywords:
 			"webutvikler bodø, webdesigner bodø, digital designer bodø, design bodø, webdesign norge, internasjonal webdesigner",
@@ -243,6 +270,17 @@ const translations: Record<AppLocale, Translations> = {
 			"Merkevarefokuserte digitale opplevelser for lokale virksomheter",
 		designBodoCta:
 			"Trenger du design eller webutvikling i Bodø? Send meg en e-post på hei@kennethjorgensen.no.",
+		aboutPageEyebrow: "Den litt lengre versjonen",
+		aboutPageHeading: "Om meg",
+		aboutPageLead: "BASERT I BODØ — JOBBER MED TEAM LANGS OG BREDE",
+		aboutPageIntro:
+			"Jeg har vanskelig for å gi slipp på et prosjekt før både designet og koden føles riktig. Det er nok derfor jeg endte opp med å gjøre begge deler.",
+		aboutPageBody2:
+			"Jeg bryr meg om de små tingene: rytme i layouten, ærlig typografi, ytelse du merker når den mangler, og grensesnitt som respekterer folks oppmerksomhet. Mesteparten av arbeidet mitt bygges med React og skreddersydde frontends; jeg tar fram Webflow eller Framer når det er det smartere verktøyet.",
+		aboutPageBody3:
+			"Når du ansetter meg, får du én person som kan ta en idé fra skisse til ferdig nettside — og som fortsatt finpusser detaljene lenge etter at de fleste ville sagt at det var ferdig.",
+		aboutPageCtaHome: "Til forsiden",
+		aboutPageCtaWork: "Utvalgte prosjekter",
 	},
 }
 

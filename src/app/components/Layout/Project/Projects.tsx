@@ -25,7 +25,7 @@ const Projects = () => {
 			name: "Verchia",
 			link: "https://verchia.vercel.app/",
 			work: locale === "nb" ? "Design / Kode" : "Design / Code",
-			image: "/images/verchia.webp",
+			image: "/videos/verchia.webm",
 			url: "/verchia",
 			urlText: "Case Study",
 		},
@@ -33,7 +33,7 @@ const Projects = () => {
 			name: "Pradelna",
 			link: "https://pradelna.vercel.app/",
 			work: locale === "nb" ? "Kode" : "Code",
-			image: "/images/pradelna.webp",
+			image: "/videos/pradelna.webm",
 			url: "/pradelna",
 			urlText: "Case Study",
 		},
@@ -41,7 +41,7 @@ const Projects = () => {
 			name: "Dialog eXe",
 			link: "https://dialog-exe.vercel.app/",
 			work: "UX/UI",
-			image: "/images/dx-kino.webp",
+			image: "/videos/dx.webm",
 			url: "/dialog-exe",
 			urlText: "Case Study",
 		},
@@ -50,7 +50,7 @@ const Projects = () => {
 	const {
 		shellRef,
 		imgRef,
-		currentProject,
+		videoRef,
 		onMouseMove,
 		onEnter,
 		onLeave,
@@ -67,14 +67,20 @@ const Projects = () => {
 		(projectUrl: string) => {
 			setPreviewInteractionLocked(true)
 			const img = imgRef.current
+			const video = videoRef.current
+			const out = {
+				autoAlpha: 0,
+				filter: "blur(10px)",
+				duration: PAGE_OUT_DURATION,
+				ease: PAGE_OUT_EASE,
+			}
 			if (img) {
 				gsap.killTweensOf(img)
-				gsap.to(img, {
-					autoAlpha: 0,
-					filter: "blur(10px)",
-					duration: PAGE_OUT_DURATION,
-					ease: PAGE_OUT_EASE,
-				})
+				gsap.to(img, out)
+			}
+			if (video) {
+				gsap.killTweensOf(video)
+				gsap.to(video, out)
 			}
 			transitionTo(`/project${projectUrl}`)
 		},
@@ -256,9 +262,17 @@ const Projects = () => {
 				>
 					<img
 						ref={imgRef}
-						src={currentProject.image}
-						alt={currentProject.name}
 						className={styles["project-hover"]}
+						alt=''
+						aria-hidden
+					/>
+					<video
+						ref={videoRef}
+						className={styles["project-hover"]}
+						muted
+						loop
+						playsInline
+						aria-hidden
 					/>
 				</div>,
 				document.body,

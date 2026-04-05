@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+	xmlns:xhtml="http://www.w3.org/1999/xhtml">
+	<!-- Norsk (nb) og engelsk (en) matcher ?lang= og hreflang i RootLayout. -->
+	<!-- Norwegian (nb) and English (en) match ?lang= and hreflang in RootLayout. -->
+
+	<url>
+		<loc>https://kennethjorgensen.no/?lang=nb</loc>
+		<lastmod>2026-04-03</lastmod>
+		<changefreq>weekly</changefreq>
+		<priority>1.0</priority>
+		<xhtml:link rel="alternate" hreflang="nb" href="https://kennethjorgensen.no/?lang=nb" />
+		<xhtml:link rel="alternate" hreflang="en" href="https://kennethjorgensen.no/?lang=en" />
+		<xhtml:link rel="alternate" hreflang="x-default" href="https://kennethjorgensen.no/?lang=en" />
+	</url>
+	<url>
+		<loc>https://kennethjorgensen.no/?lang=en</loc>
+		<lastmod>2026-04-03</lastmod>
+		<changefreq>weekly</changefreq>
+		<priority>1.0</priority>
+		<xhtml:link rel="alternate" hreflang="nb" href="https://kennethjorgensen.no/?lang=nb" />
+		<xhtml:link rel="alternate" hreflang="en" href="https://kennethjorgensen.no/?lang=en" />
+		<xhtml:link rel="alternate" hreflang="x-default" href="https://kennethjorgensen.no/?lang=en" />
+	</url>
+
+	<url>
+		<loc>https://kennethjorgensen.no/about?lang=nb</loc>
+		<lastmod>2026-04-03</lastmod>
+		<changefreq>monthly</changefreq>
+		<priority>0.9</priority>
+		<xhtml:link rel="alternate" hreflang="nb" href="https://kennethjorgensen.no/about?lang=nb" />
+		<xhtml:link rel="alternate" hreflang="en" href="https://kennethjorgensen.no/about?lang=en" />
+		<xhtml:link rel="alternate" hreflang="x-default" href="https://kennethjorgensen.no/about?lang=en" />
+	</url>
+	<url>
+		<loc>https://kennethjorgensen.no/about?lang=en</loc>
+		<lastmod>2026-04-03</lastmod>
+		<changefreq>monthly</changefreq>
+		<priority>0.9</priority>
+		<xhtml:link rel="alternate" hreflang="nb" href="https://kennethjorgensen.no/about?lang=nb" />
+		<xhtml:link rel="alternate" hreflang="en" href="https://kennethjorgensen.no/about?lang=en" />
+		<xhtml:link rel="alternate" hreflang="x-default" href="https://kennethjorgensen.no/about?lang=en" />
+	</url>
+
+	<url>
+		<loc>https://kennethjorgensen.no/project?lang=nb</loc>
+		<lastmod>2026-04-03</lastmod>
+		<changefreq>weekly</changefreq>
+		<priority>0.9</priority>
+		<xhtml:link rel="alternate" hreflang="nb" href="https://kennethjorgensen.no/project?lang=nb" />
+		<xhtml:link rel="alternate" hreflang="en" href="https://kennethjorgensen.no/project?lang=en" />
+		<xhtml:link rel="alternate" hreflang="x-default" href="https://kennethjorgensen.no/project?lang=en" />
+	</url>
+	<url>
+		<loc>https://kennethjorgensen.no/project?lang=en</loc>
+		<lastmod>2026-04-03</lastmod>
+		<changefreq>weekly</changefreq>
+		<priority>0.9</priority>
+		<xhtml:link rel="alternate" hreflang="nb" href="https://kennethjorgensen.no/project?lang=nb" />
+		<xhtml:link rel="alternate" hreflang="en" href="https://kennethjorgensen.no/project?lang=en" />
+		<xhtml:link rel="alternate" hreflang="x-default" href="https://kennethjorgensen.no/project?lang=en" />
+	</url>
+
+	<url>
+		<loc>https://kennethjorgensen.no/project/dialog-exe?lang=nb</loc>
+		<lastmod>2026-04-03</lastmod>
+		<changefreq>monthly</changefreq>
+		<priority>0.8</priority>
+		<xhtml:link rel="alternate" hreflang="nb" href="https://kennethjorgensen.no/project/dialog-exe?lang=nb" />
+		<xhtml:link rel="alternate" hreflang="en" href="https://kennethjorgensen.no/project/dialog-exe?lang=en" />
+		<xhtml:link rel="alternate" hreflang="x-default" href="https://kennethjorgensen.no/project/dialog-exe?lang=en" />
+	</url>
+	<url>
+		<loc>https://kennethjorgensen.no/project/dialog-exe?lang=en</loc>
+		<lastmod>2026-04-03</lastmod>
+		<changefreq>monthly</changefreq>
+		<priority>0.8</priority>
+		<xhtml:link rel="alternate" hreflang="nb" href="https://kennethjorgensen.no/project/dialog-exe?lang=nb" />
+		<xhtml:link rel="alternate" hreflang="en" href="https://kennethjorgensen.no/project/dialog-exe?lang=en" />
+		<xhtml:link rel="alternate" hreflang="x-default" href="https://kennethjorgensen.no/project/dialog-exe?lang=en" />
+	</url>
+
+	<url>
+		<loc>https://kennethjorgensen.no/project/pradelna?lang=nb</loc>
+		<lastmod>2026-04-03</lastmod>
+		<changefreq>monthly</changefreq>
+		<priority>0.8</priority>
+		<xhtml:link rel="alternate" hreflang="nb" href="https://kennethjorgensen.no/project/pradelna?lang=nb" />
+		<xhtml:link rel="alternate" hreflang="en" href="https://kennethjorgensen.no/project/pradelna?lang=en" />
+		<xhtml:link rel="alternate" hreflang="x-default" href="https://kennethjorgensen.no/project/pradelna?lang=en" />
+	</url>
+	<url>
+		<loc>https://kennethjorgensen.no/project/pradelna?lang=en</loc>
+		<lastmod>2026-04-03</lastmod>
+		<changefreq>monthly</changefreq>
+		<priority>0.8</priority>
+		<xhtml:link rel="alternate" hreflang="nb" href="https://kennethjorgensen.no/project/pradelna?lang=nb" />
+		<xhtml:link rel="alternate" hreflang="en" href="https://kennethjorgensen.no/project/pradelna?lang=en" />
+		<xhtml:link rel="alternate" hreflang="x-default" href="https://kennethjorgensen.no/project/pradelna?lang=en" />
+	</url>
+
+	<url>
+		<loc>https://kennethjorgensen.no/project/sno-oslo?lang=nb</loc>
+		<lastmod>2026-04-03</lastmod>
+		<changefreq>monthly</changefreq>
+		<priority>0.8</priority>
+		<xhtml:link rel="alternate" hreflang="nb" href="https://kennethjorgensen.no/project/sno-oslo?lang=nb" />
+		<xhtml:link rel="alternate" hreflang="en" href="https://kennethjorgensen.no/project/sno-oslo?lang=en" />
+		<xhtml:link rel="alternate" hreflang="x-default" href="https://kennethjorgensen.no/project/sno-oslo?lang=en" />
+	</url>
+	<url>
+		<loc>https://kennethjorgensen.no/project/sno-oslo?lang=en</loc>
+		<lastmod>2026-04-03</lastmod>
+		<changefreq>monthly</changefreq>
+		<priority>0.8</priority>
+		<xhtml:link rel="alternate" hreflang="nb" href="https://kennethjorgensen.no/project/sno-oslo?lang=nb" />
+		<xhtml:link rel="alternate" hreflang="en" href="https://kennethjorgensen.no/project/sno-oslo?lang=en" />
+		<xhtml:link rel="alternate" hreflang="x-default" href="https://kennethjorgensen.no/project/sno-oslo?lang=en" />
+	</url>
+
+	<url>
+		<loc>https://kennethjorgensen.no/project/verchia?lang=nb</loc>
+		<lastmod>2026-04-03</lastmod>
+		<changefreq>monthly</changefreq>
+		<priority>0.8</priority>
+		<xhtml:link rel="alternate" hreflang="nb" href="https://kennethjorgensen.no/project/verchia?lang=nb" />
+		<xhtml:link rel="alternate" hreflang="en" href="https://kennethjorgensen.no/project/verchia?lang=en" />
+		<xhtml:link rel="alternate" hreflang="x-default" href="https://kennethjorgensen.no/project/verchia?lang=en" />
+	</url>
+	<url>
+		<loc>https://kennethjorgensen.no/project/verchia?lang=en</loc>
+		<lastmod>2026-04-03</lastmod>
+		<changefreq>monthly</changefreq>
+		<priority>0.8</priority>
+		<xhtml:link rel="alternate" hreflang="nb" href="https://kennethjorgensen.no/project/verchia?lang=nb" />
+		<xhtml:link rel="alternate" hreflang="en" href="https://kennethjorgensen.no/project/verchia?lang=en" />
+		<xhtml:link rel="alternate" hreflang="x-default" href="https://kennethjorgensen.no/project/verchia?lang=en" />
+	</url>
+</urlset>

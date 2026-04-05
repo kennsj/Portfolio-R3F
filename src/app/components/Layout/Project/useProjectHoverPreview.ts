@@ -14,6 +14,10 @@ const FADE_IN = 1.35
 const FADE_OUT = 0.42
 const LEAVE_DELAY_MS = 50
 
+function isVideoSrc(url: string) {
+	return /\.(webm|mp4)(\?|$)/i.test(url)
+}
+
 type UseProjectHoverPreviewOptions = {
 	/** When true, ignore hover/scroll preview updates (e.g. during page transition out). */
 	interactionDisabled?: boolean
@@ -28,6 +32,9 @@ export function useProjectHoverPreview<T extends PreviewItem>(
 
 	const shellRef = useRef<HTMLDivElement>(null)
 	const imgRef = useRef<HTMLImageElement>(null)
+	const videoRef = useRef<HTMLVideoElement>(null)
+	/** Which layer is logically active after the last preview update (img | video). */
+	const activeMediumRef = useRef<"img" | "video" | null>(null)
 	const targetPos = useRef({ x: 0, y: 0 })
 	const currentPos = useRef({ x: 0, y: 0 })
 	const lastPointer = useRef<{ x: number; y: number } | null>(null)
@@ -66,23 +73,107 @@ export function useProjectHoverPreview<T extends PreviewItem>(
 		return () => cancelAnimationFrame(rafId)
 	}, [])
 
-	const fadeIn = useCallback((img: HTMLImageElement) => {
-		gsap.killTweensOf(img)
-		gsap.set(img, { opacity: 0 })
-		gsap.to(img, { opacity: 1, duration: FADE_IN, ease: "power2.out" })
-	}, [])
+	const fadeOutElements = useCallback(
+		(elements: (HTMLElement | null | undefined)[], duration = FADE_OUT) => {
+			const els = elements.filter(Boolean) as HTMLElement[]
+			if (els.length === 0) return
+			isFadingOutRef.current = true
+			let remaining = els.length
+			const onOneDone = () => {
+				remaining--
+				if (remaining <= 0) isFadingOutRef.current = false
+			}
+			for (const el of els) {
+				gsap.killTweensOf(el)
+				gsap.to(el, {
+					opacity: 0,
+					duration,
+					ease: "power2.out",
+					onComplete: () => {
+						if (el instanceof HTMLVideoElement) el.pause()
+						onOneDone()
+					},
+				})
+			}
+		},
+		[],
+	)
 
-	const fadeOut = useCallback((img: HTMLImageElement, duration = FADE_OUT) => {
-		isFadingOutRef.current = true
-		gsap.killTweensOf(img)
-		return gsap.to(img, {
-			opacity: 0,
-			duration,
-			ease: "power2.out",
-			onComplete: () => {
-				isFadingOutRef.current = false
-			},
-		})
+	const applyPreviewMedia = useCallback((project: T) => {
+		const img = imgRef.current
+		const video = videoRef.current
+		const useVideo = isVideoSrc(project.image)
+		const medium: "img" | "video" = useVideo ? "video" : "img"
+		const prev = activeMediumRef.current
+
+		if (prev === medium) {
+			if (medium === "img" && img) {
+				gsap.killTweensOf(img)
+				img.src = project.image
+				img.alt = project.name
+				gsap.set(img, { opacity: 1 })
+			}
+			if (medium === "video" && video) {
+				gsap.killTweensOf(video)
+				video.src = project.image
+				video.muted = true
+				video.playsInline = true
+				video.loop = true
+				gsap.set(video, { opacity: 1 })
+				void video.play().catch(() => {})
+			}
+			return
+		}
+
+		activeMediumRef.current = medium
+
+		if (useVideo) {
+			if (img) {
+				gsap.killTweensOf(img)
+				gsap.to(img, {
+					opacity: 0,
+					duration: FADE_OUT,
+					ease: "power2.out",
+				})
+			}
+			if (video) {
+				gsap.killTweensOf(video)
+				video.src = project.image
+				video.muted = true
+				video.playsInline = true
+				video.loop = true
+				gsap.set(video, { opacity: 0 })
+				void video.play().catch(() => {})
+				gsap.to(video, {
+					opacity: 1,
+					duration: FADE_IN,
+					ease: "power2.out",
+				})
+			}
+		} else {
+			if (video) {
+				gsap.killTweensOf(video)
+				gsap.to(video, {
+					opacity: 0,
+					duration: FADE_OUT,
+					ease: "power2.out",
+					onComplete: () => {
+						video.pause()
+					},
+				})
+			}
+			if (img) {
+				gsap.killTweensOf(img)
+				img.src = project.image
+				img.alt = project.name
+				gsap.set(img, { opacity: 0 })
+				gsap.to(img, {
+					opacity: 1,
+					duration: FADE_IN,
+					ease: "power2.out",
+				})
+			}
+		}
 	}, [])
 
 	const showAt = useCallback(
@@ -96,13 +187,9 @@ export function useProjectHoverPreview<T extends PreviewItem>(
 			visibleRef.current = true
 			setCurrent(project)
 
-			if (imgRef.current) {
-				imgRef.current.src = project.image
-				imgRef.current.alt = project.name
-				fadeIn(imgRef.current)
-			}
+			applyPreviewMedia(project)
 		},
-		[fadeIn],
+		[applyPreviewMedia],
 	)
 
 	/** Hide preview (fade out). No scroll recheck — use real mouse leave / sync. */
@@ -114,9 +201,10 @@ export function useProjectHoverPreview<T extends PreviewItem>(
 
 		activeIndexRef.current = -1
 		visibleRef.current = false
+		activeMediumRef.current = null
 
-		if (imgRef.current) fadeOut(imgRef.current)
-	}, [fadeOut])
+		fadeOutElements([imgRef.current, videoRef.current])
+	}, [fadeOutElements])
 
 	/**
 	 * While scrolling, the DOM under the cursor changes without mousemove/enter.
@@ -157,13 +245,8 @@ export function useProjectHoverPreview<T extends PreviewItem>(
 
 		activeIndexRef.current = idx
 		setCurrent(items[idx])
-		if (imgRef.current) {
-			imgRef.current.src = items[idx].image
-			imgRef.current.alt = items[idx].name
-			gsap.killTweensOf(imgRef.current)
-			gsap.set(imgRef.current, { opacity: 1 })
-		}
-	}, [hidePreview, interactionDisabled, items, showAt])
+		applyPreviewMedia(items[idx])
+	}, [applyPreviewMedia, hidePreview, interactionDisabled, items, showAt])
 
 	useEffect(() => {
 		const scheduleSync = () => {
@@ -211,14 +294,9 @@ export function useProjectHoverPreview<T extends PreviewItem>(
 
 			activeIndexRef.current = index
 			setCurrent(project)
-			if (imgRef.current) {
-				imgRef.current.src = project.image
-				imgRef.current.alt = project.name
-				gsap.killTweensOf(imgRef.current)
-				gsap.set(imgRef.current, { opacity: 1 })
-			}
+			applyPreviewMedia(project)
 		},
-		[interactionDisabled, showAt],
+		[applyPreviewMedia, interactionDisabled, showAt],
 	)
 
 	const onLeave = useCallback(
@@ -238,7 +316,8 @@ export function useProjectHoverPreview<T extends PreviewItem>(
 				lastPointer.current = null
 				activeIndexRef.current = -1
 				visibleRef.current = false
-				if (imgRef.current) fadeOut(imgRef.current)
+				activeMediumRef.current = null
+				fadeOutElements([imgRef.current, videoRef.current])
 				return
 			}
 
@@ -247,10 +326,11 @@ export function useProjectHoverPreview<T extends PreviewItem>(
 				activeIndexRef.current = -1
 				if (!overProject) lastPointer.current = null
 				visibleRef.current = false
-				if (imgRef.current) fadeOut(imgRef.current)
+				activeMediumRef.current = null
+				fadeOutElements([imgRef.current, videoRef.current])
 			}, LEAVE_DELAY_MS)
 		},
-		[fadeOut, interactionDisabled],
+		[fadeOutElements, interactionDisabled],
 	)
 
 	const onSectionLeave = useCallback(() => {
@@ -266,6 +346,7 @@ export function useProjectHoverPreview<T extends PreviewItem>(
 	return {
 		shellRef,
 		imgRef,
+		videoRef,
 		currentProject: current,
 		onMouseMove,
 		onEnter,

@@ -1,0 +1,7 @@
+# Robots: tillater indeksering av offentlige sider.
+# Robots: allows indexing of public pages.
+
+User-agent: *
+Allow: /
+
+Sitemap: https://kennethjorgensen.no/sitemap.xml

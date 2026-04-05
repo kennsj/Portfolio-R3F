@@ -28,10 +28,14 @@ export default function RootLayout() {
 	const { pathname, hash: locationHash } = useLocation()
 	const { locale, t } = useI18n()
 	const isHome = pathname === "/"
+	const isAbout = pathname === "/about"
 	const prevPathRef = useRef<string | null>(null)
 
 	useEffect(() => {
-		document.title = t.seoTitle
+		const pageTitle = isAbout ? t.seoAboutTitle : t.seoTitle
+		const pageDescription = isAbout ? t.seoAboutDescription : t.seoDescription
+
+		document.title = pageTitle
 
 		const ensureMeta = (key: "name" | "property", value: string) => {
 			let meta = document.head.querySelector<HTMLMetaElement>(
@@ -45,18 +49,18 @@ export default function RootLayout() {
 			return meta
 		}
 
-		ensureMeta("name", "description").content = t.seoDescription
+		ensureMeta("name", "description").content = pageDescription
 		ensureMeta("name", "keywords").content = t.seoKeywords
-		ensureMeta("property", "og:title").content = t.seoTitle
+		ensureMeta("property", "og:title").content = pageTitle
 		ensureMeta("property", "og:site_name").content = t.seoSiteName
-		ensureMeta("property", "og:description").content = t.seoDescription
+		ensureMeta("property", "og:description").content = pageDescription
 		ensureMeta("property", "og:locale").content =
 			locale === "nb" ? "nb_NO" : "en_US"
 		ensureMeta("property", "og:type").content = "website"
 		ensureMeta("property", "og:url").content = `${window.location.origin}${pathname}`
 		ensureMeta("name", "twitter:card").content = "summary_large_image"
-		ensureMeta("name", "twitter:title").content = t.seoTitle
-		ensureMeta("name", "twitter:description").content = t.seoDescription
+		ensureMeta("name", "twitter:title").content = pageTitle
+		ensureMeta("name", "twitter:description").content = pageDescription
 
 		let canonical = document.head.querySelector<HTMLLinkElement>(
 			'link[rel="canonical"]',
@@ -110,7 +114,7 @@ export default function RootLayout() {
 			"@type": "ProfessionalService",
 			name: "Kenneth Jorgensen",
 			url: window.location.origin,
-			description: t.seoDescription,
+			description: pageDescription,
 			areaServed: "Bodo, Norway",
 			address: {
 				"@type": "PostalAddress",
@@ -123,13 +127,23 @@ export default function RootLayout() {
 				"https://github.com/kennsj",
 			],
 		})
-	}, [locale, pathname, t.seoDescription, t.seoKeywords, t.seoSiteName, t.seoTitle])
+	}, [
+		isAbout,
+		locale,
+		pathname,
+		t.seoAboutDescription,
+		t.seoAboutTitle,
+		t.seoDescription,
+		t.seoKeywords,
+		t.seoSiteName,
+		t.seoTitle,
+	])
 
 	useEffect(() => {
-		if (isHome) {
+		if (isHome || isAbout) {
 			setLightColor("#a6d59e") // this is enough — just set the target
 		}
-	}, [pathname])
+	}, [isAbout, isHome, pathname])
 
 	// One refresh after images/fonts/layout settle — avoids short-page ScrollTrigger
 	// math on first paint (same class of bug as footer/heading flashes).

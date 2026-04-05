@@ -9,22 +9,22 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './app/__root'
-import { Route as DesignBodoRouteImport } from './app/design-bodo'
 import { Route as ProjectRouteRouteImport } from './app/project/route'
+import { Route as AboutRouteRouteImport } from './app/about/route'
 import { Route as IndexRouteImport } from './app/index'
 import { Route as ProjectVerchiaRouteImport } from './app/project/verchia'
 import { Route as ProjectSnoOsloRouteImport } from './app/project/sno-oslo'
 import { Route as ProjectPradelnaRouteImport } from './app/project/pradelna'
 import { Route as ProjectDialogExeRouteImport } from './app/project/dialog-exe'
 
-const DesignBodoRoute = DesignBodoRouteImport.update({
-  id: '/design-bodo',
-  path: '/design-bodo',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const ProjectRouteRoute = ProjectRouteRouteImport.update({
   id: '/project',
   path: '/project',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AboutRouteRoute = AboutRouteRouteImport.update({
+  id: '/about',
+  path: '/about',
   getParentRoute: () => rootRouteImport,
 } as any)
 const IndexRoute = IndexRouteImport.update({
@@ -55,8 +55,8 @@ const ProjectDialogExeRoute = ProjectDialogExeRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/about': typeof AboutRouteRoute
   '/project': typeof ProjectRouteRouteWithChildren
-  '/design-bodo': typeof DesignBodoRoute
   '/project/dialog-exe': typeof ProjectDialogExeRoute
   '/project/pradelna': typeof ProjectPradelnaRoute
   '/project/sno-oslo': typeof ProjectSnoOsloRoute
@@ -64,8 +64,8 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/about': typeof AboutRouteRoute
   '/project': typeof ProjectRouteRouteWithChildren
-  '/design-bodo': typeof DesignBodoRoute
   '/project/dialog-exe': typeof ProjectDialogExeRoute
   '/project/pradelna': typeof ProjectPradelnaRoute
   '/project/sno-oslo': typeof ProjectSnoOsloRoute
@@ -74,8 +74,8 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/about': typeof AboutRouteRoute
   '/project': typeof ProjectRouteRouteWithChildren
-  '/design-bodo': typeof DesignBodoRoute
   '/project/dialog-exe': typeof ProjectDialogExeRoute
   '/project/pradelna': typeof ProjectPradelnaRoute
   '/project/sno-oslo': typeof ProjectSnoOsloRoute
@@ -85,8 +85,8 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/about'
     | '/project'
-    | '/design-bodo'
     | '/project/dialog-exe'
     | '/project/pradelna'
     | '/project/sno-oslo'
@@ -94,8 +94,8 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/about'
     | '/project'
-    | '/design-bodo'
     | '/project/dialog-exe'
     | '/project/pradelna'
     | '/project/sno-oslo'
@@ -103,8 +103,8 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/'
+    | '/about'
     | '/project'
-    | '/design-bodo'
     | '/project/dialog-exe'
     | '/project/pradelna'
     | '/project/sno-oslo'
@@ -113,24 +113,24 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AboutRouteRoute: typeof AboutRouteRoute
   ProjectRouteRoute: typeof ProjectRouteRouteWithChildren
-  DesignBodoRoute: typeof DesignBodoRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/design-bodo': {
-      id: '/design-bodo'
-      path: '/design-bodo'
-      fullPath: '/design-bodo'
-      preLoaderRoute: typeof DesignBodoRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/project': {
       id: '/project'
       path: '/project'
       fullPath: '/project'
       preLoaderRoute: typeof ProjectRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/about': {
+      id: '/about'
+      path: '/about'
+      fullPath: '/about'
+      preLoaderRoute: typeof AboutRouteRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/': {
@@ -191,8 +191,8 @@ const ProjectRouteRouteWithChildren = ProjectRouteRoute._addFileChildren(
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AboutRouteRoute: AboutRouteRoute,
   ProjectRouteRoute: ProjectRouteRouteWithChildren,
-  DesignBodoRoute: DesignBodoRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
