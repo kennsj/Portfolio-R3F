@@ -113,6 +113,8 @@
 			margin-top: -1px;
 			filter: blur(4px);
 			opacity: 0.3;
+			user-select: none;
+			pointer-events: none;
 
 			&:last-of-type {
 				display: none;

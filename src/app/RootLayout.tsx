@@ -57,7 +57,8 @@ export default function RootLayout() {
 		ensureMeta("property", "og:locale").content =
 			locale === "nb" ? "nb_NO" : "en_US"
 		ensureMeta("property", "og:type").content = "website"
-		ensureMeta("property", "og:url").content = `${window.location.origin}${pathname}`
+		ensureMeta("property", "og:url").content =
+			`${window.location.origin}${pathname}`
 		ensureMeta("name", "twitter:card").content = "summary_large_image"
 		ensureMeta("name", "twitter:title").content = pageTitle
 		ensureMeta("name", "twitter:description").content = pageDescription

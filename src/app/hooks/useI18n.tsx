@@ -151,12 +151,12 @@ const translations: Record<AppLocale, Translations> = {
 		auroraModeAria: "Manual or Live",
 		auroraDisclaimer:
 			"Disclaimer: The aurora depicted in the background is an artistic interpretation. Colours, speed, and behaviour may not reflect actual conditions above Bodo. The best chances are between September and April, if the clouds cooperate, which is rarely.",
-		seoTitle: "Web Developer & Digital Designer from Bodø - Kenneth Jørgensen",
+		seoTitle: "Web Developer & Web Designer from Bodø - Kenneth Jørgensen",
 		seoDescription:
-			"Kenneth Jørgensen is a web developer and digital designer from Bodø, Norway, available for local projects and international collaborations.",
+			"Kenneth Jørgensen is a web developer and web designer from Bodø, Norway, available for local projects and international collaborations.",
 		seoSiteName: "Kenneth Jørgensen Portfolio",
 		seoKeywords:
-			"web developer bodø, web designer bodø, digital designer bodø, design bodø, web design norge, international web designer",
+			"web developer bodø, web designer bodø, wen designer bodø, design bodø, web design norge, international web designer",
 		designBodoTitle: "Designed in Bodø",
 		designBodoIntro:
 			"I help brands and teams in Bodø design and develop websites that look great, perform well, and convert.",
@@ -227,12 +227,12 @@ const translations: Record<AppLocale, Translations> = {
 		auroraModeAria: "Manuell eller Live",
 		auroraDisclaimer:
 			"Forbehold: Nordlyset i bakgrunnen er en kunstnerisk tolkning. Farger, hastighet og bevegelse speiler ikke alltid faktiske forhold over Bodø. De beste sjansene er mellom september og april, hvis skyene samarbeider, noe de sjelden gjør.",
-		seoTitle: "Webutvikler og digital designer fra Bodø - Kenneth Jørgensen",
+		seoTitle: "Webutvikler og web designer fra Bodø - Kenneth Jørgensen",
 		seoDescription:
-			"Kenneth Jørgensen er webutvikler og digital designer fra Bodø, tilgjengelig for både lokale prosjekter og internasjonale samarbeid.",
+			"Kenneth Jørgensen er webutvikler og web designer fra Bodø, tilgjengelig for både lokale prosjekter og internasjonale samarbeid.",
 		seoSiteName: "Kenneth Jørgensen Portfolio",
 		seoKeywords:
-			"webutvikler bodø, webdesigner bodø, digital designer bodø, design bodø, webdesign norge, internasjonal webdesigner",
+			"webutvikler bodø, webdesigner bodø, web designer bodø, design bodø, webdesign norge, internasjonal webdesigner",
 		designBodoTitle: "Designet i Bodø",
 		designBodoIntro:
 			"Jeg hjelper bedrifter og team i Bodø med nettsider som ser bra ut, yter godt og skaper resultater.",
