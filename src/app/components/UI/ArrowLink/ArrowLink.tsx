@@ -25,11 +25,14 @@ const ArrowLink = ({
 	children,
 	target,
 	size = "24",
+	disableCharReveal = false,
 }: {
 	href: string
 	children: React.ReactNode
 	target?: string
 	size?: string
+	/** When true, skip per-character ScrollTrigger reveal (e.g. parent handles entrance). */
+	disableCharReveal?: boolean
 }) => {
 	const { transitionTo } = usePageTransition()
 	const external = isExternalHref(href, target)
@@ -45,6 +48,8 @@ const ArrowLink = ({
 
 	useGSAP(
 		() => {
+			if (disableCharReveal) return
+
 			const el = linkRef.current
 			if (!el) return
 
@@ -74,7 +79,7 @@ const ArrowLink = ({
 
 			return () => splitLink.revert()
 		},
-		{ dependencies: [linkRef] },
+		{ dependencies: [linkRef, disableCharReveal] },
 	)
 
 	return (

@@ -1,6 +1,8 @@
 .projects-wrapper {
+	position: relative;
 	max-width: var(--max-width);
 	margin: 0 auto;
+	z-index: 2;
 
 	.projects-list {
 		&--transitioning {
@@ -247,6 +249,7 @@
 	aspect-ratio: 16 / 9;
 	overflow: hidden;
 	border-radius: 4px;
+	z-index: 1;
 
 	@media screen and (max-width: 768px) {
 		display: none;
@@ -262,6 +265,7 @@
 	object-fit: cover;
 	opacity: 0;
 	will-change: opacity;
+	z-index: 1;
 
 	@media screen and (max-width: 768px) {
 		display: none;

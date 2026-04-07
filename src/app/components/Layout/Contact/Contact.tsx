@@ -159,7 +159,7 @@ const Contact = ({ showForecast = false }: { showForecast?: boolean }) => {
 					{t.contactTitle}
 				</HeadingAnimation>
 
-				<div className={styles["contact-content"]}>
+				<div ref={contactInfoRef} className={styles["contact-content"]}>
 					<div className={styles["contact-text-container"]}>
 						<TextBlock className={styles["contact-text"]} textSize='md'>
 							{t.contactIntro}
@@ -177,7 +177,7 @@ const Contact = ({ showForecast = false }: { showForecast?: boolean }) => {
 							<ArrowLink
 								size='48'
 								href='mailto:hei@kennethjorgensen.no'
-								data-text='hei@kennethjorgensen.no'
+								disableCharReveal
 							>
 								hei
 								<span className='highlight'>@</span>
@@ -188,7 +188,10 @@ const Contact = ({ showForecast = false }: { showForecast?: boolean }) => {
 							{t.contactEmailNote}
 						</TextBlock>
 					</div>
-					<div className={styles["contact-image"]}>
+					<div
+						className={styles["contact-image"]}
+						data-contact-portrait
+					>
 						<svg viewBox='0 0 300 200' width='250' height='250'>
 							<defs>
 								<path
