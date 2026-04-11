@@ -10,20 +10,18 @@ import {
 
 export type AppLocale = "en" | "nb"
 
-const NORWEGIAN_PREFIXES = ["nb", "nn", "no"] as const
+/** Slugs under `/project/:slug` with dedicated SEO copy. */
+export type ProjectSlug = "verchia" | "pradelna" | "dialog-exe"
 
-function isNorwegianLanguageTag(tag: string) {
-	const lower = tag.toLowerCase()
-	return NORWEGIAN_PREFIXES.some((prefix) => lower.startsWith(prefix))
-}
+type ProjectSeoEntry = { title: string; description: string }
 
 function detectLocale(): AppLocale {
-	if (typeof window === "undefined") return "en"
+	if (typeof window === "undefined") return "nb"
 	const urlLang = new URLSearchParams(window.location.search).get("lang")
-	if (urlLang === "nb") return "nb"
 	if (urlLang === "en") return "en"
-	const langs = window.navigator.languages ?? [window.navigator.language]
-	return langs.some((lang) => isNorwegianLanguageTag(lang)) ? "nb" : "en"
+	if (urlLang === "nb") return "nb"
+	// Norwegian first: default for all visitors unless ?lang=en is present.
+	return "nb"
 }
 
 type Translations = {
@@ -80,6 +78,11 @@ type Translations = {
 	auroraDisclaimer: string
 	seoTitle: string
 	seoDescription: string
+	seoAboutTitle: string
+	seoAboutDescription: string
+	seoProjectIndexTitle: string
+	seoProjectIndexDescription: string
+	projectSeoBySlug: Record<ProjectSlug, ProjectSeoEntry>
 	seoSiteName: string
 	seoKeywords: string
 	designBodoTitle: string
@@ -154,9 +157,33 @@ const translations: Record<AppLocale, Translations> = {
 		seoTitle: "Web Developer & Web Designer from Bodø - Kenneth Jørgensen",
 		seoDescription:
 			"Kenneth Jørgensen is a web developer and web designer from Bodø, Norway, available for local projects and international collaborations.",
+		seoAboutTitle: "About Kenneth Jørgensen — Web designer & developer in Bodø",
+		seoAboutDescription:
+			"How I work across design and code, why the small details matter, and what shapes my projects — from Bodø, Norway.",
+		seoProjectIndexTitle:
+			"Selected work — portfolio projects | Kenneth Jørgensen",
+		seoProjectIndexDescription:
+			"Case studies in web design, UI, and front-end development by Kenneth Jørgensen, based in Bodø.",
+		projectSeoBySlug: {
+			verchia: {
+				title: "Verchia — case study | Kenneth Jørgensen",
+				description:
+					"Design and front-end build for Verchia: visual direction, interaction, and a React-led implementation.",
+			},
+			pradelna: {
+				title: "Pradelna — case study | Kenneth Jørgensen",
+				description:
+					"Front-end development for Pradelna — structure, performance, and craft.",
+			},
+			"dialog-exe": {
+				title: "Dialog eXe — UX/UI case study | Kenneth Jørgensen",
+				description:
+					"UX and UI for Dialog eXe: flows, visual language, and interface design.",
+			},
+		},
 		seoSiteName: "Kenneth Jørgensen Portfolio",
 		seoKeywords:
-			"web developer bodø, web designer bodø, wen designer bodø, design bodø, web design norge, international web designer",
+			"web developer bodø, web designer bodø, web designer bodø, design bodø, web design norge, international web designer",
 		designBodoTitle: "Designed in Bodø",
 		designBodoIntro:
 			"I help brands and teams in Bodø design and develop websites that look great, perform well, and convert.",
@@ -230,9 +257,32 @@ const translations: Record<AppLocale, Translations> = {
 		seoTitle: "Webutvikler og web designer fra Bodø - Kenneth Jørgensen",
 		seoDescription:
 			"Kenneth Jørgensen er webutvikler og web designer fra Bodø, tilgjengelig for både lokale prosjekter og internasjonale samarbeid.",
+		seoAboutTitle: "Om Kenneth Jørgensen — Web designer og utvikler i Bodø",
+		seoAboutDescription:
+			"Om hvordan jeg jobber på tvers av design og kode, hvorfor detaljer betyr noe, og hva som driver prosjektene mine — fra Bodø.",
+		seoProjectIndexTitle: "Utvalgte prosjekter — Kenneth Jørgensen",
+		seoProjectIndexDescription:
+			"Case og arbeid innen webdesign, UI og frontend av Kenneth Jørgensen i Bodø.",
+		projectSeoBySlug: {
+			verchia: {
+				title: "Verchia — case | Kenneth Jørgensen",
+				description:
+					"Design og frontend for Verchia — visuell retning, interaksjon og React-basert utførelse.",
+			},
+			pradelna: {
+				title: "Pradelna — case | Kenneth Jørgensen",
+				description:
+					"Frontendutvikling for Pradelna — struktur, ytelse og finish.",
+			},
+			"dialog-exe": {
+				title: "Dialog eXe — UX/UI-case | Kenneth Jørgensen",
+				description:
+					"UX og UI for Dialog eXe — flyt, visuelt språk og grensesnitt.",
+			},
+		},
 		seoSiteName: "Kenneth Jørgensen Portfolio",
 		seoKeywords:
-			"webutvikler bodø, webdesigner bodø, web designer bodø, design bodø, webdesign norge, internasjonal webdesigner",
+			"webutvikler bodø, webdesign bodø, webdesigner bodø, web designer bodø, design bodø, nettside bodø, webdesign norge, internasjonal webdesigner",
 		designBodoTitle: "Designet i Bodø",
 		designBodoIntro:
 			"Jeg hjelper bedrifter og team i Bodø med nettsider som ser bra ut, yter godt og skaper resultater.",
@@ -246,6 +296,33 @@ const translations: Record<AppLocale, Translations> = {
 	},
 }
 
+/** Default Open Graph / Twitter image (absolute URL built in RootLayout). */
+export const SEO_DEFAULT_OG_IMAGE_PATH = "/images/verchia.webp"
+
+export function getSeoForPath(
+	pathname: string,
+	isAbout: boolean,
+	t: Translations,
+): { title: string; description: string } {
+	if (isAbout) {
+		return { title: t.seoAboutTitle, description: t.seoAboutDescription }
+	}
+	const path = pathname.replace(/\/$/, "") || "/"
+	if (path === "/project") {
+		return {
+			title: t.seoProjectIndexTitle,
+			description: t.seoProjectIndexDescription,
+		}
+	}
+	const match = /^\/project\/([^/]+)$/.exec(path)
+	if (match) {
+		const slug = match[1] as ProjectSlug
+		const entry = t.projectSeoBySlug[slug]
+		if (entry) return { title: entry.title, description: entry.description }
+	}
+	return { title: t.seoTitle, description: t.seoDescription }
+}
+
 type I18nContextValue = {
 	locale: AppLocale
 	t: Translations
@@ -255,7 +332,7 @@ type I18nContextValue = {
 const I18nContext = createContext<I18nContextValue | null>(null)
 
 export function I18nProvider({ children }: { children: ReactNode }) {
-	const [locale, setLocale] = useState<AppLocale>("en")
+	const [locale, setLocale] = useState<AppLocale>("nb")
 
 	useEffect(() => {
 		setLocale(detectLocale())

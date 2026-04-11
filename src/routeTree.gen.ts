@@ -13,7 +13,6 @@ import { Route as ProjectRouteRouteImport } from './app/project/route'
 import { Route as AboutRouteRouteImport } from './app/about/route'
 import { Route as IndexRouteImport } from './app/index'
 import { Route as ProjectVerchiaRouteImport } from './app/project/verchia'
-import { Route as ProjectSnoOsloRouteImport } from './app/project/sno-oslo'
 import { Route as ProjectPradelnaRouteImport } from './app/project/pradelna'
 import { Route as ProjectDialogExeRouteImport } from './app/project/dialog-exe'
 
@@ -37,11 +36,6 @@ const ProjectVerchiaRoute = ProjectVerchiaRouteImport.update({
   path: '/verchia',
   getParentRoute: () => ProjectRouteRoute,
 } as any)
-const ProjectSnoOsloRoute = ProjectSnoOsloRouteImport.update({
-  id: '/sno-oslo',
-  path: '/sno-oslo',
-  getParentRoute: () => ProjectRouteRoute,
-} as any)
 const ProjectPradelnaRoute = ProjectPradelnaRouteImport.update({
   id: '/pradelna',
   path: '/pradelna',
@@ -59,7 +53,6 @@ export interface FileRoutesByFullPath {
   '/project': typeof ProjectRouteRouteWithChildren
   '/project/dialog-exe': typeof ProjectDialogExeRoute
   '/project/pradelna': typeof ProjectPradelnaRoute
-  '/project/sno-oslo': typeof ProjectSnoOsloRoute
   '/project/verchia': typeof ProjectVerchiaRoute
 }
 export interface FileRoutesByTo {
@@ -68,7 +61,6 @@ export interface FileRoutesByTo {
   '/project': typeof ProjectRouteRouteWithChildren
   '/project/dialog-exe': typeof ProjectDialogExeRoute
   '/project/pradelna': typeof ProjectPradelnaRoute
-  '/project/sno-oslo': typeof ProjectSnoOsloRoute
   '/project/verchia': typeof ProjectVerchiaRoute
 }
 export interface FileRoutesById {
@@ -78,7 +70,6 @@ export interface FileRoutesById {
   '/project': typeof ProjectRouteRouteWithChildren
   '/project/dialog-exe': typeof ProjectDialogExeRoute
   '/project/pradelna': typeof ProjectPradelnaRoute
-  '/project/sno-oslo': typeof ProjectSnoOsloRoute
   '/project/verchia': typeof ProjectVerchiaRoute
 }
 export interface FileRouteTypes {
@@ -89,7 +80,6 @@ export interface FileRouteTypes {
     | '/project'
     | '/project/dialog-exe'
     | '/project/pradelna'
-    | '/project/sno-oslo'
     | '/project/verchia'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -98,7 +88,6 @@ export interface FileRouteTypes {
     | '/project'
     | '/project/dialog-exe'
     | '/project/pradelna'
-    | '/project/sno-oslo'
     | '/project/verchia'
   id:
     | '__root__'
@@ -107,7 +96,6 @@ export interface FileRouteTypes {
     | '/project'
     | '/project/dialog-exe'
     | '/project/pradelna'
-    | '/project/sno-oslo'
     | '/project/verchia'
   fileRoutesById: FileRoutesById
 }
@@ -147,13 +135,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProjectVerchiaRouteImport
       parentRoute: typeof ProjectRouteRoute
     }
-    '/project/sno-oslo': {
-      id: '/project/sno-oslo'
-      path: '/sno-oslo'
-      fullPath: '/project/sno-oslo'
-      preLoaderRoute: typeof ProjectSnoOsloRouteImport
-      parentRoute: typeof ProjectRouteRoute
-    }
     '/project/pradelna': {
       id: '/project/pradelna'
       path: '/pradelna'
@@ -174,14 +155,12 @@ declare module '@tanstack/react-router' {
 interface ProjectRouteRouteChildren {
   ProjectDialogExeRoute: typeof ProjectDialogExeRoute
   ProjectPradelnaRoute: typeof ProjectPradelnaRoute
-  ProjectSnoOsloRoute: typeof ProjectSnoOsloRoute
   ProjectVerchiaRoute: typeof ProjectVerchiaRoute
 }
 
 const ProjectRouteRouteChildren: ProjectRouteRouteChildren = {
   ProjectDialogExeRoute: ProjectDialogExeRoute,
   ProjectPradelnaRoute: ProjectPradelnaRoute,
-  ProjectSnoOsloRoute: ProjectSnoOsloRoute,
   ProjectVerchiaRoute: ProjectVerchiaRoute,
 }
 

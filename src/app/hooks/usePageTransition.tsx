@@ -3,20 +3,13 @@ import gsap from "gsap"
 import { ScrollTrigger } from "gsap/ScrollTrigger"
 import { setLightColor } from "../components/Experiences/lightStore"
 import {
+	DEFAULT_PAGE_LIGHT_COLOR,
+	PAGE_LIGHT_COLORS,
+} from "../pageLightColors"
+import {
 	GSAP_PAGE_CONTENT_SELECTOR,
 	gsapScrollToTop,
 } from "../utils/gsapScroll"
-
-const PAGE_COLORS: Record<string, string> = {
-	"/": "#a6d59e",
-	"/about": "#a6d59e",
-	"/project/verchia": "#E4DCCB",
-	"/project/pradelna": "#E4DCCB",
-	"/project/dialog-exe": "#E4DCCB",
-	"/project/sno-oslo": "#E4DCCB",
-}
-
-const DEFAULT_COLOR = "#a6d59e"
 
 function normalizePath(p: string) {
 	const t = p.replace(/\/$/, "") || "/"
@@ -47,7 +40,9 @@ export function usePageTransition() {
 		const targetPath = normalizePath(to)
 		const currentPath = normalizePath(pathname)
 
-		setLightColor(PAGE_COLORS[to] ?? DEFAULT_COLOR)
+		setLightColor(
+			PAGE_LIGHT_COLORS[normalizePath(to)] ?? DEFAULT_PAGE_LIGHT_COLOR,
+		)
 
 		// Same route: never fade main out (that left opacity at 0 when pathname did not change).
 		if (targetPath === currentPath) {

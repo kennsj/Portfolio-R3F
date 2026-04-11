@@ -5,6 +5,7 @@ import { useGSAP } from "@gsap/react"
 import gsap from "gsap"
 import { ScrollTrigger } from "gsap/ScrollTrigger"
 import { setLightColor } from "./components/Experiences/lightStore"
+import { lightColorForPathname } from "./pageLightColors"
 import {
 	GSAP_PAGE_CONTENT_SELECTOR,
 	gsapScrollToHashIdWhenReady,
@@ -16,7 +17,11 @@ import { HeroIntroProvider } from "./hooks/HeroIntroContext"
 import { SimpleAnalytics } from "@simpleanalytics/react"
 import PermissionProvider from "./components/Experiences/PermissionProvider"
 import Background from "./components/Experiences/Background"
-import { useI18n } from "./hooks/useI18n"
+import {
+	getSeoForPath,
+	SEO_DEFAULT_OG_IMAGE_PATH,
+	useI18n,
+} from "./hooks/useI18n"
 const Nav = lazy(() => import("./components/Layout/Nav/Nav"))
 const SupportUkraine = lazy(
 	() => import("./components/UI/SupportUkraine/SupportUkraine"),
@@ -32,8 +37,14 @@ export default function RootLayout() {
 	const prevPathRef = useRef<string | null>(null)
 
 	useEffect(() => {
-		const pageTitle = isAbout ? t.seoAboutTitle : t.seoTitle
-		const pageDescription = isAbout ? t.seoAboutDescription : t.seoDescription
+		const { title: pageTitle, description: pageDescription } = getSeoForPath(
+			pathname,
+			isAbout,
+			t,
+		)
+		const origin = window.location.origin
+		const canonicalUrl = `${origin}${pathname}?lang=${locale}`
+		const ogImageUrl = `${origin}${SEO_DEFAULT_OG_IMAGE_PATH}`
 
 		document.title = pageTitle
 
@@ -54,14 +65,24 @@ export default function RootLayout() {
 		ensureMeta("property", "og:title").content = pageTitle
 		ensureMeta("property", "og:site_name").content = t.seoSiteName
 		ensureMeta("property", "og:description").content = pageDescription
-		ensureMeta("property", "og:locale").content =
-			locale === "nb" ? "nb_NO" : "en_US"
+		const ogLocale = locale === "nb" ? "nb_NO" : "en_US"
+		const ogLocaleAlternate = locale === "nb" ? "en_US" : "nb_NO"
+		ensureMeta("property", "og:locale").content = ogLocale
+		document.head
+			.querySelectorAll('meta[property="og:locale:alternate"]')
+			.forEach((el) => el.remove())
+		const ogLocaleAlt = document.createElement("meta")
+		ogLocaleAlt.setAttribute("property", "og:locale:alternate")
+		ogLocaleAlt.content = ogLocaleAlternate
+		document.head.appendChild(ogLocaleAlt)
+
 		ensureMeta("property", "og:type").content = "website"
-		ensureMeta("property", "og:url").content =
-			`${window.location.origin}${pathname}`
+		ensureMeta("property", "og:url").content = canonicalUrl
+		ensureMeta("property", "og:image").content = ogImageUrl
 		ensureMeta("name", "twitter:card").content = "summary_large_image"
 		ensureMeta("name", "twitter:title").content = pageTitle
 		ensureMeta("name", "twitter:description").content = pageDescription
+		ensureMeta("name", "twitter:image").content = ogImageUrl
 
 		let canonical = document.head.querySelector<HTMLLinkElement>(
 			'link[rel="canonical"]',
@@ -71,7 +92,7 @@ export default function RootLayout() {
 			canonical.setAttribute("rel", "canonical")
 			document.head.appendChild(canonical)
 		}
-		canonical.href = `${window.location.origin}${pathname}`
+		canonical.href = canonicalUrl
 
 		const setAlternate = (lang: "en" | "nb", href: string) => {
 			let link = document.head.querySelector<HTMLLinkElement>(
@@ -86,7 +107,7 @@ export default function RootLayout() {
 			link.href = href
 		}
 
-		const basePath = `${window.location.origin}${pathname}`
+		const basePath = `${origin}${pathname}`
 		setAlternate("en", `${basePath}?lang=en`)
 		setAlternate("nb", `${basePath}?lang=nb`)
 
@@ -99,7 +120,7 @@ export default function RootLayout() {
 			xDefault.setAttribute("hreflang", "x-default")
 			document.head.appendChild(xDefault)
 		}
-		xDefault.href = `${basePath}?lang=en`
+		xDefault.href = `${basePath}?lang=nb`
 
 		const id = "schema-local-business"
 		let schemaScript = document.getElementById(id) as HTMLScriptElement | null
@@ -112,39 +133,49 @@ export default function RootLayout() {
 
 		schemaScript.text = JSON.stringify({
 			"@context": "https://schema.org",
-			"@type": "ProfessionalService",
-			name: "Kenneth Jorgensen",
-			url: window.location.origin,
-			description: pageDescription,
-			areaServed: "Bodo, Norway",
-			address: {
-				"@type": "PostalAddress",
-				addressLocality: "Bodo",
-				addressCountry: "NO",
-			},
-			email: "hei@kennethjorgensen.no",
-			sameAs: [
-				"https://www.linkedin.com/in/kennethstrandjorgensen/",
-				"https://github.com/kennsj",
+			"@graph": [
+				{
+					"@type": "ProfessionalService",
+					"@id": `${origin}/#provider`,
+					name: "Kenneth Jørgensen",
+					url: origin,
+					description: t.seoDescription,
+					areaServed: {
+						"@type": "Country",
+						name: "Norway",
+					},
+					address: {
+						"@type": "PostalAddress",
+						addressLocality: "Bodø",
+						addressCountry: "NO",
+					},
+					email: "hei@kennethjorgensen.no",
+					sameAs: [
+						"https://www.linkedin.com/in/kennethstrandjorgensen/",
+						"https://github.com/kennsj",
+					],
+				},
+				{
+					"@type": "WebPage",
+					"@id": `${canonicalUrl}#webpage`,
+					url: canonicalUrl,
+					name: pageTitle,
+					description: pageDescription,
+					isPartOf: {
+						"@type": "WebSite",
+						"@id": `${origin}/#website`,
+						url: origin,
+						name: t.seoSiteName,
+					},
+					about: { "@id": `${origin}/#provider` },
+				},
 			],
 		})
-	}, [
-		isAbout,
-		locale,
-		pathname,
-		t.seoAboutDescription,
-		t.seoAboutTitle,
-		t.seoDescription,
-		t.seoKeywords,
-		t.seoSiteName,
-		t.seoTitle,
-	])
+	}, [isAbout, locale, pathname, t])
 
-	useEffect(() => {
-		if (isHome || isAbout) {
-			setLightColor("#a6d59e") // this is enough — just set the target
-		}
-	}, [isAbout, isHome, pathname])
+	useLayoutEffect(() => {
+		setLightColor(lightColorForPathname(pathname))
+	}, [pathname])
 
 	// One refresh after images/fonts/layout settle — avoids short-page ScrollTrigger
 	// math on first paint (same class of bug as footer/heading flashes).

@@ -24,7 +24,7 @@ export const getKpWaveSpeedMultiplier = (kp: number) => {
 	return 1 + (0.85 * (k - 5)) / 4
 }
 
-export const getKpLabel = (kp: number, locale: AppLocale = "en") => {
+export const getKpLabel = (kp: number, locale: AppLocale = "nb") => {
 	const labels =
 		locale === "nb"
 			? {
