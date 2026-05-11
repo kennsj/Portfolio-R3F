@@ -165,10 +165,6 @@ const Contact = ({ showForecast = false }: { showForecast?: boolean }) => {
 							{t.contactIntro}
 						</TextBlock>
 						<div className={styles["contact-text-small-container"]}>
-							<span
-								className={styles["kp-dot"]}
-								style={{ background: color }}
-							/>
 							<TextBlock textSize='sm' className={styles["contact-text-small"]}>
 								{t.contactAvailability}
 							</TextBlock>
@@ -188,10 +184,7 @@ const Contact = ({ showForecast = false }: { showForecast?: boolean }) => {
 							{t.contactEmailNote}
 						</TextBlock>
 					</div>
-					<div
-						className={styles["contact-image"]}
-						data-contact-portrait
-					>
+					<div className={styles["contact-image"]} data-contact-portrait>
 						<svg viewBox='0 0 300 200' width='250' height='250'>
 							<defs>
 								<path

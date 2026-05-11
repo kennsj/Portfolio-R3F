@@ -3,7 +3,7 @@ import { createFileRoute } from "@tanstack/react-router"
 
 import Header from "../components/Layout/ProjectPage/Header/Header"
 
-export const Route = createFileRoute("/project/verchia")({
+export const Route = createFileRoute("/project/manshausen")({
 	component: RouteComponent,
 })
 
@@ -14,7 +14,7 @@ function RouteComponent() {
 
 	return (
 		<article>
-			<Header url='https://verchia.vercel.app/' urlText='Live' />
+			<Header />
 		</article>
 	)
 }

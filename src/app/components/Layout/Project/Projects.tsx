@@ -22,20 +22,28 @@ const Projects = () => {
 		useState(false)
 	const projects = [
 		{
+			name: "Manshausen",
+			link: "#",
+			work: locale === "nb" ? "Design / Kode" : "Design / Code",
+			image: "/videos/manshausen.webm",
+			url: "/manshausen",
+			urlText: "Case Study",
+		},
+		{
 			name: "Verchia",
 			link: "https://verchia.vercel.app/",
 			work: locale === "nb" ? "Design / Kode" : "Design / Code",
 			image: "/videos/verchia.webm",
 			url: "/verchia",
-			urlText: "Case Study",
+			urlText: "Live",
 		},
 		{
 			name: "Pradelna",
-			link: "https://pradelna.vercel.app/",
+			link: "https://www.pradelnakrkonose.cz/",
 			work: locale === "nb" ? "Kode" : "Code",
 			image: "/videos/pradelna.webm",
 			url: "/pradelna",
-			urlText: "Case Study",
+			urlText: "Live",
 		},
 		{
 			name: "Dialog eXe",
@@ -226,7 +234,8 @@ const Projects = () => {
 										</span>
 										<span className={styles["arrow-link"]}>
 											<span className={styles["arrow-link-text"]}>
-												{t.projectCaseStudy}
+												{/* {t.projectCaseStudy} */}
+												{project.urlText}
 											</span>
 											<span className={styles["arrow-link-icon"]}>
 												<svg

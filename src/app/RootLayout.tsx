@@ -22,6 +22,7 @@ import {
 	SEO_DEFAULT_OG_IMAGE_PATH,
 	useI18n,
 } from "./hooks/useI18n"
+import { buildSeoJsonLd } from "./utils/seoJsonLd"
 const Nav = lazy(() => import("./components/Layout/Nav/Nav"))
 const SupportUkraine = lazy(
 	() => import("./components/UI/SupportUkraine/SupportUkraine"),
@@ -122,7 +123,7 @@ export default function RootLayout() {
 		}
 		xDefault.href = `${basePath}?lang=nb`
 
-		const id = "schema-local-business"
+		const id = "seo-jsonld"
 		let schemaScript = document.getElementById(id) as HTMLScriptElement | null
 		if (!schemaScript) {
 			schemaScript = document.createElement("script")
@@ -131,46 +132,18 @@ export default function RootLayout() {
 			document.head.appendChild(schemaScript)
 		}
 
-		schemaScript.text = JSON.stringify({
-			"@context": "https://schema.org",
-			"@graph": [
-				{
-					"@type": "ProfessionalService",
-					"@id": `${origin}/#provider`,
-					name: "Kenneth Jørgensen",
-					url: origin,
-					description: t.seoDescription,
-					areaServed: {
-						"@type": "Country",
-						name: "Norway",
-					},
-					address: {
-						"@type": "PostalAddress",
-						addressLocality: "Bodø",
-						addressCountry: "NO",
-					},
-					email: "hei@kennethjorgensen.no",
-					sameAs: [
-						"https://www.linkedin.com/in/kennethstrandjorgensen/",
-						"https://github.com/kennsj",
-					],
-				},
-				{
-					"@type": "WebPage",
-					"@id": `${canonicalUrl}#webpage`,
-					url: canonicalUrl,
-					name: pageTitle,
-					description: pageDescription,
-					isPartOf: {
-						"@type": "WebSite",
-						"@id": `${origin}/#website`,
-						url: origin,
-						name: t.seoSiteName,
-					},
-					about: { "@id": `${origin}/#provider` },
-				},
-			],
-		})
+		schemaScript.text = JSON.stringify(
+			buildSeoJsonLd({
+				origin,
+				pathname,
+				locale,
+				canonicalUrl,
+				ogImageUrl,
+				pageTitle,
+				pageDescription,
+				t,
+			}),
+		)
 	}, [isAbout, locale, pathname, t])
 
 	useLayoutEffect(() => {

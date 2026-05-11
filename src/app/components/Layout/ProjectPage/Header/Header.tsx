@@ -2,7 +2,7 @@ import styles from "./Header.module.scss"
 import AnimatedButton from "../../../UI/AnimatedButton/AnimatedButton"
 import { useI18n } from "../../../../hooks/useI18n"
 
-const Header = () => {
+const Header = ({ url, urlText }: { url?: string; urlText?: string }) => {
 	const { t } = useI18n()
 
 	return (
@@ -14,12 +14,14 @@ const Header = () => {
 			</h1>
 			{/* <p>LOCATION 67.2829° N, 14.4151° E</p> */}
 			<AnimatedButton
-				label={t.projectHeaderButton}
+				label={urlText || t.projectHeaderButton}
 				onClick={() =>
-					document.querySelector("#")?.scrollIntoView({
-						behavior: "smooth",
-						block: "start",
-					})
+					url
+						? window.open(url, "_blank")
+						: document.querySelector("#")?.scrollIntoView({
+								behavior: "smooth",
+								block: "start",
+							})
 				}
 				dataScrollDown
 				ariaDescribedBy='scroll-down-desc'

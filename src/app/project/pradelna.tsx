@@ -12,7 +12,7 @@ function RouteComponent() {
 	}, [])
 	return (
 		<>
-			<Header />
+			<Header url='https://www.pradelnakrkonose.cz/' urlText='Live' />
 		</>
 	)
 }

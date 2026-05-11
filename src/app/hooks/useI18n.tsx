@@ -11,7 +11,7 @@ import {
 export type AppLocale = "en" | "nb"
 
 /** Slugs under `/project/:slug` with dedicated SEO copy. */
-export type ProjectSlug = "verchia" | "pradelna" | "dialog-exe"
+export type ProjectSlug = "verchia" | "pradelna" | "dialog-exe" | "manshausen"
 
 type ProjectSeoEntry = { title: string; description: string }
 
@@ -24,7 +24,7 @@ function detectLocale(): AppLocale {
 	return "nb"
 }
 
-type Translations = {
+export type Translations = {
 	aboutText: string
 	navAbout: string
 	navWork: string
@@ -85,13 +85,6 @@ type Translations = {
 	projectSeoBySlug: Record<ProjectSlug, ProjectSeoEntry>
 	seoSiteName: string
 	seoKeywords: string
-	designBodoTitle: string
-	designBodoIntro: string
-	designBodoServicesTitle: string
-	designBodoService1: string
-	designBodoService2: string
-	designBodoService3: string
-	designBodoCta: string
 }
 
 const translations: Record<AppLocale, Translations> = {
@@ -165,6 +158,11 @@ const translations: Record<AppLocale, Translations> = {
 		seoProjectIndexDescription:
 			"Case studies in web design, UI, and front-end development by Kenneth Jørgensen, based in Bodø.",
 		projectSeoBySlug: {
+			manshausen: {
+				title: "Manshausen — case study | Kenneth Jørgensen",
+				description:
+					"Design and front-end build for Manshausen: visual direction, interaction, and a React-led implementation.",
+			},
 			verchia: {
 				title: "Verchia — case study | Kenneth Jørgensen",
 				description:
@@ -183,17 +181,7 @@ const translations: Record<AppLocale, Translations> = {
 		},
 		seoSiteName: "Kenneth Jørgensen Portfolio",
 		seoKeywords:
-			"web developer bodø, web designer bodø, web designer bodø, design bodø, web design norge, international web designer",
-		designBodoTitle: "Designed in Bodø",
-		designBodoIntro:
-			"I help brands and teams in Bodø design and develop websites that look great, perform well, and convert.",
-		designBodoServicesTitle: "Services",
-		designBodoService1: "Web design and visual guidance",
-		designBodoService2: "Frontend development in React and custom stacks",
-		designBodoService3:
-			"Brand-focused digital experiences for local businesses and teams",
-		designBodoCta:
-			"Need design in Bodø? Send me an email at hei@kennethjorgensen.no.",
+			"web developer bodø, web designer bodø, webside bodø, webside norge, webside bodø, nettside, nettsider, nettside bodø, nettside norge, nettside bodø, web designer bodø, design bodø, web design norge, international web designer, grafisk design, grafisk design bodø, grafisk design norge, graphic design, graphic design norge, graphic design bodø, seo, seo bodø, seo norge, shopify, shopify development, shopify designer, shopify developer, shopify design, shopify development, shopify designer, shopify developer, shopify design",
 	},
 	nb: {
 		aboutText:
@@ -264,6 +252,11 @@ const translations: Record<AppLocale, Translations> = {
 		seoProjectIndexDescription:
 			"Case og arbeid innen webdesign, UI og frontend av Kenneth Jørgensen i Bodø.",
 		projectSeoBySlug: {
+			manshausen: {
+				title: "Manshausen — case | Kenneth Jørgensen",
+				description:
+					"Design and front-end build for Manshausen: visual direction, interaction, and a React-led implementation.",
+			},
 			verchia: {
 				title: "Verchia — case | Kenneth Jørgensen",
 				description:
@@ -282,22 +275,12 @@ const translations: Record<AppLocale, Translations> = {
 		},
 		seoSiteName: "Kenneth Jørgensen Portfolio",
 		seoKeywords:
-			"webutvikler bodø, webdesign bodø, webdesigner bodø, web designer bodø, design bodø, nettside bodø, webdesign norge, internasjonal webdesigner",
-		designBodoTitle: "Designet i Bodø",
-		designBodoIntro:
-			"Jeg hjelper bedrifter og team i Bodø med nettsider som ser bra ut, yter godt og skaper resultater.",
-		designBodoServicesTitle: "Tjenester",
-		designBodoService1: "Webdesign og visuell retning",
-		designBodoService2: "Frontend-utvikling i React og skreddersydde stacker",
-		designBodoService3:
-			"Merkevarefokuserte digitale opplevelser for lokale virksomheter",
-		designBodoCta:
-			"Trenger du design eller webutvikling i Bodø? Send meg en e-post på hei@kennethjorgensen.no.",
+			"web developer bodø, web designer bodø, webside bodø, webside norge, webside bodø, nettside, nettsider, nettside bodø, nettside norge, nettside bodø, web designer bodø, design bodø, web design norge, international web designer, grafisk design, grafisk design bodø, grafisk design norge, graphic design, graphic design norge, graphic design bodø, seo, seo bodø, seo norge, shopify, shopify development, shopify designer, shopify developer, shopify design, shopify development, shopify designer, shopify developer, shopify design",
 	},
 }
 
 /** Default Open Graph / Twitter image (absolute URL built in RootLayout). */
-export const SEO_DEFAULT_OG_IMAGE_PATH = "/images/verchia.webp"
+export const SEO_DEFAULT_OG_IMAGE_PATH = "/images/og.jpg"
 
 export function getSeoForPath(
 	pathname: string,

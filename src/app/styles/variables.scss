@@ -16,6 +16,7 @@
 	--stack-gap-md: clamp(1.5rem, 4.5vw, 2.5rem);
 
 	--primary-color: #ccb2b2;
+	--primary-color: #d8d7d0;
 	--primary-color-50: #ccb2b259;
 
 	--secondary-color: #c75555;
@@ -143,23 +144,22 @@ h4 {
 main {
 	position: relative;
 	z-index: 1;
-	/* Keeps footer below the first screen while route/Suspense layout settles */
 	min-height: 100vh;
 	min-height: 100dvh;
-}
 
-section {
-	padding-top: var(--padding-top);
-	padding-inline: var(--page-gutter);
-	width: 100%;
+	section {
+		padding-top: var(--padding-top);
+		padding-inline: var(--page-gutter);
+		width: 100%;
 
-	&[data-background-black] {
-		margin-top: var(--margin-top);
-		padding-bottom: var(--padding-bottom);
-	}
+		&[data-background-black] {
+			margin-top: var(--margin-top);
+			padding-bottom: var(--padding-bottom);
+		}
 
-	&[data-background-dark] {
-		background: var(--color-black-90);
+		&[data-background-dark] {
+			background: var(--color-black-90);
+		}
 	}
 }
 

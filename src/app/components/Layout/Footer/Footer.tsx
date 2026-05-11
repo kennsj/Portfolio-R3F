@@ -70,11 +70,11 @@ const Footer = () => {
 									GitHub
 								</ArrowLink>
 							</li>
-							<li>
+							{/* <li>
 								<ArrowLink href='#' target='_blank'>
 									{t.footerResume}
 								</ArrowLink>
-							</li>
+							</li> */}
 							<li>
 								<ArrowLink href='mailto:hei@kennethjorgensen.no'>
 									Mail

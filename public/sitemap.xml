@@ -117,4 +117,22 @@
 		<xhtml:link rel="alternate" hreflang="en" href="https://kennethjorgensen.no/project/verchia?lang=en" />
 		<xhtml:link rel="alternate" hreflang="x-default" href="https://kennethjorgensen.no/project/verchia?lang=nb" />
 	</url>
+	<url>
+		<loc>https://kennethjorgensen.no/project/manshausen?lang=nb</loc>
+		<lastmod>2026-04-11</lastmod>
+		<changefreq>monthly</changefreq>
+		<priority>0.8</priority>
+		<xhtml:link rel="alternate" hreflang="nb" href="https://kennethjorgensen.no/project/manshausen?lang=nb" />
+		<xhtml:link rel="alternate" hreflang="en" href="https://kennethjorgensen.no/project/manshausen?lang=en" />
+		<xhtml:link rel="alternate" hreflang="x-default" href="https://kennethjorgensen.no/project/manshausen?lang=nb" />
+	</url>
+	<url>
+		<loc>https://kennethjorgensen.no/project/manshausen?lang=en</loc>
+		<lastmod>2026-04-11</lastmod>
+		<changefreq>monthly</changefreq>
+		<priority>0.8</priority>
+		<xhtml:link rel="alternate" hreflang="nb" href="https://kennethjorgensen.no/project/manshausen?lang=nb" />
+		<xhtml:link rel="alternate" hreflang="en" href="https://kennethjorgensen.no/project/manshausen?lang=en" />
+		<xhtml:link rel="alternate" hreflang="x-default" href="https://kennethjorgensen.no/project/manshausen?lang=nb" />
+	</url>
 </urlset>

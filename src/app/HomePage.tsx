@@ -1,4 +1,4 @@
-import { lazy, Suspense } from "react"
+import { Suspense } from "react"
 import Header from "./components/Layout/Header/Header"
 import Contact from "./components/Layout/Contact/Contact"
 import TextBlock from "./components/UI/TextBlock/TextBlock"
@@ -14,9 +14,7 @@ export default function HomePage() {
 			<Header signalNavIntroAfterHero />
 			<section id='about'>
 				<div style={{ maxWidth: "var(--max-width)", margin: "0 auto" }}>
-					<TextBlock>
-						{t.aboutText}
-					</TextBlock>
+					<TextBlock>{t.aboutText}</TextBlock>
 				</div>
 			</section>
 
