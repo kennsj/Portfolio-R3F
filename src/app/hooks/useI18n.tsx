@@ -90,7 +90,7 @@ export type Translations = {
 const translations: Record<AppLocale, Translations> = {
 	en: {
 		aboutText:
-			"I find it hard to let go of a project until both the design and the code feel right. Which is probably why I ended up doing both.",
+			"I design and build digital experiences from Bodø, Norway. With a focus on detail, performance, and usability, I enjoy being part of the entire process, from the first sketch to the final line of code.",
 		navAbout: "About",
 		navWork: "Works",
 		navContact: "Contact",
@@ -147,16 +147,18 @@ const translations: Record<AppLocale, Translations> = {
 		auroraModeAria: "Manual or Live",
 		auroraDisclaimer:
 			"Disclaimer: The aurora depicted in the background is an artistic interpretation. Colours, speed, and behaviour may not reflect actual conditions above Bodo. The best chances are between September and April, if the clouds cooperate, which is rarely.",
-		seoTitle: "Web Developer & Web Designer from Bodø - Kenneth Jørgensen",
+		seoTitle:
+			"Designer & Developer in Bodø, Nordland | Northern Norway — Kenneth Jørgensen",
 		seoDescription:
-			"Kenneth Jørgensen is a web developer and web designer from Bodø, Norway, available for local projects and international collaborations.",
-		seoAboutTitle: "About Kenneth Jørgensen — Web designer & developer in Bodø",
+			"Kenneth Jørgensen is a designer and web developer in Bodø, Nordland, northern Norway — available for projects across Nord-Norge and internationally.",
+		seoAboutTitle:
+			"About Kenneth Jørgensen — Designer & developer in Bodø, Nordland",
 		seoAboutDescription:
-			"How I work across design and code, why the small details matter, and what shapes my projects — from Bodø, Norway.",
+			"How I work across design and code, why the small details matter, and what shapes my projects — from Bodø, Nordland, northern Norway.",
 		seoProjectIndexTitle:
 			"Selected work — portfolio projects | Kenneth Jørgensen",
 		seoProjectIndexDescription:
-			"Case studies in web design, UI, and front-end development by Kenneth Jørgensen, based in Bodø.",
+			"Case studies in web design, UI, and front-end development by Kenneth Jørgensen — designer and developer in Bodø, Nordland, northern Norway.",
 		projectSeoBySlug: {
 			manshausen: {
 				title: "Manshausen — case study | Kenneth Jørgensen",
@@ -181,11 +183,11 @@ const translations: Record<AppLocale, Translations> = {
 		},
 		seoSiteName: "Kenneth Jørgensen Portfolio",
 		seoKeywords:
-			"web developer bodø, web designer bodø, webside bodø, webside norge, webside bodø, nettside, nettsider, nettside bodø, nettside norge, nettside bodø, web designer bodø, design bodø, web design norge, international web designer, grafisk design, grafisk design bodø, grafisk design norge, graphic design, graphic design norge, graphic design bodø, seo, seo bodø, seo norge, shopify, shopify development, shopify designer, shopify developer, shopify design, shopify development, shopify designer, shopify developer, shopify design",
+			"designer bodø, developer bodø, designer nordland, developer nordland, designer northern norway, developer northern norway, nord-norge, web designer bodø, web developer bodø, web design bodø, web design nordland, webside bodø, nettside bodø, grafisk design bodø, grafisk design nordland, graphic design nordland, shopify bodø",
 	},
 	nb: {
 		aboutText:
-			"Jeg har vanskelig for å gi slipp på et prosjekt før både designet og koden føles riktig. Det er nok derfor jeg endte opp med å gjøre begge deler.",
+			"En designer og utvikler fra Bodø som bygger digitale opplevelser med fokus på detaljer, ytelse og brukervennlighet. Jeg trives best når jeg får være med hele veien, fra første skisse til siste linje med kode.",
 		navAbout: "Om",
 		navWork: "Arbeid",
 		navContact: "Kontakt",
@@ -242,15 +244,17 @@ const translations: Record<AppLocale, Translations> = {
 		auroraModeAria: "Manuell eller Live",
 		auroraDisclaimer:
 			"Forbehold: Nordlyset i bakgrunnen er en kunstnerisk tolkning. Farger, hastighet og bevegelse speiler ikke alltid faktiske forhold over Bodø. De beste sjansene er mellom september og april, hvis skyene samarbeider, noe de sjelden gjør.",
-		seoTitle: "Webutvikler og web designer fra Bodø - Kenneth Jørgensen",
+		seoTitle:
+			"Designer og utvikler i Bodø, Nordland | Nord-Norge — Kenneth Jørgensen",
 		seoDescription:
-			"Kenneth Jørgensen er webutvikler og web designer fra Bodø, tilgjengelig for både lokale prosjekter og internasjonale samarbeid.",
-		seoAboutTitle: "Om Kenneth Jørgensen — Web designer og utvikler i Bodø",
+			"Kenneth Jørgensen er designer og webutvikler i Bodø, Nordland, Nord-Norge — tilgjengelig for lokale prosjekter og internasjonale samarbeid.",
+		seoAboutTitle:
+			"Om Kenneth Jørgensen — Designer og utvikler i Bodø, Nordland",
 		seoAboutDescription:
-			"Om hvordan jeg jobber på tvers av design og kode, hvorfor detaljer betyr noe, og hva som driver prosjektene mine — fra Bodø.",
+			"Om hvordan jeg jobber på tvers av design og kode, hvorfor detaljer betyr noe, og hva som driver prosjektene mine — fra Bodø, Nordland, i Nord-Norge.",
 		seoProjectIndexTitle: "Utvalgte prosjekter — Kenneth Jørgensen",
 		seoProjectIndexDescription:
-			"Case og arbeid innen webdesign, UI og frontend av Kenneth Jørgensen i Bodø.",
+			"Case og arbeid innen webdesign, UI og frontend av Kenneth Jørgensen — designer og utvikler i Bodø, Nordland, Nord-Norge.",
 		projectSeoBySlug: {
 			manshausen: {
 				title: "Manshausen — case | Kenneth Jørgensen",
@@ -275,7 +279,7 @@ const translations: Record<AppLocale, Translations> = {
 		},
 		seoSiteName: "Kenneth Jørgensen Portfolio",
 		seoKeywords:
-			"web developer bodø, web designer bodø, webside bodø, webside norge, webside bodø, nettside, nettsider, nettside bodø, nettside norge, nettside bodø, web designer bodø, design bodø, web design norge, international web designer, grafisk design, grafisk design bodø, grafisk design norge, graphic design, graphic design norge, graphic design bodø, seo, seo bodø, seo norge, shopify, shopify development, shopify designer, shopify developer, shopify design, shopify development, shopify designer, shopify developer, shopify design",
+			"designer bodø, utvikler bodø, designer nordland, utvikler nordland, designer nord-norge, utvikler nord-norge, web designer bodø, webutvikler bodø, webdesign bodø, webdesign nordland, nettside bodø, nettside nordland, grafisk design bodø, grafisk design nordland, webside bodø, shopify bodø",
 	},
 }
 
