@@ -21,14 +21,14 @@ const Projects = () => {
 	const [previewInteractionLocked, setPreviewInteractionLocked] =
 		useState(false)
 	const projects = [
-		{
-			name: "Manshausen",
-			link: "#",
-			work: locale === "nb" ? "Design / Kode" : "Design / Code",
-			image: "/videos/manshausen.webm",
-			url: "/manshausen",
-			urlText: "Case Study",
-		},
+		// {
+		// 	name: "Manshausen",
+		// 	link: "#",
+		// 	work: locale === "nb" ? "Design / Kode" : "Design / Code",
+		// 	image: "/videos/manshausen.webm",
+		// 	url: "/manshausen",
+		// 	urlText: "Case Study",
+		// },
 		{
 			name: "Verchia",
 			link: "https://verchia.vercel.app/",
