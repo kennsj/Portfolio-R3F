@@ -37,6 +37,9 @@ export type Translations = {
 	headerLightWord: string
 	headerLocation: string
 	headerExplore: string
+	headerOffer: string
+	headerWorkCta: string
+	headerContactCta: string
 	projectsTitle: string
 	projectCaseStudy: string
 	expertiseTitle: string
@@ -102,6 +105,10 @@ const translations: Record<AppLocale, Translations> = {
 		headerLightWord: "light",
 		headerLocation: "LOCATION 67.2829° N, 14.4151° E",
 		headerExplore: "Go exploring",
+		headerOffer:
+			"I design and build fast, distinctive websites and digital products — from visual direction to production-ready React.",
+		headerWorkCta: "View selected work",
+		headerContactCta: "Discuss a project",
 		projectsTitle: "Selected work",
 		projectCaseStudy: "Case study",
 		expertiseTitle: "Expertise",
@@ -189,7 +196,7 @@ const translations: Record<AppLocale, Translations> = {
 		aboutText:
 			"En designer og utvikler fra Bodø som bygger digitale opplevelser med fokus på detaljer, ytelse og brukervennlighet. Jeg trives best når jeg får være med hele veien, fra første skisse til siste linje med kode.",
 		navAbout: "Om",
-		navWork: "Arbeid",
+		navWork: "Prosjekter",
 		navContact: "Kontakt",
 		kpLocation: "Bodø, Norge",
 		headerTagline: "Designer. Utvikler. Sporadisk gamer.",
@@ -199,6 +206,10 @@ const translations: Record<AppLocale, Translations> = {
 		headerLightWord: "lyset",
 		headerLocation: "LOKASJON 67.2829° N, 14.4151° E",
 		headerExplore: "Utforsk",
+		headerOffer:
+			"Jeg designer og utvikler raske, særpregede nettsider og digitale produkter — fra visuell retning til ferdig React-løsning.",
+		headerWorkCta: "Se utvalgte prosjekter",
+		headerContactCta: "Diskuter et prosjekt",
 		projectsTitle: "Utvalgte prosjekter",
 		projectCaseStudy: "Case",
 		expertiseTitle: "Ekspertise",
@@ -215,15 +226,15 @@ const translations: Record<AppLocale, Translations> = {
 		contactTitle: "La oss lage noe verdt å se på",
 		contactIntro:
 			"Nå vet du hvor bakgrunnen kommer fra. Og hvor jeg kommer fra.",
-		contactAvailability: "Tilgjengelig for oppdrag - hvor som helst.",
+		contactAvailability: "Tilgjengelig for nye oppdrag — lokalt og internasjonalt.",
 		contactEmailNote:
-			"Fortell litt om prosjektet ditt, tidsplanen og hva et godt utfall vil se ut for deg. Jeg svarer så raskt som mulig. Eller så kan vi hoppe over e-posten og dra på nordlysjakt!",
+			"Fortell litt om prosjektet, tidsplanen og hva du ønsker å oppnå. Jeg svarer så raskt som mulig. Eller så kan vi hoppe over e-posten og dra på nordlysjakt!",
 		contactPortraitText: "Det alvorlige trynet mitt, la oss ta en prat!",
 		footerTagline: "Designer. Utvikler. <br /> Sporadisk gamer.",
 		footerNavTitle: "Navigasjon",
 		footerHome: "Hjem",
 		footerAbout: "Om",
-		footerWork: "Arbeid",
+		footerWork: "Prosjekter",
 		footerContact: "Kontakt",
 		footerContactTitle: "Kontakt",
 		footerResume: "CV",

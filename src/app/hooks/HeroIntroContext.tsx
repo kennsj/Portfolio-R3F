@@ -36,6 +36,15 @@ export function HeroIntroProvider({ children }: { children: ReactNode }) {
 		}
 	}, [isHome, pathname])
 
+	useEffect(() => {
+		if (!isHome || homeHeroIntroReady) return
+		const fallback = window.setTimeout(() => {
+			hasCompletedHomeHero.current = true
+			setHomeHeroIntroReady(true)
+		}, 2200)
+		return () => window.clearTimeout(fallback)
+	}, [homeHeroIntroReady, isHome])
+
 	const markHomeHeroIntroComplete = useCallback(() => {
 		hasCompletedHomeHero.current = true
 		setHomeHeroIntroReady(true)

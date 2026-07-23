@@ -16,7 +16,7 @@ import { KpProvider } from "./hooks/KpContext"
 import { HeroIntroProvider } from "./hooks/HeroIntroContext"
 import { SimpleAnalytics } from "@simpleanalytics/react"
 import PermissionProvider from "./components/Experiences/PermissionProvider"
-import Background from "./components/Experiences/Background"
+import ProgressiveBackground from "./components/Experiences/ProgressiveBackground"
 import {
 	getSeoForPath,
 	SEO_DEFAULT_OG_IMAGE_PATH,
@@ -188,11 +188,10 @@ export default function RootLayout() {
 		() => {
 			gsap.fromTo(
 				GSAP_PAGE_CONTENT_SELECTOR,
-				{ opacity: 0, filter: "blur(25px)" },
+				{ opacity: 0 },
 				{
 					opacity: 1,
-					filter: "blur(0px)",
-					duration: 0.6,
+					duration: 0.35,
 					ease: "power2.out",
 					onComplete: () => ScrollTrigger.refresh(),
 				},
@@ -208,7 +207,7 @@ export default function RootLayout() {
 				<HeroIntroProvider>
 					<SimpleAnalytics />
 
-					<Background />
+					<ProgressiveBackground />
 					<Suspense fallback={null}>
 						<Nav />
 					</Suspense>

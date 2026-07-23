@@ -131,7 +131,6 @@ const Nav = () => {
 				ref={containerRef}
 				className={styles["nav-container"]}
 				aria-label='Main'
-				aria-hidden={!homeHeroIntroReady}
 			>
 				<a href='/' onClick={onLogoClick}>
 					<img src='/kj-logo.svg' alt='Kenneth Jørgensen' />

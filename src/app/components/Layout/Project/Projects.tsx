@@ -21,18 +21,22 @@ const Projects = () => {
 	const [previewInteractionLocked, setPreviewInteractionLocked] =
 		useState(false)
 	const projects = [
-		// {
-		// 	name: "Manshausen",
-		// 	link: "#",
-		// 	work: locale === "nb" ? "Design / Kode" : "Design / Code",
-		// 	image: "/videos/manshausen.webm",
-		// 	url: "/manshausen",
-		// 	urlText: "Case Study",
-		// },
+		{
+			name: "Manshausen",
+			link: "#",
+			work: locale === "nb" ? "Design / Kode" : "Design / Code",
+			image: "/videos/manshausen.webm",
+			url: "/manshausen",
+			urlText: "Case Study",
+		},
 		{
 			name: "Verchia",
 			link: "https://verchia.vercel.app/",
 			work: locale === "nb" ? "Design / Kode" : "Design / Code",
+			// result:
+			// 	locale === "nb"
+			// 		? "Visuell retning og skreddersydd frontend for et internasjonalt motemerke."
+			// 		: "Visual direction and a custom front end for an international fashion label.",
 			image: "/videos/verchia.webm",
 			url: "/verchia",
 			urlText: "Live",
@@ -41,6 +45,10 @@ const Projects = () => {
 			name: "Pradelna",
 			link: "https://www.pradelnakrkonose.cz/",
 			work: locale === "nb" ? "Kode" : "Code",
+			// result:
+			// 	locale === "nb"
+			// 		? "Responsiv frontend med tydelig struktur for en lokal tjenestebedrift."
+			// 		: "A responsive, clearly structured front end for a local service business.",
 			image: "/videos/pradelna.webm",
 			url: "/pradelna",
 			urlText: "Live",
@@ -49,6 +57,10 @@ const Projects = () => {
 			name: "Dialog eXe",
 			link: "https://dialog-exe.vercel.app/",
 			work: "UX/UI",
+			// result:
+			// 	locale === "nb"
+			// 		? "UX- og UI-konsept som gjør komplekse dialogflyter enklere å forstå."
+			// 		: "A UX/UI concept that makes complex dialogue flows easier to understand.",
 			image: "/videos/dx.webm",
 			url: "/dialog-exe",
 			urlText: "Case Study",
@@ -221,6 +233,15 @@ const Projects = () => {
 								<li
 									className={styles["project-item"]}
 									onClick={() => handleProjectNavigate(project.url)}
+									onKeyDown={(event) => {
+										if (event.key === "Enter" || event.key === " ") {
+											event.preventDefault()
+											handleProjectNavigate(project.url)
+										}
+									}}
+									role='link'
+									tabIndex={0}
+									aria-label={`${project.name}: ${project.result}`}
 									onMouseMove={onMouseMove}
 									onMouseEnter={(e) => onEnter(project, index, e)}
 									onMouseLeave={(e) => onLeave(index, e)}
@@ -228,6 +249,7 @@ const Projects = () => {
 									data-cursor='view'
 								>
 									<h2>{project.name}</h2>
+									<p className={styles["project-result"]}>{project.result}</p>
 									<div className={styles["list-links"]}>
 										<span className={styles["project-work"]}>
 											{project.work}

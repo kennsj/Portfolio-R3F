@@ -27,12 +27,18 @@ const Header = ({
 			const header = headerRef.current
 			if (!header) return
 
+			// Prepare the complete hero before the browser paints it. This avoids
+			// showing the finished layout briefly before SplitText takes ownership.
 			gsap.set(header, { autoAlpha: 0 })
 
 			const splitInstances: SplitText[] = []
 			let cancelled = false
 
-			document.fonts.ready.then(() => {
+			const fontReadyFallback = new Promise<void>((resolve) => {
+				window.setTimeout(resolve, 900)
+			})
+
+			Promise.race([document.fonts.ready, fontReadyFallback]).then(() => {
 				if (cancelled || !header.isConnected) return
 
 				const h4 = h4Ref.current
@@ -41,7 +47,6 @@ const Header = ({
 
 				const charFrom = {
 					autoAlpha: 0,
-					filter: "blur(25px)",
 					yPercent: 20,
 				}
 
@@ -70,8 +75,6 @@ const Header = ({
 					splitInstances.push(splitP)
 				}
 
-				// Header shell visible; char motion is owned by the timeline only.
-				// (Pre-setting charFrom + a ScrollTrigger that never advances left text stuck hidden.)
 				gsap.set(header, { autoAlpha: 1 })
 
 				const tl = gsap.timeline({
@@ -144,19 +147,18 @@ const Header = ({
 				<span className='highlight'>{t.headerLightWord}</span>.
 			</h1>
 			<p ref={pRef}>{t.headerLocation}</p>
-			<AnimatedButton
-				label={t.headerExplore}
-				onClick={() =>
-					document.querySelector("#about")?.scrollIntoView({
-						behavior: "smooth",
-						block: "start",
-					})
-				}
-				dataScrollDown
-				ariaDescribedBy='scroll-down-desc'
-				revealDelay={0.85}
-				revealDuration={1.2}
-			/>
+			{/* <p className={styles.offer}>{t.headerOffer}</p> */}
+			<div className={styles.actions}>
+				<AnimatedButton
+					label={t.headerWorkCta}
+					href='/#work'
+					revealDelay={0.35}
+					revealDuration={0.8}
+				/>
+				{/* <a className={styles.secondaryAction} href='/#contact'>
+					{t.headerContactCta}
+				</a> */}
+			</div>
 		</header>
 	)
 }

@@ -39,10 +39,9 @@ const AnimatedButton = ({
 
 			gsap.fromTo(
 				el,
-				{ opacity: 0, filter: "blur(4px)" },
+				{ opacity: 1 },
 				{
 					opacity: 1,
-					filter: "blur(0px)",
 					duration: 0.5,
 					delay: revealDelay,
 					ease: "easeOutQuad",

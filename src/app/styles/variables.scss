@@ -73,7 +73,15 @@ body {
 }
 
 body {
-	background-color: var(--color-black);
+	background:
+		radial-gradient(
+			ellipse at 68% 18%,
+			rgba(32, 91, 44, 0.32) 0,
+			rgba(5, 29, 11, 0.18) 34%,
+			transparent 68%
+		),
+		var(--color-black);
+	background-attachment: fixed;
 }
 
 a {
@@ -167,4 +175,24 @@ footer {
 	position: relative;
 	z-index: 1;
 	padding-inline: var(--page-gutter);
+}
+
+:focus-visible {
+	outline: 2px solid var(--tertiary-color);
+	outline-offset: 5px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+	html {
+		scroll-behavior: auto;
+	}
+
+	*,
+	*::before,
+	*::after {
+		animation-duration: 0.01ms !important;
+		animation-iteration-count: 1 !important;
+		scroll-behavior: auto !important;
+		transition-duration: 0.01ms !important;
+	}
 }

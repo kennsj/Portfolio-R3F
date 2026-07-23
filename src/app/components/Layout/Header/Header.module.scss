@@ -51,4 +51,28 @@
 			font-size: 0.75rem;
 		}
 	}
+
+	.offer {
+		max-width: 48rem;
+		margin-bottom: clamp(1.75rem, 4vw, 2.75rem);
+		font-family: var(--font-family-syne);
+		font-size: clamp(1rem, 2vw, 1.35rem);
+		line-height: 1.5;
+		opacity: 0.82;
+	}
+
+	.actions {
+		display: flex;
+		align-items: center;
+		gap: 1.5rem;
+		flex-wrap: wrap;
+	}
+
+	.secondaryAction {
+		color: var(--primary-color);
+		font-family: var(--font-family-ibm);
+		font-size: 0.9rem;
+		border-bottom: 1px solid color-mix(in srgb, var(--primary-color) 45%, transparent);
+		padding-block: 0.5rem;
+	}
 }

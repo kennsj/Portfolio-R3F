@@ -29,4 +29,32 @@ export default defineConfig({
 		viteReact(),
 		tsconfigPaths(),
 	],
+	build: {
+		rollupOptions: {
+			output: {
+				manualChunks(id) {
+					if (!id.includes("node_modules")) return
+					if (
+						id.includes("/three/") ||
+						id.includes("@react-three") ||
+						id.includes("postprocessing") ||
+						id.includes("three-mesh-bvh") ||
+						id.includes("/maath/")
+					) {
+						return "three"
+					}
+					if (id.includes("/gsap/") || id.includes("@gsap")) return "motion"
+					if (
+						id.includes("/react/") ||
+						id.includes("/react-dom/") ||
+						id.includes("scheduler")
+					) {
+						return "react"
+					}
+					if (id.includes("@tanstack")) return "tanstack"
+					return "vendor"
+				},
+			},
+		},
+	},
 })
