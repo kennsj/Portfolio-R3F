@@ -24,10 +24,10 @@ const Projects = () => {
 		{
 			name: "Manshausen",
 			link: "#",
-			work: locale === "nb" ? "Design / Kode" : "Design / Code",
+			work: locale === "nb" ? "Personlig prosjekt" : "Personal project",
 			image: "/videos/manshausen.webm",
 			url: "/manshausen",
-			urlText: "Case Study",
+			urlText: "Redesign",
 		},
 		{
 			name: "Verchia",

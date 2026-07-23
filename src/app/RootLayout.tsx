@@ -186,18 +186,29 @@ export default function RootLayout() {
 
 	useGSAP(
 		() => {
-			gsap.fromTo(
+			const pageContent = gsap.utils.toArray<HTMLElement>(
 				GSAP_PAGE_CONTENT_SELECTOR,
-				{ opacity: 0 },
+			)
+
+			// The outgoing route tween finishes on the persistent <main>/<footer>
+			// nodes with blur(25px). The new route must explicitly take ownership
+			// of both opacity and filter; animating opacity alone leaves that
+			// completed inline blur behind.
+			gsap.killTweensOf(pageContent)
+			gsap.fromTo(
+				pageContent,
+				{ opacity: 0, filter: "blur(25px)" },
 				{
 					opacity: 1,
-					duration: 0.35,
+					filter: "blur(0px)",
+					duration: 0.55,
 					ease: "power2.out",
+					overwrite: "auto",
 					onComplete: () => ScrollTrigger.refresh(),
 				},
 			)
 		},
-		{ dependencies: [pathname] },
+		{ dependencies: [pathname], revertOnUpdate: true },
 	)
 
 	return (

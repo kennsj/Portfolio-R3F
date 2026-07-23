@@ -7,6 +7,7 @@ import { useRef } from "react"
 import AnimatedButton from "../../UI/AnimatedButton/AnimatedButton"
 import { useHeroIntro } from "../../../hooks/HeroIntroContext"
 import { useI18n } from "../../../hooks/useI18n"
+import { gsapScrollToHashIdWhenReady } from "../../../utils/gsapScroll"
 
 gsap.registerPlugin(SplitText, ScrollTrigger)
 
@@ -151,7 +152,7 @@ const Header = ({
 			<div className={styles.actions}>
 				<AnimatedButton
 					label={t.headerWorkCta}
-					href='/#work'
+					onClick={() => gsapScrollToHashIdWhenReady("work")}
 					revealDelay={0.35}
 					revealDuration={0.8}
 				/>
