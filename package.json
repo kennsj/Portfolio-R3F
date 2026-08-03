@@ -4,7 +4,7 @@
 	"private": true,
 	"type": "module",
 	"scripts": {
-		"dev": "tsr watch & vite",
+		"dev": "vite",
 		"build": "vite build",
 		"start": "vite preview",
 		"lint": "eslint src"

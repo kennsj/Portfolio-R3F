@@ -8,9 +8,11 @@ export default defineConfig({
 		port: 3000,
 		host: true,
 		watch: {
-			// Prevent full reload when route tree is regenerated (e.g. after CSS/component changes)
+			// The generated route tree changes as part of router bookkeeping and does
+			// not need to trigger another reload. Experience and shader source must
+			// remain watched so WebGL edits reach the local development canvas.
 			usePolling: true,
-			ignored: ["**/routeTree.gen.ts", "**/components/Experiences/**"],
+			ignored: ["**/routeTree.gen.ts"],
 		},
 	},
 	plugins: [

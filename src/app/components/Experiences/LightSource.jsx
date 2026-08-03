@@ -4,11 +4,7 @@ import { easing } from "maath"
 import { isMobile } from "react-device-detect"
 import { pointer } from "./pointerStore"
 import { orientation } from "./orientationStore"
-import {
-	targetAmbientIntensity,
-	targetDirectionalIntensity,
-	targetLightColor,
-} from "./lightStore"
+import { targetLightColor } from "./lightStore"
 import { Color } from "three"
 
 export default function LightSource() {
@@ -21,19 +17,10 @@ export default function LightSource() {
 		targetColor.current.set(targetLightColor)
 		easing.dampC(currentColor.current, targetColor.current, 0.15, delta)
 		light.current.color.copy(currentColor.current)
-		easing.damp(light.current, "intensity", targetDirectionalIntensity, 0.65, delta)
-		easing.damp(
-			ambient.current,
-			"intensity",
-			isMobile ? targetAmbientIntensity * 1.45 : targetAmbientIntensity,
-			0.65,
-			delta,
-		)
 
 		if (isMobile) {
 			const targetX = (orientation.gamma / 90) * 3
 			const targetY = ((orientation.beta - 45) / 90) * 2
-
 			easing.damp3(light.current.position, [targetX, targetY, 3], 0.4, delta)
 		} else {
 			easing.damp3(
@@ -51,12 +38,8 @@ export default function LightSource() {
 
 	return (
 		<>
-			<directionalLight ref={light} intensity={8.2} />
-			<ambientLight
-				ref={ambient}
-				color='#a6d59e'
-				intensity={isMobile ? 3.2 : 2.2}
-			/>
+			<directionalLight ref={light} intensity={9.2} />
+			<ambientLight ref={ambient} color='#a6d59e' intensity={isMobile ? 4.5 : 2.5} />
 		</>
 	)
 }
