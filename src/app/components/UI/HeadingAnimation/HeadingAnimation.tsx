@@ -24,6 +24,7 @@ const HeadingAnimation = ({
 		() => {
 			const heading = ref.current
 			if (!heading) return
+			if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return
 
 			const splitInstances: SplitText[] = []
 			let cancelled = false
@@ -34,19 +35,22 @@ const HeadingAnimation = ({
 
 				const split = SplitText.create(heading, {
 					type: "lines",
+					mask: "lines",
 				})
 				splitInstances.push(split)
 
 				introTween = gsap.from(split.lines, {
-					opacity: 0,
-					filter: "blur(25px)",
-					yPercent: 100,
-					stagger: 0.001,
-					duration: 1,
-					ease: "power2.out",
+					yPercent: 110,
+					rotationX: -38,
+					skewY: 2.5,
+					transformPerspective: 900,
+					transformOrigin: "50% 100%",
+					stagger: 0.1,
+					duration: 0.8,
+					ease: "shiftReveal",
 					scrollTrigger: {
 						trigger: heading,
-						start: "top 80%",
+						start: "top 88%",
 						invalidateOnRefresh: true,
 						fastScrollEnd: true,
 						once: true,

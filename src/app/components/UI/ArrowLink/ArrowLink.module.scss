@@ -21,7 +21,7 @@
 	}
 
 	.arrow-link-text {
-		transition: transform 0.8s cubic-bezier(0.075, 0.82, 0.165, 1);
+		transition: transform var(--motion-ui) var(--ease-out);
 	}
 
 	.arrow-link-icon {
@@ -34,8 +34,8 @@
 		height: auto;
 		transform: translateX(-0.5rem) rotate(-45deg);
 		transition:
-			transform 0.8s cubic-bezier(0.075, 0.82, 0.165, 1),
-			opacity 0.8s cubic-bezier(0.075, 0.82, 0.165, 1);
+			transform var(--motion-ui) var(--ease-out),
+			opacity var(--motion-micro) var(--ease-out);
 	}
 
 	&:hover {
@@ -45,7 +45,7 @@
 
 		.arrow-link-text {
 			transform: translateX(-1rem);
-			transition: 0.8s cubic-bezier(0.075, 0.82, 0.165, 1);
+			transition: transform var(--motion-ui) var(--ease-out);
 		}
 
 		.arrow-link-icon {

@@ -1,42 +1,104 @@
 .header {
 	visibility: hidden;
 	position: relative;
-	top: 0;
-	height: 100dvh;
+	min-height: 100dvh;
 	width: var(--max-width);
 	max-width: 100%;
 	margin: 0 auto;
 	padding-inline: var(--page-gutter);
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
+	display: grid;
+	grid-template-rows: auto 1fr auto;
+	padding-top: clamp(7rem, 13vh, 9rem);
+	padding-bottom: clamp(1.5rem, 4vh, 3rem);
+	overflow: hidden;
 
-	@media (max-width: 768px) {
-		width: 100%;
+	.introMeta {
+		display: flex;
+		align-items: baseline;
+		justify-content: space-between;
+		gap: 2rem;
+		padding-inline: clamp(0.75rem, 2vw, 1.5rem);
 	}
 
 	h4 {
 		font-size: 1rem;
 		font-weight: 400;
-		color: var(--tertiary-color);
-		margin-bottom: 1rem;
+		color: var(--primary-color);
+		margin: 0;
+		letter-spacing: 0.08em;
 
 		@media (max-width: 768px) {
 			font-size: 0.75rem;
 		}
 	}
 
-	h1 {
-		font-weight: 400;
-		color: var(--primary-color);
-		margin-bottom: 1rem;
-		// filter: blur(10px);
-		// line-height: 1.2;
-		transition: 0.8s ease-in-out;
-		&:hover {
-			transition: 0.8s ease-in-out;
-			// filter: blur(0px);
+	.heroTitle {
+		position: relative;
+		align-self: center;
+		padding-block: clamp(3rem, 9vh, 7rem);
+		perspective: 25vw;
+
+		h1 {
+			position: relative;
+			z-index: 2;
+			display: flex;
+			flex-direction: column;
+			font-size: var(--type-display-hero);
+			font-weight: 700;
+			max-width: none;
+			margin: 0;
+			gap: 0.025em;
+			line-height: 0.84;
+			letter-spacing: -0.03em;
+			text-transform: uppercase;
+			mix-blend-mode: difference;
+
+			> span {
+				display: block;
+				width: fit-content;
+				white-space: nowrap;
+			}
+
+			.firstName {
+				align-self: flex-start;
+				margin-left: 18%;
+			}
+
+			.lastName { align-self: flex-start; }
+
+			.coordinate {
+				align-self: center;
+				margin-left: 34%;
+				font-size: 0.42em;
+				font-weight: 400;
+				line-height: 1;
+				letter-spacing: -0.02em;
+			}
 		}
+
+		.auroraLabel {
+			position: absolute;
+			right: 0.3rem;
+			top: 50%;
+			font-family: var(--font-family-ibm);
+			font-size: 0.62rem;
+			letter-spacing: 0.14em;
+			text-transform: uppercase;
+			writing-mode: vertical-rl;
+			transform: translateY(-50%);
+			color: var(--aurora-mint);
+		}
+	}
+
+	h2 {
+		position: absolute;
+		right: clamp(2.5rem, 6vw, 6.5rem);
+		bottom: clamp(7.5rem, 15vh, 10rem);
+		max-width: 29ch;
+		font-size: clamp(1rem, 1.55vw, 1.3rem);
+		font-weight: 400;
+		line-height: 1.35;
+		letter-spacing: -0.02em;
 	}
 
 	p {
@@ -45,7 +107,7 @@
 		font-weight: 400;
 		color: var(--primary-color);
 		opacity: 0.2;
-		margin-bottom: clamp(2.25rem, 9vw, 5rem);
+		margin: 0;
 
 		@media (max-width: 768px) {
 			font-size: 0.75rem;
@@ -61,11 +123,85 @@
 		opacity: 0.82;
 	}
 
-	.actions {
+	.heroFooter {
 		display: flex;
 		align-items: center;
-		gap: 1.5rem;
-		flex-wrap: wrap;
+		justify-content: space-between;
+		gap: 2rem;
+		padding-inline: clamp(0.75rem, 2vw, 1.5rem);
+
+		.projectsLink {
+			border: 0;
+			border-bottom: 1px solid currentColor;
+			background: transparent;
+			color: var(--primary-color);
+			font-family: var(--font-family-ibm);
+			font-size: 0.68rem;
+			letter-spacing: 0.08em;
+			text-transform: uppercase;
+			padding: 0.35rem 0;
+		}
+
+		.environment {
+			display: flex;
+			align-items: flex-end;
+			gap: clamp(1.2rem, 3vw, 3rem);
+			font-family: var(--font-family-ibm);
+			font-size: 0.68rem;
+			letter-spacing: 0.08em;
+			text-transform: uppercase;
+
+			> div {
+				display: flex;
+				flex-direction: column;
+				gap: 0.25rem;
+				span { color: color-mix(in srgb, var(--primary-color) 48%, transparent); }
+				strong { font-weight: 400; color: var(--primary-color); }
+			}
+		}
+	}
+
+	@media (max-width: 768px) {
+		width: 100%;
+		padding-top: 6.5rem;
+		padding-bottom: 1.5rem;
+
+		.introMeta {
+			align-items: flex-start;
+			flex-direction: column;
+			gap: 0.35rem;
+		}
+
+		.heroTitle {
+			padding-block: 4rem 9rem;
+			h1 {
+				font-size: clamp(3rem, 13.5vw, 4.8rem);
+				line-height: 0.88;
+
+				.firstName,
+				.lastName { align-self: flex-start; margin-left: 0; }
+
+				.coordinate {
+					align-self: flex-start;
+					margin-left: 34%;
+					font-size: 0.44em;
+				}
+			}
+		}
+
+		h2 {
+			right: 2.2rem;
+			bottom: 7.5rem;
+			max-width: 23ch;
+			font-size: 0.92rem;
+		}
+
+		.heroFooter .environment {
+			display: grid;
+			grid-template-columns: repeat(2, 1fr);
+			gap: 0.8rem 1.5rem;
+			> div:nth-child(n + 3) { display: none; }
+		}
 	}
 
 	.secondaryAction {

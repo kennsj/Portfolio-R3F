@@ -1,237 +1,78 @@
-import { Fragment, useRef } from "react"
-import HeadingAnimation from "../../UI/HeadingAnimation/HeadingAnimation"
-import styles from "./Expertise.module.scss"
+import { useRef } from "react"
 import { useGSAP } from "@gsap/react"
 import gsap from "gsap"
-import SplitText from "gsap/SplitText"
 import { ScrollTrigger } from "gsap/ScrollTrigger"
+import SplitText from "gsap/SplitText"
 import { useI18n } from "../../../hooks/useI18n"
+import styles from "./Expertise.module.scss"
 
 gsap.registerPlugin(ScrollTrigger, SplitText)
 
 const Expertise = () => {
-	const { t } = useI18n()
+	const { locale } = useI18n()
 	const sectionRef = useRef<HTMLElement>(null)
-	const listRef = useRef<HTMLUListElement>(null)
-	const toolsListRef = useRef<HTMLUListElement>(null)
-	const expertiseItems = [
-		{
-			title: t.expertiseWebDesignTitle,
-			description: t.expertiseWebDesignDescription,
-		},
-		{
-			title: t.expertiseWebDevTitle,
-			description: t.expertiseWebDevDescription,
-		},
-		{
-			title: t.expertiseGraphicTitle,
-			description: t.expertiseGraphicDescription,
-		},
-		{
-			title: t.expertiseToolsTitle,
-			tools: [
-				{ name: "Figma", img: "/icons/tools/figma.png" },
-				{ name: "Adobe CC", img: "/icons/tools/adobecc.png" },
-				{ name: "Framer", img: "/icons/tools/framer.png" },
-				{ name: "React", img: "/icons/tools/react.png" },
-				{ name: "Sanity", img: "/icons/tools/sanity.png" },
-				{ name: "GSAP", img: "/icons/tools/gsap.png" },
-				{ name: "Shopify", img: "/icons/tools/shopify.png" },
-			],
-		},
-	]
+	const disciplines = ["Digital design", "Product design", "UI / UX", "Art direction", "Interaction", "Frontend", "Creative development", "Ecommerce", "WebGL", "Prototyping"]
+	const fields = locale === "nb"
+		? ["Reiseliv", "Arkitektur", "Kultur", "Mat", "Teknologi", "Merkevarer", "Tjenester"]
+		: ["Hospitality", "Architecture", "Culture", "Food", "Technology", "Brands", "Services"]
 
-	// useGSAP(
-	// 	() => {
-	// 		const section = sectionRef.current
-	// 		if (!section) return
+	useGSAP(() => {
+		const section = sectionRef.current
+		if (!section) return
+		const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches
+		if (reduced) return
 
-	// 		gsap.to(section, {
-	// 			backgroundColor: "rgba(02, 02, 02, 0.85)",
-	// 			ease: "none",
-	// 			scrollTrigger: {
-	// 				trigger: section,
-	// 				start: "top 80%",
-	// 				end: "top 40%",
-	// 				scrub: true,
-	// 			},
-	// 		})
-	// 	},
-	// 	{ scope: sectionRef },
-	// )
+		const title = section.querySelector<HTMLElement>("[data-field-title]")
+		const about = section.querySelector<HTMLElement>("[data-field-about]")
+		const rule = section.querySelector<HTMLElement>("[data-field-rule]")
+		const rows = section.querySelectorAll<HTMLElement>("[data-field-row]")
+		const titleSplit = title ? SplitText.create(title, { type: "lines", mask: "lines" }) : null
+		const timeline = gsap.timeline({
+			scrollTrigger: { trigger: section, start: "top 72%", once: true },
+			defaults: { ease: "shiftReveal" },
+		})
 
-	useGSAP(
-		() => {
-			const list = listRef.current
-			if (!list) return
+		timeline
+			.fromTo(titleSplit?.lines ?? [], { yPercent: 110, rotationX: -38, skewY: 2.5, transformPerspective: 900, transformOrigin: "50% 100%" }, { yPercent: 0, rotationX: 0, skewY: 0, duration: 0.8, stagger: 0.1 })
+			.fromTo(about, { yPercent: 110, rotationX: -28, transformPerspective: 900, transformOrigin: "50% 100%" }, { yPercent: 0, rotationX: 0, duration: 0.8 }, "-=0.3")
+			.fromTo(rule, { scaleX: 0, transformOrigin: "left" }, { scaleX: 1, duration: 2, ease: "shiftRule" }, "-=0.5")
+			.fromTo(rows, { yPercent: 20, rotationX: -20, transformPerspective: 1000 }, { yPercent: 0, rotationX: 0, duration: 0.8, stagger: 0.1 }, "-=1.3")
+		return () => titleSplit?.revert()
+	}, { scope: sectionRef })
 
-			const splitInstances: SplitText[] = []
-			let cancelled = false
-
-			const rowStagger = 0.1
-
-			document.fonts.ready.then(() => {
-				if (cancelled || !list.isConnected) return
-
-				const master = gsap.timeline({
-					scrollTrigger: {
-						trigger: list,
-						start: "top 88%",
-						invalidateOnRefresh: true,
-						toggleActions: "play none none none",
-					},
-				})
-
-				Array.from(list.children).forEach((child, i) => {
-					const at = i * rowStagger
-
-					if (child instanceof HTMLLIElement) {
-						const h2 = child.querySelector("h2")
-						const body = child.querySelector("p") as HTMLElement | null
-						if (!h2) return
-
-						const split = SplitText.create(h2, {
-							type: "lines",
-						})
-						splitInstances.push(split)
-
-						for (const line of split.lines) {
-							line.classList.add(styles.revealTarget)
-						}
-						h2.classList.remove(styles.revealTarget)
-
-						const lineReveal = {
-							opacity: 1,
-							visibility: "visible" as const,
-							filter: "blur(0px)",
-							y: 0,
-							duration: 1,
-							stagger: 0.001,
-							ease: "power2.out" as const,
-						}
-
-						master.to(split.lines, lineReveal, at)
-
-						if (body) {
-							master.to(
-								body,
-								{
-									opacity: 1,
-									visibility: "visible",
-									filter: "blur(0px)",
-									y: 0,
-									duration: 0.9,
-									ease: "power2.out",
-								},
-								at + 0.05,
-							)
-						}
-					} else if (child instanceof HTMLHRElement) {
-						master.to(
-							child,
-							{
-								scaleX: 1,
-								filter: "blur(0px)",
-								transformOrigin: "left",
-								duration: 1,
-								ease: "power2.out",
-							},
-							at,
-						)
-					}
-				})
-
-				/* If the list is already past the trigger when ST runs (common on mobile /
-				   after resize), the timeline may never play — paragraphs would stay at
-				   opacity:0 from immediateRender. Finish the timeline when already in view. */
-				requestAnimationFrame(() => {
-					ScrollTrigger.refresh()
-					requestAnimationFrame(() => {
-						if (cancelled || !list.isConnected) return
-						const vh = window.innerHeight
-						const top = list.getBoundingClientRect().top
-						if (top <= vh * 0.88) {
-							master.progress(1, false)
-						}
-					})
-				})
-			})
-
-			return () => {
-				cancelled = true
-				splitInstances.splice(0).forEach((s) => s.revert())
-			}
-		},
-		{ scope: listRef },
-	)
-
-	useGSAP(
-		() => {
-			const toolsList = toolsListRef.current
-			if (!toolsList) return
-
-			const items = toolsList.querySelectorAll<HTMLLIElement>(":scope > li")
-			if (!items.length) return
-
-			gsap.from(items, {
-				opacity: 0,
-				filter: "blur(25px)",
-				yPercent: 28,
-				duration: 0.9,
-				stagger: 0.1,
-				ease: "power2.out",
-				scrollTrigger: {
-					trigger: toolsList,
-					start: "top 80%",
-				},
-			})
-		},
-		{ scope: toolsListRef },
+	const renderTrack = (items: string[], reverse = false) => (
+		<div className={`${styles.track} ${reverse ? styles.trackReverse : ""}`}>
+			{[0, 1].map((copy) => (
+				<div className={styles.group} aria-hidden={copy === 1} key={copy}>
+					{items.map((item) => <span key={`${copy}-${item}`}>{item}</span>)}
+				</div>
+			))}
+		</div>
 	)
 
 	return (
-		<section ref={sectionRef} aria-label='Expertise'>
-			<div className={styles.expertise}>
-				<HeadingAnimation level={3}>{t.expertiseTitle}</HeadingAnimation>
-				<ul ref={listRef} className={styles["experience-list"]}>
-					{expertiseItems.map((item, index) => (
-						<Fragment key={item.title}>
-							<li>
-								<h2 className={styles.revealTarget}>{item.title}</h2>
-								{item.description ? (
-									<p className={styles.revealTargetParagraph}>
-										{item.description}
-									</p>
-								) : null}
-								{item.tools ? (
-									<ul className={styles["tool-icons"]}>
-										{item.tools.map((tool) => (
-											<li key={tool.name} className={styles["tool-icon"]}>
-												<img src={tool.img} alt={tool.name} />
-											</li>
-										))}
-									</ul>
-								) : null}
-							</li>
-							{index < expertiseItems.length - 1 ? <hr /> : null}
-						</Fragment>
-					))}
-				</ul>
-				{/* <div className={styles["tools-container"]}>
-					<HeadingAnimation level={3}>Tools</HeadingAnimation>
-					<ul ref={toolsListRef}>
-						{toolItems.map((item) => (
-							<Fragment key={item.title}>
-								<li>
-									<div className={styles["tool-icon"]}>
-										<img src={item.img} alt={item.title} />
-									</div>
-									<span>{item.title}</span>
-								</li>
-							</Fragment>
-						))}
-					</ul>
-				</div> */}
+		<section
+			ref={sectionRef}
+			className={styles.section}
+			aria-label={locale === "nb" ? "Fagfelt og kapabiliteter" : "Territory and fields"}
+			data-aurora-state
+			data-aurora-presence='0.92'
+			data-aurora-color='#8ed7ad'
+		>
+			<div className={styles.stage}>
+				<h2 data-field-title>{locale === "nb" ? <>Fagfelt<br />og kapabiliteter</> : <>My territory<br />and fields</>}</h2>
+				<a href='#about' data-field-about>{locale === "nb" ? "Om meg" : "About me"}</a>
+			</div>
+
+			<div className={styles.rule} data-field-rule />
+
+			<div className={styles.rows}>
+				<div className={styles.carousel} data-field-row aria-label={disciplines.join(", ")}>
+					{renderTrack(disciplines)}
+				</div>
+				<div className={`${styles.carousel} ${styles.secondary}`} data-field-row aria-label={fields.join(", ")}>
+					{renderTrack(fields, true)}
+				</div>
 			</div>
 		</section>
 	)

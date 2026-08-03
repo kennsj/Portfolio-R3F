@@ -93,7 +93,7 @@ export type Translations = {
 const translations: Record<AppLocale, Translations> = {
 	en: {
 		aboutText:
-			"I design and build digital experiences from Bodø, Norway. With a focus on detail, performance, and usability, I enjoy being part of the entire process, from the first sketch to the final line of code.",
+			"I turn ideas into digital experiences — shaping the visual direction, interaction and code as one connected process. From the first sketch to the final line of code.",
 		navAbout: "About",
 		navWork: "Works",
 		navContact: "Contact",
@@ -122,9 +122,9 @@ const translations: Record<AppLocale, Translations> = {
 		expertiseGraphicDescription:
 			"I approach visual identity the same way I approach code; I cannot let it go until it feels exactly right. It shows.",
 		expertiseToolsTitle: "Tools",
-		contactTitle: "Let's make something worth looking at",
+		contactTitle: "A project. A studio. Let's talk.",
 		contactIntro:
-			"Now you know where the background comes from. And where I come from.",
+			"If you need someone who can shape the design and build the result, send me a note.",
 		contactAvailability: "Available for hire - anywhere.",
 		contactEmailNote:
 			"Share a bit about your project, timeline and what a good outcome looks like. I'll get back to you quickly. Or we can skip the email and go aurora hunting!",
@@ -194,7 +194,7 @@ const translations: Record<AppLocale, Translations> = {
 	},
 	nb: {
 		aboutText:
-			"En designer og utvikler fra Bodø som bygger digitale opplevelser med fokus på detaljer, ytelse og brukervennlighet. Jeg trives best når jeg får være med hele veien, fra første skisse til siste linje med kode.",
+			"Jeg gjør ideer om til digitale opplevelser — og former visuell retning, interaksjon og kode som én sammenhengende prosess. Fra første skisse til siste linje med kode.",
 		navAbout: "Om",
 		navWork: "Prosjekter",
 		navContact: "Kontakt",
@@ -223,9 +223,9 @@ const translations: Record<AppLocale, Translations> = {
 		expertiseGraphicDescription:
 			"Jeg har samme tilnærming til visuell utforming som til koding; jeg kan ikke gi slipp på det før det føles helt riktig. Det merkes.",
 		expertiseToolsTitle: "Verktøy",
-		contactTitle: "La oss lage noe verdt å se på",
+		contactTitle: "Et prosjekt. Et studio. La oss snakke.",
 		contactIntro:
-			"Nå vet du hvor bakgrunnen kommer fra. Og hvor jeg kommer fra.",
+			"Trenger du noen som kan forme designet og bygge resultatet, send meg en melding.",
 		contactAvailability: "Tilgjengelig for nye oppdrag — lokalt og internasjonalt.",
 		contactEmailNote:
 			"Fortell litt om prosjektet, tidsplanen og hva du ønsker å oppnå. Jeg svarer så raskt som mulig. Eller så kan vi hoppe over e-posten og dra på nordlysjakt!",

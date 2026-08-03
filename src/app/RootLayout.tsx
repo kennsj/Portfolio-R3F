@@ -23,10 +23,12 @@ import {
 	useI18n,
 } from "./hooks/useI18n"
 import { buildSeoJsonLd } from "./utils/seoJsonLd"
+import "./utils/motion"
 const Nav = lazy(() => import("./components/Layout/Nav/Nav"))
 const SupportUkraine = lazy(
 	() => import("./components/UI/SupportUkraine/SupportUkraine"),
 )
+const Cursor = lazy(() => import("./components/UI/Cursor/Cursor"))
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -201,7 +203,7 @@ export default function RootLayout() {
 				{
 					opacity: 1,
 					filter: "blur(0px)",
-					duration: 0.55,
+					duration: 0.6,
 					ease: "power2.out",
 					overwrite: "auto",
 					onComplete: () => ScrollTrigger.refresh(),
@@ -230,7 +232,9 @@ export default function RootLayout() {
 					<Suspense fallback={null}>
 						<SupportUkraine />
 					</Suspense>
-					{/* <Cursor /> */}
+					<Suspense fallback={null}>
+						<Cursor />
+					</Suspense>
 				</HeroIntroProvider>
 			</KpProvider>
 		</PointerProvider>

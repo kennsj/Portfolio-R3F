@@ -1,164 +1,141 @@
-import { useKpIndex, getKpColor, getKpLabel } from "../../../hooks/useKpIndex"
-import { useManualKp } from "../../../hooks/KpContext"
-import { useState, useRef, type MouseEvent } from "react"
+import { useEffect, useRef, useState, type MouseEvent } from "react"
 import { useGSAP } from "@gsap/react"
 import gsap from "gsap"
-import NavLink from "../../UI/NavLink/NavLink"
+import { useKpIndex, getKpColor } from "../../../hooks/useKpIndex"
+import { useManualKp } from "../../../hooks/KpContext"
 import { usePageTransition } from "../../../hooks/usePageTransition"
 import { useHeroIntro } from "../../../hooks/HeroIntroContext"
-import { ScrollTrigger } from "gsap/ScrollTrigger"
 import { useI18n } from "../../../hooks/useI18n"
-
 import styles from "./Nav.module.scss"
-
-gsap.registerPlugin(ScrollTrigger)
 
 const Nav = () => {
 	const navRef = useRef<HTMLElement>(null)
+	const panelRef = useRef<HTMLDivElement>(null)
+	const [open, setOpen] = useState(false)
+	const [kpOpen, setKpOpen] = useState(false)
+	const [scrolled, setScrolled] = useState(false)
 	const { data } = useKpIndex()
 	const { manualKp } = useManualKp()
-	const [tooltipVisible, setTooltipVisible] = useState(false)
 	const { locale, t } = useI18n()
-
-	const kp = manualKp ?? data?.latest ?? 0
-	const color = getKpColor(kp)
-	const { label } = getKpLabel(kp, locale)
-
 	const { transitionTo } = usePageTransition()
-	const containerRef = useRef<HTMLElement>(null)
 	const { homeHeroIntroReady } = useHeroIntro()
+	const kp = manualKp ?? data?.latest ?? 0
+	const kpDescription = locale === "nb"
+		? "KP måler global geomagnetisk aktivitet fra 0–9. Høyere tall betyr sterkere nordlys og større sjanse for synlighet lenger sør."
+		: "KP measures global geomagnetic activity from 0–9. A higher reading means a stronger aurora with a better chance of visibility farther south."
 
-	useGSAP(
-		() => {
-			const navEl = navRef.current
-			let hidden = false
+	useEffect(() => {
+		let frame = 0
+		const update = () => {
+			frame = 0
+			setScrolled(window.scrollY > 72)
+		}
+		const onScroll = () => {
+			if (!frame) frame = window.requestAnimationFrame(update)
+		}
+		update()
+		window.addEventListener("scroll", onScroll, { passive: true })
+		return () => {
+			window.removeEventListener("scroll", onScroll)
+			if (frame) window.cancelAnimationFrame(frame)
+		}
+	}, [])
 
-			const fadeNav = (nextHidden: boolean) => {
-				if (!navEl) return
-				hidden = nextHidden
-				gsap.to(navEl, {
-					autoAlpha: nextHidden ? 0 : 1,
-					filter: nextHidden ? "blur(15px)" : "blur(0px)",
-					// near-immediate: respond to direction change, not scroll progress
-					duration: nextHidden ? 0.52 : 0.52,
-					ease: "power2.out",
-					overwrite: "auto",
-				})
-			}
+	useEffect(() => {
+		if (!scrolled && open) setOpen(false)
+	}, [scrolled, open])
 
-			const st = ScrollTrigger.create({
-				onUpdate: (self) => {
-					const y = window.scrollY
+	useEffect(() => {
+		if (!open) return
+		const onKey = (event: KeyboardEvent) => event.key === "Escape" && setOpen(false)
+		document.addEventListener("keydown", onKey)
+		document.body.style.overflow = "hidden"
+		return () => {
+			document.removeEventListener("keydown", onKey)
+			document.body.style.overflow = ""
+		}
+	}, [open])
 
-					// Always show at the very top.
-					if (y <= window.innerHeight) {
-						if (hidden) fadeNav(false)
-						return
-					}
+	useGSAP(() => {
+		if (!navRef.current || !homeHeroIntroReady) return
+		gsap.fromTo(navRef.current, { autoAlpha: 0, yPercent: -24, rotationX: -20 }, { autoAlpha: 1, yPercent: 0, rotationX: 0, duration: 0.8, ease: "shiftReveal" })
+	}, { dependencies: [homeHeroIntroReady], scope: navRef })
 
-					// direction: 1 = scrolling down, -1 = scrolling up
-					if (self.direction === 1) {
-						if (!hidden) fadeNav(true)
-					} else if (self.direction === -1) {
-						if (hidden) fadeNav(false)
-					}
-				},
-			})
+	useGSAP(() => {
+		const panel = panelRef.current
+		if (!panel) return
+		if (open) {
+			gsap.set(panel, { pointerEvents: "auto" })
+			gsap.fromTo(panel, { autoAlpha: 0, clipPath: "inset(0 0 100% 0)" }, { autoAlpha: 1, clipPath: "inset(0 0 0% 0)", duration: 0.8, ease: "shiftReveal" })
+			gsap.fromTo(panel.querySelectorAll("a"), { yPercent: 110, rotationX: -70, transformPerspective: 900 }, { yPercent: 0, rotationX: 0, duration: 1.2, stagger: 0.1, ease: "shiftTitle", delay: 0.08 })
+		} else {
+			gsap.to(panel, { autoAlpha: 0, clipPath: "inset(0 0 100% 0)", duration: 0.3, ease: "power2.out", pointerEvents: "none" })
+		}
+	}, { dependencies: [open], scope: panelRef })
 
-			const el = containerRef.current
-			if (!el) {
-				st.kill()
-				return
-			}
-
-			if (!homeHeroIntroReady) {
-				gsap.set(el, { autoAlpha: 0, pointerEvents: "none" })
-				st.kill()
-				return
-			}
-
-			const logo = el.querySelector<HTMLElement>(":scope > a")
-			const linkRow = el.querySelector<HTMLElement>(`.${styles["nav-links"]}`)
-			const parts: HTMLElement[] = []
-			if (logo) parts.push(logo)
-			if (linkRow) {
-				Array.from(linkRow.children).forEach((child) => {
-					if (child instanceof HTMLElement) parts.push(child)
-				})
-			}
-
-			if (!parts.length) return
-
-			gsap.to(
-				navRef.current,
-
-				{
-					background: "#1010101a",
-					boxShadow:
-						"inset 0 1px 0 rgba(255, 255, 255, 0.08), 0 8px 32px rgba(0, 0, 0, 0.2)",
-					backdropFilter: "blur(12px)",
-					duration: 0.5,
-					ease: "power2.out",
-					overwrite: "auto",
-				},
-			)
-
-			gsap.set(el, { autoAlpha: 1, pointerEvents: "auto" })
-			gsap.from(parts, {
-				autoAlpha: 0,
-				filter: "blur(14px)",
-				yPercent: -38,
-				duration: 0.75,
-				stagger: 0.09,
-				ease: "power2.out",
-			})
-
-			return () => {
-				st.kill()
-			}
-		},
-		{ scope: containerRef, dependencies: [homeHeroIntroReady] },
-	)
-
-	const onLogoClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
-		e.preventDefault()
-		transitionTo("/")
+	const go = (event: MouseEvent<HTMLAnchorElement>, href: string) => {
+		event.preventDefault()
+		setOpen(false)
+		window.setTimeout(() => transitionTo(href), 180)
 	}
 
 	return (
-		<nav ref={navRef} className={styles.nav}>
-			<nav
-				ref={containerRef}
-				className={styles["nav-container"]}
-				aria-label='Main'
-			>
-				<a href='/' onClick={onLogoClick}>
+		<>
+			<nav ref={navRef} className={`${styles.nav} ${scrolled ? styles.scrolled : styles.atTop}`} aria-label='Main'>
+				<a href='/' onClick={(event) => go(event, "/")} className={styles.identity}>
 					<img src='/kj-logo.svg' alt='Kenneth Jørgensen' />
 				</a>
-				<div className={styles["nav-links"]}>
-					<NavLink href='/#about'>{t.navAbout}</NavLink>
-					<NavLink href='/#work'>{t.navWork}</NavLink>
-					<NavLink href='/#contact'>{t.navContact}</NavLink>
-
+				<div className={styles.topLinks} aria-hidden={scrolled}>
+					<a href='/#work' onClick={(event) => go(event, "/#work")}>Prosjekter</a>
+					<a href='/#about' onClick={(event) => go(event, "/#about")}>Om</a>
+					<a href='/#contact' onClick={(event) => go(event, "/#contact")}>Kontakt</a>
+				</div>
+				<div className={styles.navMeta} aria-hidden={!scrolled && !open}>
 					<div
-						className={styles["kp-indicator"]}
-						onMouseEnter={() => setTooltipVisible(true)}
-						onMouseLeave={() => setTooltipVisible(false)}
+						className={styles.kpWrap}
+						onMouseEnter={() => setKpOpen(true)}
+						onMouseLeave={() => setKpOpen(false)}
+						onFocusCapture={() => setKpOpen(true)}
+						onBlurCapture={(event) => !event.currentTarget.contains(event.relatedTarget) && setKpOpen(false)}
 					>
-						<span className={styles["kp-dot"]} style={{ background: color }} />
-						{tooltipVisible && (
-							<div className={styles["kp-tooltip"]}>
-								<div>
-									<span className={styles["kp-value"]}>Kp {kp.toFixed(1)}</span>
-									<span className={styles["kp-status"]}>{label}</span>
-								</div>
-								<span className={styles["kp-location"]}>{t.kpLocation}</span>
-							</div>
-						)}
+						<button
+							type='button'
+							className={styles.kp}
+							onClick={() => setKpOpen((value) => !value)}
+							onKeyDown={(event) => event.key === "Escape" && setKpOpen(false)}
+							aria-expanded={kpOpen}
+							aria-describedby='kp-explainer'
+							tabIndex={scrolled || open ? 0 : -1}
+						>
+							<i style={{ background: getKpColor(kp) }} />KP {kp.toFixed(1)}
+						</button>
+						<div id='kp-explainer' role='tooltip' className={`${styles.kpPopover} ${kpOpen ? styles.kpPopoverOpen : ""}`}>
+							<span>{manualKp !== null ? (locale === "nb" ? "Simulert verdi" : "Simulated reading") : (locale === "nb" ? "Direkte avlesning" : "Live reading")}</span>
+							<strong>KP {kp.toFixed(1)}</strong>
+							<p>{kpDescription}</p>
+							<small>{locale === "nb" ? "Skydekke og mørke avgjør lokal synlighet." : "Cloud cover and darkness still determine local visibility."}</small>
+						</div>
 					</div>
+					<button type='button' onClick={() => setOpen((value) => !value)} aria-expanded={open} aria-controls='site-menu' tabIndex={scrolled || open ? 0 : -1}>
+						{open ? (locale === "nb" ? "Lukk" : "Close") : "Menu"}
+					</button>
 				</div>
 			</nav>
-		</nav>
+
+			<div ref={panelRef} id='site-menu' className={styles.menuPanel} aria-hidden={!open}>
+				<div className={styles.menuInner}>
+					<div className={styles.menuLinks}>
+						<a href='/#work' onClick={(event) => go(event, "/#work")}><span>( 01 )</span>{t.navWork}</a>
+						<a href='/#about' onClick={(event) => go(event, "/#about")}><span>( 02 )</span>{t.navAbout}</a>
+						<a href='/#contact' onClick={(event) => go(event, "/#contact")}><span>( 03 )</span>{t.navContact}</a>
+					</div>
+					<div className={styles.menuFooter}>
+						<span>Bodø / 67°17′N</span>
+						<a href='mailto:hei@kennethjorgensen.no'>hei@kennethjorgensen.no</a>
+					</div>
+				</div>
+			</div>
+		</>
 	)
 }
 

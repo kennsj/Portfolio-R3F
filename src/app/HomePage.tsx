@@ -1,26 +1,92 @@
-import { Suspense } from "react"
+import { Suspense, useEffect, useRef } from "react"
+import { useGSAP } from "@gsap/react"
+import gsap from "gsap"
+import { ScrollTrigger } from "gsap/ScrollTrigger"
 import Header from "./components/Layout/Header/Header"
 import Contact from "./components/Layout/Contact/Contact"
 import TextBlock from "./components/UI/TextBlock/TextBlock"
 import Expertise from "./components/Layout/Expertise/Expertise"
 import Projects from "./components/Layout/Project/Projects"
 import { useI18n } from "./hooks/useI18n"
+import { setAuroraPresence, setLightColor } from "./components/Experiences/lightStore"
+import styles from "./styles/Homepage.module.scss"
+import HeadingAnimation from "./components/UI/HeadingAnimation/HeadingAnimation"
+
+gsap.registerPlugin(ScrollTrigger)
 
 export default function HomePage() {
-	const { t } = useI18n()
+	const { locale, t } = useI18n()
+	const aboutRef = useRef<HTMLElement>(null)
+
+	useGSAP(() => {
+		const section = aboutRef.current
+		if (!section || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return
+		const pathways = section.querySelectorAll<HTMLElement>("[data-pathway]")
+		gsap.from(pathways, {
+			yPercent: 55,
+			rotationX: -28,
+			autoAlpha: 0,
+			transformPerspective: 900,
+			transformOrigin: "50% 100%",
+			duration: 0.8,
+			stagger: 0.1,
+			ease: "shiftReveal",
+			scrollTrigger: { trigger: pathways[0], start: "top 88%", once: true },
+		})
+	}, { scope: aboutRef })
+
+	useEffect(() => {
+		const sections = Array.from(
+			document.querySelectorAll<HTMLElement>("[data-aurora-state]"),
+		)
+		const observer = new IntersectionObserver(
+			(entries) => {
+				const active = entries
+					.filter((entry) => entry.isIntersecting)
+					.sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0]
+				if (!active) return
+				const el = active.target as HTMLElement
+				setAuroraPresence(Number(el.dataset.auroraPresence || 1))
+				if (el.dataset.auroraColor) setLightColor(el.dataset.auroraColor)
+			},
+			{ rootMargin: "-28% 0px -28%", threshold: [0, 0.25, 0.5, 0.75] },
+		)
+		sections.forEach((section) => observer.observe(section))
+		return () => {
+			observer.disconnect()
+			setAuroraPresence(1)
+		}
+	}, [])
 
 	return (
 		<>
-			<Header signalNavIntroAfterHero />
-			<section id='about'>
-				<div style={{ maxWidth: "var(--max-width)", margin: "0 auto" }}>
-					<TextBlock>{t.aboutText}</TextBlock>
-				</div>
-			</section>
+			{/*
+				Direction: Northern Signal Studio.
+				World: an arctic creative practice documented with the precision of a field station.
+				First viewport: oversized editorial type cuts through a live aurora atmosphere.
+				Path: positioning → work → capabilities → direct contact and live aurora forecast.
+				Signature: the aurora is both environmental material and a living data signal.
+			*/}
+			<div data-aurora-state data-aurora-presence='0.92' data-aurora-color='#9df5bf'>
+				<Header signalNavIntroAfterHero />
+			</div>
 
 			<Suspense>
 				<Projects />
 			</Suspense>
+
+			<section ref={aboutRef} id='about' data-aurora-state data-aurora-presence='0.72' data-aurora-color='#86cfa3'>
+				<div className={styles.about}>
+					<HeadingAnimation level={2} className={styles.sectionIndex}><span>{locale === "nb" ? "Hva jeg gjør" : "What I do"}</span><span>Design × Development</span></HeadingAnimation>
+					<div className={styles.aboutStatement}>
+						<TextBlock>{t.aboutText}</TextBlock>
+						<div className={styles.pathways}>
+							<p data-pathway><span>{locale === "nb" ? "For virksomheter" : "For businesses"}</span>{locale === "nb" ? "Nettsider, digitale identiteter, netthandel og produktdesign." : "Websites, digital identities, ecommerce and product design."}</p>
+							<p data-pathway><span>{locale === "nb" ? "Med kreative team" : "With creative teams"}</span>{locale === "nb" ? "Produktdesign, UI, interaksjon, frontend og kreativ utvikling." : "Product design, UI, interaction, frontend and creative development."}</p>
+						</div>
+					</div>
+				</div>
+			</section>
 			<Suspense>
 				<Expertise />
 			</Suspense>

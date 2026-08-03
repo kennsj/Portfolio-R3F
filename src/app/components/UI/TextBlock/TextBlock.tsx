@@ -23,6 +23,7 @@ const TextBlock = ({
 		() => {
 			const block = ref.current
 			if (!block) return
+			if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return
 
 			const splitInstances: SplitText[] = []
 			let cancelled = false
@@ -32,17 +33,21 @@ const TextBlock = ({
 
 				const splitP = SplitText.create(block, {
 					type: "lines",
+					mask: "lines",
 					autoSplit: true,
 					onSplit(self) {
-						return gsap.from(self.lines, {
-							opacity: 0,
-							filter: "blur(25px)",
-							yPercent: 35,
-							duration: 0.9,
-							ease: "power2.out",
+					return gsap.from(self.lines, {
+						yPercent: 110,
+						rotationX: -28,
+						skewY: 2,
+						transformPerspective: 900,
+						transformOrigin: "50% 100%",
+						duration: 0.8,
+							ease: "shiftReveal",
+							stagger: 0.1,
 							scrollTrigger: {
 								trigger: block,
-								start: "top 80%",
+								start: "top 88%",
 								invalidateOnRefresh: true,
 							},
 						})

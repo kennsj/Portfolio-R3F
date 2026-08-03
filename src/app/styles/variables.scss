@@ -1,5 +1,6 @@
 :root {
-	--max-width: 1200px;
+	--max-width: 1440px;
+	--grid-unit: min(4.1666667vw, 60px);
 
 	/* Horizontal inset: one rhythm for all front-page columns */
 	--page-gutter: clamp(1.25rem, 4.5vw, 2.75rem);
@@ -15,17 +16,19 @@
 	--stack-gap-lg: clamp(2.5rem, 7vw, 5rem);
 	--stack-gap-md: clamp(1.5rem, 4.5vw, 2.5rem);
 
-	--primary-color: #ccb2b2;
-	--primary-color: #d8d7d0;
-	--primary-color-50: #ccb2b259;
+	--primary-color: #f2f0e9;
+	--primary-color-50: #f2f0e959;
 
 	--secondary-color: #c75555;
 
-	--tertiary-color: #74a36d;
-	--tertiary-color-50: #74a36d80;
+	--tertiary-color: #91e6b2;
+	--tertiary-color-50: #91e6b280;
+	--aurora-mint: #9df5bf;
+	--aurora-violet: #9f8cff;
+	--signal-black: #070908;
 
-	--color-black: #020202;
-	--color-black-90: #020202ec;
+	--color-black: #050706;
+	--color-black-90: #050706ec;
 	--text-light: #e8e6e3;
 
 	--font-size-h4: 2rem;
@@ -36,6 +39,26 @@
 	--font-size-h1: clamp(2rem, 10vw, 7rem);
 	--font-size-h2: clamp(1.5rem, 8vw, 3.5rem);
 	--font-size-h3: 1.5rem;
+
+	/* Editorial display ramp: prominence comes from space and contrast, not sheer scale. */
+	--type-display-hero: clamp(4rem, 8.8vw, 8.25rem);
+	--type-display-section: clamp(2.75rem, 5.6vw, 5.5rem);
+	--type-display-project: clamp(3rem, 6.25vw, 6rem);
+	--type-display-marquee: clamp(3.25rem, 6.4vw, 6.25rem);
+	--type-display-contact: clamp(4rem, 9.5vw, 8rem);
+
+	/* Motion hierarchy: responsive UI, restrained content, composed hero moments. */
+	--motion-micro: 180ms;
+	--motion-ui: 320ms;
+	--motion-reveal: 720ms;
+	--motion-feature: 980ms;
+	--ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+	--ease-standard: cubic-bezier(0.65, 0, 0.35, 1);
+	--shift-reveal: 800ms;
+	--shift-title: 1200ms;
+	--shift-hover: 600ms;
+	--shift-ease: cubic-bezier(0.32, 0.94, 0.6, 1);
+	--shift-title-ease: cubic-bezier(0.26, 1, 0.48, 1);
 }
 
 #canvas {
@@ -76,12 +99,13 @@ body {
 	background:
 		radial-gradient(
 			ellipse at 68% 18%,
-			rgba(32, 91, 44, 0.32) 0,
-			rgba(5, 29, 11, 0.18) 34%,
+			rgba(45, 118, 68, 0.3) 0,
+			rgba(20, 47, 27, 0.16) 34%,
 			transparent 68%
 		),
 		var(--color-black);
 	background-attachment: fixed;
+	overflow-x: clip;
 }
 
 a {
@@ -134,6 +158,11 @@ h3 {
 	}
 }
 
+::selection {
+	color: var(--color-black);
+	background: var(--tertiary-color);
+}
+
 h4 {
 	font-size: 1rem;
 	font-weight: 400;
@@ -169,6 +198,33 @@ main {
 			background: var(--color-black-90);
 		}
 	}
+}
+
+@media (hover: hover) and (pointer: fine) {
+	main a:not(:has(img)) {
+		background-image: linear-gradient(currentColor, currentColor);
+		background-repeat: no-repeat;
+		background-position: 100% 100%;
+		background-size: 0 1px;
+		transition: background-size 500ms cubic-bezier(0.32, 0.94, 0.6, 1), background-position 0ms 500ms;
+
+		&:hover,
+		&:focus-visible {
+			background-position: 0 100%;
+			background-size: 100% 1px;
+		}
+	}
+}
+
+@media (max-width: 768px) {
+	:root { --page-gutter: 1rem; }
+}
+
+@media (hover: hover) and (pointer: fine) {
+	body,
+	a,
+	button,
+	[data-cursor] { cursor: pointer; }
 }
 
 footer {

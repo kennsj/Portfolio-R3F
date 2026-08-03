@@ -65,9 +65,9 @@ export function usePageTransition() {
 
 		gsap.to(GSAP_PAGE_CONTENT_SELECTOR, {
 			opacity: 0,
-			filter: "blur(25px)",
-			duration: 0.55,
-			ease: "power2.inOut",
+			filter: "blur(10px)",
+			duration: 0.3,
+			ease: "power2.out",
 			onComplete: () => {
 				void navigate({
 					to,

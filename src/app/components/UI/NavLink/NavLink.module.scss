@@ -17,23 +17,23 @@
 		border-radius: 50%;
 		background: var(--tertiary-color);
 		opacity: 0;
-		transition: opacity 0.8s cubic-bezier(0.075, 0.82, 0.165, 1);
+		transition: opacity var(--motion-micro) var(--ease-out);
 	}
 
 	.arrow-link-text {
 		font-style: var(--font-family-syne), sans-serif;
-		opacity: 0.5;
-		transform: translateX(1.5rem);
-		transition: opacity 0.8s cubic-bezier(0.075, 0.82, 0.165, 1);
+		opacity: 0.62;
+		transform: translateX(1rem);
+		transition: opacity var(--motion-ui) var(--ease-out), transform var(--motion-ui) var(--ease-out);
 
 		&:hover {
 			opacity: 1;
-			transition: opacity 0.8s cubic-bezier(0.075, 0.82, 0.165, 1);
+			transform: translateX(0);
 		}
 	}
 }
 
 .arrow-link:hover::before {
 	opacity: 1;
-	transition: opacity 0.3s cubic-bezier(0.075, 0.82, 0.165, 1);
+	transition: opacity var(--motion-micro) var(--ease-out);
 }

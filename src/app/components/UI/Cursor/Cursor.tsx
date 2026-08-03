@@ -1,122 +1,60 @@
-import { useEffect, useRef, useState } from "react"
-import styles from "./Cursor.module.scss"
+import { useEffect, useRef } from "react"
 import gsap from "gsap"
-
-type CursorLabel = "Visit" | "View" | "Open" | null
+import styles from "./Cursor.module.scss"
 
 const Cursor = () => {
-	const dotRef = useRef<HTMLDivElement>(null)
-	const ringRef = useRef<HTMLDivElement>(null)
-	const labelRef = useRef<HTMLDivElement>(null)
-	const pos = useRef({ x: 0, y: 0 })
-	const [label, setLabel] = useState<CursorLabel>(null)
+	const lensRef = useRef<HTMLDivElement>(null)
 
 	useEffect(() => {
-		const onLeaveWindow = () => {
-			gsap.to([dotRef.current, ringRef.current], { opacity: 0, duration: 0.2 })
+		const lens = lensRef.current
+		if (!lens) return
+		if (window.matchMedia("(hover: none), (pointer: coarse), (prefers-reduced-motion: reduce)").matches) return
+
+		const xTo = gsap.quickTo(lens, "x", { duration: 0.42, ease: "power3.out" })
+		const yTo = gsap.quickTo(lens, "y", { duration: 0.42, ease: "power3.out" })
+		let activeTarget: HTMLElement | null = null
+
+		const onMove = (event: PointerEvent) => {
+			xTo(event.clientX)
+			yTo(event.clientY)
+			if (lens.dataset.visible !== "true") {
+				lens.dataset.visible = "true"
+				gsap.to(lens, { autoAlpha: 1, duration: 0.22 })
+			}
 		}
-		const onEnterWindow = () => {
-			gsap.to([dotRef.current, ringRef.current], { opacity: 1, duration: 0.2 })
+
+		const onOver = (event: PointerEvent) => {
+			const target = (event.target as HTMLElement).closest<HTMLElement>("a, button, [data-cursor]")
+			if (!target || target === activeTarget) return
+			activeTarget = target
+			lens.dataset.active = "true"
+			gsap.to(lens, { scale: 0.18, duration: 0.42, ease: "expo.out" })
 		}
-		document.addEventListener("mouseleave", onLeaveWindow)
-		document.addEventListener("mouseenter", onEnterWindow)
+
+		const onOut = (event: PointerEvent) => {
+			if (!activeTarget) return
+			const next = event.relatedTarget as Node | null
+			if (next && activeTarget.contains(next)) return
+			activeTarget = null
+			lens.dataset.active = "false"
+			gsap.to(lens, { scale: 1, duration: 0.42, ease: "expo.out" })
+		}
+
+		const onLeave = () => gsap.to(lens, { autoAlpha: 0, duration: 0.18 })
+		window.addEventListener("pointermove", onMove, { passive: true })
+		document.addEventListener("pointerover", onOver)
+		document.addEventListener("pointerout", onOut)
+		document.addEventListener("mouseleave", onLeave)
+
 		return () => {
-			document.removeEventListener("mouseleave", onLeaveWindow)
-			document.removeEventListener("mouseenter", onEnterWindow)
+			window.removeEventListener("pointermove", onMove)
+			document.removeEventListener("pointerover", onOver)
+			document.removeEventListener("pointerout", onOut)
+			document.removeEventListener("mouseleave", onLeave)
 		}
 	}, [])
 
-	useEffect(() => {
-		const dot = dotRef.current
-		const ring = ringRef.current
-
-		// Raw mouse follow
-		const onMove = (e: MouseEvent) => {
-			pos.current = { x: e.clientX, y: e.clientY }
-			gsap.to(dot, { x: e.clientX, y: e.clientY, duration: 0 })
-			gsap.to(ring, {
-				x: e.clientX,
-				y: e.clientY,
-				duration: 0.15,
-				ease: "power2.out",
-			})
-		}
-
-		// Magnetic pull
-		const onEnter = (e: MouseEvent) => {
-			const target = e.currentTarget as HTMLElement
-			const rect = target.getBoundingClientRect()
-			const cx = rect.left + rect.width / 2
-			const cy = rect.top + rect.height / 2
-
-			// Determine label
-			const dataCursor = target.dataset.cursor
-			const isBlank = target.getAttribute("target") === "_blank"
-			const isAnchor = target.tagName === "A" || target.closest("a")
-
-			if (dataCursor === "view") setLabel("View")
-			else if (isBlank) setLabel("Visit")
-			else if (isAnchor) setLabel("Open")
-			else setLabel("Open")
-
-			gsap.to(ring, {
-				x: cx,
-				y: cy,
-				width: 80,
-				height: 80,
-				duration: 0.3,
-				ease: "power2.out",
-			})
-			gsap.to(dot, { opacity: 0, duration: 0.2 })
-		}
-
-		const onLeave = () => {
-			setLabel(null)
-			gsap.to(ring, {
-				width: 40,
-				height: 40,
-				duration: 0.3,
-				ease: "power2.out",
-			})
-			gsap.to(dot, { opacity: 1, duration: 0.2 })
-		}
-
-		window.addEventListener("mousemove", onMove)
-
-		const attachListeners = () => {
-			const targets = document.querySelectorAll<HTMLElement>(
-				"a, button, [data-cursor]",
-			)
-			targets.forEach((el) => {
-				el.addEventListener("mouseenter", onEnter)
-				el.addEventListener("mouseleave", onLeave)
-			})
-		}
-
-		attachListeners()
-
-		// Re-attach on DOM changes (route changes)
-		const observer = new MutationObserver(attachListeners)
-		observer.observe(document.body, { childList: true, subtree: true })
-
-		return () => {
-			window.removeEventListener("mousemove", onMove)
-			observer.disconnect()
-		}
-	}, [])
-
-	return (
-		<>
-			<div ref={dotRef} className={styles.dot} />
-			<div ref={ringRef} className={styles.ring}>
-				{label && (
-					<div ref={labelRef} className={styles.label}>
-						{label}
-					</div>
-				)}
-			</div>
-		</>
-	)
+	return <div ref={lensRef} className={styles.lens} aria-hidden='true' data-visible='false' data-active='false' />
 }
 
 export default Cursor

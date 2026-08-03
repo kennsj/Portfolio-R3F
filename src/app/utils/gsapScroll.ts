@@ -11,8 +11,8 @@ export const SCROLL_NAV_OFFSET_PX = 96
 
 function scrollWindowToElement(el: HTMLElement, onComplete?: () => void) {
 	gsap.to(window, {
-		duration: 1.25,
-		ease: "power2.inOut",
+		duration: 0.82,
+		ease: "power3.out",
 		scrollTo: {
 			y: el,
 			offsetY: SCROLL_NAV_OFFSET_PX,
@@ -65,8 +65,8 @@ export function gsapScrollToHashIdWhenReady(
 
 export function gsapScrollToTop() {
 	gsap.to(window, {
-		duration: 1.1,
-		ease: "power2.inOut",
+		duration: 0.72,
+		ease: "power3.out",
 		scrollTo: { y: 0, autoKill: true },
 	})
 }

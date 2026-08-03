@@ -1,223 +1,69 @@
-import { useEffect, useLayoutEffect, useRef } from "react"
-import { useQueryClient } from "@tanstack/react-query"
+import { useRef } from "react"
 import { useGSAP } from "@gsap/react"
 import gsap from "gsap"
 import { ScrollTrigger } from "gsap/ScrollTrigger"
-import {
-	getKpColor,
-	kpIndexQueryOptions,
-	useKpIndex,
-} from "../../../hooks/useKpIndex"
-import HeadingAnimation from "../../UI/HeadingAnimation/HeadingAnimation"
-import TextBlock from "../../UI/TextBlock/TextBlock"
-import Aurora from "../Aurora/Aurora"
-import ArrowLink from "../../UI/ArrowLink/ArrowLink"
+import SplitText from "gsap/SplitText"
 import { useI18n } from "../../../hooks/useI18n"
-
+import Aurora from "../Aurora/Aurora"
 import styles from "./Contact.module.scss"
-import { useManualKp } from "@/app/hooks/KpContext"
 
-gsap.registerPlugin(ScrollTrigger)
+gsap.registerPlugin(ScrollTrigger, SplitText)
 
 const Contact = ({ showForecast = false }: { showForecast?: boolean }) => {
-	const { t } = useI18n()
-	const contactRevealRef = useRef<HTMLDivElement>(null)
-	const formRevealAnchorRef = useRef<HTMLDivElement>(null)
-	const contactInfoRef = useRef<HTMLDivElement>(null)
-	const queryClient = useQueryClient()
-	const { data } = useKpIndex()
-	const { manualKp } = useManualKp()
-	const kp = manualKp ?? data?.latest ?? 0
-	const color = getKpColor(kp)
+	const { locale } = useI18n()
+	const sectionRef = useRef<HTMLElement>(null)
 
-	useEffect(() => {
-		if (!showForecast) return
-
-		void queryClient.prefetchQuery(kpIndexQueryOptions)
-	}, [showForecast, queryClient])
-
-	useLayoutEffect(() => {
-		const id = requestAnimationFrame(() => {
-			requestAnimationFrame(() => ScrollTrigger.refresh())
-		})
-
-		return () => cancelAnimationFrame(id)
-	}, [showForecast])
-
-	useGSAP(
-		() => {
-			const wrap = contactRevealRef.current
-			const anchor = formRevealAnchorRef.current
-			if (!wrap || !anchor) return
-			const form = wrap.querySelector<HTMLFormElement>("form")
-			const fields = form?.querySelectorAll<HTMLElement>("[data-contact-field]")
-			const submit = form?.querySelector<HTMLElement>('button[type="submit"]')
-			const formTargets: HTMLElement[] = []
-
-			if (fields?.length) formTargets.push(...Array.from(fields))
-			if (submit) formTargets.push(submit)
-			if (!formTargets.length) return
-
-			gsap.set(formTargets, {
-				opacity: 0,
-				filter: "blur(22px)",
-				yPercent: 18,
-			})
-
-			const tl = gsap.timeline({
-				scrollTrigger: {
-					trigger: anchor,
-					start: "top 88%",
-					toggleActions: "play none none none",
-					invalidateOnRefresh: true,
-				},
-
-				defaults: { ease: "power2.out" },
-			})
-
-			tl.to(formTargets, {
-				opacity: 1,
-				filter: "blur(0px)",
-				yPercent: 0,
-				duration: 0.85,
-				stagger: 0.12,
-			})
-
-			requestAnimationFrame(() => {
-				requestAnimationFrame(() => ScrollTrigger.refresh())
-			})
-		},
-
-		{ scope: contactRevealRef, dependencies: [showForecast] },
-	)
-
-	useGSAP(
-		() => {
-			const wrap = contactRevealRef.current
-			const info = contactInfoRef.current
-			if (!wrap || !info) return
-			const portrait = info.querySelector<HTMLElement>(
-				"[data-contact-portrait]",
-			)
-			const emailCol = info.querySelector<HTMLElement>("[data-contact-email]")
-
-			if (!portrait || !emailCol) return
-
-			gsap.set(portrait, {
-				opacity: 0,
-				filter: "blur(16px)",
-			})
-			gsap.set(emailCol, {
-				opacity: 0,
-				filter: "blur(22px)",
-				yPercent: 22,
-			})
-
-			const tl = gsap.timeline({
-				scrollTrigger: {
-					trigger: info,
-
-					start: "top 88%",
-
-					toggleActions: "play none none none",
-
-					invalidateOnRefresh: true,
-				},
-
-				defaults: { ease: "power2.out" },
-			})
-
-			tl.to(portrait, {
-				opacity: 1,
-				filter: "blur(0px)",
-				duration: 1.05,
-			})
-
-			tl.to(
-				emailCol,
-				{
-					opacity: 1,
-					filter: "blur(0px)",
-					yPercent: 0,
-					duration: 0.9,
-				},
-				"-=0.55",
-			)
-
-			requestAnimationFrame(() => {
-				requestAnimationFrame(() => ScrollTrigger.refresh())
-			})
-		},
-
-		{ scope: contactRevealRef, dependencies: [showForecast] },
-	)
+	useGSAP(() => {
+		const section = sectionRef.current
+		if (!section || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return
+		const title = section.querySelector<HTMLElement>("h2")
+		const email = section.querySelector<HTMLElement>("[data-contact-email]")
+		const lines = section.querySelectorAll<HTMLElement>("[data-contact-line]")
+		const location = section.querySelector<HTMLElement>("[data-contact-location]")
+		const titleSplit = title ? SplitText.create(title, { type: "lines", mask: "lines" }) : null
+		const tl = gsap.timeline({ scrollTrigger: { trigger: section, start: "top 72%", once: true } })
+		tl.fromTo(location, { yPercent: 110, rotationX: -28, autoAlpha: 0, transformPerspective: 900 }, { yPercent: 0, rotationX: 0, autoAlpha: 1, duration: 0.8, ease: "shiftReveal" })
+			.fromTo(titleSplit?.lines ?? [], { yPercent: 110, rotationX: -78, skewY: 3, transformPerspective: 1100, transformOrigin: "50% 100%" }, { yPercent: 0, rotationX: 0, skewY: 0, duration: 1.2, stagger: 0.1, ease: "shiftTitle" }, "-=0.35")
+			.fromTo(email, { yPercent: 110, rotationX: -30, transformPerspective: 900, transformOrigin: "50% 100%" }, { yPercent: 0, rotationX: 0, duration: 0.8, ease: "shiftReveal" }, "-=0.5")
+			.fromTo(lines, { scaleX: 0, transformOrigin: "left" }, { scaleX: 1, duration: 2, stagger: 0.1, ease: "shiftRule" }, "-=0.45")
+		return () => titleSplit?.revert()
+	}, { scope: sectionRef })
 
 	return (
-		<section id='contact' aria-label={t.navContact}>
-			<div ref={contactRevealRef} className={styles["contact-wrapper"]}>
-				<HeadingAnimation level={3} className={styles["contact-title"]}>
-					{t.contactTitle}
-				</HeadingAnimation>
-
-				<div ref={contactInfoRef} className={styles["contact-content"]}>
-					<div className={styles["contact-text-container"]}>
-						<TextBlock className={styles["contact-text"]} textSize='md'>
-							{t.contactIntro}
-						</TextBlock>
-						<div className={styles["contact-text-small-container"]}>
-							<TextBlock textSize='sm' className={styles["contact-text-small"]}>
-								{t.contactAvailability}
-							</TextBlock>
-						</div>
-						<div className={styles["contact-info-email"]} data-contact-email>
-							<ArrowLink
-								size='48'
-								href='mailto:hei@kennethjorgensen.no'
-								disableCharReveal
-							>
-								hei
-								<span className='highlight'>@</span>
-								kennethjorgensen.no
-							</ArrowLink>
-						</div>
-						<TextBlock textSize='sm' className={styles["contact-email-note"]}>
-							{t.contactEmailNote}
-						</TextBlock>
-					</div>
-					<div className={styles["contact-image"]} data-contact-portrait>
-						<svg viewBox='0 0 300 200' width='250' height='250'>
-							<defs>
-								<path
-									id='circle-path'
-									d='M 100,100 m -80,0 a 80,80 0 1,1 160,0 a 80,80 0 1,1 -160,0'
-								/>
-							</defs>
-							{t.contactAvailability}
-							<image
-								href='/images/y-so-serious.webp'
-								x='25'
-								y='25'
-								width='150'
-								height='150'
-								clipPath='url(#clip)'
-							/>
-							<clipPath id='clip'>
-								<circle cx='100' cy='100' r='75' />
-							</clipPath>
-							<text fontSize='12' fill='#888' letterSpacing='1'>
-								<textPath
-									href='#circle-path'
-									startOffset='15%'
-									textAnchor='start'
-								>
-									{t.contactPortraitText}
-								</textPath>
-							</text>
-						</svg>
-					</div>
+		<section
+			ref={sectionRef}
+			id='contact'
+			className={styles.section}
+			aria-label={locale === "nb" ? "Kontakt" : "Contact"}
+			data-aurora-state
+			data-aurora-presence='1.16'
+			data-aurora-color='#a8f3c3'
+		>
+			{showForecast && (
+				<div className={styles.forecast}>
+					<Aurora />
 				</div>
+			)}
 
-				{showForecast && <Aurora />}
+			<div className={styles.location} data-contact-location>
+				<span>{locale === "nb" ? "Basert i Bodø" : "Based in Bodø"}</span>
+				<span>{locale === "nb" ? "Jobber overalt" : "Working worldwide"}</span>
+			</div>
+
+			<div className={styles.main}>
+				<h2>{locale === "nb" ? <>La oss<br />snakke</> : <>Let’s<br />talk</>}</h2>
+				<a data-contact-email href='mailto:hei@kennethjorgensen.no'>hei@kennethjorgensen.no</a>
+			</div>
+
+			<div className={styles.contactGrid}>
+				<div data-contact-line>
+					<span>{locale === "nb" ? "Tilgjengelig for" : "Available for"}</span>
+					<p>{locale === "nb" ? "Utvalgte prosjekter / studiosamarbeid / faste roller" : "Selected projects / studio collaborations / permanent roles"}</p>
+				</div>
+				<div data-contact-line>
+					<span>{locale === "nb" ? "Finn meg" : "Elsewhere"}</span>
+					<p><a href='https://www.linkedin.com/in/kennethstrandjorgensen/' target='_blank' rel='noreferrer'>LinkedIn</a> / <a href='https://github.com/kennsj' target='_blank' rel='noreferrer'>GitHub</a></p>
+				</div>
 			</div>
 		</section>
 	)

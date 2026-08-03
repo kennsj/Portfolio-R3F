@@ -147,6 +147,9 @@ const Aurora = () => {
 
 	const ready = !isLoading && !!data?.entries.length
 	const { label, visible } = getKpLabel(displayKp, locale)
+	const explanation = locale === "nb"
+		? "KP-indeksen måler global geomagnetisk aktivitet fra 0 til 9. Høyere verdi betyr sterkere nordlys og bedre mulighet for å se det lenger sør. Dra i måleren for å simulere hvordan aktiviteten endrer lyset på siden."
+		: "The KP index measures global geomagnetic activity from 0 to 9. A higher reading means a stronger aurora with a better chance of seeing it farther south. Move the control to simulate how that activity changes the light across this site."
 
 	return (
 		<div
@@ -158,7 +161,11 @@ const Aurora = () => {
 				<div className={styles["aurora-loading"]} aria-busy='true' />
 			) : (
 				<>
-					{/* <div className={styles.topLabel}>Aurora forecast</div> */}
+					<div className={styles["forecast-intro"]}>
+						<span>{locale === "nb" ? "Levende signal / Bodø" : "Live signal / Bodø"}</span>
+						<h3>{locale === "nb" ? <>Nordlyset<br />som grensesnitt</> : <>Aurora as<br />interface</>}</h3>
+						<p>{explanation}</p>
+					</div>
 
 					<div className={styles["main-row"]}>
 						<div ref={locationRef} className={styles["location-label"]}>
@@ -217,30 +224,40 @@ const Aurora = () => {
 					</div>
 
 					<div className={styles["slider-wrapper"]}>
-						<div className={styles["slider-row"]}>
+						<div className={styles["slider-control"]}>
+							<div className={styles["slider-heading"]}>
+								<span>{locale === "nb" ? "Simuler aktivitet" : "Simulate activity"}</span>
+								<strong>{displayKp.toFixed(1)}</strong>
+							</div>
 							<input
 								type='range'
 								min={0}
 								max={9}
 								step={0.1}
 								value={displayKp}
+								style={{ "--range-progress": `${(displayKp / 9) * 100}%` } as React.CSSProperties}
 								onChange={(e) => {
 									const next = Number(e.target.value)
 									setManualKp(Number.isFinite(next) ? next : 0)
 								}}
 								aria-label={t.auroraSliderLabel}
+								aria-valuetext={`KP ${displayKp.toFixed(1)}, ${label}`}
 							/>
-							<span aria-label={t.auroraModeAria}>
-								{manualKp !== null ? t.auroraModeManual : t.auroraModeLive}
-							</span>
-							{manualKp !== null && (
+							<div className={styles["slider-scale"]} aria-hidden='true'><span>0</span><span>3</span><span>6</span><span>9</span></div>
+							<div className={styles["slider-mode"]}>
+								<span aria-label={t.auroraModeAria}>
+									<i style={{ background: getKpColor(displayKp) }} />
+									{manualKp !== null ? t.auroraModeManual : t.auroraModeLive}
+								</span>
+								{manualKp !== null && (
 								<button
 									onClick={() => setManualKp(null)}
 									aria-label={t.auroraResetAria}
 								>
 									{t.auroraReset}
 								</button>
-							)}
+								)}
+							</div>
 						</div>
 						<p>{t.auroraDisclaimer}</p>
 					</div>

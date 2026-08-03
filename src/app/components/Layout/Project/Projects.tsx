@@ -1,314 +1,291 @@
-import { useRef, Fragment, useState, useCallback } from "react"
+import { useCallback, useEffect, useRef, useState } from "react"
 import { createPortal } from "react-dom"
-import styles from "./Projects.module.scss"
-import HeadingAnimation from "../../UI/HeadingAnimation/HeadingAnimation"
-import { useProjectHoverPreview } from "./useProjectHoverPreview"
 import { useGSAP } from "@gsap/react"
 import gsap from "gsap"
-import SplitText from "gsap/SplitText"
 import { ScrollTrigger } from "gsap/ScrollTrigger"
+import styles from "./Projects.module.scss"
+import HeadingAnimation from "../../UI/HeadingAnimation/HeadingAnimation"
 import { usePageTransition } from "../../../hooks/usePageTransition"
 import { useI18n } from "../../../hooks/useI18n"
+import { setLightColor } from "../../Experiences/lightStore"
 
-gsap.registerPlugin(ScrollTrigger, SplitText)
-
-/** Match `usePageTransition` main fade-out so the hover preview exits in sync. */
-const PAGE_OUT_DURATION = 0.55
-const PAGE_OUT_EASE = "power2.inOut"
+gsap.registerPlugin(ScrollTrigger)
 
 const Projects = () => {
 	const { locale, t } = useI18n()
-	const [previewInteractionLocked, setPreviewInteractionLocked] =
-		useState(false)
+	const { transitionTo } = usePageTransition()
+	const [activeIndex, setActiveIndex] = useState<number | null>(null)
+	const [locked, setLocked] = useState(false)
+	const [portalRoot, setPortalRoot] = useState<HTMLElement | null>(null)
+	const listRef = useRef<HTMLUListElement>(null)
+	const previewRef = useRef<HTMLDivElement>(null)
+	const previewRevealRef = useRef<HTMLDivElement>(null)
+	const previewMediaRef = useRef<HTMLDivElement>(null)
+	const videoRefs = useRef<Array<HTMLVideoElement | null>>([])
+	const currentIndexRef = useRef<number | null>(null)
+	const previewOpenRef = useRef(false)
+	const concealTimerRef = useRef<number | null>(null)
+	const pointerRef = useRef({ x: 0, y: 0 })
+
+	useEffect(() => setPortalRoot(document.body), [])
+	useEffect(() => () => {
+		if (concealTimerRef.current !== null) window.clearTimeout(concealTimerRef.current)
+	}, [])
+
+	useEffect(() => {
+		if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) return
+		document.querySelectorAll<HTMLVideoElement>("#work video").forEach((video) => video.pause())
+	}, [])
+
 	const projects = [
-		{
-			name: "Manshausen",
-			link: "#",
-			work: locale === "nb" ? "Personlig prosjekt" : "Personal project",
-			image: "/videos/manshausen.webm",
-			url: "/manshausen",
-			urlText: "Redesign",
-		},
-		{
-			name: "Verchia",
-			link: "https://verchia.vercel.app/",
-			work: locale === "nb" ? "Design / Kode" : "Design / Code",
-			// result:
-			// 	locale === "nb"
-			// 		? "Visuell retning og skreddersydd frontend for et internasjonalt motemerke."
-			// 		: "Visual direction and a custom front end for an international fashion label.",
-			image: "/videos/verchia.webm",
-			url: "/verchia",
-			urlText: "Live",
-		},
-		{
-			name: "Pradelna",
-			link: "https://www.pradelnakrkonose.cz/",
-			work: locale === "nb" ? "Kode" : "Code",
-			// result:
-			// 	locale === "nb"
-			// 		? "Responsiv frontend med tydelig struktur for en lokal tjenestebedrift."
-			// 		: "A responsive, clearly structured front end for a local service business.",
-			image: "/videos/pradelna.webm",
-			url: "/pradelna",
-			urlText: "Live",
-		},
-		{
-			name: "Dialog eXe",
-			link: "https://dialog-exe.vercel.app/",
-			work: "UX/UI",
-			// result:
-			// 	locale === "nb"
-			// 		? "UX- og UI-konsept som gjør komplekse dialogflyter enklere å forstå."
-			// 		: "A UX/UI concept that makes complex dialogue flows easier to understand.",
-			image: "/videos/dx.webm",
-			url: "/dialog-exe",
-			urlText: "Case Study",
-		},
+		{ name: "Manshausen", work: locale === "nb" ? "Personlig prosjekt" : "Personal project", image: "/videos/manshausen.webm", poster: "/images/kenneth-aurora.jpg", url: "/manshausen", type: "Redesign", color: "#78c69a" },
+		{ name: "Verchia", work: locale === "nb" ? "Design / Kode" : "Design / Code", image: "/videos/verchia.webm", poster: "/images/verchia.webp", url: "/verchia", type: "Live", color: "#b6a6ee" },
+		{ name: "Pradelna", work: locale === "nb" ? "Kode" : "Code", image: "/videos/pradelna.webm", poster: "/images/pradelna.webp", url: "/pradelna", type: "Live", color: "#e2cf9d" },
+		{ name: "Dialog eXe", work: "UX / UI", image: "/videos/dx.webm", poster: "/images/dx-kino.webp", url: "/dialog-exe", type: "Case study", color: "#8bb8dc" },
 	] as const
 
-	const {
-		shellRef,
-		imgRef,
-		videoRef,
-		onMouseMove,
-		onEnter,
-		onLeave,
-		onSectionLeave,
-	} = useProjectHoverPreview(projects, {
-		interactionDisabled: previewInteractionLocked,
-	})
-
-	const { transitionTo } = usePageTransition()
-
-	const listRef = useRef<HTMLUListElement>(null)
-
-	const handleProjectNavigate = useCallback(
-		(projectUrl: string) => {
-			setPreviewInteractionLocked(true)
-			const img = imgRef.current
-			const video = videoRef.current
-			const out = {
-				autoAlpha: 0,
-				filter: "blur(10px)",
-				duration: PAGE_OUT_DURATION,
-				ease: PAGE_OUT_EASE,
-			}
-			if (img) {
-				gsap.killTweensOf(img)
-				gsap.to(img, out)
-			}
-			if (video) {
-				gsap.killTweensOf(video)
-				gsap.to(video, out)
-			}
-			transitionTo(`/project${projectUrl}`)
-		},
-		[transitionTo],
-	)
-
-	useGSAP(
-		() => {
-			const list = listRef.current
-			if (!list) return
-
-			const splitInstances: SplitText[] = []
-			let cancelled = false
-			let master: gsap.core.Timeline | null = null
-
-			const rowStagger = 0.1
-
-			document.fonts.ready.then(() => {
-				if (cancelled || !list.isConnected) return
-
-				master = gsap.timeline({
-					scrollTrigger: {
-						trigger: list,
-						start: "top 80%",
-						once: true,
-						invalidateOnRefresh: true,
-						fastScrollEnd: true,
-					},
-				})
-
-				const listLinksSel = `.${CSS.escape(styles["list-links"])}`
-
-				Array.from(list.children).forEach((child, i) => {
-					const at = i * rowStagger
-
-					if (child instanceof HTMLLIElement) {
-						const h2 = child.querySelector("h2")
-						const links = child.querySelector<HTMLElement>(listLinksSel)
-						if (!h2) return
-
-						const split = SplitText.create(h2, {
-							type: "lines",
-							// mask: "lines",
-						})
-						splitInstances.push(split)
-
-						master.from(
-							split.lines,
-							{
-								opacity: 0,
-								filter: "blur(25px)",
-								yPercent: 100,
-								stagger: 0.001,
-								duration: 1,
-								ease: "power2.out",
-							},
-							at,
-						)
-
-						if (links) {
-							// fromTo: explicit end state avoids rare cases where a late
-							// ScrollTrigger refresh + timeline.from() leaves .list-links stuck
-							// at the “from” values while the title lines have already resolved.
-							master.fromTo(
-								links,
-								{
-									opacity: 0,
-									filter: "blur(25px)",
-									yPercent: 35,
-								},
-								{
-									opacity: 1,
-									filter: "blur(0px)",
-									yPercent: 0,
-									duration: 0.9,
-									ease: "power2.out",
-								},
-								at + 0.05,
-							)
-						}
-					} else if (child instanceof HTMLHRElement) {
-						master.to(
-							child,
-							{
-								filter: "blur(0px)",
-								scaleX: 1,
-								transformOrigin: "left",
-								duration: 1,
-								ease: "power2.out",
-							},
-							at,
-						)
-					}
-				})
-
-				requestAnimationFrame(() => {
-					requestAnimationFrame(() => {
-						if (cancelled || !list.isConnected) return
-						ScrollTrigger.refresh()
-					})
-				})
+	useGSAP(() => {
+		if (!listRef.current || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return
+		Array.from(listRef.current.children).forEach((row) => {
+			const title = row.querySelector<HTMLElement>("strong")
+			const number = row.querySelector(`.${styles.number}`)
+			const rule = row.querySelector<HTMLElement>("[data-project-rule]")
+			if (!title) return
+			const timeline = gsap.timeline({
+				scrollTrigger: { trigger: row, start: "top 88%", once: true },
 			})
+			timeline
+				.fromTo(title,
+					{ yPercent: 135, rotationX: -82, skewY: 2.5, transformPerspective: 1000, transformOrigin: "50% 100%" },
+					{ yPercent: 0, rotationX: 0, skewY: 0, transformPerspective: 1000, transformOrigin: "50% 100%", duration: 0.8, ease: "shiftReveal" },
+				)
+				.from(number, { yPercent: 110, autoAlpha: 0, duration: 0.8, ease: "shiftReveal" }, 0.1)
+				.from(rule, { scaleX: 0, transformOrigin: "left center", duration: 2, ease: "shiftRule" }, 0.12)
+		})
+	}, { scope: listRef })
 
-			return () => {
-				cancelled = true
-				master?.scrollTrigger?.kill()
-				master?.kill()
-				master = null
-				splitInstances.splice(0).forEach((s) => s.revert())
-			}
-		},
-		{ scope: listRef },
-	)
+	const reveal = useCallback((index: number, clientX?: number, clientY?: number) => {
+		if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return
+		if (concealTimerRef.current !== null) {
+			window.clearTimeout(concealTimerRef.current)
+			concealTimerRef.current = null
+		}
+		setActiveIndex(index)
+		setLightColor(projects[index].color)
+		const preview = previewRef.current
+		const revealFrame = previewRevealRef.current
+		const media = previewMediaRef.current
+		if (!preview || !revealFrame || !media) return
+		const previousIndex = currentIndexRef.current
+		const nextVideo = videoRefs.current[index]
+		if (nextVideo) void nextVideo.play().catch(() => undefined)
+		const x = clientX ?? window.innerWidth * 0.64
+		const y = clientY ?? window.innerHeight * 0.52
+		pointerRef.current = { x, y }
+		gsap.set(preview, { x, y, autoAlpha: 1 })
+		if (previewOpenRef.current && previousIndex === index) {
+			gsap.killTweensOf(revealFrame)
+			gsap.set(revealFrame, { scaleY: 1 })
+			return
+		}
+
+		if (previewOpenRef.current && previousIndex !== null && previousIndex !== index) {
+			const previousVideo = videoRefs.current[previousIndex]
+			const travel = index > previousIndex ? 100 : -100
+			gsap.killTweensOf([revealFrame, previousVideo, nextVideo])
+			gsap.set(revealFrame, { scaleY: 1 })
+			gsap.set(nextVideo, { autoAlpha: 1, yPercent: -travel })
+			gsap.timeline({ defaults: { duration: 0.6, ease: "shiftReveal" } })
+				.to(previousVideo, { yPercent: travel }, 0)
+				.to(nextVideo, { yPercent: 0 }, 0)
+				.set(previousVideo, { autoAlpha: 0, yPercent: 0 })
+				.call(() => previousVideo?.pause())
+			currentIndexRef.current = index
+			return
+		}
+
+		videoRefs.current.forEach((video, videoIndex) => {
+			if (!video) return
+			gsap.set(video, { autoAlpha: videoIndex === index ? 1 : 0, yPercent: 0 })
+			if (videoIndex !== index) video.pause()
+		})
+		currentIndexRef.current = index
+		previewOpenRef.current = true
+		gsap.killTweensOf([revealFrame, media])
+		gsap.set(media, { yPercent: 0, scale: 1.6 })
+		gsap.timeline()
+			.fromTo(revealFrame,
+				{ scaleY: 0, transformOrigin: "bottom" },
+				{ scaleY: 1, duration: 0.8, ease: "shiftReveal" },
+			)
+			.to(media, { scale: 1.2, duration: 1.6, ease: "power2.out" }, 0)
+	}, [projects])
+
+	const hardDismiss = useCallback(() => {
+		if (concealTimerRef.current !== null) {
+			window.clearTimeout(concealTimerRef.current)
+			concealTimerRef.current = null
+		}
+
+		const preview = previewRef.current
+		const revealFrame = previewRevealRef.current
+		const media = previewMediaRef.current
+		gsap.killTweensOf([preview, revealFrame, media, ...videoRefs.current])
+		if (preview) gsap.set(preview, { autoAlpha: 0, scale: 1, filter: "none" })
+		if (revealFrame) gsap.set(revealFrame, { scaleY: 0, transformOrigin: "top" })
+
+		videoRefs.current.forEach((video) => video?.pause())
+		previewOpenRef.current = false
+		currentIndexRef.current = null
+		setActiveIndex(null)
+		setLightColor("#7fbc98")
+	}, [])
+
+	useEffect(() => {
+		if (activeIndex === null) return
+
+		let scrollFrame: number | null = null
+		const reconcileHoverAfterScroll = () => {
+			if (scrollFrame !== null) window.cancelAnimationFrame(scrollFrame)
+			scrollFrame = window.requestAnimationFrame(() => {
+				scrollFrame = null
+				const { x, y } = pointerRef.current
+				const pointedRow = document.elementFromPoint(x, y)?.closest<HTMLElement>(`.${styles.projectRow}`)
+				const focusedRow = document.activeElement?.closest<HTMLElement>(`.${styles.projectRow}`)
+				const activeRow = pointedRow ?? focusedRow
+
+				if (!activeRow) {
+					hardDismiss()
+					return
+				}
+
+				const nextIndex = Number(activeRow.dataset.projectIndex)
+				if (Number.isInteger(nextIndex)) reveal(nextIndex, x, y)
+			})
+		}
+		const dismissWhenHidden = () => {
+			if (document.hidden) hardDismiss()
+		}
+
+		window.addEventListener("scroll", reconcileHoverAfterScroll, { passive: true })
+		window.addEventListener("blur", hardDismiss)
+		document.addEventListener("mouseleave", hardDismiss)
+		document.addEventListener("visibilitychange", dismissWhenHidden)
+
+		return () => {
+			if (scrollFrame !== null) window.cancelAnimationFrame(scrollFrame)
+			window.removeEventListener("scroll", reconcileHoverAfterScroll)
+			window.removeEventListener("blur", hardDismiss)
+			document.removeEventListener("mouseleave", hardDismiss)
+			document.removeEventListener("visibilitychange", dismissWhenHidden)
+		}
+	}, [activeIndex, hardDismiss, reveal])
+
+	const conceal = useCallback(() => {
+		if (concealTimerRef.current !== null) window.clearTimeout(concealTimerRef.current)
+		concealTimerRef.current = window.setTimeout(() => {
+			setLightColor("#7fbc98")
+			const preview = previewRef.current
+			const revealFrame = previewRevealRef.current
+			if (!preview || !revealFrame) return
+			gsap.to(revealFrame, {
+				scaleY: 0,
+				transformOrigin: "top",
+				duration: 0.6,
+				ease: "shiftReveal",
+				onComplete: () => {
+					gsap.set(preview, { autoAlpha: 0 })
+					videoRefs.current.forEach((video) => video?.pause())
+					previewOpenRef.current = false
+					currentIndexRef.current = null
+					setActiveIndex(null)
+				},
+			})
+		}, 90)
+	}, [])
+
+	const follow = useCallback((event: Pick<PointerEvent, "clientX" | "clientY">) => {
+		pointerRef.current = { x: event.clientX, y: event.clientY }
+		const preview = previewRef.current
+		if (!preview || activeIndex === null) return
+		const halfWidth = preview.offsetWidth / 2
+		const halfHeight = preview.offsetHeight / 2
+		const x = gsap.utils.clamp(halfWidth + 16, window.innerWidth - halfWidth - 16, event.clientX)
+		const y = gsap.utils.clamp(halfHeight + 16, window.innerHeight - halfHeight - 16, event.clientY)
+		gsap.to(preview, { x, y, duration: 0.58, ease: "power3.out", overwrite: "auto" })
+	}, [activeIndex])
+
+	useEffect(() => {
+		if (activeIndex === null) return
+		const onPointerMove = (event: PointerEvent) => follow(event)
+		window.addEventListener("pointermove", onPointerMove, { passive: true })
+		return () => window.removeEventListener("pointermove", onPointerMove)
+	}, [activeIndex, follow])
+
+	const navigate = (url: string) => {
+		setLocked(true)
+		gsap.to(previewRef.current, { scale: 1.08, filter: "blur(12px)", autoAlpha: 0, duration: 0.38, ease: "power2.inOut" })
+		transitionTo(`/project${url}`)
+	}
 
 	return (
-		<>
-			<section
-				id='work'
-				onMouseMove={onMouseMove}
-				onMouseLeave={onSectionLeave}
-			>
-				<div className={styles["projects-wrapper"]}>
-					<HeadingAnimation level={3}>{t.projectsTitle}</HeadingAnimation>
-					<ul
-						ref={listRef}
-						className={`${styles["projects-list"]}${previewInteractionLocked ? ` ${styles["projects-list--transitioning"]}` : ""}`}
-					>
-						{projects.map((project, index) => (
-							<Fragment key={project.url}>
-								<li
-									className={styles["project-item"]}
-									onClick={() => handleProjectNavigate(project.url)}
-									onKeyDown={(event) => {
-										if (event.key === "Enter" || event.key === " ") {
-											event.preventDefault()
-											handleProjectNavigate(project.url)
-										}
-									}}
-									role='link'
-									tabIndex={0}
-									aria-label={`${project.name}: ${project.result}`}
-									onMouseMove={onMouseMove}
-									onMouseEnter={(e) => onEnter(project, index, e)}
-									onMouseLeave={(e) => onLeave(index, e)}
-									data-project-index={index}
-									data-cursor='view'
-								>
-									<h2>{project.name}</h2>
-									<p className={styles["project-result"]}>{project.result}</p>
-									<div className={styles["list-links"]}>
-										<span className={styles["project-work"]}>
-											{project.work}
-										</span>
-										<span className={styles["arrow-link"]}>
-											<span className={styles["arrow-link-text"]}>
-												{/* {t.projectCaseStudy} */}
-												{project.urlText}
-											</span>
-											<span className={styles["arrow-link-icon"]}>
-												<svg
-													xmlns='http://www.w3.org/2000/svg'
-													width='24'
-													height='24'
-													viewBox='0 0 24 24'
-													fill='none'
-													stroke='currentColor'
-													strokeWidth='1.5'
-													strokeLinecap='round'
-													strokeLinejoin='round'
-												>
-													<path d='M5 12h14M13 6l6 6-6 6' />
-												</svg>
-											</span>
-										</span>
-									</div>
-								</li>
-								<hr />
-								{/* {index < projects.length - 1 ? <hr /> : null} */}
-							</Fragment>
-						))}
-					</ul>
-				</div>
-			</section>
+		<section className={styles.section} id='work' data-aurora-state data-aurora-presence='0.58' data-aurora-color='#7fbc98'>
+			<div className={styles.projectsWrapper}>
+				<header className={styles.sectionHeading}>
+					<HeadingAnimation level={3} className={styles.featureLabel}>
+						<span>{t.projectsTitle}</span>
+						<span>{locale === "nb" ? "og eksperimenter" : "and experiments"}</span>
+					</HeadingAnimation>
+					<a href='#project-list'>{locale === "nb" ? "Se alle prosjekter" : "View all projects"}</a>
+				</header>
 
-			{createPortal(
-				<div
-					ref={shellRef}
-					className={styles["project-hover-shell"]}
-					aria-hidden='true'
-				>
-					<img
-						ref={imgRef}
-						className={styles["project-hover"]}
-						alt=''
-						aria-hidden
-					/>
-					<video
-						ref={videoRef}
-						className={styles["project-hover"]}
-						muted
-						loop
-						playsInline
-						aria-hidden
-					/>
-				</div>,
-				document.body,
-			)}
-		</>
+				<ul id='project-list' ref={listRef} className={`${styles.projectsList} ${locked ? styles.locked : ""}`}>
+					{projects.map((project, index) => (
+						<li key={project.url}>
+							<button
+								type='button'
+								className={styles.projectRow}
+								onClick={() => navigate(project.url)}
+								onMouseEnter={(event) => reveal(index, event.clientX, event.clientY)}
+								onMouseLeave={conceal}
+								onFocus={() => reveal(index)}
+								onBlur={conceal}
+								data-cursor='view'
+								data-project-index={index}
+								aria-label={`${project.name}: ${project.work}`}
+							>
+								<span className={styles.number}><span className={styles.numberText}>( {String(index + 1).padStart(2, "0")} )</span></span>
+								<span className={styles.titleMask}><strong>{project.name}</strong></span>
+							</button>
+							<span className={styles.projectRule} data-project-rule aria-hidden='true' />
+							<div className={styles.mobileMedia}>
+								<video src={project.image} poster={project.poster} autoPlay muted loop playsInline preload='metadata' aria-hidden='true' />
+							</div>
+						</li>
+					))}
+				</ul>
+			</div>
+
+			{portalRoot ? createPortal(<div ref={previewRef} className={styles.hoverPreview} aria-hidden='true'>
+				<div ref={previewRevealRef} className={styles.previewReveal}>
+				<div ref={previewMediaRef} className={styles.previewMedia}>
+					{projects.map((project, index) => (
+						<video
+							key={project.image}
+							ref={(node) => { videoRefs.current[index] = node }}
+							src={project.image}
+							poster={project.poster}
+							muted
+							loop
+							playsInline
+							preload='metadata'
+						/>
+					))}
+				</div>
+				{activeIndex !== null ? <span>{String(activeIndex + 1).padStart(2, "0")} / {projects[activeIndex].name}</span> : null}
+				</div>
+			</div>, portalRoot) : null}
+		</section>
 	)
 }
 
