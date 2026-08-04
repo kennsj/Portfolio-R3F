@@ -94,7 +94,7 @@ const Header = ({ url, urlText }: { url?: string; urlText?: string }) => {
 						loop
 						muted
 						playsInline
-						poster={project.image}
+						poster={slug === "manshausen" ? undefined : project.image}
 						aria-label={`${project.title} project preview`}
 					>
 						<source src={project.video} type="video/webm" />

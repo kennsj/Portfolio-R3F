@@ -91,7 +91,7 @@ export default function ProjectCase({ slug }: { slug: keyof typeof projects }) {
 			</header>
 
 			<figure className={styles.heroMedia} data-case-reveal>
-				<video autoPlay loop muted playsInline poster={project.poster}><source src={project.video} type="video/webm" /></video>
+				<video autoPlay loop muted playsInline poster={project.slug === "manshausen" ? undefined : project.poster}><source src={project.video} type="video/webm" /></video>
 			</figure>
 
 			<section className={styles.overview} data-case-reveal>
@@ -109,8 +109,8 @@ export default function ProjectCase({ slug }: { slug: keyof typeof projects }) {
 			</section>
 
 			<div className={styles.mediaPair} data-case-reveal>
-				<figure><video autoPlay loop muted playsInline poster={project.poster}><source src={project.video} type="video/webm" /></video></figure>
-				<figure><img src={project.poster} alt={`${project.title} visual detail`} /></figure>
+				<figure><video autoPlay loop muted playsInline poster={project.slug === "manshausen" ? undefined : project.poster}><source src={project.video} type="video/webm" /></video></figure>
+				<figure>{project.slug === "manshausen" ? <video autoPlay loop muted playsInline><source src={project.video} type="video/webm" /></video> : <img src={project.poster} alt={`${project.title} visual detail`} />}</figure>
 			</div>
 
 			<section className={styles.contribution} data-case-reveal>

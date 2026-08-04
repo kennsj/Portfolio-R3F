@@ -47,10 +47,11 @@ const Contact = ({ showForecast = false }: { showForecast?: boolean }) => {
 
 			<div className={styles.location} data-contact-location>
 				<span>{locale === "nb" ? "Basert i Bodø" : "Based in Bodø"}</span>
-				<span>{locale === "nb" ? "Jobber overalt" : "Working worldwide"}</span>
+				<span>{locale === "nb" ? "Jobber på tvers av grenser" : "Working worldwide"}</span>
 			</div>
 
 			<div className={styles.main}>
+				<p>{locale === "nb" ? "Et prosjekt, et samarbeid eller riktig rolle?" : "A project, a collaboration or the right role?"}</p>
 				<h2>{locale === "nb" ? <>La oss<br />snakke</> : <>Let’s<br />talk</>}</h2>
 				<a data-contact-email href='mailto:hei@kennethjorgensen.no'>hei@kennethjorgensen.no</a>
 			</div>

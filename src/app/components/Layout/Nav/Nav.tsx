@@ -86,9 +86,9 @@ const Nav = () => {
 					<img src='/kj-logo.svg' alt='Kenneth Jørgensen' />
 				</a>
 				<div className={styles.topLinks} aria-hidden={scrolled}>
-					<a href='/#work' onClick={(event) => go(event, "/#work")}>Prosjekter</a>
-					<a href='/about' onClick={(event) => go(event, "/about")}>Om</a>
-					<a href='/#contact' onClick={(event) => go(event, "/#contact")}>Kontakt</a>
+					<a href='/#work' onClick={(event) => go(event, "/#work")}>{t.navWork}</a>
+					<a href='/about' onClick={(event) => go(event, "/about")}>{t.navAbout}</a>
+					<a href='/#contact' onClick={(event) => go(event, "/#contact")}>{t.navContact}</a>
 				</div>
 				<div className={styles.navMeta} aria-hidden={!scrolled && !open}>
 					<div

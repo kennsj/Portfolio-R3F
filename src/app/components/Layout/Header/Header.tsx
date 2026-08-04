@@ -164,34 +164,44 @@ const Header = ({
 		{ scope: headerRef, dependencies: [signalNavIntroAfterHero] },
 	)
 
+	useGSAP(() => {
+		const header = headerRef.current
+		if (!header || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return
+		const title = header.querySelector<HTMLElement>(`.${styles.heroTitle}`)
+		const copy = header.querySelector<HTMLElement>("h2")
+		if (!title) return
+		gsap.timeline({ scrollTrigger: { trigger: header, start: "top top", end: "bottom top", scrub: .7 } })
+			.to(title, { yPercent: -10, scale: .94, transformOrigin: "50% 60%", filter: "blur(5px)", ease: "none" }, 0)
+			.to(copy, { yPercent: -28, autoAlpha: 0, ease: "none" }, 0)
+	}, { scope: headerRef })
+
 	return (
 		<header ref={headerRef} className={styles.header}>
 			<div className={styles.introMeta}>
-				<h4 ref={h4Ref}>{locale === "nb" ? "Designer + frontendutvikler" : "Designer + frontend developer"}</h4>
-				<p ref={pRef}>{locale === "nb" ? "Bodø / Nord-Norge" : "Bodø / Northern Norway"}</p>
+				<h4 ref={h4Ref}>{locale === "nb" ? "Design + utvikling" : "Design + development"}</h4>
+				<span>Bodø / 67°17′N</span>
 			</div>
-			<div className={styles.heroTitle}>
-				<h1 ref={h1Ref}>
-					<span className={styles.firstName} data-hero-line>Kenneth</span>
-					<span className={styles.lastName} data-hero-line>Jørgensen</span>
-					<span className={styles.coordinate} data-hero-line>67° N</span>
-				</h1>
-				<span className={styles.auroraLabel} aria-hidden='true'>Aurora borealis / Bodø</span>
+			<div className={styles.heroBody}>
+				<div className={styles.heroTitle}>
+					<h1 ref={h1Ref}>
+						<span className={styles.firstName} data-hero-line>Kenneth</span>
+						<span className={styles.lastName} data-hero-line>Jørgensen</span>
+					</h1>
+				</div>
+				<div className={styles.positioning}>
+					<span className={styles.sideRole}>{locale === "nb" ? <>Designer<br />+ utvikler</> : <>Designer<br />+ developer</>}</span>
+					<h2 ref={h2Ref}>{locale === "nb" ? <>Digital retning,<br />design og frontend.</> : <>Digital direction,<br />design and front-end.</>}</h2>
+					<p ref={pRef}>{locale === "nb" ? "Jeg former idéen og bygger opplevelsen — for virksomheter og kreative team." : "I shape the idea and build the experience—for businesses and creative teams."}</p>
+				</div>
 			</div>
-			<h2 ref={h2Ref}>
-				{locale === "nb"
-					? "Uavhengig designer og utvikler fra Bodø — tilgjengelig for ambisiøse prosjekter og kreative team."
-					: "Independent designer and developer in Bodø — available for ambitious projects and creative teams."}
-			</h2>
 			<div className={styles.heroFooter}>
 				<button className={styles.projectsLink} type='button' onClick={() => gsapScrollToHashIdWhenReady("work")}>
-					{locale === "nb" ? "Prosjekter" : "Projects"}
+					{locale === "nb" ? "Se prosjekter" : "View projects"}
 				</button>
 				<div className={styles.environment}>
-					<div><span>{locale === "nb" ? "Lokalt" : "Local"}</span><strong>{localTime}</strong></div>
+					<div><span>{locale === "nb" ? "Lokal tid" : "Local time"}</span><strong>{localTime}</strong></div>
 					<div><span>KP Index</span><strong>{kp.toFixed(1)}</strong></div>
-					<div><span>Aurora</span><strong>{kpLabel}</strong></div>
-					<div><span>{locale === "nb" ? "Status" : "Status"}</span><strong>{locale === "nb" ? "Tilgjengelig" : "Available"}</strong></div>
+					<div><span>{locale === "nb" ? "Nordlys" : "Aurora"}</span><strong>{kpLabel}</strong></div>
 				</div>
 			</div>
 		</header>

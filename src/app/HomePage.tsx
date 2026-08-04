@@ -4,7 +4,6 @@ import gsap from "gsap"
 import { ScrollTrigger } from "gsap/ScrollTrigger"
 import Header from "./components/Layout/Header/Header"
 import Contact from "./components/Layout/Contact/Contact"
-import TextBlock from "./components/UI/TextBlock/TextBlock"
 import Expertise from "./components/Layout/Expertise/Expertise"
 import Projects from "./components/Layout/Project/Projects"
 import { useI18n } from "./hooks/useI18n"
@@ -23,14 +22,11 @@ export default function HomePage() {
 	useGSAP(() => {
 		const section = aboutRef.current
 		if (!section || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return
-		const pathways = section.querySelectorAll<HTMLElement>("[data-pathway]")
+		const pathways = section.querySelectorAll<HTMLElement>("[data-about-copy]")
 		gsap.from(pathways, {
-			yPercent: 55,
-			rotationX: -28,
+			yPercent: 22,
 			autoAlpha: 0,
-			transformPerspective: 900,
-			transformOrigin: "50% 100%",
-			duration: 0.8,
+			duration: 0.9,
 			stagger: 0.1,
 			ease: "shiftReveal",
 			scrollTrigger: { trigger: pathways[0], start: "top 88%", once: true },
@@ -75,14 +71,13 @@ export default function HomePage() {
 
 			<section ref={aboutRef} id='about' data-aurora-state data-aurora-presence='0.72' data-aurora-color='#86cfa3'>
 				<div className={styles.about}>
-					<HeadingAnimation level={2} className={styles.sectionIndex}><span>{locale === "nb" ? "Om Kenneth" : "About Kenneth"}</span><span>Bodø / 67°17′N</span></HeadingAnimation>
+					<HeadingAnimation level={2} className={styles.sectionIndex}><span>{locale === "nb" ? "Hva jeg gjør" : "What I do"}</span><span>Design × Development</span></HeadingAnimation>
 					<div className={styles.aboutStatement}>
-						<TextBlock>{locale === "nb" ? "Jeg designer og bygger digitale opplevelser fra Bodø. Arbeidet mitt ligger mellom visuell retning, produktdesign og frontend — slik at ideen holder helt frem til det som møter brukeren." : "I design and build digital experiences from Bodø. My work sits between visual direction, product design and front-end development—so the idea survives all the way into what people use."}</TextBlock>
-						<div className={styles.pathways}>
-							<p data-pathway><span>{locale === "nb" ? "Én sammenhengende prosess" : "One connected process"}</span>{locale === "nb" ? "Fra tidlig retning og grensesnitt til bevegelse, kode og den ferdige opplevelsen." : "From early direction and interface design to motion, code and the finished experience."}</p>
-							<p data-pathway><span>{locale === "nb" ? "To måter å samarbeide" : "Two ways to collaborate"}</span>{locale === "nb" ? "Direkte med virksomheter eller som en del av kreative produkt- og designteam." : "Directly with businesses or embedded in creative product and design teams."}</p>
+						<h2 data-about-copy>{locale === "nb" ? <>Fra første idé<br />til det som møter<br />brukeren.</> : <>From the first idea<br />to what meets<br />the user.</>}</h2>
+						<div className={styles.aboutCopy} data-about-copy>
+							<p>{locale === "nb" ? "Jeg jobber i skjæringspunktet mellom visuell retning, produktdesign og frontend — direkte med virksomheter og sammen med kreative team." : "I work where visual direction, product design and front-end meet—directly with businesses and alongside creative teams."}</p>
+							<a className={styles.aboutLink} href='/about' onClick={(event) => { event.preventDefault(); transitionTo('/about') }}><span>{locale === "nb" ? "Mer om meg" : "More about me"}</span><i>↗</i></a>
 						</div>
-						<a className={styles.aboutLink} href='/about' onClick={(event) => { event.preventDefault(); transitionTo('/about') }}><span>{locale === "nb" ? "Mer om meg" : "More about me"}</span><i>↗</i></a>
 					</div>
 				</div>
 			</section>

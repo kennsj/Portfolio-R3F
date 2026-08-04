@@ -38,6 +38,7 @@ export default function RootLayout() {
 	const isHome = pathname === "/"
 	const isAbout = pathname === "/about"
 	const prevPathRef = useRef<string | null>(null)
+	const transitionPathRef = useRef(pathname)
 
 	useEffect(() => {
 		const { title: pageTitle, description: pageDescription } = getSeoForPath(
@@ -191,7 +192,8 @@ export default function RootLayout() {
 			const transitionLayer = document.querySelector<HTMLElement>("#page-transition")
 			if (transitionLayer) {
 				gsap.killTweensOf(transitionLayer)
-				gsap.fromTo(transitionLayer, { yPercent: 0 }, { yPercent: -100, duration: 0.8, ease: "shiftReveal", onComplete: () => gsap.set(transitionLayer, { yPercent: 100 }) })
+				transitionPathRef.current = pathname
+				gsap.set(transitionLayer, { autoAlpha: 0, yPercent: 0 })
 			}
 			const pageContent = gsap.utils.toArray<HTMLElement>(
 				GSAP_PAGE_CONTENT_SELECTOR,

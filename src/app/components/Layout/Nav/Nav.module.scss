@@ -36,8 +36,8 @@
 	gap: clamp(1.5rem, 4vw, 4rem);
 
 	button {
+		position: relative;
 		border: 0;
-		border-bottom: 1px solid currentColor;
 		background: transparent;
 		color: var(--primary-color);
 		font: inherit;
@@ -45,6 +45,22 @@
 		text-transform: inherit;
 		padding: 0.4rem 0;
 		cursor: pointer;
+
+		&::after {
+			content: "";
+			position: absolute;
+			left: 0;
+			right: 0;
+			bottom: .15rem;
+			height: 1px;
+			background: currentColor;
+			transform: scaleX(0);
+			transform-origin: right;
+			transition: transform 420ms cubic-bezier(0.32, 0.94, 0.6, 1);
+		}
+
+		&:hover::after,
+		&:focus-visible::after { transform: scaleX(1); transform-origin: left; }
 	}
 }
 
@@ -59,6 +75,7 @@
 	a {
 		position: relative;
 		color: var(--primary-color);
+		&::before { content: ""; position: absolute; left: 0; right: 0; bottom: -.35rem; height: 1px; background: color-mix(in srgb, var(--primary-color) 28%, transparent); }
 
 		&::after {
 			content: "";
@@ -69,12 +86,12 @@
 			height: 1px;
 			background: currentColor;
 			transform: scaleX(0);
-			transform-origin: left;
+			transform-origin: right;
 			transition: transform 420ms cubic-bezier(0.32, 0.94, 0.6, 1);
 		}
 
 		&:hover::after,
-		&:focus-visible::after { transform: scaleX(1); }
+		&:focus-visible::after { transform: scaleX(1); transform-origin: left; }
 	}
 }
 
@@ -112,6 +129,7 @@
 	letter-spacing: inherit;
 	padding: 0.65rem 0 !important;
 	cursor: help;
+	&::after { display: none; }
 	i { width: 0.45rem; height: 0.45rem; border-radius: 50%; }
 }
 

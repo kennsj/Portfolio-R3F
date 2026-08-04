@@ -1,77 +1,68 @@
-import { useRef } from "react"
+import { useRef, useState } from "react"
 import { useGSAP } from "@gsap/react"
 import gsap from "gsap"
 import { ScrollTrigger } from "gsap/ScrollTrigger"
 import SplitText from "gsap/SplitText"
 import { useI18n } from "../../../hooks/useI18n"
 import styles from "./Expertise.module.scss"
+import { usePageTransition } from "../../../hooks/usePageTransition"
 
 gsap.registerPlugin(ScrollTrigger, SplitText)
 
+type FocusItem = { label: string; group: "capabilities" | "fields"; index: number }
+
+const disciplines = ["Digital design", "Product design", "UI / UX", "Art direction", "Interaction", "Frontend", "Creative development", "Ecommerce", "WebGL", "Prototyping"]
+
 const Expertise = () => {
 	const { locale } = useI18n()
+	const { transitionTo } = usePageTransition()
 	const sectionRef = useRef<HTMLElement>(null)
-	const disciplines = ["Digital design", "Product design", "UI / UX", "Art direction", "Interaction", "Frontend", "Creative development", "Ecommerce", "WebGL", "Prototyping"]
+	const [active, setActive] = useState<FocusItem>({ label: disciplines[0], group: "capabilities", index: 0 })
 	const fields = locale === "nb"
 		? ["Reiseliv", "Arkitektur", "Kultur", "Mat", "Teknologi", "Merkevarer", "Tjenester"]
 		: ["Hospitality", "Architecture", "Culture", "Food", "Technology", "Brands", "Services"]
 
 	useGSAP(() => {
 		const section = sectionRef.current
-		if (!section) return
-		const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches
-		if (reduced) return
-
-		const title = section.querySelector<HTMLElement>("[data-field-title]")
-		const about = section.querySelector<HTMLElement>("[data-field-about]")
-		const rule = section.querySelector<HTMLElement>("[data-field-rule]")
-		const rows = section.querySelectorAll<HTMLElement>("[data-field-row]")
-		const titleSplit = title ? SplitText.create(title, { type: "lines", mask: "lines" }) : null
-		const timeline = gsap.timeline({
-			scrollTrigger: { trigger: section, start: "top 72%", once: true },
-			defaults: { ease: "shiftReveal" },
-		})
-
-		timeline
-			.fromTo(titleSplit?.lines ?? [], { yPercent: 110, rotationX: -38, skewY: 2.5, transformPerspective: 900, transformOrigin: "50% 100%" }, { yPercent: 0, rotationX: 0, skewY: 0, duration: 0.8, stagger: 0.1 })
-			.fromTo(about, { yPercent: 110, rotationX: -28, transformPerspective: 900, transformOrigin: "50% 100%" }, { yPercent: 0, rotationX: 0, duration: 0.8 }, "-=0.3")
-			.fromTo(rule, { scaleX: 0, transformOrigin: "left" }, { scaleX: 1, duration: 2, ease: "shiftRule" }, "-=0.5")
-			.fromTo(rows, { yPercent: 20, rotationX: -20, transformPerspective: 1000 }, { yPercent: 0, rotationX: 0, duration: 0.8, stagger: 0.1 }, "-=1.3")
-		return () => titleSplit?.revert()
+		if (!section || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return
+		const split = SplitText.create(section.querySelector("[data-field-title]"), { type: "lines", mask: "lines" })
+		gsap.timeline({ scrollTrigger: { trigger: section, start: "top 76%", once: true }, defaults: { ease: "shiftReveal" } })
+			.from(split.lines, { yPercent: 110, rotationX: -28, duration: .8, stagger: .08 })
+			.from(section.querySelectorAll("[data-field-index]"), { y: 24, autoAlpha: 0, duration: .55, stagger: .035 }, "-=.4")
+		return () => split.revert()
 	}, { scope: sectionRef })
 
-	const renderTrack = (items: string[], reverse = false) => (
-		<div className={`${styles.track} ${reverse ? styles.trackReverse : ""}`}>
-			{[0, 1].map((copy) => (
-				<div className={styles.group} aria-hidden={copy === 1} key={copy}>
-					{items.map((item) => <span key={`${copy}-${item}`}>{item}</span>)}
-				</div>
-			))}
-		</div>
-	)
+	const focus = (label: string, group: FocusItem["group"], index: number) => setActive({ label, group, index })
+	const copy = active.group === "capabilities"
+		? (locale === "nb" ? "Hvordan jeg former og bygger opplevelser." : "How I shape and build experiences.")
+		: (locale === "nb" ? "Verdener jeg liker å gi form til." : "Worlds I like to give form to.")
 
 	return (
-		<section
-			ref={sectionRef}
-			className={styles.section}
-			aria-label={locale === "nb" ? "Fagfelt og kapabiliteter" : "Territory and fields"}
-			data-aurora-state
-			data-aurora-presence='0.92'
-			data-aurora-color='#8ed7ad'
-		>
-			<div className={styles.stage}>
-				<h2 data-field-title>{locale === "nb" ? <>Fagfelt<br />og kapabiliteter</> : <>My territory<br />and fields</>}</h2>
-				<a href='#about' data-field-about>{locale === "nb" ? "Om meg" : "About me"}</a>
-			</div>
+		<section ref={sectionRef} className={styles.section} aria-label={locale === "nb" ? "Fagfelt og områder" : "Capabilities and fields"} data-aurora-state data-aurora-presence='0.92' data-aurora-color='#8ed7ad'>
+			<header className={styles.header}>
+				<span className={styles.eyebrow}>02 / {locale === "nb" ? "Fagfelt og områder" : "Capabilities and fields"}</span>
+				<a href='/about' onClick={(event) => { event.preventDefault(); transitionTo('/about') }} data-field-about>{locale === "nb" ? "Om meg" : "About me"}<i>↗</i></a>
+			</header>
 
-			<div className={styles.rule} data-field-rule />
-
-			<div className={styles.rows}>
-				<div className={styles.carousel} data-field-row aria-label={disciplines.join(", ")}>
-					{renderTrack(disciplines)}
+			<div className={styles.composition}>
+				<div className={styles.stage}>
+					<h2 data-field-title>{locale === "nb" ? <>Fagfelt<br /><em>og områder</em></> : <>Capabilities<br /><em>and fields</em></>}</h2>
+					<div className={styles.activeWord} aria-live='polite'>
+						<span>{active.group === "capabilities" ? "01" : "02"} / {active.group === "capabilities" ? (locale === "nb" ? "Fagfelt" : "Capabilities") : (locale === "nb" ? "Områder" : "Fields")}</span>
+						<strong>{active.label}</strong>
+						<p>{copy}</p>
+					</div>
 				</div>
-				<div className={`${styles.carousel} ${styles.secondary}`} data-field-row aria-label={fields.join(", ")}>
-					{renderTrack(fields, true)}
+
+				<div className={styles.indexes}>
+					<div className={styles.indexGroup}>
+						<div className={styles.groupHead}><span>01</span><strong>{locale === "nb" ? "Fagfelt" : "Capabilities"}</strong></div>
+						<ol>{disciplines.map((item, index) => <li key={item} data-field-index><button className={active.label === item ? styles.active : ""} onMouseEnter={() => focus(item, "capabilities", index)} onFocus={() => focus(item, "capabilities", index)}><span>{String(index + 1).padStart(2, "0")}</span>{item}</button></li>)}</ol>
+					</div>
+					<div className={`${styles.indexGroup} ${styles.fieldGroup}`}>
+						<div className={styles.groupHead}><span>02</span><strong>{locale === "nb" ? "Områder" : "Fields"}</strong></div>
+						<ol>{fields.map((item, index) => <li key={item} data-field-index><button className={active.label === item ? styles.active : ""} onMouseEnter={() => focus(item, "fields", index)} onFocus={() => focus(item, "fields", index)}><span>{String(index + 1).padStart(2, "0")}</span>{item}</button></li>)}</ol>
+					</div>
 				</div>
 			</div>
 		</section>
