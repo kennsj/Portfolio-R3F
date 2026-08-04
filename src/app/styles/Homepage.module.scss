@@ -18,6 +18,25 @@
 	}
 }
 
+.aboutLink {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	width: min(100%, 60rem);
+	margin-inline: auto;
+	padding-block: 1.4rem;
+	border-top: 1px solid color-mix(in srgb, var(--primary-color) 24%, transparent);
+	border-bottom: 1px solid color-mix(in srgb, var(--primary-color) 24%, transparent);
+	font-family: var(--font-family-ibm);
+	font-size: .7rem;
+	letter-spacing: .08em;
+	text-transform: uppercase;
+	color: var(--primary-color);
+
+	i { font-style: normal; font-size: 1.15rem; transition: transform .55s var(--shift-ease); }
+	&:hover i, &:focus-visible i { transform: translate(35%, -35%); }
+}
+
 .aboutStatement {
 	display: flex;
 	flex-direction: column;

@@ -1,14 +1,10 @@
 import { createFileRoute } from "@tanstack/react-router"
-import Header from "../components/Layout/ProjectPage/Header/Header"
+import ProjectCase from "../components/Layout/ProjectPage/ProjectCase"
 
 export const Route = createFileRoute("/project/dialog-exe")({
 	component: RouteComponent,
 })
 
 function RouteComponent() {
-	return (
-		<>
-			<Header />
-		</>
-	)
+	return <ProjectCase slug="dialog-exe" />
 }

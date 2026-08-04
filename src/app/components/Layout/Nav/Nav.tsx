@@ -87,7 +87,7 @@ const Nav = () => {
 				</a>
 				<div className={styles.topLinks} aria-hidden={scrolled}>
 					<a href='/#work' onClick={(event) => go(event, "/#work")}>Prosjekter</a>
-					<a href='/#about' onClick={(event) => go(event, "/#about")}>Om</a>
+					<a href='/about' onClick={(event) => go(event, "/about")}>Om</a>
 					<a href='/#contact' onClick={(event) => go(event, "/#contact")}>Kontakt</a>
 				</div>
 				<div className={styles.navMeta} aria-hidden={!scrolled && !open}>
@@ -126,7 +126,7 @@ const Nav = () => {
 				<div className={styles.menuInner}>
 					<div className={styles.menuLinks}>
 						<a href='/#work' onClick={(event) => go(event, "/#work")}><span>( 01 )</span>{t.navWork}</a>
-						<a href='/#about' onClick={(event) => go(event, "/#about")}><span>( 02 )</span>{t.navAbout}</a>
+						<a href='/about' onClick={(event) => go(event, "/about")}><span>( 02 )</span>{t.navAbout}</a>
 						<a href='/#contact' onClick={(event) => go(event, "/#contact")}><span>( 03 )</span>{t.navContact}</a>
 					</div>
 					<div className={styles.menuFooter}>

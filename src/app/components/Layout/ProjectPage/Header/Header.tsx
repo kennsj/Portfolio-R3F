@@ -7,6 +7,7 @@ type ProjectEntry = {
 	role: string
 	type: string
 	image: string
+	video?: string
 	description: { en: string; nb: string }
 	next: { title: string; href: string }
 	concept?: boolean
@@ -18,6 +19,7 @@ const projects: Record<string, ProjectEntry> = {
 		role: "Design / Frontend",
 		type: "Hospitality / Personal project",
 		image: "/images/kenneth-aurora.jpg",
+		video: "/videos/manshausen.webm",
 		concept: true,
 		description: {
 			en: "A self-initiated redesign exploring how a remote northern destination can feel immediate, atmospheric and easy to navigate online.",
@@ -86,7 +88,20 @@ const Header = ({ url, urlText }: { url?: string; urlText?: string }) => {
 			</section>
 
 			<figure className={styles.heroMedia}>
-				<img src={project.image} alt={`${project.title} project preview`} />
+				{project.video ? (
+					<video
+						autoPlay
+						loop
+						muted
+						playsInline
+						poster={project.image}
+						aria-label={`${project.title} project preview`}
+					>
+						<source src={project.video} type="video/webm" />
+					</video>
+				) : (
+					<img src={project.image} alt={`${project.title} project preview`} />
+				)}
 			</figure>
 
 			<section className={styles.statement}>

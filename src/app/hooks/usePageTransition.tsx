@@ -63,11 +63,14 @@ export function usePageTransition() {
 			return
 		}
 
-		gsap.to(GSAP_PAGE_CONTENT_SELECTOR, {
-			opacity: 0,
-			filter: "blur(10px)",
-			duration: 0.3,
-			ease: "power2.out",
+		const transitionLayer = document.querySelector<HTMLElement>("#page-transition")
+		if (transitionLayer) gsap.set(transitionLayer, { yPercent: 100 })
+		gsap.timeline()
+			.to(GSAP_PAGE_CONTENT_SELECTOR, { opacity: 0.35, filter: "blur(8px)", duration: 0.45, ease: "power2.out" }, 0)
+			.to(transitionLayer, {
+				yPercent: 0,
+				duration: 0.72,
+				ease: "shiftReveal",
 			onComplete: () => {
 				void navigate({
 					to,
@@ -80,7 +83,7 @@ export function usePageTransition() {
 						: {}),
 				})
 			},
-		})
+		}, 0)
 	}
 
 	return { transitionTo }

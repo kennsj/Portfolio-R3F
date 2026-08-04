@@ -11,11 +11,13 @@ import { useI18n } from "./hooks/useI18n"
 import { setAuroraPresence, setLightColor } from "./components/Experiences/lightStore"
 import styles from "./styles/Homepage.module.scss"
 import HeadingAnimation from "./components/UI/HeadingAnimation/HeadingAnimation"
+import { usePageTransition } from "./hooks/usePageTransition"
 
 gsap.registerPlugin(ScrollTrigger)
 
 export default function HomePage() {
 	const { locale, t } = useI18n()
+	const { transitionTo } = usePageTransition()
 	const aboutRef = useRef<HTMLElement>(null)
 
 	useGSAP(() => {
@@ -71,22 +73,23 @@ export default function HomePage() {
 				<Header signalNavIntroAfterHero />
 			</div>
 
-			<Suspense>
-				<Projects />
-			</Suspense>
-
 			<section ref={aboutRef} id='about' data-aurora-state data-aurora-presence='0.72' data-aurora-color='#86cfa3'>
 				<div className={styles.about}>
-					<HeadingAnimation level={2} className={styles.sectionIndex}><span>{locale === "nb" ? "Hva jeg gjør" : "What I do"}</span><span>Design × Development</span></HeadingAnimation>
+					<HeadingAnimation level={2} className={styles.sectionIndex}><span>{locale === "nb" ? "Om Kenneth" : "About Kenneth"}</span><span>Bodø / 67°17′N</span></HeadingAnimation>
 					<div className={styles.aboutStatement}>
-						<TextBlock>{t.aboutText}</TextBlock>
+						<TextBlock>{locale === "nb" ? "Jeg designer og bygger digitale opplevelser fra Bodø. Arbeidet mitt ligger mellom visuell retning, produktdesign og frontend — slik at ideen holder helt frem til det som møter brukeren." : "I design and build digital experiences from Bodø. My work sits between visual direction, product design and front-end development—so the idea survives all the way into what people use."}</TextBlock>
 						<div className={styles.pathways}>
-							<p data-pathway><span>{locale === "nb" ? "For virksomheter" : "For businesses"}</span>{locale === "nb" ? "Nettsider, digitale identiteter, netthandel og produktdesign." : "Websites, digital identities, ecommerce and product design."}</p>
-							<p data-pathway><span>{locale === "nb" ? "Med kreative team" : "With creative teams"}</span>{locale === "nb" ? "Produktdesign, UI, interaksjon, frontend og kreativ utvikling." : "Product design, UI, interaction, frontend and creative development."}</p>
+							<p data-pathway><span>{locale === "nb" ? "Én sammenhengende prosess" : "One connected process"}</span>{locale === "nb" ? "Fra tidlig retning og grensesnitt til bevegelse, kode og den ferdige opplevelsen." : "From early direction and interface design to motion, code and the finished experience."}</p>
+							<p data-pathway><span>{locale === "nb" ? "To måter å samarbeide" : "Two ways to collaborate"}</span>{locale === "nb" ? "Direkte med virksomheter eller som en del av kreative produkt- og designteam." : "Directly with businesses or embedded in creative product and design teams."}</p>
 						</div>
+						<a className={styles.aboutLink} href='/about' onClick={(event) => { event.preventDefault(); transitionTo('/about') }}><span>{locale === "nb" ? "Mer om meg" : "More about me"}</span><i>↗</i></a>
 					</div>
 				</div>
 			</section>
+
+			<Suspense>
+				<Projects />
+			</Suspense>
 			<Suspense>
 				<Expertise />
 			</Suspense>

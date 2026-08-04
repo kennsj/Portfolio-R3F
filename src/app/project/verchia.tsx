@@ -1,20 +1,10 @@
-import { useLayoutEffect } from "react"
 import { createFileRoute } from "@tanstack/react-router"
-
-import Header from "../components/Layout/ProjectPage/Header/Header"
+import ProjectCase from "../components/Layout/ProjectPage/ProjectCase"
 
 export const Route = createFileRoute("/project/verchia")({
 	component: RouteComponent,
 })
 
 function RouteComponent() {
-	useLayoutEffect(() => {
-		window.scrollTo(0, 0)
-	}, [])
-
-	return (
-		<article>
-			<Header url='https://verchia.vercel.app/' urlText='Live' />
-		</article>
-	)
+	return <ProjectCase slug="verchia" />
 }

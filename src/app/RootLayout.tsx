@@ -188,6 +188,11 @@ export default function RootLayout() {
 
 	useGSAP(
 		() => {
+			const transitionLayer = document.querySelector<HTMLElement>("#page-transition")
+			if (transitionLayer) {
+				gsap.killTweensOf(transitionLayer)
+				gsap.fromTo(transitionLayer, { yPercent: 0 }, { yPercent: -100, duration: 0.8, ease: "shiftReveal", onComplete: () => gsap.set(transitionLayer, { yPercent: 100 }) })
+			}
 			const pageContent = gsap.utils.toArray<HTMLElement>(
 				GSAP_PAGE_CONTENT_SELECTOR,
 			)
@@ -221,6 +226,7 @@ export default function RootLayout() {
 					<SimpleAnalytics />
 
 					<ProgressiveBackground />
+					<div id='page-transition' className='page-transition' aria-hidden='true'><span>KJ / 67°N</span></div>
 					<Suspense fallback={null}>
 						<Nav />
 					</Suspense>
