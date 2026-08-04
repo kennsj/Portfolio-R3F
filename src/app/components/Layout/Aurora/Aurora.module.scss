@@ -20,6 +20,7 @@
 .indexMeta { display: flex; justify-content: flex-end; gap: 2rem; margin-top: 1.5rem; }
 .indexMeta p { max-width: 48ch; font-family: var(--font-family-ibm); font-size: .68rem; line-height: 1.55; }
 .indexMeta button { position: relative; align-self: flex-start; border: 0; background: transparent; color: var(--primary-color); font-family: var(--font-family-ibm); font-size: .65rem; text-transform: uppercase; padding: 0 0 .35rem; cursor: pointer; }
+.indexMeta button::before { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 1px; background: color-mix(in srgb, var(--primary-color) 28%, transparent); }
 .indexMeta button::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 1px; background: currentColor; transform: scaleX(0); transform-origin: right; transition: transform .45s var(--shift-ease); }
 .indexMeta button:hover::after, .indexMeta button:focus-visible::after { transform: scaleX(1); transform-origin: left; }
 .indexMeta button:focus-visible { outline: 1px solid var(--aurora-mint); outline-offset: .4rem; }

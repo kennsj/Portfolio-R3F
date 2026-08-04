@@ -221,21 +221,6 @@ main {
 	}
 }
 
-@media (hover: hover) and (pointer: fine) {
-	main a:not(:has(img)) {
-		background-image: linear-gradient(currentColor, currentColor);
-		background-repeat: no-repeat;
-		background-position: 100% 100%;
-		background-size: 0 1px;
-		transition: background-size 500ms cubic-bezier(0.32, 0.94, 0.6, 1), background-position 0ms 500ms;
-
-		&:hover,
-		&:focus-visible {
-			background-position: 0 100%;
-			background-size: 100% 1px;
-		}
-	}
-}
 
 @media (max-width: 768px) {
 	:root { --page-gutter: 1rem; }

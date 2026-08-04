@@ -64,12 +64,19 @@ const Nav = () => {
 	useGSAP(() => {
 		const panel = panelRef.current
 		if (!panel) return
+		const links = panel.querySelectorAll<HTMLElement>(`.${styles.menuLinks} a`)
 		if (open) {
 			gsap.set(panel, { pointerEvents: "auto" })
 			gsap.fromTo(panel, { autoAlpha: 0, clipPath: "inset(0 0 100% 0)" }, { autoAlpha: 1, clipPath: "inset(0 0 0% 0)", duration: 0.8, ease: "shiftReveal" })
-			gsap.fromTo(panel.querySelectorAll("a"), { yPercent: 110, rotationX: -70, transformPerspective: 900 }, { yPercent: 0, rotationX: 0, duration: 1.2, stagger: 0.1, ease: "shiftTitle", delay: 0.08 })
+			gsap.fromTo(
+				links,
+				{ autoAlpha: 1, yPercent: 110, rotationX: -72, skewY: 3, clipPath: "inset(0 0 100% 0)", transformPerspective: 1100, transformOrigin: "50% 100%" },
+				{ autoAlpha: 1, yPercent: 0, rotationX: 0, skewY: 0, clipPath: "inset(0 0 0% 0)", transformPerspective: 1100, transformOrigin: "50% 100%", duration: 1.2, stagger: 0.1, ease: "shiftTitle", delay: 0.08 },
+			)
 		} else {
-			gsap.to(panel, { autoAlpha: 0, clipPath: "inset(0 0 100% 0)", duration: 0.3, ease: "power2.out", pointerEvents: "none" })
+			gsap.timeline({ onComplete: () => gsap.set(panel, { pointerEvents: "none" }) })
+				.to(links, { autoAlpha: 0, yPercent: 110, rotationX: -72, skewY: 3, clipPath: "inset(0 0 100% 0)", transformPerspective: 1100, transformOrigin: "50% 100%", duration: 0.52, ease: "shiftTitle" })
+				.to(panel, { autoAlpha: 0, clipPath: "inset(0 0 100% 0)", duration: 0.52, ease: "shiftReveal" }, "-=.12")
 		}
 	}, { dependencies: [open], scope: panelRef })
 

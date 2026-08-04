@@ -42,29 +42,29 @@
 	letter-spacing: .08em;
 	text-transform: uppercase;
 }
-.aboutLink::before {
-	content: "";
-	position: absolute;
-	left: 0;
-	right: 0;
-	bottom: 0;
-	height: 1px;
-	background: color-mix(in srgb, var(--primary-color) 28%, transparent);
-}
 .aboutLink::after {
 	content: "";
 	position: absolute;
 	left: 0;
 	right: 0;
-	bottom: 0;
+	bottom: .35rem;
 	height: 1px;
 	background: currentColor;
-	clip-path: inset(0 100% 0 0);
-	transition: clip-path .55s var(--shift-ease);
+	transform: scaleX(0);
+	transform-origin: right;
+	transition: transform 420ms cubic-bezier(0.32, 0.94, 0.6, 1);
+}
+.aboutLink::before {
+	content: "";
+	position: absolute;
+	left: 0;
+	right: 0;
+	bottom: .35rem;
+	height: 1px;
+	background: color-mix(in srgb, var(--primary-color) 28%, transparent);
 }
 .aboutLink i { font-style: normal; transition: transform .45s var(--shift-ease); }
-.aboutLink:hover::after, .aboutLink:focus-visible::after { clip-path: inset(0 0 0 0); }
-.aboutLink:not(:hover)::after { clip-path: inset(0 0 0 100%); }
+.aboutLink:hover::after, .aboutLink:focus-visible::after { transform: scaleX(1); transform-origin: left; }
 .aboutLink:hover i, .aboutLink:focus-visible i { transform: translate(35%, -35%); }
 .aboutLink:focus-visible { outline: 1px solid var(--aurora-mint); outline-offset: .4rem; }
 @media (max-width: 768px) {
