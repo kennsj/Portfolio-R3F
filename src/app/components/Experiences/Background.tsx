@@ -7,7 +7,12 @@ const Background = () => {
 	return (
 		<div>
 			<div id='canvas'>
-				<Canvas style={{ width: "100%", height: "100%", display: "block" }}>
+				<Canvas
+					dpr={[1, 1.5]}
+					gl={{ antialias: false, powerPreference: "high-performance", alpha: false }}
+					performance={{ min: 0.55, max: 1, debounce: 240 }}
+					style={{ width: "100%", height: "100%", display: "block" }}
+				>
 					<LightSource />
 					<Experience />
 					{/* <Preload all /> */}

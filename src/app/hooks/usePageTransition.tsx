@@ -10,6 +10,7 @@ import {
 	GSAP_PAGE_CONTENT_SELECTOR,
 	gsapScrollToTop,
 } from "../utils/gsapScroll"
+import { useI18n } from "./useI18n"
 
 function normalizePath(p: string) {
 	const t = p.replace(/\/$/, "") || "/"
@@ -34,6 +35,7 @@ function splitInternalHref(href: string): { to: string; hash?: string } {
 export function usePageTransition() {
 	const navigate = useNavigate()
 	const { pathname } = useLocation()
+	const { locale } = useI18n()
 
 	function transitionTo(href: string) {
 		const { to, hash } = splitInternalHref(href)
@@ -50,13 +52,14 @@ export function usePageTransition() {
 				void navigate({
 					to: targetPath,
 					hash,
+					search: { lang: locale },
 					replace: true,
 					resetScroll: false,
 					hashScrollIntoView: false,
 				})
 				// Smooth scroll + ScrollTrigger.refresh: RootLayout `useLayoutEffect`
 			} else {
-				void navigate({ to: targetPath, replace: true })
+				void navigate({ to: targetPath, search: { lang: locale }, replace: true })
 				gsapScrollToTop()
 				requestAnimationFrame(() => ScrollTrigger.refresh())
 			}
@@ -71,6 +74,7 @@ export function usePageTransition() {
 				onComplete: () => {
 					void navigate({
 						to,
+						search: { lang: locale },
 						...(hash
 							? {
 									hash,

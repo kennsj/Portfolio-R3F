@@ -12,9 +12,13 @@ export default function LightSource() {
 	const ambient = useRef()
 	const currentColor = useRef(new Color("#a6d59e"))
 	const targetColor = useRef(new Color("#a6d59e"))
+	const lastTargetColor = useRef(targetLightColor)
 
 	useFrame((state, delta) => {
-		targetColor.current.set(targetLightColor)
+		if (lastTargetColor.current !== targetLightColor) {
+			targetColor.current.set(targetLightColor)
+			lastTargetColor.current = targetLightColor
+		}
 		easing.dampC(currentColor.current, targetColor.current, 0.15, delta)
 		light.current.color.copy(currentColor.current)
 

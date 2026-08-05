@@ -20,11 +20,51 @@ function detectLocale(): AppLocale {
 	const urlLang = new URLSearchParams(window.location.search).get("lang")
 	if (urlLang === "en") return "en"
 	if (urlLang === "nb") return "nb"
+	const storedLang = window.localStorage.getItem("portfolio-locale")
+	if (storedLang === "en" || storedLang === "nb") return storedLang
 	// Norwegian first: default for all visitors unless ?lang=en is present.
 	return "nb"
 }
 
 export type Translations = {
+	languageName: string
+	languageSwitchLabel: string
+	menuOpen: string
+	menuClose: string
+	homeAboutLabel: string
+	homeAboutTitle: string
+	homeAboutBody: string
+	homeAboutCta: string
+	aboutLocation: string
+	aboutHero: string
+	aboutPortraitAlt: string
+	aboutPortraitStatement: string
+	aboutPracticeLabel: string
+	aboutPracticeBody: [string, string]
+	aboutCapabilitiesTitle: string
+	aboutCapabilities: string[]
+	aboutNowLabel: string
+	aboutNowBody: string
+	aboutWorkCta: string
+	aboutWorkTitle: string
+	expertiseEyebrow: string
+	expertiseTitleLineOne: string
+	expertiseTitleLineTwo: string
+	expertiseAboutCta: string
+	expertiseCapabilitiesLabel: string
+	expertiseFieldsLabel: string
+	expertiseModes: Array<{ title: string; description: string; meta: string }>
+	expertiseContexts: string[]
+	auroraEyebrow: string
+	auroraTitleLineOne: string
+	auroraTitleLineTwo: string
+	auroraExplanation: string
+	auroraCalm: string
+	auroraActive: string
+	footerStatement: string
+	footerAvailability: string
+	footerNavigationLabel: string
+	footerBackToTop: string
 	aboutText: string
 	navAbout: string
 	navWork: string
@@ -92,6 +132,57 @@ export type Translations = {
 
 const translations: Record<AppLocale, Translations> = {
 	en: {
+		languageName: "English",
+		languageSwitchLabel: "Change language",
+		menuOpen: "Menu",
+		menuClose: "Close",
+		homeAboutLabel: "Practice",
+		homeAboutTitle: "One line of thought. From direction to code.",
+		homeAboutBody:
+			"I design and build digital identities, websites and products for businesses and creative teams. Keeping design and development together means the original idea survives all the way to the screen.",
+		homeAboutCta: "See how I work",
+		aboutLocation: "Bodø, Norway",
+		aboutHero:
+			"Independent designer and developer. I shape the visual direction, interaction and front-end as one connected piece of work.",
+		aboutPortraitAlt: "Kenneth Jørgensen under the northern lights in Bodø",
+		aboutPortraitStatement:
+			"I stay with an idea from its first outline to the moment someone uses it.",
+		aboutPracticeLabel: "Practice",
+		aboutPracticeBody: [
+			"Based in Bodø, I work across visual direction, digital design, interaction and front-end development. Working across the boundary keeps the concept, details and technical decisions moving in the same direction.",
+			"I work directly with businesses that need a distinct digital presence, and alongside studios that need an extra pair of eyes and hands from concept through production.",
+		],
+		aboutCapabilitiesTitle: "What I can take from idea to interface",
+		aboutCapabilities: ["Visual direction", "Digital design", "Product design", "UX / UI", "Interaction", "Front-end", "Creative development", "WebGL"],
+		aboutNowLabel: "Available",
+		aboutNowBody:
+			"For selected freelance projects, studio collaborations and the right permanent role—locally or internationally.",
+		aboutWorkCta: "View selected work",
+		aboutWorkTitle: "Work",
+		expertiseEyebrow: "How I work / Where it lands",
+		expertiseTitleLineOne: "Practice",
+		expertiseTitleLineTwo: "in context",
+		expertiseAboutCta: "About my practice",
+		expertiseCapabilitiesLabel: "Ways of working",
+		expertiseFieldsLabel: "Where it lands",
+		expertiseModes: [
+			{ title: "Direction", description: "Find the idea worth keeping, then give it a visual point of view.", meta: "01 / make it distinct" },
+			{ title: "Systems", description: "Turn that point of view into a clear, flexible language people can use.", meta: "02 / make it useful" },
+			{ title: "Motion", description: "Let timing, feedback and atmosphere explain what the interface can do.", meta: "03 / make it felt" },
+			{ title: "Build", description: "Carry the decisions into production so the finished thing still feels intentional.", meta: "04 / make it real" },
+		],
+		expertiseContexts: ["Digital identities", "Websites", "Products", "Experiments"],
+		auroraEyebrow: "Live signal / Bodø",
+		auroraTitleLineOne: "Aurora as",
+		auroraTitleLineTwo: "interface",
+		auroraExplanation:
+			"The live KP index drives the colour, intensity and movement of the aurora across this site. Move the signal to simulate the sky and see the interface respond.",
+		auroraCalm: "Quiet sky",
+		auroraActive: "Active sky",
+		footerStatement: "Independent design and development from 67°N.",
+		footerAvailability: "Available for selected projects and collaborations",
+		footerNavigationLabel: "Footer navigation",
+		footerBackToTop: "Back to top",
 		aboutText:
 			"I turn ideas into digital experiences — shaping the visual direction, interaction and code as one connected process. From the first sketch to the final line of code.",
 		navAbout: "About",
@@ -193,6 +284,57 @@ const translations: Record<AppLocale, Translations> = {
 			"designer bodø, developer bodø, designer nordland, developer nordland, designer northern norway, developer northern norway, nord-norge, web designer bodø, web developer bodø, web design bodø, web design nordland, webside bodø, nettside bodø, grafisk design bodø, grafisk design nordland, graphic design nordland, shopify bodø",
 	},
 	nb: {
+		languageName: "Norsk",
+		languageSwitchLabel: "Bytt språk",
+		menuOpen: "Meny",
+		menuClose: "Lukk",
+		homeAboutLabel: "Praksis",
+		homeAboutTitle: "Én tanke. Fra retning til kode.",
+		homeAboutBody:
+			"Jeg designer og bygger digitale identiteter, nettsider og produkter for virksomheter og kreative team. Når design og utvikling skjer samlet, overlever den opprinnelige idéen helt frem til skjermen.",
+		homeAboutCta: "Se hvordan jeg jobber",
+		aboutLocation: "Bodø, Norge",
+		aboutHero:
+			"Selvstendig designer og utvikler. Jeg former visuell retning, interaksjon og frontend som ett sammenhengende arbeid.",
+		aboutPortraitAlt: "Kenneth Jørgensen under nordlyset i Bodø",
+		aboutPortraitStatement:
+			"Jeg følger en idé fra første omriss til øyeblikket noen tar den i bruk.",
+		aboutPracticeLabel: "Praksis",
+		aboutPracticeBody: [
+			"Fra Bodø jobber jeg med visuell retning, digital design, interaksjon og frontend. Ved å arbeide på tvers holder jeg konseptet, detaljene og de tekniske valgene i samme retning.",
+			"Jeg jobber direkte med virksomheter som trenger et tydelig digitalt uttrykk, og sammen med studioer som trenger ekstra kapasitet fra konsept til produksjon.",
+		],
+		aboutCapabilitiesTitle: "Det jeg kan ta fra idé til grensesnitt",
+		aboutCapabilities: ["Visuell retning", "Digital design", "Produktdesign", "UX / UI", "Interaksjon", "Frontend", "Kreativ utvikling", "WebGL"],
+		aboutNowLabel: "Tilgjengelig",
+		aboutNowBody:
+			"For utvalgte oppdrag, studiosamarbeid og den rette faste rollen—lokalt eller internasjonalt.",
+		aboutWorkCta: "Se utvalgte prosjekter",
+		aboutWorkTitle: "Arbeid",
+		expertiseEyebrow: "Hvordan jeg jobber / Hvor det lander",
+		expertiseTitleLineOne: "Fagfelt",
+		expertiseTitleLineTwo: "og områder",
+		expertiseAboutCta: "Om praksisen min",
+		expertiseCapabilitiesLabel: "Arbeidsmåter",
+		expertiseFieldsLabel: "Hvor det lander",
+		expertiseModes: [
+			{ title: "Retning", description: "Jeg finner idéen det er verdt å holde fast i, og gir den et tydelig visuelt ståsted.", meta: "01 / gjør det særpreget" },
+			{ title: "System", description: "Jeg gjør ståstedet om til et klart og fleksibelt språk folk faktisk kan bruke.", meta: "02 / gjør det nyttig" },
+			{ title: "Bevegelse", description: "Timing, respons og atmosfære får forklare hva grensesnittet kan gjøre.", meta: "03 / gjør det merkbart" },
+			{ title: "Gjennomføring", description: "Jeg tar valgene med inn i produksjon, så det ferdige fortsatt føles gjennomtenkt.", meta: "04 / gjør det virkelig" },
+		],
+		expertiseContexts: ["Digitale identiteter", "Nettsider", "Produkter", "Eksperimenter"],
+		auroraEyebrow: "Levende signal / Bodø",
+		auroraTitleLineOne: "Nordlyset som",
+		auroraTitleLineTwo: "grensesnitt",
+		auroraExplanation:
+			"Den levende KP-indeksen styrer fargen, intensiteten og bevegelsen i nordlyset på siden. Flytt signalet for å simulere himmelen og se grensesnittet svare.",
+		auroraCalm: "Stille himmel",
+		auroraActive: "Aktiv himmel",
+		footerStatement: "Selvstendig design og utvikling fra 67°N.",
+		footerAvailability: "Tilgjengelig for utvalgte prosjekter og samarbeid",
+		footerNavigationLabel: "Bunnavigasjon",
+		footerBackToTop: "Til toppen",
 		aboutText:
 			"Jeg gjør ideer om til digitale opplevelser — og former visuell retning, interaksjon og kode som én sammenhengende prosess. Fra første skisse til siste linje med kode.",
 		navAbout: "Om",
@@ -324,26 +466,39 @@ export function getSeoForPath(
 type I18nContextValue = {
 	locale: AppLocale
 	t: Translations
+	setLocale: (locale: AppLocale) => void
+	toggleLocale: () => void
 	renderText: (value: string) => ReactNode
 }
 
 const I18nContext = createContext<I18nContextValue | null>(null)
 
 export function I18nProvider({ children }: { children: ReactNode }) {
-	const [locale, setLocale] = useState<AppLocale>("nb")
+	const [locale, setLocale] = useState<AppLocale>(detectLocale)
 
 	useEffect(() => {
 		setLocale(detectLocale())
+		const onPopState = () => setLocale(detectLocale())
+		window.addEventListener("popstate", onPopState)
+		return () => window.removeEventListener("popstate", onPopState)
 	}, [])
 
 	useEffect(() => {
 		document.documentElement.lang = locale === "nb" ? "nb-NO" : "en"
+		window.localStorage.setItem("portfolio-locale", locale)
+		const url = new URL(window.location.href)
+		if (url.searchParams.get("lang") !== locale) {
+			url.searchParams.set("lang", locale)
+			window.history.replaceState(window.history.state, "", url)
+		}
 	}, [locale])
 
 	const value = useMemo(
 		() => ({
 			locale,
 			t: translations[locale],
+			setLocale,
+			toggleLocale: () => setLocale((current) => current === "nb" ? "en" : "nb"),
 			renderText: (value: string) => {
 				const parts = value.split(/<br\s*\/?>/gi)
 				if (parts.length === 1) return value

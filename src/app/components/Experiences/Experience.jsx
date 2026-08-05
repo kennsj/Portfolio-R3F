@@ -36,7 +36,7 @@ function Experience() {
 			<Effects />
 			<Plane
 				scale={[viewport.width, viewport.height, 1]}
-				args={[1, 1, 128, 128]}
+				args={[1, 1, 64, 64]}
 			>
 				<meshPhysicalMaterial
 					toneMapped={false}

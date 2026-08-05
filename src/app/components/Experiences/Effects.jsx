@@ -13,7 +13,7 @@ const Effects = () => {
 
 	return (
 		<EffectComposer disableNormalPass multisampling={false}>
-			<Noise premultiply blendFunction={BlendFunction.DARKEN} opacity={0.4} />
+			<Noise premultiply blendFunction={BlendFunction.DARKEN} opacity={0.22} />
 			<Vignette offset={0.2} darkness={0.8} eskil={true} />
 			<Wave
 				kpSpeedMultiplier={getKpWaveSpeedMultiplier(kp)}

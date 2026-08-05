@@ -2,7 +2,10 @@
 .aurora-wrapper { max-width: var(--max-width); margin-inline: auto; }
 .intro { display: grid; grid-template-columns: .55fr 1.45fr; gap: 3rem; align-items: start; padding-bottom: clamp(5rem, 10vw, 9rem); }
 .intro > span { font-family: var(--font-family-ibm); font-size: .68rem; letter-spacing: .08em; text-transform: uppercase; color: var(--aurora-mint); }
-.intro h3 { font-size: clamp(3.6rem, 9vw, 8rem); font-weight: 400; line-height: .82; letter-spacing: -.04em; text-transform: uppercase; }
+.intro > div { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(15rem, .85fr); gap: clamp(2rem, 5vw, 5rem); align-items: end; }
+.intro h3 { font-size: clamp(3.6rem, 7.6vw, 7rem); font-weight: 400; line-height: .84; letter-spacing: -.045em; text-transform: uppercase; }
+.intro h3 em { color: var(--aurora-mint); font-style: normal; }
+.intro p { max-width: 38ch; padding-bottom: .45rem; font-size: clamp(1rem, 1.35vw, 1.2rem); line-height: 1.5; }
 .signal { display: grid; grid-template-columns: 1fr 1fr; padding: clamp(3rem, 7vw, 6rem) 0; }
 .location { font-size: clamp(2.5rem, 6vw, 5rem); line-height: .86; text-transform: uppercase; }
 .location span { display: block; margin-top: .75rem; font-family: var(--font-family-ibm); font-size: .68rem; letter-spacing: .08em; }
@@ -18,7 +21,7 @@
 .index input::-moz-range-thumb { width: 14px; height: 14px; border: 2px solid var(--signal-black); border-radius: 50%; background: var(--aurora-mint); }
 .index input:focus-visible { outline: 1px solid var(--aurora-mint); outline-offset: .75rem; }
 .indexMeta { display: flex; justify-content: flex-end; gap: 2rem; margin-top: 1.5rem; }
-.indexMeta p { max-width: 48ch; font-family: var(--font-family-ibm); font-size: .68rem; line-height: 1.55; }
+.indexMeta p { max-width: 58ch; font-family: var(--font-family-ibm); font-size: .64rem; line-height: 1.6; color: color-mix(in srgb, var(--primary-color) 58%, transparent); }
 .indexMeta button { position: relative; align-self: flex-start; border: 0; background: transparent; color: var(--primary-color); font-family: var(--font-family-ibm); font-size: .65rem; text-transform: uppercase; padding: 0 0 .35rem; cursor: pointer; }
 .indexMeta button::before { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 1px; background: color-mix(in srgb, var(--primary-color) 28%, transparent); }
 .indexMeta button::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 1px; background: currentColor; transform: scaleX(0); transform-origin: right; transition: transform .45s var(--shift-ease); }
@@ -27,6 +30,7 @@
 @media (max-width: 768px) {
 	.intro, .signal { grid-template-columns: 1fr; }
 	.intro { gap: 2rem; }
+	.intro > div { grid-template-columns: 1fr; }
 	.intro h3 { font-size: clamp(3.2rem, 16vw, 5.6rem); }
 	.signal { gap: 3rem; }
 	.kp { justify-self: end; }

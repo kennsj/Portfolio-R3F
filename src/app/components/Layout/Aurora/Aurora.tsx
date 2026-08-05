@@ -147,10 +147,6 @@ const Aurora = () => {
 
 	const ready = !isLoading && !!data?.entries.length
 	const { label, visible } = getKpLabel(displayKp, locale)
-	const explanation = locale === "nb"
-		? "Den levende KP-indeksen påvirker intensiteten, fargen og bevegelsen i nordlyset på denne siden. Dra i signalet for å endre forholdene."
-		: "The live KP index influences the intensity, colour and movement of the aurora across this site. Drag the signal to change the conditions."
-
 	return (
 		<div
 			ref={wrapRef}
@@ -162,15 +158,15 @@ const Aurora = () => {
 			) : (
 				<>
 					<div className={styles.intro}>
-						<span>{locale === "nb" ? "Levende signal / Bodø" : "Live signal / Bodø"}</span>
-						<h3>{locale === "nb" ? <>Nordlyset<br />som grensesnitt</> : <>Aurora as<br />interface</>}</h3>
+						<span>03 / {t.auroraEyebrow}</span>
+						<div><h3>{t.auroraTitleLineOne}<br /><em>{t.auroraTitleLineTwo}</em></h3><p>{t.auroraExplanation}</p></div>
 					</div>
 					<div className={styles.signal}>
 						<div ref={locationRef} className={styles.location}>{t.auroraLocationCity}<span>{t.auroraLocationRegion} / 67°N</span></div>
 						<div className={styles.kp}><span>{t.auroraKpIndex}</span><strong ref={kpNumRef} /><small><i style={{ background: getKpColor(displayKp) }} />{label}{visible ? ` / ${t.auroraVisibleTonight}` : ""}</small></div>
 					</div>
 					<div className={styles.index}>
-						<div className={styles.scale}><span>{locale === "nb" ? "Rolig" : "Calm"}</span><span>{locale === "nb" ? "Aktiv" : "Active"}</span></div>
+						<div className={styles.scale}><span>00 / {t.auroraCalm}</span><span>09 / {t.auroraActive}</span></div>
 							<input
 								type='range'
 								min={0}
@@ -185,7 +181,7 @@ const Aurora = () => {
 								aria-label={t.auroraSliderLabel}
 								aria-valuetext={`KP ${displayKp.toFixed(1)}, ${label}`}
 							/>
-						<div className={styles.indexMeta}><p>{explanation}</p>{manualKp !== null && <button onClick={() => setManualKp(null)} aria-label={t.auroraResetAria}>{t.auroraReset}</button>}</div>
+						<div className={styles.indexMeta}><p>{t.auroraDisclaimer}</p>{manualKp !== null && <button onClick={() => setManualKp(null)} aria-label={t.auroraResetAria}>{t.auroraReset}</button>}</div>
 					</div>
 				</>
 			)}

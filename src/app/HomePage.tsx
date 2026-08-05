@@ -15,7 +15,7 @@ import { usePageTransition } from "./hooks/usePageTransition"
 gsap.registerPlugin(ScrollTrigger)
 
 export default function HomePage() {
-	const { locale, t } = useI18n()
+	const { t } = useI18n()
 	const { transitionTo } = usePageTransition()
 	const aboutRef = useRef<HTMLElement>(null)
 
@@ -71,12 +71,12 @@ export default function HomePage() {
 
 			<section ref={aboutRef} id='about' data-aurora-state data-aurora-presence='0.72' data-aurora-color='#86cfa3'>
 				<div className={styles.about}>
-					<HeadingAnimation level={2} className={styles.sectionIndex}><span>{locale === "nb" ? "Hva jeg gjør" : "What I do"}</span><span>Design × Development</span></HeadingAnimation>
+					<HeadingAnimation level={2} className={styles.sectionIndex}><span>01 / {t.homeAboutLabel}</span><span>Design × Development</span></HeadingAnimation>
 					<div className={styles.aboutStatement}>
-						<h2 data-about-copy>{locale === "nb" ? <>Fra første idé<br />til det som møter<br />brukeren.</> : <>From the first idea<br />to what meets<br />the user.</>}</h2>
+						<h2 data-about-copy>{t.homeAboutTitle}</h2>
 						<div className={styles.aboutCopy} data-about-copy>
-							<p>{locale === "nb" ? "Jeg jobber i skjæringspunktet mellom visuell retning, produktdesign og frontend — direkte med virksomheter og sammen med kreative team." : "I work where visual direction, product design and front-end meet—directly with businesses and alongside creative teams."}</p>
-							<a className={styles.aboutLink} href='/about' onClick={(event) => { event.preventDefault(); transitionTo('/about') }}><span>{locale === "nb" ? "Mer om meg" : "More about me"}</span><i>↗</i></a>
+							<p>{t.homeAboutBody}</p>
+							<a className={styles.aboutLink} href='/about' onClick={(event) => { event.preventDefault(); transitionTo('/about') }}><span>{t.homeAboutCta}</span><i aria-hidden='true'>↗</i></a>
 						</div>
 					</div>
 				</div>

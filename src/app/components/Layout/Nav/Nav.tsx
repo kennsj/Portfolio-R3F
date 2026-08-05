@@ -16,7 +16,7 @@ const Nav = () => {
 	const [scrolled, setScrolled] = useState(false)
 	const { data } = useKpIndex()
 	const { manualKp } = useManualKp()
-	const { locale, t } = useI18n()
+	const { locale, t, toggleLocale } = useI18n()
 	const { transitionTo } = usePageTransition()
 	const { homeHeroIntroReady } = useHeroIntro()
 	const kp = manualKp ?? data?.latest ?? 0
@@ -93,9 +93,10 @@ const Nav = () => {
 					<img src='/kj-logo.svg' alt='Kenneth Jørgensen' />
 				</a>
 				<div className={styles.topLinks} aria-hidden={scrolled}>
-					<a href='/#work' onClick={(event) => go(event, "/#work")}>{t.navWork}</a>
-					<a href='/about' onClick={(event) => go(event, "/about")}>{t.navAbout}</a>
-					<a href='/#contact' onClick={(event) => go(event, "/#contact")}>{t.navContact}</a>
+					<a href='/#work' onClick={(event) => go(event, "/#work")} tabIndex={scrolled ? -1 : 0}>{t.navWork}</a>
+					<a href='/about' onClick={(event) => go(event, "/about")} tabIndex={scrolled ? -1 : 0}>{t.navAbout}</a>
+					<a href='/#contact' onClick={(event) => go(event, "/#contact")} tabIndex={scrolled ? -1 : 0}>{t.navContact}</a>
+					<button type='button' onClick={toggleLocale} aria-label={`${t.languageSwitchLabel}: ${locale === "nb" ? "English" : "Norsk"}`} lang={locale === "nb" ? "en" : "nb"} tabIndex={scrolled ? -1 : 0}>{locale === "nb" ? "EN" : "NO"}</button>
 				</div>
 				<div className={styles.navMeta} aria-hidden={!scrolled && !open}>
 					<div
@@ -123,8 +124,9 @@ const Nav = () => {
 							<small>{locale === "nb" ? "Skydekke og mørke avgjør lokal synlighet." : "Cloud cover and darkness still determine local visibility."}</small>
 						</div>
 					</div>
+					<button type='button' onClick={toggleLocale} aria-label={`${t.languageSwitchLabel}: ${locale === "nb" ? "English" : "Norsk"}`} lang={locale === "nb" ? "en" : "nb"} tabIndex={scrolled || open ? 0 : -1}>{locale === "nb" ? "EN" : "NO"}</button>
 					<button type='button' onClick={() => setOpen((value) => !value)} aria-expanded={open} aria-controls='site-menu' tabIndex={scrolled || open ? 0 : -1}>
-						{open ? (locale === "nb" ? "Lukk" : "Close") : "Menu"}
+						{open ? t.menuClose : t.menuOpen}
 					</button>
 				</div>
 			</nav>
@@ -138,6 +140,7 @@ const Nav = () => {
 					</div>
 					<div className={styles.menuFooter}>
 						<span>Bodø / 67°17′N</span>
+						<button type='button' onClick={toggleLocale} aria-label={`${t.languageSwitchLabel}: ${locale === "nb" ? "English" : "Norsk"}`}>{locale === "nb" ? "English" : "Norsk"}</button>
 						<a href='mailto:hei@kennethjorgensen.no'>hei@kennethjorgensen.no</a>
 					</div>
 				</div>

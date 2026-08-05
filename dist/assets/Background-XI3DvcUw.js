@@ -1,4 +1,4 @@
-import{r as e}from"./rolldown-runtime-Dw2cE7zH.js";import{s as t}from"./motion-CvXVONKn.js";import{r as n}from"./react-nn5-oe58.js";import"./tanstack-D88s3fnH.js";import{i as r,l as i,o as a,r as o}from"./useKpIndex-CtsEn5RO.js";import{i as s,n as c}from"./index-B7sIt9ua.js";import{a as l,c as u,d,f,i as p,l as m,m as h,n as g,o as _,p as v,r as y,s as b,t as x,u as S}from"./three-B67r8wB1.js";import{t as C}from"./vendor-BOva1vHD.js";var w=e(t(),1),T=`
+import{r as e}from"./rolldown-runtime-Dw2cE7zH.js";import{s as t}from"./motion-CvXVONKn.js";import{r as n}from"./react-nn5-oe58.js";import"./tanstack-D88s3fnH.js";import{i as r,l as i,o as a,r as o}from"./useKpIndex-CtsEn5RO.js";import{r as s,t as c}from"./index-C7LKvc-q.js";import{a as l,c as u,d,f,i as p,l as m,m as h,n as g,o as _,p as v,r as y,s as b,t as x,u as S}from"./three-B67r8wB1.js";import{t as C}from"./vendor-BOva1vHD.js";var w=e(t(),1),T=`
 	uniform float uFrequency;
 	uniform float uAmplitude;
 	uniform float uOffset;
