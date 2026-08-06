@@ -1,4 +1,4 @@
-import { useRef, useState } from "react"
+import { useRef } from "react"
 import { useGSAP } from "@gsap/react"
 import gsap from "gsap"
 import { ScrollTrigger } from "gsap/ScrollTrigger"
@@ -13,8 +13,6 @@ const Expertise = () => {
 	const { t } = useI18n()
 	const { transitionTo } = usePageTransition()
 	const sectionRef = useRef<HTMLElement>(null)
-	const [activeIndex, setActiveIndex] = useState(0)
-	const active = t.expertiseModes[activeIndex] ?? t.expertiseModes[0]
 
 	useGSAP(() => {
 		const section = sectionRef.current
@@ -46,10 +44,8 @@ const Expertise = () => {
 			<div className={styles.composition}>
 				<div className={styles.stage}>
 					<h2 data-field-title>{t.expertiseTitleLineOne}<br /><em>{t.expertiseTitleLineTwo}</em></h2>
-					<div className={styles.activeWord} aria-live='polite'>
-						<span>{active.meta}</span>
-						<strong>{active.title}</strong>
-						<p>{active.description}</p>
+					<div className={styles.activeWord}>
+						<p>{t.expertiseIntro}</p>
 					</div>
 				</div>
 
@@ -58,17 +54,10 @@ const Expertise = () => {
 					<ol>
 						{t.expertiseModes.map((mode, index) => (
 							<li key={mode.title} data-field-index>
-								<button
-									type='button'
-									className={activeIndex === index ? styles.active : ""}
-									onMouseEnter={() => setActiveIndex(index)}
-									onFocus={() => setActiveIndex(index)}
-									aria-pressed={activeIndex === index}
-								>
-									<span>{String(index + 1).padStart(2, "0")}</span>
-									<strong>{mode.title}</strong>
-									<i aria-hidden='true'>↗</i>
-								</button>
+								<details open={index === 0}>
+									<summary><span>{String(index + 1).padStart(2, "0")}</span><strong>{mode.title}</strong><i aria-hidden='true'>+</i></summary>
+									<div className={styles.modeDescription}><span>{mode.meta}</span><p>{mode.description}</p></div>
+								</details>
 							</li>
 						))}
 					</ol>

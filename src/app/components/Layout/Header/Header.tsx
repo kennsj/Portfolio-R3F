@@ -17,7 +17,7 @@ const Header = ({
 	signalNavIntroAfterHero?: boolean
 }) => {
 	const { markHomeHeroIntroComplete } = useHeroIntro()
-	const { locale } = useI18n()
+	const { locale, t } = useI18n()
 	const { data } = useKpIndex()
 	const kp = data?.latest ?? 0
 	const { label: kpLabel } = getKpLabel(kp, locale)
@@ -190,13 +190,13 @@ const Header = ({
 				</div>
 				<div className={styles.positioning}>
 					<span className={styles.sideRole}>{locale === "nb" ? <>Designer<br />+ utvikler</> : <>Designer<br />+ developer</>}</span>
-					<h2 ref={h2Ref}>{locale === "nb" ? <>Digital retning,<br />design og frontend.</> : <>Digital direction,<br />design and front-end.</>}</h2>
-					<p ref={pRef}>{locale === "nb" ? "Jeg former idéen og bygger opplevelsen — for virksomheter og kreative team." : "I shape the idea and build the experience—for businesses and creative teams."}</p>
+					<h2 ref={h2Ref}>{t.headerHeroTitle}</h2>
+					<p ref={pRef}>{t.headerHeroDescription}</p>
 				</div>
 			</div>
 			<div className={styles.heroFooter}>
 				<button className={styles.projectsLink} type='button' onClick={() => gsapScrollToHashIdWhenReady("work")}>
-					{locale === "nb" ? "Se prosjekter" : "View projects"}
+					{t.headerProjectsCta}
 				</button>
 				<div className={styles.environment}>
 					<div><span>{locale === "nb" ? "Lokal tid" : "Local time"}</span><strong>{localTime}</strong></div>

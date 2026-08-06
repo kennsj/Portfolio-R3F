@@ -51,6 +51,7 @@ export type Translations = {
 	expertiseTitleLineOne: string
 	expertiseTitleLineTwo: string
 	expertiseAboutCta: string
+	expertiseIntro: string
 	expertiseCapabilitiesLabel: string
 	expertiseFieldsLabel: string
 	expertiseModes: Array<{ title: string; description: string; meta: string }>
@@ -75,6 +76,9 @@ export type Translations = {
 	headerTitleBuiltPrefix: string
 	headerDarkWord: string
 	headerLightWord: string
+	headerHeroTitle: string
+	headerHeroDescription: string
+	headerProjectsCta: string
 	headerLocation: string
 	headerExplore: string
 	headerOffer: string
@@ -95,6 +99,14 @@ export type Translations = {
 	contactAvailability: string
 	contactEmailNote: string
 	contactPortraitText: string
+	contactBased: string
+	contactWorldwide: string
+	contactPrompt: string
+	contactTitleLineOne: string
+	contactTitleLineTwo: string
+	contactAvailableLabel: string
+	contactAvailableCopy: string
+	contactFindLabel: string
 	footerTagline: string
 	footerNavTitle: string
 	footerHome: string
@@ -159,12 +171,13 @@ const translations: Record<AppLocale, Translations> = {
 			"For selected freelance projects, studio collaborations and the right permanent role—locally or internationally.",
 		aboutWorkCta: "View selected work",
 		aboutWorkTitle: "Work",
-		expertiseEyebrow: "How I work / Where it lands",
-		expertiseTitleLineOne: "Practice",
-		expertiseTitleLineTwo: "in context",
+		expertiseEyebrow: "How I work / Where this work lives",
+		expertiseTitleLineOne: "Fields",
+		expertiseTitleLineTwo: "and contexts",
 		expertiseAboutCta: "About my practice",
+		expertiseIntro: "A small set of decisions I bring to every project.",
 		expertiseCapabilitiesLabel: "Ways of working",
-		expertiseFieldsLabel: "Where it lands",
+		expertiseFieldsLabel: "Where this work lives",
 		expertiseModes: [
 			{ title: "Direction", description: "Find the idea worth keeping, then give it a visual point of view.", meta: "01 / make it distinct" },
 			{ title: "Systems", description: "Turn that point of view into a clear, flexible language people can use.", meta: "02 / make it useful" },
@@ -194,6 +207,9 @@ const translations: Record<AppLocale, Translations> = {
 		headerTitleBuiltPrefix: "Built for the ",
 		headerDarkWord: "dark",
 		headerLightWord: "light",
+		headerHeroTitle: "Digital direction, design and front-end.",
+		headerHeroDescription: "I shape the idea and build the experience—for businesses and creative teams.",
+		headerProjectsCta: "View projects",
 		headerLocation: "LOCATION 67.2829° N, 14.4151° E",
 		headerExplore: "Go exploring",
 		headerOffer:
@@ -220,6 +236,14 @@ const translations: Record<AppLocale, Translations> = {
 		contactEmailNote:
 			"Share a bit about your project, timeline and what a good outcome looks like. I'll get back to you quickly. Or we can skip the email and go aurora hunting!",
 		contactPortraitText: "My serious face, let's have a chat",
+		contactBased: "Based in Bodø",
+		contactWorldwide: "Working across borders",
+		contactPrompt: "A project, a collaboration or the right role?",
+		contactTitleLineOne: "Let's",
+		contactTitleLineTwo: "talk",
+		contactAvailableLabel: "Available for",
+		contactAvailableCopy: "Selected projects / studio collaborations / permanent roles",
+		contactFindLabel: "Find me",
 		footerTagline: "Designer. Developer. <br /> Occasional gamer.",
 		footerNavTitle: "Navigation",
 		footerHome: "Home",
@@ -311,12 +335,13 @@ const translations: Record<AppLocale, Translations> = {
 			"For utvalgte oppdrag, studiosamarbeid og den rette faste rollen—lokalt eller internasjonalt.",
 		aboutWorkCta: "Se utvalgte prosjekter",
 		aboutWorkTitle: "Arbeid",
-		expertiseEyebrow: "Hvordan jeg jobber / Hvor det lander",
+		expertiseEyebrow: "Hvordan jeg jobber / Hvor arbeidet hører hjemme",
 		expertiseTitleLineOne: "Fagfelt",
 		expertiseTitleLineTwo: "og områder",
 		expertiseAboutCta: "Om praksisen min",
+		expertiseIntro: "Et lite sett med valg jeg tar med inn i hvert prosjekt.",
 		expertiseCapabilitiesLabel: "Arbeidsmåter",
-		expertiseFieldsLabel: "Hvor det lander",
+		expertiseFieldsLabel: "Hvor arbeidet hører hjemme",
 		expertiseModes: [
 			{ title: "Retning", description: "Jeg finner idéen det er verdt å holde fast i, og gir den et tydelig visuelt ståsted.", meta: "01 / gjør det særpreget" },
 			{ title: "System", description: "Jeg gjør ståstedet om til et klart og fleksibelt språk folk faktisk kan bruke.", meta: "02 / gjør det nyttig" },
@@ -346,6 +371,9 @@ const translations: Record<AppLocale, Translations> = {
 		headerTitleBuiltPrefix: "Bygget for ",
 		headerDarkWord: "mørket",
 		headerLightWord: "lyset",
+		headerHeroTitle: "Digital retning, design og frontend.",
+		headerHeroDescription: "Jeg former idéen og bygger opplevelsen — for virksomheter og kreative team.",
+		headerProjectsCta: "Se prosjekter",
 		headerLocation: "LOKASJON 67.2829° N, 14.4151° E",
 		headerExplore: "Utforsk",
 		headerOffer:
@@ -372,6 +400,14 @@ const translations: Record<AppLocale, Translations> = {
 		contactEmailNote:
 			"Fortell litt om prosjektet, tidsplanen og hva du ønsker å oppnå. Jeg svarer så raskt som mulig. Eller så kan vi hoppe over e-posten og dra på nordlysjakt!",
 		contactPortraitText: "Det alvorlige trynet mitt, la oss ta en prat!",
+		contactBased: "Basert i Bodø",
+		contactWorldwide: "Jobber på tvers av grenser",
+		contactPrompt: "Et prosjekt, et samarbeid eller riktig rolle?",
+		contactTitleLineOne: "La oss",
+		contactTitleLineTwo: "snakke",
+		contactAvailableLabel: "Tilgjengelig for",
+		contactAvailableCopy: "Utvalgte prosjekter / studiosamarbeid / faste roller",
+		contactFindLabel: "Finn meg",
 		footerTagline: "Designer. Utvikler. <br /> Sporadisk gamer.",
 		footerNavTitle: "Navigasjon",
 		footerHome: "Hjem",

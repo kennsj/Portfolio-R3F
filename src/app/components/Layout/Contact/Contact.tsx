@@ -10,7 +10,7 @@ import styles from "./Contact.module.scss"
 gsap.registerPlugin(ScrollTrigger, SplitText)
 
 const Contact = ({ showForecast = false }: { showForecast?: boolean }) => {
-	const { locale } = useI18n()
+	const { t } = useI18n()
 	const sectionRef = useRef<HTMLElement>(null)
 
 	useGSAP(() => {
@@ -34,7 +34,7 @@ const Contact = ({ showForecast = false }: { showForecast?: boolean }) => {
 			ref={sectionRef}
 			id='contact'
 			className={styles.section}
-			aria-label={locale === "nb" ? "Kontakt" : "Contact"}
+			aria-label={t.navContact}
 			data-aurora-state
 			data-aurora-presence='1.16'
 			data-aurora-color='#a8f3c3'
@@ -46,23 +46,23 @@ const Contact = ({ showForecast = false }: { showForecast?: boolean }) => {
 			)}
 
 			<div className={styles.location} data-contact-location>
-				<span>{locale === "nb" ? "Basert i Bodø" : "Based in Bodø"}</span>
-				<span>{locale === "nb" ? "Jobber på tvers av grenser" : "Working worldwide"}</span>
+				<span>{t.contactBased}</span>
+				<span>{t.contactWorldwide}</span>
 			</div>
 
 			<div className={styles.main}>
-				<p>{locale === "nb" ? "Et prosjekt, et samarbeid eller riktig rolle?" : "A project, a collaboration or the right role?"}</p>
-				<h2>{locale === "nb" ? <>La oss<br />snakke</> : <>Let’s<br />talk</>}</h2>
+				<p>{t.contactPrompt}</p>
+				<h2>{t.contactTitleLineOne}<br />{t.contactTitleLineTwo}</h2>
 				<a data-contact-email href='mailto:hei@kennethjorgensen.no'>hei@kennethjorgensen.no</a>
 			</div>
 
 			<div className={styles.contactGrid}>
 				<div data-contact-line>
-					<span>{locale === "nb" ? "Tilgjengelig for" : "Available for"}</span>
-					<p>{locale === "nb" ? "Utvalgte prosjekter / studiosamarbeid / faste roller" : "Selected projects / studio collaborations / permanent roles"}</p>
+					<span>{t.contactAvailableLabel}</span>
+					<p>{t.contactAvailableCopy}</p>
 				</div>
 				<div data-contact-line>
-					<span>{locale === "nb" ? "Finn meg" : "Elsewhere"}</span>
+					<span>{t.contactFindLabel}</span>
 					<p><a href='https://www.linkedin.com/in/kennethstrandjorgensen/' target='_blank' rel='noreferrer'>LinkedIn</a> / <a href='https://github.com/kennsj' target='_blank' rel='noreferrer'>GitHub</a></p>
 				</div>
 			</div>
