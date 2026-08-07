@@ -1,73 +1,102 @@
 .about {
-	max-width: var(--max-width);
-	margin-inline: auto;
-	padding-block: clamp(5rem, 10vw, 9rem) clamp(6rem, 12vw, 11rem);
-}
-.sectionIndex {
-	display: flex;
-	justify-content: space-between;
-	font-family: var(--font-family-ibm);
-	font-size: .68rem;
-	font-weight: 400;
-	letter-spacing: .08em;
-	text-transform: uppercase;
-}
-.aboutStatement { margin-top: clamp(4rem, 9vw, 8rem); }
-.aboutStatement h2 {
-	max-width: 15ch;
-	font-size: clamp(3.4rem, 8.5vw, 7.8rem);
-	font-weight: 400;
-	line-height: .86;
-	letter-spacing: -.04em;
-	text-transform: uppercase;
-}
-.aboutCopy {
-	width: min(38rem, 48%);
-	margin: clamp(3rem, 6vw, 5rem) 5% 0 auto;
-}
-.aboutCopy p { font-size: clamp(1.15rem, 1.8vw, 1.5rem); line-height: 1.45; letter-spacing: -.02em; }
-.aboutLink {
-	position: relative;
-	display: flex;
-	justify-content: flex-start;
-	align-items: center;
-	gap: .75rem;
-	width: max-content;
-	max-width: 100%;
-	margin-top: 2.5rem;
-	padding-block: 1rem 1.15rem;
-	color: var(--primary-color);
-	font-family: var(--font-family-ibm);
-	font-size: .68rem;
-	letter-spacing: .08em;
-	text-transform: uppercase;
-}
-.aboutLink::after {
-	content: "";
-	position: absolute;
-	left: 0;
-	right: 0;
-	bottom: .35rem;
-	height: 1px;
-	background: currentColor;
-	transform: scaleX(0);
-	transform-origin: right;
-	transition: transform 420ms cubic-bezier(0.32, 0.94, 0.6, 1);
-}
-.aboutLink::before {
-	content: "";
-	position: absolute;
-	left: 0;
-	right: 0;
-	bottom: .35rem;
-	height: 1px;
-	background: color-mix(in srgb, var(--primary-color) 28%, transparent);
-}
-.aboutLink i { font-style: normal; transition: transform .45s var(--shift-ease); }
-.aboutLink:hover::after, .aboutLink:focus-visible::after { transform: scaleX(1); transform-origin: left; }
-.aboutLink:hover i, .aboutLink:focus-visible i { transform: translate(35%, -35%); }
-.aboutLink:focus-visible { outline: 1px solid var(--aurora-mint); outline-offset: .4rem; }
-@media (max-width: 768px) {
-	.aboutStatement h2 { font-size: clamp(3rem, 14vw, 5.5rem); }
-	.aboutCopy { width: 100%; margin-right: 0; }
+  max-width: var(--max-width);
+  margin-inline: auto;
+  padding-block: clamp(5rem, 10vw, 9rem) clamp(6rem, 12vw, 11rem);
+
+  .section-index {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    font-family: var(--font-family-ibm);
+    font-size: 0.68rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+  }
+
+  .about-statement {
+    margin-top: clamp(4rem, 9vw, 8rem);
+
+    h2 {
+      max-width: 15ch;
+      font-size: clamp(3.4rem, 8.5vw, 7.8rem);
+      font-weight: 400;
+      line-height: 0.9;
+      letter-spacing: -0.04em;
+      text-transform: uppercase;
+    }
+  }
+
+  .about-copy {
+    width: min(38rem, 48%);
+    margin: clamp(3rem, 6vw, 5rem) 5% 0 auto;
+
+    p {
+      font-size: clamp(1.15rem, 1.8vw, 1.5rem);
+      line-height: 1.5;
+      color: var(--text-muted);
+    }
+  }
+
+  .about-link {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    width: max-content;
+    max-width: 100%;
+    margin-top: 2.5rem;
+    padding-block: 1rem 1.15rem;
+    color: var(--primary-color);
+    font-family: var(--font-family-ibm);
+    font-size: 0.68rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+
+    &::before,
+    &::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0.35rem;
+      height: 1px;
+    }
+    &::before {
+      background: color-mix(in srgb, var(--primary-color) 28%, transparent);
+    }
+    &::after {
+      background: currentColor;
+      transform: scaleX(0);
+      transform-origin: right;
+      transition: transform 420ms var(--shift-ease);
+    }
+    &:hover::after,
+    &:focus-visible::after {
+      transform: scaleX(1);
+      transform-origin: left;
+    }
+    i {
+      font-style: normal;
+      transition: transform 0.45s var(--shift-ease);
+    }
+    &:hover i,
+    &:focus-visible i {
+      transform: translate(35%, -35%);
+    }
+    &:focus-visible {
+      outline: 1px solid var(--aurora-mint);
+      outline-offset: 0.4rem;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .about-statement h2 {
+      font-size: clamp(3rem, 14vw, 5.5rem);
+    }
+    .about-copy {
+      width: 100%;
+      margin-right: 0;
+    }
+  }
 }

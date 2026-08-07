@@ -9,11 +9,14 @@ export default function PermissionProvider() {
 	const [needed, setNeeded] = useState(false)
 
 	useEffect(() => {
+		const orientationEvent = (window as any).DeviceOrientationEvent
+
 		if (
-			typeof (DeviceOrientationEvent as any).requestPermission !== "function"
+			!orientationEvent ||
+			typeof orientationEvent.requestPermission !== "function"
 		) {
 			// Android / older iOS — no permission needed, add listener directly
-			addListener()
+			if (orientationEvent) addListener()
 			return
 		}
 
@@ -22,7 +25,7 @@ export default function PermissionProvider() {
 		if (cached === "granted") {
 			// iOS caches permission per-session only, must re-request on each reload
 			// This runs on mount (no user gesture needed when already granted)
-			;(DeviceOrientationEvent as any)
+			orientationEvent
 				.requestPermission()
 				.then((res: string) => {
 					if (res === "granted") addListener()
@@ -49,7 +52,12 @@ export default function PermissionProvider() {
 
 	async function handleTap() {
 		try {
-			const res = await (DeviceOrientationEvent as any).requestPermission()
+			const orientationEvent = (window as any).DeviceOrientationEvent
+			if (!orientationEvent || typeof orientationEvent.requestPermission !== "function") {
+				setNeeded(false)
+				return
+			}
+			const res = await orientationEvent.requestPermission()
 			localStorage.setItem(STORAGE_KEY, res)
 			if (res === "granted") addListener()
 		} catch (e) {
