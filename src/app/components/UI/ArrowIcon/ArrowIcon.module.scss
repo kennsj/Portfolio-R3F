@@ -1,0 +1,49 @@
+.arrow {
+  display: inline-flex;
+  position: relative;
+  width: 1em;
+  height: 1em;
+  overflow: hidden;
+  vertical-align: -0.12em;
+
+  &.display {
+    font-size: clamp(2rem, 4vw, 4rem);
+  }
+
+  .icon {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    transition: transform 720ms var(--ease-standard);
+
+    &.reentry {
+      transform: translate(-125%, 125%);
+    }
+  }
+
+  &.up {
+    transform: rotate(-45deg);
+  }
+
+  :global(:is(a, button):hover) &,
+  :global(:is(a, button):focus-visible) & {
+    .icon {
+      transform: translate(125%, -125%);
+
+      &.reentry {
+        transform: translate(0, 0);
+      }
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .icon {
+      transition: none;
+      transform: translate(0, 0);
+    }
+    .reentry {
+      display: none;
+    }
+  }
+}

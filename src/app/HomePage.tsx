@@ -14,6 +14,7 @@ import {
 import styles from "./styles/Homepage.module.scss";
 import HeadingAnimation from "./components/UI/HeadingAnimation/HeadingAnimation";
 import { usePageTransition } from "./hooks/usePageTransition";
+import ArrowIcon from "./components/UI/ArrowIcon/ArrowIcon";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -109,7 +110,7 @@ export default function HomePage() {
                 }}
               >
                 <span>{t.homeAboutCta}</span>
-                <i aria-hidden="true">↗</i>
+                <ArrowIcon />
               </a>
             </div>
           </div>
