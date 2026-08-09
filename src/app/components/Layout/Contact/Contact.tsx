@@ -1,4 +1,4 @@
-import { useRef } from "react"
+import { useRef, useState } from "react"
 import { useGSAP } from "@gsap/react"
 import gsap from "gsap"
 import { ScrollTrigger } from "gsap/ScrollTrigger"
@@ -10,8 +10,9 @@ import styles from "./Contact.module.scss"
 gsap.registerPlugin(ScrollTrigger, SplitText)
 
 const Contact = ({ showForecast = false }: { showForecast?: boolean }) => {
-	const { t } = useI18n()
+	const { t, locale } = useI18n()
 	const sectionRef = useRef<HTMLElement>(null)
+
 
 	useGSAP(() => {
 		const section = sectionRef.current
@@ -51,9 +52,11 @@ const Contact = ({ showForecast = false }: { showForecast?: boolean }) => {
 			</div>
 
 			<div className={styles.main}>
-				<p>{t.contactPrompt}</p>
+				<p>{locale === "nb" ? "Fortell kort om prosjektet, samarbeidet eller rollen." : "Tell me briefly about the project, collaboration, or role."}</p>
 				<h2>{t.contactTitleLineOne}<br />{t.contactTitleLineTwo}</h2>
-				<a data-contact-email href='mailto:hei@kennethjorgensen.no'>hei@kennethjorgensen.no</a>
+				<div className={styles.emailLine}>
+					<a data-contact-email href='mailto:hei@kennethjorgensen.no'>hei@kennethjorgensen.no</a>
+				</div>
 			</div>
 
 			<div className={styles.contactGrid}>

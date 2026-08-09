@@ -43,13 +43,11 @@
 		perspective: 25vw;
 	}
 
-	> a {
-		grid-column: 2;
-		justify-self: start;
-		width: max-content;
-		max-width: 100%;
-		margin-top: clamp(3rem, 7vw, 6rem);
-		font-size: clamp(1.2rem, 2.6vw, 2.4rem);
+	.emailLine a {
+		font-family: var(--font-family-syne);
+		font-size: clamp(1.8rem, 3.6vw, 3rem);
+		font-weight: 400;
+		letter-spacing: -0.04em;
 		color: var(--primary-color);
 		position: relative;
 		padding-bottom: 0.35rem;
@@ -81,6 +79,8 @@
 		&:focus-visible::after { transform: scaleX(1); transform-origin: left; }
 	}
 }
+.emailLine { grid-column: 2; justify-self: start; width: max-content; max-width: 100%; margin-top: clamp(3rem, 7vw, 6rem); display: flex; align-items: baseline; gap: 1rem; flex-wrap: wrap; }
+.emailLine button { border: 0; border-bottom: 1px solid color-mix(in srgb, var(--primary-color) 35%, transparent); background: transparent; color: var(--text-muted); padding: 0.4rem 0; font: 0.62rem var(--font-family-ibm); letter-spacing: 0.06em; text-transform: uppercase; cursor: pointer; }
 
 .contactGrid {
 	display: grid;
@@ -140,8 +140,7 @@
 	.forecast { margin-bottom: 7rem; padding-bottom: 4rem; }
 	.location { flex-direction: column; align-items: center; }
 	.main { grid-template-columns: 1fr; gap: 2rem; }
-	.main > a { grid-column: 1; }
+	.emailLine { grid-column: 1; }
 	.main h2 { font-size: clamp(3.4rem, 15vw, 5.2rem); }
-	.main > a { font-size: clamp(1rem, 5vw, 1.4rem); }
 	.contactGrid { grid-template-columns: 1fr; }
 }

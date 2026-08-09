@@ -95,7 +95,6 @@ export default function HomePage() {
         <div className={styles.about}>
           <HeadingAnimation level={2} className={styles["section-index"]}>
             <span>01 / {t.homeAboutLabel}</span>
-            <span>Design × Development</span>
           </HeadingAnimation>
           <div className={styles["about-statement"]}>
             <h2 data-about-copy>{t.homeAboutTitle}</h2>

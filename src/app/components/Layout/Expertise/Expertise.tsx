@@ -86,7 +86,7 @@ const Expertise = () => {
             <em>{t.expertiseTitleLineTwo}</em>
           </h2>
           <div className={styles.activeWord}>
-            <p>{t.expertiseIntro}</p>
+            {/* <p>{t.expertiseIntro}</p> */}
           </div>
         </div>
 
@@ -112,14 +112,6 @@ const Expertise = () => {
               </li>
             ))}
           </ol>
-          <div className={styles.contexts}>
-            <span>{t.expertiseFieldsLabel}</span>
-            <div>
-              {t.expertiseContexts.map((context) => (
-                <em key={context}>{context}</em>
-              ))}
-            </div>
-          </div>
         </div>
       </div>
     </section>

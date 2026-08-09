@@ -20,6 +20,7 @@ type Project = {
   brief: Copy;
   approach: Copy;
   contribution: Copy;
+  context?: { label: string; en: string; nb: string }[];
   video: string;
   poster: string;
   color: string;
@@ -145,6 +146,14 @@ export default function ProjectCase({ slug }: { slug: keyof typeof projects }) {
   const { locale } = useI18n();
   const { transitionTo } = usePageTransition();
   const copy = (value: Copy) => value[locale];
+	const context = project.context ?? [
+		{ label: "Start", en: copy(project.brief), nb: copy(project.brief) },
+		{ label: "Goal", en: copy(project.approach), nb: copy(project.approach) },
+		{ label: "Role", en: copy(project.contribution), nb: copy(project.contribution) },
+		{ label: "Choices", en: copy(project.approach), nb: copy(project.approach) },
+		{ label: "Delivery", en: copy(project.contribution), nb: copy(project.contribution) },
+		{ label: "Next", en: "Test the concept with users and stakeholders against the intended experience.", nb: "Teste konseptet med brukere og interessenter mot den tiltenkte opplevelsen." },
+	];
 
   useLayoutEffect(() => window.scrollTo(0, 0), []);
   useGSAP(() => {
@@ -227,6 +236,10 @@ export default function ProjectCase({ slug }: { slug: keyof typeof projects }) {
           )}
         </div>
       </section>
+
+		<section className={styles.context} data-case-reveal aria-label={locale === "nb" ? "Prosjektkontekst" : "Project context"}>
+			{context.map((item) => <div key={item.label}><span className={styles.label}>{locale === "nb" ? ({Start: "Utgangspunkt", Goal: "Mål", Role: "Min rolle", Choices: "Viktigste valg", Delivery: "Leveranse", Next: "Hva jeg ville testet videre"}[item.label] ?? item.label) : item.label}</span><p>{copy(item)}</p></div>)}
+		</section>
 
       <section className={styles.manifesto} data-case-reveal>
         <span className={styles.label}>

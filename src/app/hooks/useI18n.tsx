@@ -148,7 +148,7 @@ const translations: Record<AppLocale, Translations> = {
 		languageSwitchLabel: "Change language",
 		menuOpen: "Menu",
 		menuClose: "Close",
-		homeAboutLabel: "Practice",
+		homeAboutLabel: "About me ",
 		homeAboutTitle: "One line of thought. From direction to code.",
 		homeAboutBody:
 			"I design and build digital identities, websites and products for businesses and creative teams. Keeping design and development together means the original idea survives all the way to the screen.",
@@ -159,7 +159,7 @@ const translations: Record<AppLocale, Translations> = {
 		aboutPortraitAlt: "Kenneth Jørgensen under the northern lights in Bodø",
 		aboutPortraitStatement:
 			"I stay with an idea from its first outline to the moment someone uses it.",
-		aboutPracticeLabel: "Practice",
+		aboutPracticeLabel: "About",
 		aboutPracticeBody: [
 			"Based in Bodø, I work across visual direction, digital design, interaction and front-end development. Working across the boundary keeps the concept, details and technical decisions moving in the same direction.",
 			"I work directly with businesses that need a distinct digital presence, and alongside studios that need an extra pair of eyes and hands from concept through production.",
@@ -174,10 +174,10 @@ const translations: Record<AppLocale, Translations> = {
 		expertiseEyebrow: "How I work / Where this work lives",
 		expertiseTitleLineOne: "Fields",
 		expertiseTitleLineTwo: "and contexts",
-		expertiseAboutCta: "About my practice",
+		expertiseAboutCta: "About me ",
 		expertiseIntro: "A small set of decisions I bring to every project.",
 		expertiseCapabilitiesLabel: "Ways of working",
-		expertiseFieldsLabel: "Where this work lives",
+			expertiseFieldsLabel: "",
 		expertiseModes: [
 			{ title: "Direction", description: "Find the idea worth keeping, then give it a visual point of view.", meta: "01 / make it distinct" },
 			{ title: "Systems", description: "Turn that point of view into a clear, flexible language people can use.", meta: "02 / make it useful" },
@@ -185,7 +185,7 @@ const translations: Record<AppLocale, Translations> = {
 			{ title: "Build", description: "Carry the decisions into production so the finished thing still feels intentional.", meta: "04 / make it real" },
 		],
 		expertiseContexts: ["Digital identities", "Websites", "Products", "Experiments"],
-		auroraEyebrow: "Live signal / Bodø",
+		auroraEyebrow: "Live signal",
 		auroraTitleLineOne: "Aurora as",
 		auroraTitleLineTwo: "interface",
 		auroraExplanation:
@@ -312,7 +312,7 @@ const translations: Record<AppLocale, Translations> = {
 		languageSwitchLabel: "Bytt språk",
 		menuOpen: "Meny",
 		menuClose: "Lukk",
-		homeAboutLabel: "Praksis",
+		homeAboutLabel: "Om meg ",
 		homeAboutTitle: "Én tanke. Fra retning til kode.",
 		homeAboutBody:
 			"Jeg designer og bygger digitale identiteter, nettsider og produkter for virksomheter og kreative team. Når design og utvikling skjer samlet, overlever den opprinnelige idéen helt frem til skjermen.",
@@ -323,7 +323,7 @@ const translations: Record<AppLocale, Translations> = {
 		aboutPortraitAlt: "Kenneth Jørgensen under nordlyset i Bodø",
 		aboutPortraitStatement:
 			"Jeg følger en idé fra første omriss til øyeblikket noen tar den i bruk.",
-		aboutPracticeLabel: "Praksis",
+		aboutPracticeLabel: "Om meg",
 		aboutPracticeBody: [
 			"Fra Bodø jobber jeg med visuell retning, digital design, interaksjon og frontend. Ved å arbeide på tvers holder jeg konseptet, detaljene og de tekniske valgene i samme retning.",
 			"Jeg jobber direkte med virksomheter som trenger et tydelig digitalt uttrykk, og sammen med studioer som trenger ekstra kapasitet fra konsept til produksjon.",
@@ -335,13 +335,13 @@ const translations: Record<AppLocale, Translations> = {
 			"For utvalgte oppdrag, studiosamarbeid og den rette faste rollen—lokalt eller internasjonalt.",
 		aboutWorkCta: "Se utvalgte prosjekter",
 		aboutWorkTitle: "Arbeid",
-		expertiseEyebrow: "Hvordan jeg jobber / Hvor arbeidet hører hjemme",
+		expertiseEyebrow: "Hvordan jeg jobber",
 		expertiseTitleLineOne: "Fagfelt",
 		expertiseTitleLineTwo: "og områder",
-		expertiseAboutCta: "Om praksisen min",
+		expertiseAboutCta: "Om meg ",
 		expertiseIntro: "Et lite sett med valg jeg tar med inn i hvert prosjekt.",
 		expertiseCapabilitiesLabel: "Arbeidsmåter",
-		expertiseFieldsLabel: "Hvor arbeidet hører hjemme",
+		expertiseFieldsLabel: "",
 		expertiseModes: [
 			{ title: "Retning", description: "Jeg finner idéen det er verdt å holde fast i, og gir den et tydelig visuelt ståsted.", meta: "01 / gjør det særpreget" },
 			{ title: "System", description: "Jeg gjør ståstedet om til et klart og fleksibelt språk folk faktisk kan bruke.", meta: "02 / gjør det nyttig" },
@@ -349,7 +349,7 @@ const translations: Record<AppLocale, Translations> = {
 			{ title: "Gjennomføring", description: "Jeg tar valgene med inn i produksjon, så det ferdige fortsatt føles gjennomtenkt.", meta: "04 / gjør det virkelig" },
 		],
 		expertiseContexts: ["Digitale identiteter", "Nettsider", "Produkter", "Eksperimenter"],
-		auroraEyebrow: "Levende signal / Bodø",
+		auroraEyebrow: "Levende signal",
 		auroraTitleLineOne: "Nordlyset som",
 		auroraTitleLineTwo: "grensesnitt",
 		auroraExplanation:
@@ -372,7 +372,7 @@ const translations: Record<AppLocale, Translations> = {
 		headerDarkWord: "mørket",
 		headerLightWord: "lyset",
 		headerHeroTitle: "Digital retning, design og frontend.",
-		headerHeroDescription: "Jeg former idéen og bygger opplevelsen — for virksomheter og kreative team.",
+		headerHeroDescription: "Jeg former idéer og bygger opplevelser",
 		headerProjectsCta: "Se prosjekter",
 		headerLocation: "LOKASJON 67.2829° N, 14.4151° E",
 		headerExplore: "Utforsk",

@@ -94,6 +94,14 @@
   line-height: 1.08;
   letter-spacing: -0.035em;
 }
+.context {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 2.5rem var(--page-gutter);
+  padding: 0 0 clamp(5rem, 10vw, 9rem);
+}
+.context > div { border-top: 1px solid color-mix(in srgb, var(--primary-color) 22%, transparent); padding-top: 1rem; }
+.context p { max-width: 30ch; margin-top: 1rem; color: var(--text-muted); font-size: 0.95rem; line-height: 1.45; }
 .textLink {
   display: inline-flex;
   gap: 2rem;
@@ -210,7 +218,8 @@
     height: 72vh;
   }
   .overview,
-  .contribution {
+  .contribution,
+  .context {
     grid-template-columns: 1fr;
   }
   .overview {

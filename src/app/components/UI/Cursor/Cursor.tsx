@@ -24,10 +24,8 @@ const Cursor = () => {
 		}
 
 		const onOver = (event: PointerEvent) => {
-			// The lens is atmospheric by default. Only elements that explicitly opt
-			// into a cursor state should change its shape; ordinary links and buttons
-			// keep the same quiet pointer treatment as the rest of the page.
-			const target = (event.target as HTMLElement).closest<HTMLElement>("[data-cursor]")
+			// The lens is atmospheric by default, then contracts over interactive targets.
+			const target = (event.target as HTMLElement).closest<HTMLElement>("[data-cursor], a, button, summary")
 			if (!target || target === activeTarget) return
 			activeTarget = target
 			lens.dataset.active = "true"

@@ -7,10 +7,10 @@ import { useI18n } from "../../../hooks/useI18n"
 import { setLightColor } from "../../Experiences/lightStore"
 
 const projectData = [
-	{ name: "Manshausen", work: { nb: "Design / Frontend", en: "Design / Front-end" }, video: "/videos/manshausen.webm", poster: undefined, slug: "manshausen", color: "#78c69a" },
-	{ name: "Verchia", work: { nb: "Visuell retning / Kode", en: "Visual direction / Code" }, video: "/videos/verchia.webm", poster: "/images/verchia.webp", slug: "verchia", color: "#b6a6ee" },
-	{ name: "Pradelna", work: { nb: "Frontendutvikling", en: "Front-end development" }, video: "/videos/pradelna.webm", poster: "/images/pradelna.webp", slug: "pradelna", color: "#e2cf9d" },
-	{ name: "Dialog eXe", work: { nb: "UX / UI", en: "UX / UI" }, video: "/videos/dx.webm", poster: "/images/dx-kino.webp", slug: "dialog-exe", color: "#8bb8dc" },
+	{ name: "Manshausen", work: { nb: "Design / Frontend", en: "Design / Front-end" }, description: { nb: "Digitalt konsept og frontend for et arkitektonisk øyretreat.", en: "Digital concept and front-end for an architectural island retreat." }, video: "/videos/manshausen.webm", poster: undefined, slug: "manshausen", color: "#78c69a" },
+	{ name: "Verchia", work: { nb: "Visuell retning / Kode", en: "Visual direction / Code" }, description: { nb: "Visuell retning og digital opplevelse utviklet fra konsept til kode.", en: "Visual direction and a digital experience developed from concept to code." }, video: "/videos/verchia.webm", poster: "/images/verchia.webp", slug: "verchia", color: "#b6a6ee" },
+	{ name: "Pradelna", work: { nb: "Frontendutvikling", en: "Front-end development" }, description: { nb: "Frontendimplementasjon med fokus på typografi, rytme og responsivitet.", en: "Front-end implementation focused on type, rhythm, and responsiveness." }, video: "/videos/pradelna.webm", poster: "/images/pradelna.webp", slug: "pradelna", color: "#e2cf9d" },
+	{ name: "Dialog eXe", work: { nb: "UX / UI", en: "UX / UI" }, description: { nb: "UX- og UI-arbeid for et tydeligere og mer effektivt digitalt produkt.", en: "UX and UI work for a clearer, more efficient digital product." }, video: "/videos/dx.webm", poster: "/images/dx-kino.webp", slug: "dialog-exe", color: "#8bb8dc" },
 ] as const
 
 const Projects = () => {
@@ -140,17 +140,21 @@ const Projects = () => {
 				<ol className={styles.index} onPointerLeave={conceal} onBlur={(event) => !event.currentTarget.contains(event.relatedTarget) && conceal()}>
 					{projectData.map((project, index) => (
 						<li key={project.slug}>
-							<button
-								type='button'
+							<a
+								href={`/project/${project.slug}`}
 								onPointerEnter={(event) => event.pointerType !== 'touch' && reveal(index, event.clientX, event.clientY)}
 								onFocus={() => reveal(index)}
-								onClick={() => transitionTo(`/project/${project.slug}`)}
+								onClick={(event) => { event.preventDefault(); transitionTo(`/project/${project.slug}`) }}
 								data-cursor='explore'
 							>
 								<span>{String(index + 1).padStart(2, "0")}</span>
 								<strong>{project.name}</strong>
-								<i>{project.work[locale]}</i>
-							</button>
+								<div className={styles.details}>
+									<i>{project.work[locale]}</i>
+									<p>{project.description[locale]}</p>
+									<span>{locale === "nb" ? "Se prosjekt" : "View project"} ↗</span>
+								</div>
+							</a>
 						</li>
 					))}
 				</ol>

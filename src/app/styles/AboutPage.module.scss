@@ -155,13 +155,16 @@
   letter-spacing: -0.04em;
 }
 .now a {
-  grid-column: 2;
-  width: fit-content;
-  margin-top: 2rem;
-  color: var(--primary-color);
-  font-family: var(--font-family-ibm);
-  font-size: 0.7rem;
-  letter-spacing: 0.06em;
+	grid-column: 2;
+	width: fit-content;
+	margin-top: 2rem;
+	color: var(--primary-color);
+	font-family: var(--font-family-syne);
+	font-size: clamp(1.8rem, 3.6vw, 3rem);
+	font-weight: 400;
+	letter-spacing: -0.04em;
+	padding-bottom: 0.35rem;
+	border-bottom: 1px solid color-mix(in srgb, var(--primary-color) 55%, transparent);
 }
 .now .arrow,
 .workLink .arrow {

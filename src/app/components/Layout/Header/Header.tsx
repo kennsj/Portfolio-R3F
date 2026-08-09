@@ -191,7 +191,7 @@ const Header = ({
 				<div className={styles.positioning}>
 					<span className={styles.sideRole}>{locale === "nb" ? <>Designer<br />+ utvikler</> : <>Designer<br />+ developer</>}</span>
 					<h2 ref={h2Ref}>{t.headerHeroTitle}</h2>
-					<p ref={pRef}>{t.headerHeroDescription}</p>
+					<p ref={pRef}>{locale === "nb" ? "Jeg hjelper virksomheter og kreative team med visuell retning, nettsider og digitale produkter — fra første idé til ferdig frontend." : "I help businesses and creative teams with visual direction, websites, and digital products — from first idea to finished front-end."}</p>
 				</div>
 			</div>
 			<div className={styles.heroFooter}>

@@ -54,10 +54,11 @@
 
 .inner nav {
 	grid-column: 2;
+	grid-row: 1 / span 2;
 	display: grid;
 	grid-template-columns: 1fr 1fr;
 	gap: .7rem 2rem;
-	align-self: end;
+	align-self: center;
 	font-size: clamp(1.15rem, 1.9vw, 1.6rem);
 
 	a { color: inherit; transition: color 220ms ease; }
@@ -106,7 +107,7 @@
 
 @media (max-width: 680px) {
 	.inner { grid-template-columns: 1fr; gap: 3rem; }
-	.inner nav { grid-column: 1; }
+	.inner nav { grid-column: 1; grid-row: auto; }
 	.utility { grid-template-columns: 1fr auto; gap: 1.25rem; }
 	.languages { justify-self: end; }
 	.top { grid-column: 1 / -1; justify-self: start; }

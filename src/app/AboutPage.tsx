@@ -79,7 +79,7 @@ export default function AboutPage() {
         <span>03 / {t.aboutNowLabel}</span>
         <p>{t.aboutNowBody}</p>
         <a href="mailto:hei@kennethjorgensen.no">
-          hei@kennethjorgensen.no <ArrowIcon />
+          hei@kennethjorgensen.no
         </a>
       </section>
       <a
