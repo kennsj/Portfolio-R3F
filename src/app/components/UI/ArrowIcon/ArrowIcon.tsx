@@ -1,7 +1,7 @@
 import styles from "./ArrowIcon.module.scss";
 
 type ArrowIconProps = {
-  direction?: "up-right" | "up";
+  direction?: "up-right" | "up" | "down";
   size?: "inline" | "display";
 };
 
@@ -13,7 +13,7 @@ export default function ArrowIcon({
 }: ArrowIconProps) {
   return (
     <span
-      className={`${styles.arrow} ${direction === "up" ? styles.up : ""} ${size === "display" ? styles.display : ""}`}
+      className={`${styles.arrow} ${direction === "up" ? styles.up : ""} ${direction === "down" ? styles.down : ""} ${size === "display" ? styles.display : ""}`}
       aria-hidden="true"
     >
       <svg

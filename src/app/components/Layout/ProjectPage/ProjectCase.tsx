@@ -187,7 +187,7 @@ export default function ProjectCase({ slug }: { slug: keyof typeof projects }) {
         <h1>{project.title}</h1>
         <p>{copy(project.intro)}</p>
         <span className={styles.scroll}>
-          {locale === "nb" ? "Rull for å utforske" : "Scroll to explore"} ↓
+          {locale === "nb" ? "Scroll for å utforske" : "Scroll to explore"} <ArrowIcon direction="down" />
         </span>
       </header>
 

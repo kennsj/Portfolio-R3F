@@ -129,14 +129,14 @@ const Header = ({
 				if (heroLines?.length) {
 					tl.fromTo(
 						heroLines,
-						{ autoAlpha: 1, yPercent: 110, rotationX: -72, skewY: 3, clipPath: "inset(0 0 100% 0)", transformPerspective: 1100, transformOrigin: "50% 100%" },
-						{ autoAlpha: 1, yPercent: 0, rotationX: 0, skewY: 0, clipPath: "inset(0 0 0% 0)", transformPerspective: 1100, transformOrigin: "50% 100%", duration: 1.2, stagger: 0.1, ease: "shiftTitle" },
+						{ autoAlpha: 1, yPercent: 110, clipPath: "inset(0 0 100% 0)" },
+						{ autoAlpha: 1, yPercent: 0, clipPath: "inset(0 0 0% 0)", duration: 1.2, stagger: 0.1, ease: "shiftTitle" },
 						splitH4 ? "<+0.22" : 0,
 					)
 				}
 
 				if (splitH2) {
-					tl.from(splitH2.lines, { autoAlpha: 1, yPercent: 110, rotationX: -34, skewY: 2, transformPerspective: 900, transformOrigin: "50% 100%", duration: 0.8, stagger: 0.1 }, "<+0.12")
+				tl.from(splitH2.lines, { autoAlpha: 1, yPercent: 110, duration: 0.8, stagger: 0.1 }, "<+0.12")
 				}
 
 				if (splitP) {

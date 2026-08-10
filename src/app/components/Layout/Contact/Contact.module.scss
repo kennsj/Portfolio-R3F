@@ -69,14 +69,14 @@
 			right: 0;
 			bottom: 0;
 			height: 1px;
-			background: currentColor;
-			transform: scaleX(0);
-			transform-origin: right;
-			transition: transform .45s var(--shift-ease);
-		}
+		background: currentColor;
+		transform: scaleX(0);
+		transform-origin: left;
+		transition: transform .45s var(--shift-ease);
+	}
 
 		&:hover::after,
-		&:focus-visible::after { transform: scaleX(1); transform-origin: left; }
+		&:focus-visible::after { transform: scaleX(1); }
 	}
 }
 .emailLine { grid-column: 2; justify-self: start; width: max-content; max-width: 100%; margin-top: clamp(3rem, 7vw, 6rem); display: flex; align-items: baseline; gap: 1rem; flex-wrap: wrap; }

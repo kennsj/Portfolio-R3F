@@ -25,7 +25,7 @@ const Contact = ({ showForecast = false }: { showForecast?: boolean }) => {
 		const tl = gsap.timeline({ scrollTrigger: { trigger: section, start: "top 72%", once: true } })
 		tl.fromTo(location, { yPercent: 110, rotationX: -28, autoAlpha: 0, transformPerspective: 900 }, { yPercent: 0, rotationX: 0, autoAlpha: 1, duration: 0.8, ease: "shiftReveal" })
 			.fromTo(titleSplit?.lines ?? [], { yPercent: 110, rotationX: -78, skewY: 3, transformPerspective: 1100, transformOrigin: "50% 100%" }, { yPercent: 0, rotationX: 0, skewY: 0, duration: 1.2, stagger: 0.1, ease: "shiftTitle" }, "-=0.35")
-			.fromTo(email, { yPercent: 110, rotationX: -30, transformPerspective: 900, transformOrigin: "50% 100%" }, { yPercent: 0, rotationX: 0, duration: 0.8, ease: "shiftReveal" }, "-=0.5")
+			.fromTo(email, { yPercent: 110, rotationX: -30, transformPerspective: 900, transformOrigin: "50% 100%" }, { yPercent: 0, rotationX: 0, duration: 0.8, ease: "shiftReveal", clearProps: "transform" }, "-=0.5")
 			.fromTo(lines, { scaleX: 0, transformOrigin: "left" }, { scaleX: 1, duration: 2, stagger: 0.1, ease: "shiftRule" }, "-=0.45")
 		return () => titleSplit?.revert()
 	}, { scope: sectionRef })

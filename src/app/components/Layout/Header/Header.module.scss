@@ -76,6 +76,8 @@
     }
     .lastName {
       align-self: flex-end;
+      color: transparent;
+      -webkit-text-stroke: 1px var(--primary-color);
     }
   }
 }

@@ -163,8 +163,29 @@
 	font-size: clamp(1.8rem, 3.6vw, 3rem);
 	font-weight: 400;
 	letter-spacing: -0.04em;
+	position: relative;
 	padding-bottom: 0.35rem;
-	border-bottom: 1px solid color-mix(in srgb, var(--primary-color) 55%, transparent);
+
+	&::before,
+	&::after {
+		content: "";
+		position: absolute;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		height: 1px;
+	}
+	&::before { background: color-mix(in srgb, var(--primary-color) 28%, transparent); }
+	&::after {
+		background: currentColor;
+		transform: scaleX(0);
+		transform-origin: left;
+		transition: transform 0.45s var(--shift-ease);
+	}
+	&:hover::after,
+	&:focus-visible::after {
+		transform: scaleX(1);
+	}
 }
 .now .arrow,
 .workLink .arrow {

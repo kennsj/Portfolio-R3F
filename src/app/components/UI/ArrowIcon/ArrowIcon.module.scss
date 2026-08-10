@@ -26,6 +26,10 @@
     transform: rotate(-45deg);
   }
 
+  &.down {
+    transform: rotate(135deg);
+  }
+
   :global(:is(a, button):hover) &,
   :global(:is(a, button):focus-visible) & {
     .icon {
