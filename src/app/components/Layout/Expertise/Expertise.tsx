@@ -31,7 +31,7 @@ const Expertise = () => {
       });
       timeline.from(
         section.querySelectorAll("[data-field-index]"),
-        { y: 24, autoAlpha: 0, duration: 0.55, stagger: 0.07 },
+        { y: 24, autoAlpha: 0, duration: 0.55, stagger: 0.07, immediateRender: false },
       );
       return () => {
         timeline.scrollTrigger?.kill();

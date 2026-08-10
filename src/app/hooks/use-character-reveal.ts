@@ -28,6 +28,13 @@ export function useCharacterReveal(
 		() => {
 			const heading = ref.current
 			if (!heading || !enabled) return
+			const reducedMotion = window.matchMedia(
+				"(prefers-reduced-motion: reduce)",
+			).matches
+			if (reducedMotion) {
+				gsap.set(heading, { autoAlpha: 1, filter: "none", clearProps: "transform" })
+				return
+			}
 
 			let cancelled = false
 			let split: SplitText | null = null
@@ -35,30 +42,31 @@ export function useCharacterReveal(
 
 			document.fonts.ready.then(() => {
 				if (cancelled || !heading.isConnected) return
-
-				split = SplitText.create(heading, { type: "chars" })
-				const reducedMotion = window.matchMedia(
-					"(prefers-reduced-motion: reduce)",
-				).matches
-				const order = deterministicCharacterOrder(split.chars.length)
+				try {
+					split = SplitText.create(heading, { type: "words" })
+				} catch {
+					gsap.set(heading, { autoAlpha: 1, filter: "none", clearProps: "transform" })
+					return
+				}
+				const units = split.words
+				const order = deterministicCharacterOrder(units.length)
 				const rank = new Map(order.map((characterIndex, position) => [characterIndex, position]))
 
 				gsap.set(heading, { autoAlpha: 1 })
 				tween = gsap.fromTo(
-					split.chars,
+					units,
 					{
 						autoAlpha: 0,
-						filter: reducedMotion ? "blur(0px)" : "blur(12px)",
+						filter: "blur(12px)",
 					},
 					{
 						autoAlpha: 1,
 						filter: "blur(0px)",
-						duration: reducedMotion ? 0.16 : 0.8,
+						duration: 0.8,
 						delay,
+						immediateRender: immediate,
 						ease: "power2.out",
-						stagger: reducedMotion
-							? 0
-							: (index) => (rank.get(index) ?? index) * 0.022,
+						stagger: (index) => (rank.get(index) ?? index) * 0.022,
 						scrollTrigger: immediate
 							? undefined
 							: {

@@ -14,8 +14,8 @@ type Copy = { en: string; nb: string };
 type Project = {
   slug: string;
   title: string;
-  role: string;
-  type: string;
+  role: Copy;
+  type: Copy;
   status: Copy;
   intro: Copy;
   brief: Copy;
@@ -33,9 +33,9 @@ const projects: Record<string, Project> = {
   manshausen: {
     slug: "manshausen",
     title: "Manshausen",
-    role: "Design / Frontend",
-    type: "Hospitality / Personal project",
-    status: { en: "Independent concept", nb: "Egeninitiert konsept" },
+    role: { en: "Design / Front-end", nb: "Design / Frontend" },
+    type: { en: "Travel / Independent concept", nb: "Reiseliv / Eget konseptprosjekt" },
+    status: { en: "Independent concept project", nb: "Eget konseptprosjekt" },
     color: "#78c69a",
     intro: {
       en: "A digital redesign for an island retreat at the edge of the Norwegian Sea.",
@@ -60,8 +60,8 @@ const projects: Record<string, Project> = {
   verchia: {
     slug: "verchia",
     title: "Verchia",
-    role: "Visual direction / Design / Frontend",
-    type: "Fashion / Digital experience",
+    role: { en: "Visual direction / Design / Front-end", nb: "Visuell retning / Design / Frontend" },
+    type: { en: "Fashion / Digital experience", nb: "Mote / Digital opplevelse" },
     status: { en: "Live project", nb: "Publisert prosjekt" },
     color: "#b6a6ee",
     live: "https://verchia.vercel.app/",
@@ -88,8 +88,8 @@ const projects: Record<string, Project> = {
   pradelna: {
     slug: "pradelna",
     title: "Pradelna",
-    role: "Frontend development",
-    type: "Services / Website",
+    role: { en: "Front-end development", nb: "Frontendutvikling" },
+    type: { en: "Services / Website", nb: "Tjenester / Nettside" },
     status: { en: "Live project", nb: "Publisert prosjekt" },
     color: "#e2cf9d",
     live: "https://www.pradelnakrkonose.cz/",
@@ -116,8 +116,8 @@ const projects: Record<string, Project> = {
   "dialog-exe": {
     slug: "dialog-exe",
     title: "Dialog eXe",
-    role: "UX / UI",
-    type: "Product design / Concept",
+    role: { en: "UX / UI", nb: "UX / UI" },
+    type: { en: "Product design / Concept", nb: "Produktdesign / Konsept" },
     status: { en: "Product concept", nb: "Produktkonsept" },
     color: "#8bb8dc",
     intro: {
@@ -148,21 +148,24 @@ export default function ProjectCase({ slug }: { slug: keyof typeof projects }) {
   const { transitionTo } = usePageTransition();
   const copy = (value: Copy) => value[locale];
 	const context = project.context ?? [
-		{ label: "Start", en: copy(project.brief), nb: copy(project.brief) },
-		{ label: "Goal", en: copy(project.approach), nb: copy(project.approach) },
-		{ label: "Role", en: copy(project.contribution), nb: copy(project.contribution) },
-		{ label: "Choices", en: copy(project.approach), nb: copy(project.approach) },
-		{ label: "Delivery", en: copy(project.contribution), nb: copy(project.contribution) },
+		{ label: "Start", en: project.brief.en, nb: project.brief.nb },
+		{ label: "Goal", en: project.intro.en, nb: project.intro.nb },
+		{ label: "Role", en: project.contribution.en, nb: project.contribution.nb },
+		{ label: "Choices", en: project.approach.en, nb: project.approach.nb },
+		{ label: "Delivery", en: `A responsive ${project.title} experience combining the documented design and interaction work.`, nb: `En responsiv ${project.title}-opplevelse som samler det dokumenterte design- og interaksjonsarbeidet.` },
 		{ label: "Next", en: "Test the concept with users and stakeholders against the intended experience.", nb: "Teste konseptet med brukere og interessenter mot den tiltenkte opplevelsen." },
 	];
 
-  useLayoutEffect(() => window.scrollTo(0, 0), []);
+  useLayoutEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
   useGSAP(() => {
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
     gsap.utils.toArray<HTMLElement>("[data-case-reveal]").forEach((element) => {
       gsap.from(element, {
         y: 80,
         autoAlpha: 0,
+		immediateRender: false,
         duration: 1,
         ease: "shiftReveal",
         scrollTrigger: { trigger: element, start: "top 88%", once: true },
@@ -182,18 +185,19 @@ export default function ProjectCase({ slug }: { slug: keyof typeof projects }) {
     >
       <header className={styles.hero}>
         <div className={styles.heroMeta}>
-          <span>{project.type}</span>
+          <span>{copy(project.type)}</span>
           <span>Bodø / 67°17′N</span>
         </div>
         <HeadingAnimation level={1} immediate>{project.title}</HeadingAnimation>
         <p>{copy(project.intro)}</p>
         <span className={styles.scroll}>
-          {locale === "nb" ? "Scroll for å utforske" : "Scroll to explore"} <ArrowIcon direction="down" />
+          {locale === "nb" ? "Rull for å utforske" : "Scroll to explore"} <ArrowIcon direction="down" />
         </span>
       </header>
 
       <figure className={styles.heroMedia} data-case-reveal>
         <video
+          aria-hidden="true"
           autoPlay
           loop
           muted
@@ -208,7 +212,7 @@ export default function ProjectCase({ slug }: { slug: keyof typeof projects }) {
         <dl>
           <div>
             <dt>{locale === "nb" ? "Rolle" : "Role"}</dt>
-            <dd>{project.role}</dd>
+            <dd>{copy(project.role)}</dd>
           </div>
           <div>
             <dt>Status</dt>
@@ -216,7 +220,7 @@ export default function ProjectCase({ slug }: { slug: keyof typeof projects }) {
           </div>
           <div>
             <dt>{locale === "nb" ? "Fokus" : "Focus"}</dt>
-            <dd>Design × Development</dd>
+            <dd>{locale === "nb" ? "Design × utvikling" : "Design × development"}</dd>
           </div>
         </dl>
         <div>
@@ -252,6 +256,7 @@ export default function ProjectCase({ slug }: { slug: keyof typeof projects }) {
       <div className={styles.mediaPair} data-case-reveal>
         <figure>
           <video
+            aria-hidden="true"
             autoPlay
             loop
             muted
@@ -263,7 +268,7 @@ export default function ProjectCase({ slug }: { slug: keyof typeof projects }) {
         </figure>
         <figure>
           {project.slug === "manshausen" ? (
-            <video autoPlay loop muted playsInline>
+            <video aria-hidden="true" autoPlay loop muted playsInline>
               <source src={project.video} type="video/webm" />
             </video>
           ) : (

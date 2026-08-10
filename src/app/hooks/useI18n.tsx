@@ -179,10 +179,10 @@ const translations: Record<AppLocale, Translations> = {
 		expertiseCapabilitiesLabel: "Ways of working",
 			expertiseFieldsLabel: "",
 		expertiseModes: [
-			{ title: "Direction", description: "Find the idea worth keeping, then give it a visual point of view.", meta: "01 / make it distinct" },
-			{ title: "Systems", description: "Turn that point of view into a clear, flexible language people can use.", meta: "02 / make it useful" },
-			{ title: "Motion", description: "Let timing, feedback and atmosphere explain what the interface can do.", meta: "03 / make it felt" },
-			{ title: "Build", description: "Carry the decisions into production so the finished thing still feels intentional.", meta: "04 / make it real" },
+			{ title: "Visual direction", description: "Shape a distinct point of view, hierarchy, and visual language around the right idea.", meta: "01 / direction" },
+			{ title: "UX/UI and interaction", description: "Make structure, feedback, and movement clear enough to guide people naturally.", meta: "02 / interaction" },
+			{ title: "Websites and products", description: "Turn the direction into responsive interfaces and systems built for real content.", meta: "03 / product" },
+			{ title: "Front-end and creative development", description: "Carry the decisions into components, motion, and production-ready front-end.", meta: "04 / development" },
 		],
 		expertiseContexts: ["Digital identities", "Websites", "Products", "Experiments"],
 		auroraEyebrow: "Live signal",
@@ -343,10 +343,10 @@ const translations: Record<AppLocale, Translations> = {
 		expertiseCapabilitiesLabel: "Arbeidsmåter",
 		expertiseFieldsLabel: "",
 		expertiseModes: [
-			{ title: "Retning", description: "Jeg finner idéen det er verdt å holde fast i, og gir den et tydelig visuelt ståsted.", meta: "01 / gjør det særpreget" },
-			{ title: "System", description: "Jeg gjør ståstedet om til et klart og fleksibelt språk folk faktisk kan bruke.", meta: "02 / gjør det nyttig" },
-			{ title: "Bevegelse", description: "Timing, respons og atmosfære får forklare hva grensesnittet kan gjøre.", meta: "03 / gjør det merkbart" },
-			{ title: "Gjennomføring", description: "Jeg tar valgene med inn i produksjon, så det ferdige fortsatt føles gjennomtenkt.", meta: "04 / gjør det virkelig" },
+			{ title: "Visuell retning", description: "Jeg former et tydelig ståsted, hierarki og visuelt språk rundt den riktige idéen.", meta: "01 / retning" },
+			{ title: "UX/UI og interaksjon", description: "Struktur, respons og bevegelse gjør grensesnittet enkelt å forstå og bruke.", meta: "02 / interaksjon" },
+			{ title: "Nettsider og digitale produkter", description: "Retningen blir til responsive grensesnitt og systemer bygget for ekte innhold.", meta: "03 / produkt" },
+			{ title: "Frontend og kreativ utvikling", description: "Jeg tar valgene inn i komponenter, motion og produksjonsklar frontend.", meta: "04 / utvikling" },
 		],
 		expertiseContexts: ["Digitale identiteter", "Nettsider", "Produkter", "Eksperimenter"],
 		auroraEyebrow: "Levende signal",
@@ -448,7 +448,7 @@ const translations: Record<AppLocale, Translations> = {
 			manshausen: {
 				title: "Manshausen — case | Kenneth Jørgensen",
 				description:
-					"Design and front-end build for Manshausen: visual direction, interaction, and a React-led implementation.",
+					"Design og frontend for Manshausen — visuell retning, interaksjon og et selvinitiert konseptprosjekt.",
 			},
 			verchia: {
 				title: "Verchia — case | Kenneth Jørgensen",
@@ -473,7 +473,7 @@ const translations: Record<AppLocale, Translations> = {
 }
 
 /** Default Open Graph / Twitter image (absolute URL built in RootLayout). */
-export const SEO_DEFAULT_OG_IMAGE_PATH = "/images/og.jpg"
+export const SEO_DEFAULT_OG_IMAGE_PATH = "/og.jpg"
 
 export function getSeoForPath(
 	pathname: string,

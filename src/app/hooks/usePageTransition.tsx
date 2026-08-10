@@ -67,10 +67,17 @@ export function usePageTransition() {
 		}
 
 		gsap.timeline()
-			.to(GSAP_PAGE_CONTENT_SELECTOR, {
-				opacity: 0,
-				duration: 0.42,
-				ease: "power2.inOut",
+			.set("#page-transition", { autoAlpha: 1, yPercent: 0 })
+			.set("#page-transition-reveal", { yPercent: 100 })
+			.fromTo("#page-transition-title", { autoAlpha: 0, y: 24, filter: "blur(12px)" }, { autoAlpha: 1, y: 0, filter: "blur(0px)", duration: 0.65, ease: "power3.out" }, 0.35)
+			.to("#page-transition-cover", {
+				yPercent: 0,
+				duration: 0.65,
+				ease: "power3.inOut",
+				onStart: () => {
+					const title = document.querySelector<HTMLElement>("#page-transition-title")
+					if (title) title.textContent = targetPath === "/" ? "Home" : targetPath.slice(1).replaceAll("/", " / ")
+				},
 				onComplete: () => {
 					void navigate({
 						to,

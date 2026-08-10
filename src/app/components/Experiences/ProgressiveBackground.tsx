@@ -45,7 +45,16 @@ export default function ProgressiveBackground() {
 			navigator as Navigator & { connection?: { saveData?: boolean } }
 		).connection?.saveData
 
-		if (reduceMotion || saveData) return
+		const canvas = document.createElement("canvas")
+		const supportsWebGl = Boolean(
+			window.WebGLRenderingContext &&
+			(canvas.getContext("webgl2") || canvas.getContext("webgl")),
+		)
+
+		if (reduceMotion || saveData || !supportsWebGl) {
+			markHomeHeroSceneReady()
+			return
+		}
 
 		const start = () => setEnhance(true)
 		const idle = window.requestIdleCallback?.(start, { timeout: 1200 })
@@ -55,7 +64,7 @@ export default function ProgressiveBackground() {
 			if (idle !== undefined) window.cancelIdleCallback?.(idle)
 			if (timer !== undefined) window.clearTimeout(timer)
 		}
-	}, [])
+	}, [markHomeHeroSceneReady])
 
 	if (!enhance) return null
 

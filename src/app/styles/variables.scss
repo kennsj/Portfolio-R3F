@@ -128,15 +128,7 @@ body {
 }
 
 body {
-  background:
-    radial-gradient(
-      ellipse at 68% 18%,
-      rgba(45, 118, 68, 0.3) 0,
-      rgba(20, 47, 27, 0.16) 34%,
-      transparent 68%
-    ),
-    var(--color-black);
-  background-attachment: fixed;
+  background: var(--color-black);
   overflow-x: clip;
 }
 

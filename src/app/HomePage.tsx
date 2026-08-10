@@ -3,7 +3,7 @@ import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Header from "./components/Layout/Header/Header";
-import Contact from "./components/Layout/Contact/Contact";
+import Aurora from "./components/Layout/Aurora/Aurora";
 import Expertise from "./components/Layout/Expertise/Expertise";
 import Projects from "./components/Layout/Project/Projects";
 import { useI18n } from "./hooks/useI18n";
@@ -37,6 +37,7 @@ export default function HomePage() {
       gsap.from(pathways, {
         yPercent: 22,
         autoAlpha: 0,
+		immediateRender: false,
         duration: 0.9,
         stagger: 0.1,
         ease: "shiftReveal",
@@ -110,7 +111,15 @@ export default function HomePage() {
       <Suspense>
         <Expertise />
       </Suspense>
-      <Contact showForecast />
+      <section
+        className={styles.aurora}
+        data-aurora-state
+        data-aurora-presence="1.16"
+        data-aurora-color="#a8f3c3"
+        aria-label={t.auroraTitleLineOne}
+      >
+        <Aurora />
+      </section>
     </>
   );
 }

@@ -12,7 +12,7 @@
 	letter-spacing: .08em;
 	line-height: 1.4;
 	text-transform: uppercase;
-	color: var(--aurora-mint);
+	color: var(--editorial-accent, var(--aurora-mint));
 }
 
 .content {
@@ -30,6 +30,13 @@
 	letter-spacing: -.05em;
 }
 
+.statement :is(h1, h2, h3) {
+	margin: 0;
+	font: inherit;
+	letter-spacing: inherit;
+	line-height: inherit;
+}
+
 .supporting {
 	max-width: 30ch;
 	align-self: end;
@@ -38,7 +45,7 @@
 .copy {
 	font-size: clamp(1rem, 1.35vw, 1.3rem);
 	line-height: 1.45;
-	color: var(--text-muted);
+	color: var(--editorial-muted, var(--text-muted));
 }
 
 .supporting :global(a) {

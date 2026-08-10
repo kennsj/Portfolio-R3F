@@ -138,8 +138,9 @@ const Projects = () => {
 	return (
 		<>
 			<section className={styles.section} id='work' data-aurora-state data-aurora-presence='.42' data-aurora-color={activeIndex === null ? '#78c69a' : projectData[activeIndex].color}>
-				<EditorialRail label={locale === "nb" ? "Utvalgte arbeider" : "Selected work"} copy={<p>{locale === "nb" ? "Utvalgte digitale opplevelser fra retning, design og frontend." : "Selected digital experiences shaped through direction, design, and front-end."}</p>} />
-				<div className={styles.heading}><span>{locale === "nb" ? "Utvalgte arbeider" : "Selected work"}</span><span>( 01—04 )</span></div>
+				<EditorialRail className={styles.projectIntro} label={<><span>{locale === "nb" ? "Arbeid" : "Work"}</span><span>( 01—04 )</span></>} copy={<p>{locale === "nb" ? "Fire utvalgte digitale opplevelser formet gjennom retning, design og frontend." : "Four selected digital experiences shaped through direction, design, and front-end."}</p>}>
+					<h2>{locale === "nb" ? "Utvalgte arbeider" : "Selected work"}</h2>
+				</EditorialRail>
 				<ol className={styles.index} onPointerLeave={conceal} onBlur={(event) => !event.currentTarget.contains(event.relatedTarget) && conceal()}>
 					{projectData.map((project, index) => (
 						<li key={project.slug}>

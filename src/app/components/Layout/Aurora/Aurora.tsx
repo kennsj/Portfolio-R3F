@@ -93,17 +93,19 @@ const Aurora = () => {
             immediateRender: false,
           });
 
-          timeline.to(
-            bars,
-            {
-              scaleY: 1,
-              opacity: 1,
-              stagger: 0.04,
-              duration: 0.6,
-              ease: "power2.out",
-            },
-            0,
-          );
+          if (bars.length > 0) {
+            timeline.to(
+              bars,
+              {
+                scaleY: 1,
+                opacity: 1,
+                stagger: 0.04,
+                duration: 0.6,
+                ease: "power2.out",
+              },
+              0,
+            );
+          }
 
           timeline.to(
             counter,
@@ -146,7 +148,7 @@ const Aurora = () => {
     { dependencies: [isLoading, hasKpEntries], scope: wrapRef },
   );
 
-  const ready = !isLoading && !!data?.entries.length;
+  const ready = true;
   const { label, visible } = getKpLabel(displayKp, locale);
   return (
     <div
@@ -175,7 +177,7 @@ const Aurora = () => {
             </div>
             <div className={styles.kp}>
               <span>{t.auroraKpIndex}</span>
-              <strong ref={kpNumRef} />
+              <strong ref={kpNumRef}>{displayKp.toFixed(1)}</strong>
               <small>
                 <i style={{ background: getKpColor(displayKp) }} />
                 {label}

@@ -13,7 +13,7 @@ import {
 } from "./utils/gsapScroll"
 import { PointerProvider } from "./components/Experiences/PointerContext"
 import { KpProvider } from "./hooks/KpContext"
-import { HeroIntroProvider, useHeroIntro } from "./hooks/HeroIntroContext"
+import { HeroIntroProvider } from "./hooks/HeroIntroContext"
 import { SimpleAnalytics } from "@simpleanalytics/react"
 import PermissionProvider from "./components/Experiences/PermissionProvider"
 import ProgressiveBackground from "./components/Experiences/ProgressiveBackground"
@@ -25,19 +25,9 @@ import {
 import { buildSeoJsonLd } from "./utils/seoJsonLd"
 import "./utils/motion"
 const Nav = lazy(() => import("./components/Layout/Nav/Nav"))
-const SupportUkraine = lazy(
-	() => import("./components/UI/SupportUkraine/SupportUkraine"),
-)
 const Cursor = lazy(() => import("./components/UI/Cursor/Cursor"))
 
 gsap.registerPlugin(ScrollTrigger)
-
-function HomeIntroCurtain({ isHome }: { isHome: boolean }) {
-	const { homeHeroIntroReady } = useHeroIntro()
-	return isHome && !homeHeroIntroReady ? (
-		<div className='home-intro-curtain' aria-hidden='true' />
-	) : null
-}
 
 export default function RootLayout() {
 	const { pathname, hash: locationHash } = useLocation()
@@ -54,7 +44,7 @@ export default function RootLayout() {
 			t,
 		)
 		const origin = window.location.origin
-		const canonicalUrl = `${origin}${pathname}=${locale}`
+		const canonicalUrl = `${origin}${pathname}?lang=${locale}`
 		const ogImageUrl = `${origin}${SEO_DEFAULT_OG_IMAGE_PATH}`
 
 		document.title = pageTitle
@@ -119,8 +109,8 @@ export default function RootLayout() {
 		}
 
 		const basePath = `${origin}${pathname}`
-		setAlternate("en", `${basePath}en`)
-		setAlternate("nb", `${basePath}nb`)
+		setAlternate("en", `${basePath}?lang=en`)
+		setAlternate("nb", `${basePath}?lang=nb`)
 
 		let xDefault = document.head.querySelector<HTMLLinkElement>(
 			'link[rel="alternate"][hreflang="x-default"]',
@@ -131,7 +121,7 @@ export default function RootLayout() {
 			xDefault.setAttribute("hreflang", "x-default")
 			document.head.appendChild(xDefault)
 		}
-		xDefault.href = `${basePath}nb`
+		xDefault.href = `${basePath}?lang=nb`
 
 		const id = "seo-jsonld"
 		let schemaScript = document.getElementById(id) as HTMLScriptElement | null
@@ -198,9 +188,19 @@ export default function RootLayout() {
 		() => {
 			const transitionLayer = document.querySelector<HTMLElement>("#page-transition")
 			if (transitionLayer) {
-				gsap.killTweensOf(transitionLayer)
-				transitionPathRef.current = pathname
-				gsap.set(transitionLayer, { autoAlpha: 0, yPercent: 0 })
+				const isIncomingTransition = transitionPathRef.current !== pathname
+				gsap.killTweensOf([transitionLayer, "#page-transition-cover", "#page-transition-reveal"])
+				if (!isIncomingTransition) {
+					gsap.set(transitionLayer, { autoAlpha: 0, yPercent: 0 })
+				} else {
+					gsap.timeline()
+						.to("#page-transition-reveal", { yPercent: 0, duration: 0.55, ease: "power3.inOut" })
+						.fromTo(GSAP_PAGE_CONTENT_SELECTOR, { opacity: 0, filter: "blur(12px)" }, { opacity: 1, filter: "blur(0px)", duration: 0.65, ease: "power2.out" }, "-=.1")
+						.to("#page-transition-cover", { yPercent: -100, duration: 0.75, ease: "power3.inOut" }, "-=.35")
+						.to("#page-transition-title", { autoAlpha: 0, filter: "blur(10px)", duration: 0.3 }, "-=.6")
+						.set(transitionLayer, { autoAlpha: 0 })
+						.call(() => { transitionPathRef.current = pathname })
+				}
 			}
 			const pageContent = gsap.utils.toArray<HTMLElement>(
 				GSAP_PAGE_CONTENT_SELECTOR,
@@ -213,7 +213,7 @@ export default function RootLayout() {
 			gsap.killTweensOf(pageContent)
 			gsap.fromTo(
 				pageContent,
-				{ opacity: 0, filter: "blur(25px)" },
+				{ opacity: .72, filter: "blur(8px)" },
 				{
 					opacity: 1,
 					filter: "blur(0px)",
@@ -232,11 +232,14 @@ export default function RootLayout() {
 			<PermissionProvider />
 			<KpProvider>
 				<HeroIntroProvider>
-					<HomeIntroCurtain isHome={isHome} />
 					<SimpleAnalytics />
 
 					<ProgressiveBackground />
-					<div id='page-transition' className='page-transition' aria-hidden='true'><span>KJ / 67°N</span></div>
+					<div id='page-transition' className='page-transition' aria-hidden='true'>
+						<div id='page-transition-cover' className='page-transition-cover' />
+						<div id='page-transition-reveal' className='page-transition-reveal' />
+						<span id='page-transition-title'>KJ / 67°N</span>
+					</div>
 					<Suspense fallback={null}>
 						<Nav />
 					</Suspense>
@@ -245,9 +248,6 @@ export default function RootLayout() {
 						<Outlet />
 					</main>
 					<Footer />
-					<Suspense fallback={null}>
-						<SupportUkraine />
-					</Suspense>
 					<Suspense fallback={null}>
 						<Cursor />
 					</Suspense>

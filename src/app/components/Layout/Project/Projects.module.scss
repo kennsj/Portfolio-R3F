@@ -5,6 +5,10 @@
   color: var(--signal-black);
   overflow: clip;
 }
+.projectIntro {
+  --editorial-accent: color-mix(in srgb, var(--signal-black) 78%, transparent);
+  --editorial-muted: color-mix(in srgb, var(--signal-black) 82%, transparent);
+}
 .heading {
   max-width: var(--max-width);
   margin: 0 auto clamp(4rem, 8vw, 7rem);
@@ -56,7 +60,7 @@
   line-height: 0.9;
   letter-spacing: -0.035em;
   text-transform: uppercase;
-  opacity: 0.42;
+  opacity: 0.72;
   transition:
     transform 0.55s var(--shift-ease),
     opacity 0.3s ease;
@@ -65,6 +69,10 @@
 .index a:focus-visible strong {
   opacity: 1;
   transform: translateX(0.22em);
+}
+.index a:focus-visible {
+  outline: 2px solid var(--signal-black);
+  outline-offset: 0.35rem;
 }
 .details {
   display: grid;
