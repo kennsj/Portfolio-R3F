@@ -1,0 +1,60 @@
+.rail {
+	display: grid;
+	grid-template-columns: minmax(7rem, .42fr) minmax(0, 1.58fr);
+	gap: clamp(2rem, 6vw, 7rem);
+	padding-block: clamp(4.5rem, 10vw, 9rem);
+	border-top: 1px solid var(--rule-color);
+}
+
+.label {
+	font-family: var(--font-family-ibm);
+	font-size: .65rem;
+	letter-spacing: .08em;
+	line-height: 1.4;
+	text-transform: uppercase;
+	color: var(--aurora-mint);
+}
+
+.content {
+	display: grid;
+	grid-template-columns: minmax(0, 1.15fr) minmax(13rem, .85fr);
+	gap: clamp(2rem, 6vw, 7rem);
+	align-items: end;
+}
+
+.statement {
+	max-width: 14ch;
+	font-size: clamp(2.8rem, 6.8vw, 7rem);
+	font-weight: 400;
+	line-height: .92;
+	letter-spacing: -.05em;
+}
+
+.supporting {
+	max-width: 30ch;
+	align-self: end;
+}
+
+.copy {
+	font-size: clamp(1rem, 1.35vw, 1.3rem);
+	line-height: 1.45;
+	color: var(--text-muted);
+}
+
+.supporting :global(a) {
+	display: inline-flex;
+	margin-top: 2rem;
+	padding-bottom: .5rem;
+	border-bottom: 1px solid currentColor;
+	font-family: var(--font-family-ibm);
+	font-size: .65rem;
+	letter-spacing: .08em;
+	text-transform: uppercase;
+	color: inherit;
+}
+
+@media (max-width: 700px) {
+	.rail { grid-template-columns: 1fr; gap: 2rem; }
+	.content { grid-template-columns: 1fr; gap: 2rem; }
+	.statement { max-width: 12ch; }
+}

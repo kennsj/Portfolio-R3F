@@ -1,7 +1,7 @@
 .heading {
+	visibility: hidden;
 	position: relative;
-	display: flex;
-	flex-direction: row;
+	display: block;
 	margin-bottom: 0;
 	perspective: 25vw;
 }

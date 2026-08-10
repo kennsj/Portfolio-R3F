@@ -7,6 +7,7 @@ import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useI18n } from "../../../hooks/useI18n";
+import HeadingAnimation from "../../UI/HeadingAnimation/HeadingAnimation";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -160,10 +161,10 @@ const Aurora = () => {
           <div className={styles.intro}>
             <span>03 / {t.auroraEyebrow}</span>
             <div>
-              <h3>
+              <HeadingAnimation level={3}>
                 <span>{t.auroraTitleLineOne}</span>
                 <em>{t.auroraTitleLineTwo}</em>
-              </h3>
+              </HeadingAnimation>
               <p>{t.auroraExplanation}</p>
             </div>
           </div>

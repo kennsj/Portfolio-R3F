@@ -18,7 +18,7 @@ function breadcrumbItems(
 	t: Translations,
 ): { position: number; name: string; item: string }[] | null {
 	const path = pathname.replace(/\/$/, "") || "/"
-	const q = `?lang=${locale}`
+	const q = `${locale}`
 	const home = `${origin}/${q}`
 
 	if (path === "/") return null

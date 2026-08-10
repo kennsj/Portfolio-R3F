@@ -8,6 +8,7 @@ import { useHeroIntro } from "../../../hooks/HeroIntroContext"
 import { useI18n } from "../../../hooks/useI18n"
 import { gsapScrollToHashIdWhenReady } from "../../../utils/gsapScroll"
 import { getKpLabel, useKpIndex } from "../../../hooks/useKpIndex"
+import { deterministicCharacterOrder } from "../../../hooks/use-character-reveal"
 
 gsap.registerPlugin(SplitText, ScrollTrigger)
 
@@ -16,7 +17,7 @@ const Header = ({
 }: {
 	signalNavIntroAfterHero?: boolean
 }) => {
-	const { markHomeHeroIntroComplete } = useHeroIntro()
+	const { homeHeroSceneReady, markHomeHeroIntroComplete } = useHeroIntro()
 	const { locale, t } = useI18n()
 	const { data } = useKpIndex()
 	const kp = data?.latest ?? 0
@@ -40,129 +41,63 @@ const Header = ({
 		return () => window.clearInterval(timer)
 	}, [locale])
 
-	useGSAP(
-		() => {
-			const header = headerRef.current
-			if (!header) return
+	useGSAP(() => {
+		const header = headerRef.current
+		if (!header || !signalNavIntroAfterHero || !homeHeroSceneReady) return
+
+		let cancelled = false
+		let split: SplitText | null = null
+		let timeline: gsap.core.Timeline | null = null
+
+		document.fonts.ready.then(() => {
+			if (cancelled || !header.isConnected) return
+			const canvas = document.querySelector<HTMLElement>("#canvas")
+			const curtain = document.querySelector<HTMLElement>(".home-intro-curtain")
+			const supporting = header.querySelectorAll<HTMLElement>(
+				`.${styles.introMeta}, .${styles.positioning}, .${styles.heroFooter}`,
+			)
 			const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches
-			if (reducedMotion) {
-				gsap.set(header, { autoAlpha: 1 })
-				if (signalNavIntroAfterHero) markHomeHeroIntroComplete()
-				return
+
+			split = h1Ref.current ? SplitText.create(h1Ref.current, { type: "chars" }) : null
+			const order = deterministicCharacterOrder(split?.chars.length ?? 0)
+			const rank = new Map(order.map((characterIndex, position) => [characterIndex, position]))
+
+			gsap.set(header, { autoAlpha: 1 })
+			gsap.set(supporting, { autoAlpha: 0 })
+			if (split) gsap.set(split.chars, { autoAlpha: 0, filter: reducedMotion ? "blur(0px)" : "blur(12px)" })
+
+			timeline = gsap.timeline()
+			if (canvas) {
+				timeline.fromTo(
+					canvas,
+					{ autoAlpha: 0, filter: reducedMotion ? "brightness(1)" : "brightness(0.12)", scale: reducedMotion ? 1 : 1.03 },
+					{ autoAlpha: 1, filter: "brightness(1)", scale: 1, duration: reducedMotion ? 0.2 : 1.8, ease: "power3.out" },
+					0,
+				)
 			}
-
-			// Prepare the complete hero before the browser paints it. This avoids
-			// showing the finished layout briefly before SplitText takes ownership.
-			gsap.set(header, { autoAlpha: 0 })
-
-			const splitInstances: SplitText[] = []
-			let cancelled = false
-
-			const fontReadyFallback = new Promise<void>((resolve) => {
-				window.setTimeout(resolve, 900)
-			})
-
-			Promise.race([document.fonts.ready, fontReadyFallback]).then(() => {
-				if (cancelled || !header.isConnected) return
-
-				const h4 = h4Ref.current
-				const h1 = h1Ref.current
-				const h2 = h2Ref.current
-				const p = pRef.current
-
-				const supportingFrom = {
-					autoAlpha: 0,
-					yPercent: 110,
-					rotationX: -28,
-					transformPerspective: 900,
-					transformOrigin: "50% 100%",
-				}
-
-				let splitH4: SplitText | undefined
-				let splitH2: SplitText | undefined
-				let splitP: SplitText | undefined
-
-				if (h4) {
-					splitH4 = SplitText.create(h4, {
-						type: "lines",
-						mask: "lines",
-					})
-					splitInstances.push(splitH4)
-				}
-
-				const heroLines = h1?.querySelectorAll<HTMLElement>("[data-hero-line]")
-
-				if (h2) {
-					splitH2 = SplitText.create(h2, { type: "lines", mask: "lines" })
-					splitInstances.push(splitH2)
-				}
-
-				if (p) {
-					splitP = SplitText.create(p, {
-						type: "lines",
-						mask: "lines",
-					})
-					splitInstances.push(splitP)
-				}
-
-				gsap.set(header, { autoAlpha: 1 })
-
-				const tl = gsap.timeline({
-					scrollTrigger: {
-						trigger: header,
-						// Align trigger top with viewport top on first paint so the intro can run at scrollY === 0.
-						start: "top top",
-						toggleActions: "play none none none",
-					},
-					defaults: { ease: "shiftReveal" },
-					onComplete: () => {
-						if (signalNavIntroAfterHero) {
-							markHomeHeroIntroComplete()
-						}
-					},
-				})
-
-				if (splitH4) {
-					tl.from(splitH4.lines, { ...supportingFrom, duration: 0.8, stagger: 0.1 })
-				}
-
-				if (heroLines?.length) {
-					tl.fromTo(
-						heroLines,
-						{ autoAlpha: 1, yPercent: 110, clipPath: "inset(0 0 100% 0)" },
-						{ autoAlpha: 1, yPercent: 0, clipPath: "inset(0 0 0% 0)", duration: 1.2, stagger: 0.1, ease: "shiftTitle" },
-						splitH4 ? "<+0.22" : 0,
-					)
-				}
-
-				if (splitH2) {
-				tl.from(splitH2.lines, { autoAlpha: 1, yPercent: 110, duration: 0.8, stagger: 0.1 }, "<+0.12")
-				}
-
-				if (splitP) {
-					tl.from(splitP.lines, { ...supportingFrom, duration: 0.8, stagger: 0.1 }, "<+0.08")
-				}
-
-				ScrollTrigger.refresh()
-
-				requestAnimationFrame(() => {
-					if (cancelled || !header.isConnected) return
-					const st = tl.scrollTrigger
-					if (!st || tl.progress() > 0) return
-					const rect = header.getBoundingClientRect()
-					const inView =
-						rect.top < window.innerHeight && rect.bottom > 0
-					if (inView) tl.play(0)
-				})
-			})
-
-			return () => {
-				cancelled = true
-				splitInstances.splice(0).forEach((s) => s.revert())
+			if (curtain) {
+				timeline.to(curtain, { autoAlpha: 0, duration: reducedMotion ? 0.2 : 1.5, ease: "power2.out" }, reducedMotion ? 0 : 0.15)
 			}
-		},
-		{ scope: headerRef, dependencies: [signalNavIntroAfterHero] },
-	)
+			if (split) {
+				timeline.to(split.chars, {
+					autoAlpha: 1,
+					filter: "blur(0px)",
+					duration: reducedMotion ? 0.16 : 0.8,
+					ease: "power2.out",
+					stagger: reducedMotion ? 0 : (index) => (rank.get(index) ?? index) * 0.022,
+				}, reducedMotion ? 0.1 : 0.9)
+			}
+			const supportingStart = reducedMotion ? 0.15 : 1.35
+			timeline.call(markHomeHeroIntroComplete, [], supportingStart)
+			timeline.to(supporting, { autoAlpha: 1, duration: reducedMotion ? 0.16 : 0.65, stagger: reducedMotion ? 0 : 0.08, ease: "power2.out" }, supportingStart)
+		})
+
+		return () => {
+			cancelled = true
+			timeline?.kill()
+			split?.revert()
+		}
+	}, { scope: headerRef, dependencies: [signalNavIntroAfterHero, homeHeroSceneReady] })
 
 	useGSAP(() => {
 		const header = headerRef.current

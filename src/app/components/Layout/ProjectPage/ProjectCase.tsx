@@ -6,6 +6,7 @@ import { useI18n } from "../../../hooks/useI18n";
 import { usePageTransition } from "../../../hooks/usePageTransition";
 import styles from "./ProjectCase.module.scss";
 import ArrowIcon from "../../UI/ArrowIcon/ArrowIcon";
+import HeadingAnimation from "../../UI/HeadingAnimation/HeadingAnimation";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -184,7 +185,7 @@ export default function ProjectCase({ slug }: { slug: keyof typeof projects }) {
           <span>{project.type}</span>
           <span>Bodø / 67°17′N</span>
         </div>
-        <h1>{project.title}</h1>
+        <HeadingAnimation level={1} immediate>{project.title}</HeadingAnimation>
         <p>{copy(project.intro)}</p>
         <span className={styles.scroll}>
           {locale === "nb" ? "Scroll for å utforske" : "Scroll to explore"} <ArrowIcon direction="down" />
@@ -245,7 +246,7 @@ export default function ProjectCase({ slug }: { slug: keyof typeof projects }) {
         <span className={styles.label}>
           {locale === "nb" ? "Retning" : "Direction"}
         </span>
-        <h2>{copy(project.approach)}</h2>
+        <HeadingAnimation level={2}>{copy(project.approach)}</HeadingAnimation>
       </section>
 
       <div className={styles.mediaPair} data-case-reveal>

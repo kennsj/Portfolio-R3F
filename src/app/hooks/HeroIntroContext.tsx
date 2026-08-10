@@ -10,6 +10,8 @@ import {
 import { useLocation } from "@tanstack/react-router"
 
 type HeroIntroContextValue = {
+	homeHeroSceneReady: boolean
+	markHomeHeroSceneReady: () => void
 	/** When true, the main nav may play its entrance (home hero finished at least once this session, or not on `/`). */
 	homeHeroIntroReady: boolean
 	markHomeHeroIntroComplete: () => void
@@ -21,10 +23,12 @@ export function HeroIntroProvider({ children }: { children: ReactNode }) {
 	const { pathname } = useLocation()
 	const isHome = pathname === "/"
 	const hasCompletedHomeHero = useRef(false)
+	const [homeHeroSceneReady, setHomeHeroSceneReady] = useState(false)
 
 	const [homeHeroIntroReady, setHomeHeroIntroReady] = useState(() => !isHome)
 
 	useEffect(() => {
+		setHomeHeroSceneReady(!isHome || hasCompletedHomeHero.current)
 		if (!isHome) {
 			setHomeHeroIntroReady(true)
 			return
@@ -36,14 +40,17 @@ export function HeroIntroProvider({ children }: { children: ReactNode }) {
 		}
 	}, [isHome, pathname])
 
+	const markHomeHeroSceneReady = useCallback(() => {
+		setHomeHeroSceneReady(true)
+	}, [])
+
 	useEffect(() => {
-		if (!isHome || homeHeroIntroReady) return
+		if (!isHome || homeHeroSceneReady) return
 		const fallback = window.setTimeout(() => {
-			hasCompletedHomeHero.current = true
-			setHomeHeroIntroReady(true)
-		}, 2200)
+			setHomeHeroSceneReady(true)
+		}, 3500)
 		return () => window.clearTimeout(fallback)
-	}, [homeHeroIntroReady, isHome])
+	}, [homeHeroSceneReady, isHome])
 
 	const markHomeHeroIntroComplete = useCallback(() => {
 		hasCompletedHomeHero.current = true
@@ -52,7 +59,12 @@ export function HeroIntroProvider({ children }: { children: ReactNode }) {
 
 	return (
 		<HeroIntroContext.Provider
-			value={{ homeHeroIntroReady, markHomeHeroIntroComplete }}
+			value={{
+				homeHeroSceneReady,
+				homeHeroIntroReady,
+				markHomeHeroSceneReady,
+				markHomeHeroIntroComplete,
+			}}
 		>
 			{children}
 		</HeroIntroContext.Provider>

@@ -1,14 +1,28 @@
 "use client"
 
-import { useEffect } from "react"
+import { useEffect, useRef } from "react"
 import { Plane, useTexture } from "@react-three/drei"
-import { useThree } from "@react-three/fiber"
+import { useFrame, useThree } from "@react-three/fiber"
 import * as THREE from "three"
 import Effects from "./Effects"
 
 const REF_ASPECT = 16 / 9
 
-function Experience() {
+function SceneReadySignal({ onReady }) {
+	const hasRendered = useRef(false)
+	const { gl } = useThree()
+
+	useFrame((state) => {
+		if (!hasRendered.current && gl && state.scene.children.length > 0) {
+			hasRendered.current = true
+			onReady()
+		}
+	})
+
+	return null
+}
+
+function Experience({ onReady }) {
 	const viewport = useThree((state) => state.viewport)
 	const displacementMap = useTexture("/textures/displacement2.png")
 	const normalMap = useTexture("/textures/normal.png")
@@ -33,6 +47,7 @@ function Experience() {
 
 	return (
 		<mesh>
+			<SceneReadySignal onReady={onReady} />
 			<Effects />
 			<Plane
 				scale={[viewport.width, viewport.height, 1]}

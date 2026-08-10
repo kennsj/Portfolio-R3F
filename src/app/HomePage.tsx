@@ -15,6 +15,7 @@ import styles from "./styles/Homepage.module.scss";
 import HeadingAnimation from "./components/UI/HeadingAnimation/HeadingAnimation";
 import { usePageTransition } from "./hooks/usePageTransition";
 import ArrowIcon from "./components/UI/ArrowIcon/ArrowIcon";
+import EditorialRail from "./components/UI/EditorialRail/EditorialRail";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -93,26 +94,13 @@ export default function HomePage() {
         data-aurora-color="#86cfa3"
       >
         <div className={styles.about}>
-          <HeadingAnimation level={2} className={styles["section-index"]}>
-            <span>01 / {t.homeAboutLabel}</span>
-          </HeadingAnimation>
-          <div className={styles["about-statement"]}>
-            <h2 data-about-copy>{t.homeAboutTitle}</h2>
-            <div className={styles["about-copy"]} data-about-copy>
-              <p>{t.homeAboutBody}</p>
-              <a
-                className={styles["about-link"]}
-                href="/about"
-                onClick={(event) => {
-                  event.preventDefault();
-                  transitionTo("/about");
-                }}
-              >
-                <span>{t.homeAboutCta}</span>
-                <ArrowIcon />
-              </a>
-            </div>
-          </div>
+          <EditorialRail
+            label={<span>01 / {t.homeAboutLabel}</span>}
+            copy={<p data-about-copy>{t.homeAboutBody}</p>}
+            action={<a href="/about" onClick={(event) => { event.preventDefault(); transitionTo("/about"); }}>{t.homeAboutCta} <ArrowIcon /></a>}
+          >
+            <HeadingAnimation level={2}>{t.homeAboutTitle}</HeadingAnimation>
+          </EditorialRail>
         </div>
       </section>
 

@@ -39,7 +39,7 @@ const AnimatedButton = ({
 
 			gsap.fromTo(
 				el,
-				{ opacity: 1 },
+				{ opacity: 0 },
 				{
 					opacity: 1,
 					duration: 0.5,

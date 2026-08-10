@@ -13,7 +13,7 @@ import {
 } from "./utils/gsapScroll"
 import { PointerProvider } from "./components/Experiences/PointerContext"
 import { KpProvider } from "./hooks/KpContext"
-import { HeroIntroProvider } from "./hooks/HeroIntroContext"
+import { HeroIntroProvider, useHeroIntro } from "./hooks/HeroIntroContext"
 import { SimpleAnalytics } from "@simpleanalytics/react"
 import PermissionProvider from "./components/Experiences/PermissionProvider"
 import ProgressiveBackground from "./components/Experiences/ProgressiveBackground"
@@ -32,6 +32,13 @@ const Cursor = lazy(() => import("./components/UI/Cursor/Cursor"))
 
 gsap.registerPlugin(ScrollTrigger)
 
+function HomeIntroCurtain({ isHome }: { isHome: boolean }) {
+	const { homeHeroIntroReady } = useHeroIntro()
+	return isHome && !homeHeroIntroReady ? (
+		<div className='home-intro-curtain' aria-hidden='true' />
+	) : null
+}
+
 export default function RootLayout() {
 	const { pathname, hash: locationHash } = useLocation()
 	const { locale, t } = useI18n()
@@ -47,7 +54,7 @@ export default function RootLayout() {
 			t,
 		)
 		const origin = window.location.origin
-		const canonicalUrl = `${origin}${pathname}?lang=${locale}`
+		const canonicalUrl = `${origin}${pathname}=${locale}`
 		const ogImageUrl = `${origin}${SEO_DEFAULT_OG_IMAGE_PATH}`
 
 		document.title = pageTitle
@@ -112,8 +119,8 @@ export default function RootLayout() {
 		}
 
 		const basePath = `${origin}${pathname}`
-		setAlternate("en", `${basePath}?lang=en`)
-		setAlternate("nb", `${basePath}?lang=nb`)
+		setAlternate("en", `${basePath}en`)
+		setAlternate("nb", `${basePath}nb`)
 
 		let xDefault = document.head.querySelector<HTMLLinkElement>(
 			'link[rel="alternate"][hreflang="x-default"]',
@@ -124,7 +131,7 @@ export default function RootLayout() {
 			xDefault.setAttribute("hreflang", "x-default")
 			document.head.appendChild(xDefault)
 		}
-		xDefault.href = `${basePath}?lang=nb`
+		xDefault.href = `${basePath}nb`
 
 		const id = "seo-jsonld"
 		let schemaScript = document.getElementById(id) as HTMLScriptElement | null
@@ -225,6 +232,7 @@ export default function RootLayout() {
 			<PermissionProvider />
 			<KpProvider>
 				<HeroIntroProvider>
+					<HomeIntroCurtain isHome={isHome} />
 					<SimpleAnalytics />
 
 					<ProgressiveBackground />

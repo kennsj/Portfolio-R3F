@@ -2,6 +2,7 @@ import { useLocation } from "@tanstack/react-router";
 import styles from "./Header.module.scss";
 import ArrowIcon from "../../../UI/ArrowIcon/ArrowIcon";
 import { useI18n } from "../../../../hooks/useI18n";
+import HeadingAnimation from "../../../UI/HeadingAnimation/HeadingAnimation";
 
 type ProjectEntry = {
   title: string;
@@ -76,7 +77,7 @@ const Header = ({ url, urlText }: { url?: string; urlText?: string }) => {
         <div className={styles.index}>
           ( {String(Object.keys(projects).indexOf(slug) + 1).padStart(2, "0")} )
         </div>
-        <h1>{project.title}</h1>
+        <HeadingAnimation level={1} immediate>{project.title}</HeadingAnimation>
         <span className={styles.scroll}>
           ({locale === "nb" ? "Rull" : "Scroll"})
         </span>
@@ -133,11 +134,11 @@ const Header = ({ url, urlText }: { url?: string; urlText?: string }) => {
 
       <section className={styles.statement}>
         <span>{locale === "nb" ? "Tilnærming" : "Approach"}</span>
-        <h2>
+        <HeadingAnimation level={2}>
           {locale === "nb"
             ? "Designet og implementasjonen utvikles som én sammenhengende opplevelse."
             : "The design and implementation develop as one connected experience."}
-        </h2>
+        </HeadingAnimation>
       </section>
 
       <a className={styles.next} href={project.next.href}>

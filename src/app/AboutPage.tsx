@@ -6,6 +6,8 @@ import { useI18n } from "./hooks/useI18n";
 import { usePageTransition } from "./hooks/usePageTransition";
 import ArrowIcon from "./components/UI/ArrowIcon/ArrowIcon";
 import styles from "./styles/AboutPage.module.scss";
+import HeadingAnimation from "./components/UI/HeadingAnimation/HeadingAnimation";
+import EditorialRail from "./components/UI/EditorialRail/EditorialRail";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -39,12 +41,13 @@ export default function AboutPage() {
           <span>{t.aboutLocation}</span>
           <span>67°17′N / 14°23′E</span>
         </div>
-        <h1>
-          Kenneth
-          <br />
-          <span>Jørgensen</span>
-        </h1>
-        <p>{t.aboutHero}</p>
+        <EditorialRail label="About / 01" copy={<p>{t.aboutHero}</p>}>
+          <div className={styles.heroTitle}><HeadingAnimation level={1} immediate>
+            Kenneth
+            <br />
+            <span>JÃ¸rgensen</span>
+          </HeadingAnimation></div>
+        </EditorialRail>
       </header>
 
       <section className={styles.portrait} data-about-reveal>
@@ -64,7 +67,7 @@ export default function AboutPage() {
       <section className={styles.capabilities} data-about-reveal>
         <div className={styles.capabilitiesHead}>
           <span>02 / {t.expertiseCapabilitiesLabel}</span>
-          <h2>{t.aboutCapabilitiesTitle}</h2>
+          <HeadingAnimation level={2}>{t.aboutCapabilitiesTitle}</HeadingAnimation>
         </div>
         <ul>
           {t.aboutCapabilities.map((item, index) => (

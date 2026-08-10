@@ -7,6 +7,7 @@ import {
 	type ErrorInfo,
 	type ReactNode,
 } from "react"
+import { useHeroIntro } from "../../hooks/HeroIntroContext"
 
 const Background = lazy(() => import("./Background"))
 
@@ -34,6 +35,7 @@ class BackgroundBoundary extends Component<
 
 export default function ProgressiveBackground() {
 	const [enhance, setEnhance] = useState(false)
+	const { markHomeHeroSceneReady } = useHeroIntro()
 
 	useEffect(() => {
 		const reduceMotion = window.matchMedia(
@@ -60,7 +62,7 @@ export default function ProgressiveBackground() {
 	return (
 		<BackgroundBoundary>
 			<Suspense fallback={null}>
-				<Background />
+				<Background onReady={markHomeHeroSceneReady} />
 			</Suspense>
 		</BackgroundBoundary>
 	)

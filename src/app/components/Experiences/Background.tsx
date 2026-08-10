@@ -3,7 +3,7 @@ import Experience from "./Experience"
 import { Canvas } from "@react-three/fiber"
 import LightSource from "./LightSource"
 
-const Background = () => {
+const Background = ({ onReady }: { onReady: () => void }) => {
 	return (
 		<div>
 			<div id='canvas'>
@@ -14,7 +14,7 @@ const Background = () => {
 					style={{ width: "100%", height: "100%", display: "block" }}
 				>
 					<LightSource />
-					<Experience />
+					<Experience onReady={onReady} />
 					{/* <Preload all /> */}
 				</Canvas>
 			</div>

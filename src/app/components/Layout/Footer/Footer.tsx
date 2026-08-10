@@ -16,6 +16,23 @@ const Footer = () => {
   return (
     <footer id="footer" className={styles.footer}>
       <div className={styles.inner}>
+        <div className={styles.cta}>
+          <span>07 / {t.footerAvailability}</span>
+          <h2>{locale === "nb" ? "La oss lage noe som varer." : "Let’s build something that lasts."}</h2>
+          <div className={styles.ctaSide}>
+            <nav aria-label={t.footerNavigationLabel}>
+              <a href="/" onClick={goTo("/")}>{t.footerHome}</a>
+              <a href="/#work" onClick={goTo("/#work")}>{t.footerWork}</a>
+              <a href="/about" onClick={goTo("/about")}>{t.footerAbout}</a>
+              <a href="/#contact" onClick={goTo("/#contact")}>{t.footerContact}</a>
+            </nav>
+            <a className={styles.mail} href="mailto:hei@kennethjorgensen.no">hei@kennethjorgensen.no</a>
+          </div>
+        </div>
+        <div className={styles.contactGrid}>
+          <div><span>{locale === "nb" ? "Forespørsler" : "Business enquiry"}</span><a href="mailto:hei@kennethjorgensen.no">hei@kennethjorgensen.no</a></div>
+          <div><span>{locale === "nb" ? "Sosialt" : "Social"}</span><a href="https://www.linkedin.com" target="_blank" rel="noreferrer">LinkedIn</a><a href="https://github.com" target="_blank" rel="noreferrer">GitHub</a></div>
+        </div>
         <div className={styles.signature}>
           <span>KJ / 67°17′N</span>
           <p>{t.footerStatement}</p>

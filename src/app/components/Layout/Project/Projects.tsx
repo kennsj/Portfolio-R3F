@@ -5,6 +5,8 @@ import styles from "./Projects.module.scss"
 import { usePageTransition } from "../../../hooks/usePageTransition"
 import { useI18n } from "../../../hooks/useI18n"
 import { setLightColor } from "../../Experiences/lightStore"
+import ArrowIcon from "../../UI/ArrowIcon/ArrowIcon"
+import EditorialRail from "../../UI/EditorialRail/EditorialRail"
 
 const projectData = [
 	{ name: "Manshausen", work: { nb: "Design / Frontend", en: "Design / Front-end" }, description: { nb: "Digitalt konsept og frontend for et arkitektonisk øyretreat.", en: "Digital concept and front-end for an architectural island retreat." }, video: "/videos/manshausen.webm", poster: undefined, slug: "manshausen", color: "#78c69a" },
@@ -136,6 +138,7 @@ const Projects = () => {
 	return (
 		<>
 			<section className={styles.section} id='work' data-aurora-state data-aurora-presence='.42' data-aurora-color={activeIndex === null ? '#78c69a' : projectData[activeIndex].color}>
+				<EditorialRail label={locale === "nb" ? "Utvalgte arbeider" : "Selected work"} copy={<p>{locale === "nb" ? "Utvalgte digitale opplevelser fra retning, design og frontend." : "Selected digital experiences shaped through direction, design, and front-end."}</p>} />
 				<div className={styles.heading}><span>{locale === "nb" ? "Utvalgte arbeider" : "Selected work"}</span><span>( 01—04 )</span></div>
 				<ol className={styles.index} onPointerLeave={conceal} onBlur={(event) => !event.currentTarget.contains(event.relatedTarget) && conceal()}>
 					{projectData.map((project, index) => (
@@ -152,7 +155,7 @@ const Projects = () => {
 								<div className={styles.details}>
 									<i>{project.work[locale]}</i>
 									<p>{project.description[locale]}</p>
-									<span>{locale === "nb" ? "Se prosjekt" : "View project"} ↗</span>
+									<span>{locale === "nb" ? "Se prosjekt" : "View project"} <ArrowIcon /></span>
 								</div>
 							</a>
 						</li>

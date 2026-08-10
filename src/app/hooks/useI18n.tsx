@@ -171,7 +171,7 @@ const translations: Record<AppLocale, Translations> = {
 			"For selected freelance projects, studio collaborations and the right permanent role—locally or internationally.",
 		aboutWorkCta: "View selected work",
 		aboutWorkTitle: "Work",
-		expertiseEyebrow: "How I work / Where this work lives",
+		expertiseEyebrow: "How I work",
 		expertiseTitleLineOne: "Fields",
 		expertiseTitleLineTwo: "and contexts",
 		expertiseAboutCta: "About me ",
