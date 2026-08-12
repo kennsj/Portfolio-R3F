@@ -4,7 +4,6 @@ import gsap from "gsap"
 import styles from "./Projects.module.scss"
 import { usePageTransition } from "../../../hooks/usePageTransition"
 import { useI18n } from "../../../hooks/useI18n"
-import { setLightColor } from "../../Experiences/lightStore"
 import ArrowIcon from "../../UI/ArrowIcon/ArrowIcon"
 import EditorialRail from "../../UI/EditorialRail/EditorialRail"
 
@@ -42,7 +41,6 @@ const Projects = () => {
 		}
 
 		setActiveIndex(index)
-		setLightColor(projectData[index].color)
 		const preview = previewRef.current
 		const revealFrame = previewRevealRef.current
 		const media = previewMediaRef.current
@@ -97,7 +95,6 @@ const Projects = () => {
 	const conceal = useCallback(() => {
 		if (concealTimerRef.current !== null) window.clearTimeout(concealTimerRef.current)
 		concealTimerRef.current = window.setTimeout(() => {
-			setLightColor("#7fbc98")
 			const preview = previewRef.current
 			const revealFrame = previewRevealRef.current
 			if (!preview || !revealFrame) return
@@ -137,7 +134,7 @@ const Projects = () => {
 
 	return (
 		<>
-			<section className={styles.section} id='work' data-aurora-state data-aurora-presence='.42' data-aurora-color={activeIndex === null ? '#78c69a' : projectData[activeIndex].color}>
+			<section className={styles.section} id='work' data-aurora-state data-aurora-presence='.72'>
 				<EditorialRail className={styles.projectIntro} label={<><span>{locale === "nb" ? "Arbeid" : "Work"}</span><span>( 01—04 )</span></>} copy={<p>{locale === "nb" ? "Fire utvalgte digitale opplevelser formet gjennom retning, design og frontend." : "Four selected digital experiences shaped through direction, design, and front-end."}</p>}>
 					<h2>{locale === "nb" ? "Utvalgte arbeider" : "Selected work"}</h2>
 				</EditorialRail>

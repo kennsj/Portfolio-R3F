@@ -24,6 +24,7 @@ import {
 } from "./hooks/useI18n"
 import { buildSeoJsonLd } from "./utils/seoJsonLd"
 import "./utils/motion"
+import { useLinkLetterHover } from "./hooks/use-link-letter-hover"
 const Nav = lazy(() => import("./components/Layout/Nav/Nav"))
 const Cursor = lazy(() => import("./components/UI/Cursor/Cursor"))
 
@@ -36,6 +37,7 @@ export default function RootLayout() {
 	const isAbout = pathname === "/about"
 	const prevPathRef = useRef<string | null>(null)
 	const transitionPathRef = useRef(pathname)
+	useLinkLetterHover()
 
 	useEffect(() => {
 		const { title: pageTitle, description: pageDescription } = getSeoForPath(

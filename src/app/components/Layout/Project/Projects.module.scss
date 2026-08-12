@@ -7,7 +7,7 @@
 }
 .projectIntro {
   --editorial-accent: color-mix(in srgb, var(--signal-black) 78%, transparent);
-  --editorial-muted: color-mix(in srgb, var(--signal-black) 82%, transparent);
+  --editorial-muted: color-mix(in srgb, var(--signal-black) 72%, transparent);
 }
 .heading {
   max-width: var(--max-width);
@@ -60,7 +60,7 @@
   line-height: 0.9;
   letter-spacing: -0.035em;
   text-transform: uppercase;
-  opacity: 0.72;
+  opacity: 1;
   transition:
     transform 0.55s var(--shift-ease),
     opacity 0.3s ease;
@@ -70,6 +70,7 @@
   opacity: 1;
   transform: translateX(0.22em);
 }
+
 .index a:focus-visible {
   outline: 2px solid var(--signal-black);
   outline-offset: 0.35rem;
@@ -77,18 +78,18 @@
 .details {
   display: grid;
   gap: 0.65rem;
-  width: min(22rem, 28vw);
+  width: min(25rem, 31vw);
   justify-items: start;
 }
 .details p,
 .details span {
   font-family: var(--font-family-syne);
-  font-size: 0.82rem;
-  line-height: 1.3;
+  font-size: 0.9rem;
+  line-height: 1.4;
   letter-spacing: 0;
   text-transform: none;
 }
-.details p { color: color-mix(in srgb, var(--signal-black) 72%, transparent); }
+.details p { color: color-mix(in srgb, var(--signal-black) 78%, transparent); }
 .details span { font-family: var(--font-family-ibm); font-size: 0.62rem; letter-spacing: 0.06em; text-transform: uppercase; }
 .hoverPreview {
   position: fixed;
@@ -147,6 +148,21 @@
   .details p { display: block; max-width: 32ch; }
   .hoverPreview {
     display: none;
+  }
+}
+
+@media (max-width: 390px) {
+  .index a {
+    grid-template-columns: 1.6rem minmax(0, 1fr);
+    gap: 0.55rem;
+  }
+
+  .index strong {
+    font-size: clamp(1.65rem, 8.5vw, 2.2rem);
+  }
+
+  .details p {
+    font-size: 0.82rem;
   }
 }
 @media (prefers-reduced-motion: reduce) {

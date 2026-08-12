@@ -9,6 +9,7 @@ import { useI18n } from "../../../hooks/useI18n"
 import { gsapScrollToHashIdWhenReady } from "../../../utils/gsapScroll"
 import { getKpLabel, useKpIndex } from "../../../hooks/useKpIndex"
 import { deterministicCharacterOrder } from "../../../hooks/use-character-reveal"
+import AnimatedButton from "../../UI/AnimatedButton/AnimatedButton"
 
 gsap.registerPlugin(ScrollTrigger, SplitText)
 
@@ -54,7 +55,7 @@ const Header = ({
 			const canvas = document.querySelector<HTMLElement>("#canvas")
 			const curtain = document.querySelector<HTMLElement>(".home-intro-curtain")
 			const supporting = header.querySelectorAll<HTMLElement>(
-				`.${styles.sideRole}, .${styles.positioning} h2, .${styles.positioning} p, .${styles.projectsLink}, .${styles.environment} > div`,
+				`.${styles.sideRole}, .${styles.positioning} h2, .${styles.positioning} p, .${styles.projectsButton}, .${styles.environment} > div`,
 			)
 			const supportingLines = header.querySelectorAll<HTMLElement>(`.${styles.heroRule}`)
 			const title = h1Ref.current
@@ -166,12 +167,14 @@ const Header = ({
 			</div>
 			<div className={styles.heroFooter}>
 				<span className={styles.heroRule} aria-hidden="true" />
-				<a className={styles.projectsLink} href="#work" onClick={(event) => {
-					event.preventDefault()
-					gsapScrollToHashIdWhenReady("work")
-				}}>
-					{t.headerProjectsCta}
-				</a>
+				<AnimatedButton
+					className={styles.projectsButton}
+					label={t.headerProjectsCta}
+					onClick={() => gsapScrollToHashIdWhenReady("work")}
+					dataScrollDown
+					revealDelay={0.85}
+					revealDuration={1.2}
+				/>
 				<div className={styles.environment}>
 					<div><span>{locale === "nb" ? "Lokal tid" : "Local time"}</span><strong>{localTime}</strong></div>
 					<div><span>KP Index</span><strong>{kp.toFixed(1)}</strong></div>

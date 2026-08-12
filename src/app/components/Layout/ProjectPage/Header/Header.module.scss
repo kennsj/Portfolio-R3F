@@ -21,8 +21,7 @@
 	}
 }
 
-.index,
-.scroll {
+.index {
 	font-family: var(--font-family-ibm);
 	font-size: 0.68rem;
 	letter-spacing: 0.08em;
@@ -30,7 +29,6 @@
 }
 
 .index { margin-bottom: 2rem; color: var(--aurora-mint); }
-.scroll { position: absolute; bottom: 2rem; right: 0; }
 
 .intro {
 	display: grid;

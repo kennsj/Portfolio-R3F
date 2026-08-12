@@ -78,9 +78,6 @@ const Header = ({ url, urlText }: { url?: string; urlText?: string }) => {
           ( {String(Object.keys(projects).indexOf(slug) + 1).padStart(2, "0")} )
         </div>
         <HeadingAnimation level={1} immediate>{project.title}</HeadingAnimation>
-        <span className={styles.scroll}>
-          ({locale === "nb" ? "Rull" : "Scroll"})
-        </span>
       </header>
 
       <section className={styles.intro}>

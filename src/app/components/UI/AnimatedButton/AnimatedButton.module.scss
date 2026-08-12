@@ -147,3 +147,9 @@
 		opacity: 1;
 	}
 }
+
+@media (prefers-reduced-motion: reduce) {
+	.button .icon-container .button-dot::before {
+		animation: none;
+	}
+}

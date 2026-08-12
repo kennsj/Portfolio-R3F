@@ -10,6 +10,7 @@ import styles from "./Nav.module.scss"
 
 const Nav = () => {
 	const navRef = useRef<HTMLElement>(null)
+	const scrollSentinelRef = useRef<HTMLDivElement>(null)
 	const panelRef = useRef<HTMLDivElement>(null)
 	const menuButtonRef = useRef<HTMLButtonElement>(null)
 	const [open, setOpen] = useState(false)
@@ -27,20 +28,14 @@ const Nav = () => {
 		: "KP measures global geomagnetic activity from 0–9. A higher reading means a stronger aurora with a better chance of visibility farther south."
 
 	useEffect(() => {
-		let frame = 0
-		const update = () => {
-			frame = 0
-			setScrolled(window.scrollY > 72)
-		}
-		const onScroll = () => {
-			if (!frame) frame = window.requestAnimationFrame(update)
-		}
-		update()
-		window.addEventListener("scroll", onScroll, { passive: true })
-		return () => {
-			window.removeEventListener("scroll", onScroll)
-			if (frame) window.cancelAnimationFrame(frame)
-		}
+		const sentinel = scrollSentinelRef.current
+		if (!sentinel) return
+		const observer = new IntersectionObserver(
+			([entry]) => setScrolled(!entry.isIntersecting),
+			{ threshold: 0 },
+		)
+		observer.observe(sentinel)
+		return () => observer.disconnect()
 	}, [])
 
 	useEffect(() => {
@@ -127,6 +122,7 @@ const Nav = () => {
 
 	return (
 		<>
+			<div ref={scrollSentinelRef} className={styles.scrollSentinel} aria-hidden="true" />
 			<nav ref={navRef} className={`${styles.nav} ${scrolled ? styles.scrolled : styles.atTop} ${!homeHeroIntroReady || !navIntroStarted ? styles.navIntroPending : ""}`} aria-label={locale === "nb" ? "Hovednavigasjon" : "Main navigation"}>
 				<a href='/' onClick={(event) => go(event, "/")} className={styles.identity}>
 					<img src='/kj-logo.svg' alt='Kenneth Jørgensen' />

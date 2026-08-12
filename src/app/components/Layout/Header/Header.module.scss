@@ -67,7 +67,7 @@
 }
 
 .positioning {
-	position: relative;
+  position: relative;
   display: grid;
   grid-template-columns: minmax(10rem, 0.7fr) minmax(16rem, 1fr) minmax(
       17rem,
@@ -125,63 +125,15 @@
   display: flex;
   justify-content: space-between;
   align-items: flex-end;
-  gap: 2rem;
   padding-top: 1rem;
-}
 
-.heroFooter .hero-rule {
-  background: color-mix(in srgb, var(--primary-color) 22%, transparent);
-}
+  .hero-rule {
+    background: color-mix(in srgb, var(--primary-color) 22%, transparent);
+  }
 
-.heroFooter .projectsLink {
-  margin-right: auto;
-}
-
-.projectsLink {
-  position: relative;
-  display: inline-flex;
-  width: max-content;
-  align-items: center;
-  border: 0;
-  background: transparent;
-  color: var(--primary-color);
-  text-decoration: none;
-  font-family: var(--font-family-ibm);
-  font-size: 0.65rem;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  padding: 0.3rem 0 0.5rem;
-  cursor: pointer;
-}
-.projectsLink::after {
-  content: "";
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  height: 1px;
-  background: currentColor;
-  transform: scaleX(0);
-  transform-origin: right;
-  transition: transform 0.45s var(--shift-ease);
-}
-.projectsLink::before {
-  content: "";
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  height: 1px;
-  background: color-mix(in srgb, var(--primary-color) 28%, transparent);
-}
-.projectsLink:hover::after,
-.projectsLink:focus-visible::after {
-  transform: scaleX(1);
-  transform-origin: left;
-}
-.projectsLink:focus-visible {
-  outline: 1px solid var(--aurora-mint);
-  outline-offset: 0.4rem;
+  .projectsButton {
+    margin-right: auto;
+  }
 }
 
 .environment {

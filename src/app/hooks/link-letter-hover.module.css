@@ -1,0 +1,8 @@
+.text-wrapper {
+	display: inline;
+}
+
+.character {
+	display: inline-block;
+	will-change: opacity, filter;
+}

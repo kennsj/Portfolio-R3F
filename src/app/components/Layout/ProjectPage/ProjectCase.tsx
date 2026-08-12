@@ -190,9 +190,6 @@ export default function ProjectCase({ slug }: { slug: keyof typeof projects }) {
         </div>
         <HeadingAnimation level={1} immediate>{project.title}</HeadingAnimation>
         <p>{copy(project.intro)}</p>
-        <span className={styles.scroll}>
-          {locale === "nb" ? "Rull for å utforske" : "Scroll to explore"} <ArrowIcon direction="down" />
-        </span>
       </header>
 
       <figure className={styles.heroMedia} data-case-reveal>

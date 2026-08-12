@@ -36,15 +36,18 @@ const AnimatedButton = ({
 	useGSAP(
 		() => {
 			const el = rootRef.current ?? anchorRef.current
+			const label = labelRef.current
+			if (!el || !label) return
+			const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches
 
 			gsap.fromTo(
 				el,
-				{ opacity: 0 },
+				{ opacity: reducedMotion ? 1 : 0 },
 				{
 					opacity: 1,
-					duration: 0.5,
-					delay: revealDelay,
-					ease: "easeOutQuad",
+					duration: reducedMotion ? 0 : revealDuration,
+					delay: reducedMotion ? 0 : revealDelay,
+					ease: "power2.out",
 					scrollTrigger: {
 						trigger: el,
 						start: "top 85%",
@@ -52,7 +55,9 @@ const AnimatedButton = ({
 				},
 			)
 
-			const split = new SplitText(labelRef.current, { type: "chars" })
+			if (reducedMotion) return
+
+			const split = new SplitText(label, { type: "chars" })
 
 			const tl = gsap.timeline({ paused: true })
 
