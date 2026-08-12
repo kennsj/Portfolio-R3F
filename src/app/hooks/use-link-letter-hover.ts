@@ -114,6 +114,10 @@ export function useLinkLetterHover() {
 					},
 					">-0.02",
 				)
+				// Once the reveal has finished, restore the original markup. This also
+				// removes the active animation so leaving the link cannot replay it in
+				// reverse; a later hover starts a fresh reveal instead.
+				.eventCallback("onComplete", cleanup)
 				.eventCallback("onReverseComplete", cleanup)
 				.play()
 		}
