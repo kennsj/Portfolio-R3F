@@ -55,6 +55,8 @@ const Projects = () => {
 		const revealFrame = previewRevealRef.current
 		const media = previewMediaRef.current
 		if (!preview || !previewPosition || !revealFrame || !media) return
+		gsap.killTweensOf(revealFrame)
+		gsap.killTweensOf(preview)
 		const previousIndex = currentIndexRef.current
 		const nextVideo = videoRefs.current[index]
 		if (nextVideo) void nextVideo.play().catch(() => undefined)
