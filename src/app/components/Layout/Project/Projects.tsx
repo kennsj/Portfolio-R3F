@@ -1,5 +1,4 @@
 import { useCallback, useEffect, useRef, useState } from "react"
-import { createPortal } from "react-dom"
 import gsap from "gsap"
 import styles from "./Projects.module.scss"
 import { usePageTransition } from "../../../hooks/usePageTransition"
@@ -17,9 +16,10 @@ const projectData = [
 const Projects = () => {
 	const { locale } = useI18n()
 	const { transitionTo } = usePageTransition()
+	const sectionRef = useRef<HTMLElement>(null)
 	const [activeIndex, setActiveIndex] = useState<number | null>(null)
-	const [portalRoot, setPortalRoot] = useState<HTMLElement | null>(null)
 	const previewRef = useRef<HTMLDivElement>(null)
+	const previewPositionRef = useRef<HTMLDivElement>(null)
 	const previewRevealRef = useRef<HTMLDivElement>(null)
 	const previewMediaRef = useRef<HTMLDivElement>(null)
 	const videoRefs = useRef<Array<HTMLVideoElement | null>>([])
@@ -28,7 +28,16 @@ const Projects = () => {
 	const concealTimerRef = useRef<number | null>(null)
 	const pointerRef = useRef({ x: 0, y: 0 })
 
-	useEffect(() => setPortalRoot(document.body), [])
+	const getLocalPointer = useCallback((clientX: number, clientY: number) => {
+		const section = sectionRef.current
+		if (!section) return { x: clientX, y: clientY }
+		const rect = section.getBoundingClientRect()
+		return {
+			x: clientX - rect.left + section.scrollLeft,
+			y: clientY - rect.top + section.scrollTop,
+		}
+	}, [])
+
 	useEffect(() => () => {
 		if (concealTimerRef.current !== null) window.clearTimeout(concealTimerRef.current)
 	}, [])
@@ -42,17 +51,23 @@ const Projects = () => {
 
 		setActiveIndex(index)
 		const preview = previewRef.current
+		const previewPosition = previewPositionRef.current
 		const revealFrame = previewRevealRef.current
 		const media = previewMediaRef.current
-		if (!preview || !revealFrame || !media) return
+		if (!preview || !previewPosition || !revealFrame || !media) return
 		const previousIndex = currentIndexRef.current
 		const nextVideo = videoRefs.current[index]
 		if (nextVideo) void nextVideo.play().catch(() => undefined)
 
-		const x = clientX ?? window.innerWidth * .64
-		const y = clientY ?? window.innerHeight * .52
+		const localPointer = getLocalPointer(
+			clientX ?? window.innerWidth * .64,
+			clientY ?? window.innerHeight * .52,
+		)
+		const x = localPointer.x
+		const y = localPointer.y
 		pointerRef.current = { x, y }
-		gsap.set(preview, { x, y, autoAlpha: 1 })
+		gsap.set(preview, { autoAlpha: 1 })
+		gsap.set(previewPosition, { x, y })
 
 		if (previewOpenRef.current && previousIndex === index) {
 			gsap.killTweensOf(revealFrame)
@@ -90,7 +105,29 @@ const Projects = () => {
 				{ scaleY: 1, duration: .8, ease: "shiftReveal" },
 			)
 			.to(media, { scale: 1.2, duration: 1.6, ease: "power2.out" }, 0)
-	}, [])
+	}, [getLocalPointer])
+
+	const follow = useCallback((event: Pick<PointerEvent, "clientX" | "clientY">) => {
+		pointerRef.current = { x: event.clientX, y: event.clientY }
+		const preview = previewRef.current
+		const previewPosition = previewPositionRef.current
+		if (!preview || !previewPosition || activeIndex === null) return
+		const localPointer = getLocalPointer(event.clientX, event.clientY)
+		gsap.to(previewPosition, {
+			x: localPointer.x,
+			y: localPointer.y,
+			duration: .58,
+			ease: "power3.out",
+			overwrite: "auto",
+		})
+	}, [activeIndex, getLocalPointer])
+
+	useEffect(() => {
+		if (activeIndex === null) return
+		const onPointerMove = (event: PointerEvent) => follow(event)
+		window.addEventListener("pointermove", onPointerMove, { passive: true })
+		return () => window.removeEventListener("pointermove", onPointerMove)
+	}, [activeIndex, follow])
 
 	const conceal = useCallback(() => {
 		if (concealTimerRef.current !== null) window.clearTimeout(concealTimerRef.current)
@@ -114,33 +151,15 @@ const Projects = () => {
 		}, 90)
 	}, [])
 
-	const follow = useCallback((event: Pick<PointerEvent, "clientX" | "clientY">) => {
-		pointerRef.current = { x: event.clientX, y: event.clientY }
-		const preview = previewRef.current
-		if (!preview || activeIndex === null) return
-		const halfWidth = preview.offsetWidth / 2
-		const halfHeight = preview.offsetHeight / 2
-		const x = gsap.utils.clamp(halfWidth + 16, window.innerWidth - halfWidth - 16, event.clientX)
-		const y = gsap.utils.clamp(halfHeight + 16, window.innerHeight - halfHeight - 16, event.clientY)
-		gsap.to(preview, { x, y, duration: .58, ease: "power3.out", overwrite: "auto" })
-	}, [activeIndex])
-
-	useEffect(() => {
-		if (activeIndex === null) return
-		const onPointerMove = (event: PointerEvent) => follow(event)
-		window.addEventListener("pointermove", onPointerMove, { passive: true })
-		return () => window.removeEventListener("pointermove", onPointerMove)
-	}, [activeIndex, follow])
-
 	return (
 		<>
-			<section className={styles.section} id='work' data-aurora-state data-aurora-presence='.72'>
+			<section ref={sectionRef} className={styles.section} id='work' data-aurora-state data-aurora-presence='.72'>
 				<EditorialRail className={styles.projectIntro} label={<><span>{locale === "nb" ? "Arbeid" : "Work"}</span><span>( 01—04 )</span></>} copy={<p>{locale === "nb" ? "Fire utvalgte digitale opplevelser formet gjennom retning, design og frontend." : "Four selected digital experiences shaped through direction, design, and front-end."}</p>}>
 					<h2>{locale === "nb" ? "Utvalgte arbeider" : "Selected work"}</h2>
 				</EditorialRail>
-				<ol className={styles.index} onPointerLeave={conceal} onBlur={(event) => !event.currentTarget.contains(event.relatedTarget) && conceal()}>
+				<ol className={styles.index} data-project-list onPointerLeave={conceal} onBlur={(event) => !event.currentTarget.contains(event.relatedTarget) && conceal()}>
 					{projectData.map((project, index) => (
-						<li key={project.slug}>
+						<li key={project.slug} className={activeIndex === index ? styles.projectItemActive : undefined}>
 							<a
 								href={`/project/${project.slug}`}
 								onPointerEnter={(event) => event.pointerType !== 'touch' && reveal(index, event.clientX, event.clientY)}
@@ -159,29 +178,27 @@ const Projects = () => {
 						</li>
 					))}
 				</ol>
-			</section>
-
-			{portalRoot ? createPortal(
 				<div ref={previewRef} className={styles.hoverPreview} aria-hidden='true'>
-					<div ref={previewRevealRef} className={styles.previewReveal}>
-						<div ref={previewMediaRef} className={styles.previewMedia}>
-							{projectData.map((project, index) => (
-								<video
-									key={project.video}
-									ref={(node) => { videoRefs.current[index] = node }}
-									src={project.video}
-									poster={project.poster}
-									muted
-									loop
-									playsInline
-									preload='auto'
-								/>
-							))}
+					<div ref={previewPositionRef} className={styles.previewPosition}>
+						<div ref={previewRevealRef} className={styles.previewReveal}>
+							<div ref={previewMediaRef} className={styles.previewMedia}>
+								{projectData.map((project, index) => (
+									<video
+										key={project.video}
+										ref={(node) => { videoRefs.current[index] = node }}
+										src={project.video}
+										poster={project.poster}
+										muted
+										loop
+										playsInline
+										preload='auto'
+									/>
+								))}
+							</div>
 						</div>
 					</div>
-				</div>,
-				portalRoot,
-			) : null}
+				</div>
+			</section>
 		</>
 	)
 }

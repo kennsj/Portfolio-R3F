@@ -7,8 +7,8 @@ gsap.registerPlugin(SplitText)
 
 const LINK_SELECTOR = "a[href]"
 
-function getTextNodes(link: HTMLAnchorElement) {
-	const walker = document.createTreeWalker(link, NodeFilter.SHOW_TEXT, {
+function getTextNodes(root: HTMLElement) {
+	const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, {
 		acceptNode(node) {
 			if (!node.textContent?.trim()) return NodeFilter.FILTER_REJECT
 			const parent = node.parentElement
@@ -43,7 +43,11 @@ export function useLinkLetterHover() {
 				return
 			}
 
-			const wrappers = getTextNodes(link).map((textNode) => {
+			const projectName = link.closest("[data-project-list]")
+				? link.querySelector<HTMLElement>("strong")
+				: null
+			const textRoot = projectName ?? link
+			const wrappers = getTextNodes(textRoot).map((textNode) => {
 				const wrapper = document.createElement("span")
 				wrapper.className = styles["text-wrapper"]
 				textNode.replaceWith(wrapper)

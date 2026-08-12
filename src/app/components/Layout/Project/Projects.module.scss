@@ -9,6 +9,10 @@
   --editorial-accent: color-mix(in srgb, var(--signal-black) 78%, transparent);
   --editorial-muted: color-mix(in srgb, var(--signal-black) 72%, transparent);
 }
+
+.projectIntro :global([class*="label"]) {
+  margin-left: max(0px, calc((100vw - var(--max-width)) / 2 - var(--page-gutter)));
+}
 .heading {
   max-width: var(--max-width);
   margin: 0 auto clamp(4rem, 8vw, 7rem);
@@ -53,6 +57,27 @@
   letter-spacing: 0.06em;
   text-transform: uppercase;
 }
+
+.index li {
+  position: relative;
+  z-index: 1;
+}
+
+.projectItemActive {
+  z-index: 90 !important;
+}
+
+.index :global([class*="text-wrapper"]),
+.index :global([class*="character"]) {
+  font-family: inherit !important;
+  font-size: inherit !important;
+  font-style: inherit !important;
+  font-weight: inherit !important;
+  line-height: inherit !important;
+  letter-spacing: inherit !important;
+  text-transform: inherit !important;
+  color: inherit !important;
+}
 .index strong {
   min-width: 0;
   font-size: clamp(2.4rem, 5vw, 5.2rem);
@@ -68,7 +93,6 @@
 .index a:hover strong,
 .index a:focus-visible strong {
   opacity: 1;
-  transform: translateX(0.22em);
 }
 
 .index a:focus-visible {
@@ -92,16 +116,23 @@
 .details p { color: color-mix(in srgb, var(--signal-black) 78%, transparent); }
 .details span { font-family: var(--font-family-ibm); font-size: 0.62rem; letter-spacing: 0.06em; text-transform: uppercase; }
 .hoverPreview {
-  position: fixed;
+  position: absolute;
   top: 0;
   left: 0;
   z-index: 80;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  pointer-events: none;
+  overflow: visible;
+}
+.previewPosition {
+  position: absolute;
+  top: 0;
+  left: 0;
   width: clamp(18rem, 31vw, 32rem);
   aspect-ratio: 4 / 3;
   transform: translate(-50%, -50%);
-  opacity: 0;
-  pointer-events: none;
-  will-change: transform;
 }
 .previewReveal {
   position: absolute;
