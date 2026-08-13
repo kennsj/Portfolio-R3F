@@ -7,6 +7,7 @@ import styles from "./Expertise.module.scss";
 import { usePageTransition } from "../../../hooks/usePageTransition";
 import ArrowIcon from "../../UI/ArrowIcon/ArrowIcon";
 import HeadingAnimation from "../../UI/HeadingAnimation/HeadingAnimation";
+import AnimatedLink from "../../UI/AnimatedLink/AnimatedLink";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -72,7 +73,7 @@ const Expertise = () => {
     >
       <header className={styles.header}>
         <span className={styles.eyebrow}>02 / {t.expertiseEyebrow}</span>
-        <a
+        <AnimatedLink
           href="/about"
           onClick={(event) => {
             event.preventDefault();
@@ -81,7 +82,7 @@ const Expertise = () => {
         >
           {t.expertiseAboutCta}
           <ArrowIcon />
-        </a>
+        </AnimatedLink>
       </header>
 
       <div className={styles.lead}>

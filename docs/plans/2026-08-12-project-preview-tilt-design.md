@@ -8,8 +8,8 @@ Add subtle directional tilt to the existing project hover preview without changi
 
 - Derive tilt from horizontal pointer velocity rather than cursor position.
 - Moving right rotates the preview clockwise; moving left rotates it counter-clockwise.
-- Clamp rotation to nine degrees in either direction.
-- Increase positional follow duration to 0.75 seconds for a more noticeable trailing response.
+- Clamp rotation to twelve degrees in either direction.
+- Increase positional follow duration to 1.1 seconds for a more noticeable trailing response.
 - Smooth rotation independently from positional following and return it to neutral shortly after horizontal movement stops.
 - Preserve the existing touch exclusion and reduced-motion behavior.
 

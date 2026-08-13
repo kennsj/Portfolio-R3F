@@ -3,6 +3,7 @@ import styles from "./Header.module.scss";
 import ArrowIcon from "../../../UI/ArrowIcon/ArrowIcon";
 import { useI18n } from "../../../../hooks/useI18n";
 import HeadingAnimation from "../../../UI/HeadingAnimation/HeadingAnimation";
+import AnimatedLink from "../../../UI/AnimatedLink/AnimatedLink";
 
 type ProjectEntry = {
   title: string;
@@ -77,7 +78,9 @@ const Header = ({ url, urlText }: { url?: string; urlText?: string }) => {
         <div className={styles.index}>
           ( {String(Object.keys(projects).indexOf(slug) + 1).padStart(2, "0")} )
         </div>
-        <HeadingAnimation level={1} immediate>{project.title}</HeadingAnimation>
+        <HeadingAnimation level={1} immediate>
+          {project.title}
+        </HeadingAnimation>
       </header>
 
       <section className={styles.intro}>
@@ -105,10 +108,10 @@ const Header = ({ url, urlText }: { url?: string; urlText?: string }) => {
         </dl>
         <p>{project.description[locale]}</p>
         {url ? (
-          <a href={url} target="_blank" rel="noreferrer">
+          <AnimatedLink href={url} target="_blank" rel="noreferrer">
             {urlText || (locale === "nb" ? "Besøk nettsiden" : "Visit website")}{" "}
             <ArrowIcon />
-          </a>
+          </AnimatedLink>
         ) : null}
       </section>
 
@@ -138,10 +141,10 @@ const Header = ({ url, urlText }: { url?: string; urlText?: string }) => {
         </HeadingAnimation>
       </section>
 
-      <a className={styles.next} href={project.next.href}>
+      <AnimatedLink className={styles.next} href={project.next.href}>
         <span>{locale === "nb" ? "Neste prosjekt" : "Next project"}</span>
         <strong>{project.next.title}</strong>
-      </a>
+      </AnimatedLink>
     </article>
   );
 };

@@ -3,6 +3,7 @@ import { usePageTransition } from "@/app/hooks/usePageTransition";
 import { useI18n } from "@/app/hooks/useI18n";
 import ArrowIcon from "../../UI/ArrowIcon/ArrowIcon";
 import HeadingAnimation from "../../UI/HeadingAnimation/HeadingAnimation";
+import AnimatedLink from "../../UI/AnimatedLink/AnimatedLink";
 import styles from "./Footer.module.scss";
 
 const Footer = () => {
@@ -31,23 +32,26 @@ const Footer = () => {
 
         <div className={styles.details}>
           <nav aria-label={t.footerNavigationLabel}>
-            <a href="/" onClick={goTo("/")}>
+            <AnimatedLink href="/" onClick={goTo("/")}>
               {t.footerHome}
-            </a>
-            <a href="/#work" onClick={goTo("/#work")}>
+            </AnimatedLink>
+            <AnimatedLink href="/#work" onClick={goTo("/#work")}>
               {t.footerWork}
-            </a>
-            <a href="/about" onClick={goTo("/about")}>
+            </AnimatedLink>
+            <AnimatedLink href="/about" onClick={goTo("/about")}>
               {t.footerAbout}
-            </a>
-            <a href="/#contact" onClick={goTo("/#contact")}>
+            </AnimatedLink>
+            <AnimatedLink href="/#contact" onClick={goTo("/#contact")}>
               {t.footerContact}
-            </a>
+            </AnimatedLink>
           </nav>
 
-          <a className={styles.email} href="mailto:hei@kennethjorgensen.no">
+          <AnimatedLink
+            className={styles.email}
+            href="mailto:hei@kennethjorgensen.no"
+          >
             hei@kennethjorgensen.no <ArrowIcon />
-          </a>
+          </AnimatedLink>
 
           <div className={styles.meta}>
             <div>
@@ -56,20 +60,20 @@ const Footer = () => {
             </div>
             <div>
               <span>{locale === "nb" ? "Sosialt" : "Social"}</span>
-              <a
+              <AnimatedLink
                 href="https://www.linkedin.com/in/kennethstrandjorgensen/"
                 target="_blank"
                 rel="noreferrer"
               >
                 LinkedIn
-              </a>
-              <a
+              </AnimatedLink>
+              <AnimatedLink
                 href="https://github.com/kennsj"
                 target="_blank"
                 rel="noreferrer"
               >
                 GitHub
-              </a>
+              </AnimatedLink>
             </div>
           </div>
         </div>
@@ -101,9 +105,9 @@ const Footer = () => {
               EN
             </button>
           </div>
-          <a className={styles.top} href="#top">
+          <AnimatedLink className={styles.top} href="#top">
             {t.footerBackToTop} <ArrowIcon direction="up" />
-          </a>
+          </AnimatedLink>
         </div>
       </div>
     </footer>

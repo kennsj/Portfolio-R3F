@@ -1,0 +1,24 @@
+.text-wrapper {
+  display: inline;
+  font-family: var(--animated-link-font-family) !important;
+  font-size: var(--animated-link-font-size) !important;
+  font-style: var(--animated-link-font-style) !important;
+  font-weight: var(--animated-link-font-weight) !important;
+  line-height: var(--animated-link-line-height) !important;
+  letter-spacing: var(--animated-link-letter-spacing) !important;
+  text-transform: var(--animated-link-text-transform) !important;
+  color: inherit;
+
+  & :global(.animated-link-character) {
+    display: inline-block;
+    will-change: opacity, filter;
+    font: inherit !important;
+    font-size: inherit !important;
+    font-style: inherit !important;
+    font-weight: inherit !important;
+    line-height: inherit !important;
+    letter-spacing: inherit !important;
+    text-transform: inherit !important;
+    color: inherit;
+  }
+}

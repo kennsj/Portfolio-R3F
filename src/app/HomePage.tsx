@@ -16,6 +16,7 @@ import HeadingAnimation from "./components/UI/HeadingAnimation/HeadingAnimation"
 import { usePageTransition } from "./hooks/usePageTransition";
 import ArrowIcon from "./components/UI/ArrowIcon/ArrowIcon";
 import EditorialRail from "./components/UI/EditorialRail/EditorialRail";
+import AnimatedLink from "./components/UI/AnimatedLink/AnimatedLink";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -37,7 +38,7 @@ export default function HomePage() {
       gsap.from(pathways, {
         yPercent: 22,
         autoAlpha: 0,
-		immediateRender: false,
+        immediateRender: false,
         duration: 0.9,
         stagger: 0.1,
         ease: "shiftReveal",
@@ -98,7 +99,17 @@ export default function HomePage() {
           <EditorialRail
             label={<span>01 / {t.homeAboutLabel}</span>}
             copy={<p data-about-copy>{t.homeAboutBody}</p>}
-            action={<a href="/about" onClick={(event) => { event.preventDefault(); transitionTo("/about"); }}>{t.homeAboutCta} <ArrowIcon /></a>}
+            action={
+              <AnimatedLink
+                href="/about"
+                onClick={(event) => {
+                  event.preventDefault();
+                  transitionTo("/about");
+                }}
+              >
+                {t.homeAboutCta} <ArrowIcon />
+              </AnimatedLink>
+            }
           >
             <HeadingAnimation level={2}>{t.homeAboutTitle}</HeadingAnimation>
           </EditorialRail>

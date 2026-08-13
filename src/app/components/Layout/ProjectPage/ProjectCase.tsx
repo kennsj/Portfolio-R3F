@@ -7,6 +7,7 @@ import { usePageTransition } from "../../../hooks/usePageTransition";
 import styles from "./ProjectCase.module.scss";
 import ArrowIcon from "../../UI/ArrowIcon/ArrowIcon";
 import HeadingAnimation from "../../UI/HeadingAnimation/HeadingAnimation";
+import AnimatedLink from "../../UI/AnimatedLink/AnimatedLink";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -34,7 +35,10 @@ const projects: Record<string, Project> = {
     slug: "manshausen",
     title: "Manshausen",
     role: { en: "Design / Front-end", nb: "Design / Frontend" },
-    type: { en: "Travel / Independent concept", nb: "Reiseliv / Eget konseptprosjekt" },
+    type: {
+      en: "Travel / Independent concept",
+      nb: "Reiseliv / Eget konseptprosjekt",
+    },
     status: { en: "Independent concept project", nb: "Eget konseptprosjekt" },
     color: "#78c69a",
     intro: {
@@ -60,8 +64,14 @@ const projects: Record<string, Project> = {
   verchia: {
     slug: "verchia",
     title: "Verchia",
-    role: { en: "Visual direction / Design / Front-end", nb: "Visuell retning / Design / Frontend" },
-    type: { en: "Fashion / Digital experience", nb: "Mote / Digital opplevelse" },
+    role: {
+      en: "Visual direction / Design / Front-end",
+      nb: "Visuell retning / Design / Frontend",
+    },
+    type: {
+      en: "Fashion / Digital experience",
+      nb: "Mote / Digital opplevelse",
+    },
     status: { en: "Live project", nb: "Publisert prosjekt" },
     color: "#b6a6ee",
     live: "https://verchia.vercel.app/",
@@ -147,14 +157,22 @@ export default function ProjectCase({ slug }: { slug: keyof typeof projects }) {
   const { locale } = useI18n();
   const { transitionTo } = usePageTransition();
   const copy = (value: Copy) => value[locale];
-	const context = project.context ?? [
-		{ label: "Start", en: project.brief.en, nb: project.brief.nb },
-		{ label: "Goal", en: project.intro.en, nb: project.intro.nb },
-		{ label: "Role", en: project.contribution.en, nb: project.contribution.nb },
-		{ label: "Choices", en: project.approach.en, nb: project.approach.nb },
-		{ label: "Delivery", en: `A responsive ${project.title} experience combining the documented design and interaction work.`, nb: `En responsiv ${project.title}-opplevelse som samler det dokumenterte design- og interaksjonsarbeidet.` },
-		{ label: "Next", en: "Test the concept with users and stakeholders against the intended experience.", nb: "Teste konseptet med brukere og interessenter mot den tiltenkte opplevelsen." },
-	];
+  const context = project.context ?? [
+    { label: "Start", en: project.brief.en, nb: project.brief.nb },
+    { label: "Goal", en: project.intro.en, nb: project.intro.nb },
+    { label: "Role", en: project.contribution.en, nb: project.contribution.nb },
+    { label: "Choices", en: project.approach.en, nb: project.approach.nb },
+    {
+      label: "Delivery",
+      en: `A responsive ${project.title} experience combining the documented design and interaction work.`,
+      nb: `En responsiv ${project.title}-opplevelse som samler det dokumenterte design- og interaksjonsarbeidet.`,
+    },
+    {
+      label: "Next",
+      en: "Test the concept with users and stakeholders against the intended experience.",
+      nb: "Teste konseptet med brukere og interessenter mot den tiltenkte opplevelsen.",
+    },
+  ];
 
   useLayoutEffect(() => {
     window.scrollTo(0, 0);
@@ -165,7 +183,7 @@ export default function ProjectCase({ slug }: { slug: keyof typeof projects }) {
       gsap.from(element, {
         y: 80,
         autoAlpha: 0,
-		immediateRender: false,
+        immediateRender: false,
         duration: 1,
         ease: "shiftReveal",
         scrollTrigger: { trigger: element, start: "top 88%", once: true },
@@ -188,7 +206,9 @@ export default function ProjectCase({ slug }: { slug: keyof typeof projects }) {
           <span>{copy(project.type)}</span>
           <span>Bodø / 67°17′N</span>
         </div>
-        <HeadingAnimation level={1} immediate>{project.title}</HeadingAnimation>
+        <HeadingAnimation level={1} immediate>
+          {project.title}
+        </HeadingAnimation>
         <p>{copy(project.intro)}</p>
       </header>
 
@@ -217,7 +237,9 @@ export default function ProjectCase({ slug }: { slug: keyof typeof projects }) {
           </div>
           <div>
             <dt>{locale === "nb" ? "Fokus" : "Focus"}</dt>
-            <dd>{locale === "nb" ? "Design × utvikling" : "Design × development"}</dd>
+            <dd>
+              {locale === "nb" ? "Design × utvikling" : "Design × development"}
+            </dd>
           </div>
         </dl>
         <div>
@@ -226,7 +248,7 @@ export default function ProjectCase({ slug }: { slug: keyof typeof projects }) {
           </span>
           <p>{copy(project.brief)}</p>
           {project.live && (
-            <a
+            <AnimatedLink
               className={styles.textLink}
               href={project.live}
               target="_blank"
@@ -234,14 +256,34 @@ export default function ProjectCase({ slug }: { slug: keyof typeof projects }) {
             >
               {locale === "nb" ? "Se nettsiden" : "Visit live site"}
               <ArrowIcon />
-            </a>
+            </AnimatedLink>
           )}
         </div>
       </section>
 
-		<section className={styles.context} data-case-reveal aria-label={locale === "nb" ? "Prosjektkontekst" : "Project context"}>
-			{context.map((item) => <div key={item.label}><span className={styles.label}>{locale === "nb" ? ({Start: "Utgangspunkt", Goal: "Mål", Role: "Min rolle", Choices: "Viktigste valg", Delivery: "Leveranse", Next: "Hva jeg ville testet videre"}[item.label] ?? item.label) : item.label}</span><p>{copy(item)}</p></div>)}
-		</section>
+      <section
+        className={styles.context}
+        data-case-reveal
+        aria-label={locale === "nb" ? "Prosjektkontekst" : "Project context"}
+      >
+        {context.map((item) => (
+          <div key={item.label}>
+            <span className={styles.label}>
+              {locale === "nb"
+                ? ({
+                    Start: "Utgangspunkt",
+                    Goal: "Mål",
+                    Role: "Min rolle",
+                    Choices: "Viktigste valg",
+                    Delivery: "Leveranse",
+                    Next: "Hva jeg ville testet videre",
+                  }[item.label] ?? item.label)
+                : item.label}
+            </span>
+            <p>{copy(item)}</p>
+          </div>
+        ))}
+      </section>
 
       <section className={styles.manifesto} data-case-reveal>
         <span className={styles.label}>
@@ -281,7 +323,7 @@ export default function ProjectCase({ slug }: { slug: keyof typeof projects }) {
         <p>{copy(project.contribution)}</p>
       </section>
 
-      <a
+      <AnimatedLink
         className={styles.next}
         href={`/project/${project.next.slug}`}
         onClick={(event) => go(event, `/project/${project.next.slug}`)}
@@ -289,7 +331,7 @@ export default function ProjectCase({ slug }: { slug: keyof typeof projects }) {
         <span>{locale === "nb" ? "Neste prosjekt" : "Next project"}</span>
         <strong>{project.next.title}</strong>
         <ArrowIcon size="display" />
-      </a>
+      </AnimatedLink>
     </article>
   );
 }

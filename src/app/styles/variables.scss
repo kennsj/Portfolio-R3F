@@ -16,7 +16,7 @@
   --stack-gap-lg: clamp(2.5rem, 7vw, 5rem);
   --stack-gap-md: clamp(1.5rem, 4.5vw, 2.5rem);
 
-  --primary-color: #f2f0e9;
+  --primary-color: #ccb2b2;
   --primary-color-50: #f2f0e980;
 
   --tertiary-color: #91e6b2;
@@ -117,11 +117,11 @@ body {
 }
 
 .home-intro-curtain {
-	position: fixed;
-	inset: 0;
-	z-index: 450;
-	background: var(--color-black);
-	pointer-events: auto;
+  position: fixed;
+  inset: 0;
+  z-index: 450;
+  background: var(--color-black);
+  pointer-events: auto;
 }
 
 body {

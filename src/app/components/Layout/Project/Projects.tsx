@@ -6,6 +6,7 @@ import { useI18n } from "../../../hooks/useI18n";
 import ArrowIcon from "../../UI/ArrowIcon/ArrowIcon";
 import EditorialRail from "../../UI/EditorialRail/EditorialRail";
 import HeadingAnimation from "../../UI/HeadingAnimation/HeadingAnimation";
+import AnimatedLink from "../../UI/AnimatedLink/AnimatedLink";
 
 const projectData = [
   {
@@ -72,6 +73,7 @@ const Projects = () => {
   const previewOpenRef = useRef(false);
   const concealTimerRef = useRef<number | null>(null);
   const pointerRef = useRef({ x: 0, y: 0 });
+  const settleTiltRef = useRef<gsap.core.Tween | null>(null);
 
   const getLocalPointer = useCallback((clientX: number, clientY: number) => {
     const section = sectionRef.current;
@@ -87,6 +89,7 @@ const Projects = () => {
     () => () => {
       if (concealTimerRef.current !== null)
         window.clearTimeout(concealTimerRef.current);
+      settleTiltRef.current?.kill();
     },
     [],
   );
@@ -117,9 +120,13 @@ const Projects = () => {
       );
       const x = localPointer.x;
       const y = localPointer.y;
-      pointerRef.current = { x, y };
+      pointerRef.current = {
+        x: clientX ?? window.innerWidth * 0.64,
+        y: clientY ?? window.innerHeight * 0.52,
+      };
+      settleTiltRef.current?.kill();
       gsap.set(preview, { autoAlpha: 1 });
-      gsap.set(previewPosition, { x, y });
+      gsap.set(previewPosition, { x, y, rotation: 0 });
 
       if (previewOpenRef.current && previousIndex === index) {
         gsap.killTweensOf(revealFrame);
@@ -173,15 +180,33 @@ const Projects = () => {
 
   const follow = useCallback(
     (event: Pick<PointerEvent, "clientX" | "clientY">) => {
+      const horizontalDelta = event.clientX - pointerRef.current.x;
       pointerRef.current = { x: event.clientX, y: event.clientY };
       const preview = previewRef.current;
       const previewPosition = previewPositionRef.current;
       if (!preview || !previewPosition || activeIndex === null) return;
       const localPointer = getLocalPointer(event.clientX, event.clientY);
+
       gsap.to(previewPosition, {
         x: localPointer.x,
         y: localPointer.y,
-        duration: 0.58,
+        duration: 1.1,
+        ease: "power3.out",
+        overwrite: "auto",
+      });
+
+      gsap.to(previewPosition, {
+        rotation: gsap.utils.clamp(-12, 12, horizontalDelta * -0.5),
+        duration: 0.24,
+        ease: "power2.out",
+        overwrite: "auto",
+      });
+
+      settleTiltRef.current?.kill();
+      settleTiltRef.current = gsap.to(previewPosition, {
+        rotation: 0,
+        duration: 0.55,
+        delay: 0.12,
         ease: "power3.out",
         overwrite: "auto",
       });
@@ -202,7 +227,14 @@ const Projects = () => {
     concealTimerRef.current = window.setTimeout(() => {
       const preview = previewRef.current;
       const revealFrame = previewRevealRef.current;
-      if (!preview || !revealFrame) return;
+      const previewPosition = previewPositionRef.current;
+      if (!preview || !revealFrame || !previewPosition) return;
+      settleTiltRef.current?.kill();
+      gsap.to(previewPosition, {
+        rotation: 0,
+        duration: 0.35,
+        ease: "power2.out",
+      });
       gsap.to(revealFrame, {
         scaleY: 0,
         transformOrigin: "top",
@@ -263,7 +295,8 @@ const Projects = () => {
                 activeIndex === index ? styles.projectItemActive : undefined
               }
             >
-              <a
+              <AnimatedLink
+                animationTarget="strong"
                 href={`/project/${project.slug}`}
                 onPointerEnter={(event) =>
                   event.pointerType !== "touch" &&
@@ -286,7 +319,7 @@ const Projects = () => {
                     <ArrowIcon />
                   </span>
                 </div>
-              </a>
+              </AnimatedLink>
             </li>
           ))}
         </ol>

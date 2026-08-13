@@ -1,40 +1,34 @@
+import { useEffect, useRef, useState } from "react";
+import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import SplitText from "gsap/SplitText";
-import { useGSAP } from "@gsap/react";
-import styles from "./Header.module.scss";
-import { useEffect, useRef, useState } from "react";
 import { useHeroIntro } from "../../../hooks/HeroIntroContext";
 import { useI18n } from "../../../hooks/useI18n";
 import { gsapScrollToHashIdWhenReady } from "../../../utils/gsapScroll";
 import { getKpLabel, useKpIndex } from "../../../hooks/useKpIndex";
-import {
-  deterministicCharacterOrder,
-  getCharacterRevealTiming,
-} from "../../../hooks/use-character-reveal";
-import AnimatedButton from "../../UI/AnimatedButton/AnimatedButton";
+import { deterministicCharacterOrder } from "../../../hooks/use-character-reveal";
+import styles from "./Header.module.scss";
 
 gsap.registerPlugin(ScrollTrigger, SplitText);
 
-const Header = ({
-  signalNavIntroAfterHero = false,
-}: {
+type HeaderProps = {
   signalNavIntroAfterHero?: boolean;
-}) => {
+};
+
+const Header = ({ signalNavIntroAfterHero = false }: HeaderProps) => {
   const { homeHeroSceneReady, markHomeHeroIntroComplete } = useHeroIntro();
-  const { locale, t } = useI18n();
+  const { locale } = useI18n();
   const { data } = useKpIndex();
   const kp = data?.latest ?? 0;
   const { label: kpLabel } = getKpLabel(kp, locale);
   const [localTime, setLocalTime] = useState("--:--");
   const [heroIntroStarted, setHeroIntroStarted] = useState(false);
   const headerRef = useRef<HTMLElement>(null);
-  const h1Ref = useRef<HTMLHeadingElement>(null);
-  const h2Ref = useRef<HTMLHeadingElement>(null);
-  const pRef = useRef<HTMLParagraphElement>(null);
+  const headingRef = useRef<HTMLHeadingElement>(null);
 
   useEffect(() => {
-    const update = () =>
+    const updateLocalTime = () => {
       setLocalTime(
         new Intl.DateTimeFormat(locale === "nb" ? "nb-NO" : "en-GB", {
           hour: "2-digit",
@@ -43,8 +37,11 @@ const Header = ({
           hour12: false,
         }).format(new Date()),
       );
-    update();
-    const timer = window.setInterval(update, 30_000);
+    };
+
+    updateLocalTime();
+    const timer = window.setInterval(updateLocalTime, 30_000);
+
     return () => window.clearInterval(timer);
   }, [locale]);
 
@@ -55,35 +52,29 @@ const Header = ({
 
       let cancelled = false;
       let timeline: gsap.core.Timeline | null = null;
-      let titleSplit: SplitText | null = null;
-      let subtitleSplit: SplitText | null = null;
+      const headingSplits: SplitText[] = [];
 
       document.fonts.ready.then(() => {
         if (cancelled || !header.isConnected) return;
+
         const canvas = document.querySelector<HTMLElement>("#canvas");
         const curtain = document.querySelector<HTMLElement>(
           ".home-intro-curtain",
         );
         const supporting = header.querySelectorAll<HTMLElement>(
-          `.${styles.sideRole}, .${styles.positioning} p, .${styles.projectsButton}, .${styles.environment} > div`,
+          "[data-hero-support]",
         );
-        const supportingLines = header.querySelectorAll<HTMLElement>(
-          `.${styles.heroRule}`,
-        );
-        const title = h1Ref.current;
+        const heading = headingRef.current;
         const reducedMotion = window.matchMedia(
           "(prefers-reduced-motion: reduce)",
         ).matches;
 
         timeline = gsap.timeline();
+
         if (!reducedMotion) {
           gsap.set(supporting, { autoAlpha: 0, filter: "blur(10px)" });
-          gsap.set(supportingLines, {
-            autoAlpha: 0,
-            scaleX: 0,
-            filter: "blur(6px)",
-          });
         }
+
         if (canvas) {
           timeline.fromTo(
             canvas,
@@ -102,6 +93,7 @@ const Header = ({
             0,
           );
         }
+
         if (curtain) {
           timeline.to(
             curtain,
@@ -113,116 +105,96 @@ const Header = ({
             reducedMotion ? 0 : 0.15,
           );
         }
+
+        timeline.set(
+          header,
+          { autoAlpha: 1, visibility: "visible" },
+          reducedMotion ? 0 : 0.3,
+        );
         timeline.call(
           () => setHeroIntroStarted(true),
           [],
           reducedMotion ? 0 : 0.3,
         );
-        if (title && !reducedMotion) {
-          try {
-            titleSplit = SplitText.create(title, { type: "words,chars" });
-            gsap.set(titleSplit.chars, { autoAlpha: 0, filter: "blur(12px)" });
-            const characterOrder = deterministicCharacterOrder(
-              titleSplit.chars.length,
-            );
-            const characterRank = new Map(
-              characterOrder.map((characterIndex, rank) => [
-                characterIndex,
-                rank,
-              ]),
-            );
-            const timing = getCharacterRevealTiming(titleSplit.chars.length);
 
-            timeline.fromTo(
-              titleSplit.chars,
-              {
-                autoAlpha: 0,
-                filter: "blur(12px)",
-              },
-              {
-                autoAlpha: 1,
-                filter: "blur(0px)",
-                duration: timing.duration,
-                stagger: (characterIndex) =>
-                  (characterRank.get(characterIndex) ?? characterIndex) *
-                  timing.stagger,
-                ease: "power2.out",
-              },
-              0.35,
-            );
-          } catch {
-            gsap.set(title, { autoAlpha: 1, filter: "none" });
-          }
-        }
-        const supportingStart = reducedMotion ? 0.15 : 1.05;
-        timeline.call(markHomeHeroIntroComplete, [], supportingStart);
-        if (!reducedMotion) {
-          const subtitle = h2Ref.current;
-          if (subtitle) {
-            try {
-              subtitleSplit = SplitText.create(subtitle, {
+        if (heading && !reducedMotion) {
+          gsap.set(heading, { autoAlpha: 1, filter: "none" });
+
+          try {
+            const nameLines = [
+              heading.querySelector<HTMLElement>(`.${styles["first-name"]}`),
+              heading.querySelector<HTMLElement>(`.${styles["last-name"]}`),
+            ];
+
+            nameLines.forEach((nameLine, lineIndex) => {
+              if (!nameLine) return;
+
+              const split = SplitText.create(nameLine, {
                 type: "words,chars",
               });
-              const subtitleOrder = deterministicCharacterOrder(
-                subtitleSplit.chars.length,
+              headingSplits.push(split);
+              const characters = split.chars;
+              const characterOrder = deterministicCharacterOrder(
+                characters.length,
               );
-              const subtitleRank = new Map(
-                subtitleOrder.map((characterIndex, rank) => [
+              const characterRank = new Map(
+                characterOrder.map((characterIndex, rank) => [
                   characterIndex,
                   rank,
                 ]),
               );
-              const subtitleTiming = getCharacterRevealTiming(
-                subtitleSplit.chars.length,
-              );
+              const initialBlur = lineIndex === 0 ? "32px" : "18px";
 
-              timeline.fromTo(
-                subtitleSplit.chars,
-                {
-                  autoAlpha: 0,
-                  filter: "blur(12px)",
-                },
+              gsap.set(characters, {
+                autoAlpha: 0,
+                filter: `blur(${initialBlur})`,
+              });
+              timeline?.fromTo(
+                characters,
+                { autoAlpha: 0, filter: `blur(${initialBlur})` },
                 {
                   autoAlpha: 1,
                   filter: "blur(0px)",
-                  duration: subtitleTiming.duration,
+                  duration: 1.05,
                   stagger: (characterIndex) =>
-                    (subtitleRank.get(characterIndex) ?? characterIndex) *
-                    subtitleTiming.stagger,
+                    (characterRank.get(characterIndex) ?? characterIndex) *
+                    0.028,
                   ease: "power2.out",
                 },
-                supportingStart,
+                lineIndex === 0 ? 0.45 : 0.75,
               );
-            } catch {
-              gsap.set(subtitle, { autoAlpha: 1, filter: "none" });
-            }
+            });
+          } catch {
+            headingSplits.forEach((split) => split.revert());
+            headingSplits.length = 0;
+            timeline.fromTo(
+              heading,
+              { autoAlpha: 0, filter: "blur(12px)" },
+              {
+                autoAlpha: 1,
+                filter: "blur(0px)",
+                duration: 1.05,
+                ease: "power2.out",
+              },
+              0.45,
+            );
           }
+        } else if (heading) {
+          gsap.set(heading, { autoAlpha: 1, filter: "none" });
+        }
+
+        const supportingStart = reducedMotion ? 0.15 : 1.35;
+        timeline.call(markHomeHeroIntroComplete, [], supportingStart);
+
+        if (!reducedMotion) {
           timeline.fromTo(
             supporting,
-            {
-              autoAlpha: 0,
-              filter: "blur(10px)",
-            },
+            { autoAlpha: 0, filter: "blur(10px)" },
             {
               autoAlpha: 1,
               filter: "blur(0px)",
               duration: 0.7,
-              ease: "power2.out",
-            },
-            supportingStart,
-          );
-          timeline.fromTo(
-            supportingLines,
-            {
-              autoAlpha: 0,
-              scaleX: 0,
-              filter: "blur(6px)",
-            },
-            {
-              autoAlpha: 1,
-              scaleX: 1,
-              filter: "blur(0px)",
-              duration: 0.8,
+              stagger: 0.06,
               ease: "power2.out",
             },
             supportingStart,
@@ -233,8 +205,7 @@ const Header = ({
       return () => {
         cancelled = true;
         timeline?.kill();
-        titleSplit?.revert();
-        subtitleSplit?.revert();
+        headingSplits.forEach((split) => split.revert());
       };
     },
     {
@@ -246,15 +217,17 @@ const Header = ({
   useGSAP(
     () => {
       const header = headerRef.current;
+      const heading = headingRef.current;
       if (
         !header ||
+        !heading ||
         window.matchMedia("(prefers-reduced-motion: reduce)").matches
-      )
+      ) {
         return;
-      const copy = header.querySelector<HTMLElement>("h2");
-      if (!copy) return;
-      gsap.to(copy, {
-        yPercent: -28,
+      }
+
+      gsap.to(heading, {
+        yPercent: -12,
         autoAlpha: 0,
         ease: "none",
         scrollTrigger: {
@@ -271,71 +244,64 @@ const Header = ({
   return (
     <header
       ref={headerRef}
-      className={`${styles.header} ${signalNavIntroAfterHero && !heroIntroStarted ? styles.heroPending : ""}`}
+      className={`${styles["hero"]} ${
+        signalNavIntroAfterHero && !heroIntroStarted
+          ? styles["hero-pending"]
+          : ""
+      }`}
       style={
         signalNavIntroAfterHero && !heroIntroStarted
           ? { opacity: 0, visibility: "hidden" }
           : undefined
       }
     >
-      <div className={styles.heroBody}>
-        <div className={styles.heroTitle}>
-          <h1 ref={h1Ref}>
-            <span className={styles.firstName} data-hero-line>
-              Kenneth
-            </span>
-            <span className={styles.lastName} data-hero-line>
-              Jørgensen
-            </span>
-          </h1>
-        </div>
-        <div className={styles.positioning}>
-          <span className={styles.heroRule} aria-hidden="true" />
-          <span className={styles.sideRole}>
+      <div className={styles["hero-main"]}>
+        <div className={styles["name-lockup"]}>
+          <p id="hero-role" className={styles["role"]} data-hero-support>
             {locale === "nb" ? (
               <>
-                Designer
-                <br />+ utvikler
+                Digital designer &amp;
+                <br /> kreativ frontend-utvikler
               </>
             ) : (
               <>
-                Designer
-                <br />+ developer
+                Digital designer &amp;
+                <br /> creative frontend developer
               </>
             )}
-          </span>
-          <span className={styles.heroTitle}>{t.headerHeroTitle}</span>
-          <p ref={pRef}>
-            {locale === "nb"
-              ? "Jeg hjelper virksomheter og kreative team med visuell retning, nettsider og digitale produkter — fra første idé til ferdig frontend."
-              : "I help businesses and creative teams with visual direction, websites, and digital products — from first idea to finished front-end."}
           </p>
+
+          <h1 ref={headingRef} aria-describedby="hero-role">
+            <span className={styles["first-name"]}>Kenneth</span>
+            <span className={styles["last-name"]}>Jørgensen</span>
+          </h1>
         </div>
       </div>
-      <div className={styles.heroFooter}>
-        <span className={styles.heroRule} aria-hidden="true" />
-        <AnimatedButton
-          className={styles.projectsButton}
-          label={t.headerProjectsCta}
+
+      <div className={styles["hero-utility"]} data-hero-support>
+        <button
+          type="button"
+          className={styles["discover"]}
           onClick={() => gsapScrollToHashIdWhenReady("work")}
-          dataScrollDown
-          revealDelay={0.85}
-          revealDuration={1.2}
-        />
-        <div className={styles.environment}>
+        >
+          <span>{locale === "nb" ? "Oppdag" : "Discover"}</span>
+          <i aria-hidden="true" />
+        </button>
+
+        <dl className={styles["environment"]}>
           <div>
-            <span>{locale === "nb" ? "Lokal tid" : "Local time"}</span>
-            <strong>{localTime}</strong>
+            <dt>{locale === "nb" ? "Lokal tid" : "Local time"}</dt>
+            <dd>{localTime}</dd>
           </div>
           <div>
-            <span>KP Index</span>
-            <strong>{kp.toFixed(1)}</strong>
+            <dt>KP Index</dt>
+            <dd>{kp.toFixed(1)}</dd>
           </div>
           <div>
-            <span>{locale === "nb" ? "Nordlys" : "Aurora"}</span>
-            <strong>{kpLabel}</strong>
+            <dt>{locale === "nb" ? "Nordlys" : "Aurora"}</dt>
+            <dd>{kpLabel}</dd>
           </div>
-        </div>
+        </dl>
       </div>
     </header>
   );
