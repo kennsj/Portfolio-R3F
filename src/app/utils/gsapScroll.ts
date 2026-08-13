@@ -4,9 +4,6 @@ import ScrollSmoother from "gsap/ScrollSmoother";
 
 gsap.registerPlugin(ScrollToPlugin, ScrollSmoother);
 
-/** Site footer is a sibling of `<main>`; fade/route transitions must target both. */
-export const GSAP_PAGE_CONTENT_SELECTOR = "main, footer";
-
 /** Fixed nav height — keeps section headings clear of the bar */
 export const SCROLL_NAV_OFFSET_PX = 96;
 

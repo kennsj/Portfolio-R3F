@@ -3,8 +3,10 @@
   position: relative;
   display: grid;
   grid-template-rows: minmax(0, 1fr) auto;
-  width: min(100%, var(--max-width));
-  min-height: 100svh;
+  container-type: inline-size;
+  width: 100%;
+  max-width: var(--max-width);
+  min-height: 80svh;
   margin-inline: auto;
   padding: clamp(6.5rem, 11vh, 8rem) var(--page-gutter) clamp(2.5rem, 5vh, 4rem);
   overflow: hidden;
@@ -26,8 +28,7 @@
 }
 
 .name-lockup {
-  width: min(70rem, 72vw);
-  margin-left: clamp(0rem, 16vw, 14rem);
+  width: 100%;
   perspective: 40vw;
 
   .role {
@@ -43,7 +44,7 @@
     display: flex;
     flex-direction: column;
     margin: 0;
-    font-size: clamp(4rem, 8.4vw, 8.4rem);
+    font-size: clamp(2.5rem, 11.25cqw, 10rem);
     font-weight: 700;
     line-height: 0.9;
     letter-spacing: -0.055em;
@@ -66,6 +67,7 @@
 .last-name {
   align-self: flex-end;
   margin-top: 0.28em;
+  padding-right: 0.035em;
   color: transparent !important;
   -webkit-text-stroke: 1px var(--primary-color);
 
@@ -140,8 +142,7 @@
 
 @media (max-width: 900px) {
   .name-lockup {
-    width: 86vw;
-    margin-left: 5vw;
+    width: 100%;
   }
 
   .hero-utility {
@@ -163,10 +164,9 @@
 
   .name-lockup {
     width: 100%;
-    margin-left: 0;
 
     h1 {
-      font-size: clamp(3.4rem, 15vw, 5.3rem);
+      font-size: clamp(2.5rem, 14.25cqw, 5.3rem);
       line-height: 0.92;
     }
   }

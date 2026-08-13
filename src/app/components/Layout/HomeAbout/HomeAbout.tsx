@@ -69,8 +69,6 @@ const HomeAbout = () => {
           clipPath: "inset(100% 0 0)",
         });
 
-        let hasRevealedSupporting = false;
-
         const timeline = gsap.timeline({
           scrollTrigger: {
             trigger: section,
@@ -80,17 +78,6 @@ const HomeAbout = () => {
             pinSpacing: false,
             scrub: 0.8,
             invalidateOnRefresh: true,
-            onUpdate: (self) => {
-              if (hasRevealedSupporting || self.progress < 2 / 3) return;
-
-              hasRevealedSupporting = true;
-              gsap.to(supporting, {
-                autoAlpha: 1,
-                clipPath: "inset(0% 0 0)",
-                duration: 0.8,
-                ease: "power3.out",
-              });
-            },
           },
         });
 
@@ -101,7 +88,12 @@ const HomeAbout = () => {
           stagger: 0.004,
           ease: "power2.out",
         });
-        timeline.to({}, { duration: 0.9 });
+        timeline.to(supporting, {
+          autoAlpha: 1,
+          clipPath: "inset(0% 0 0)",
+          duration: 0.8,
+          ease: "power3.out",
+        });
       } catch {
         gsap.set([statement, supporting], {
           autoAlpha: 1,

@@ -10,7 +10,7 @@
 .nav {
   visibility: visible;
   position: fixed;
-  top: 0;
+  top: 5rem;
   left: 50%;
   transform: translateX(-50%);
   width: min(100%, var(--max-width));
@@ -21,9 +21,11 @@
   justify-content: space-between;
   padding-inline: var(--page-gutter);
   font-family: var(--font-family-ibm);
-  //   font-size: 0.68rem;
   letter-spacing: 0.08em;
-  //   text-transform: uppercase;
+
+  @media (max-width: 768px) {
+    top: 1rem;
+  }
 }
 
 .nav-intro-pending {

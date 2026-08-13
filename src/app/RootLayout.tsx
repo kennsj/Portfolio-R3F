@@ -1,14 +1,12 @@
 import { lazy, Suspense, useEffect, useLayoutEffect, useRef } from "react";
 import Footer from "./components/Layout/Footer/Footer";
 import { Outlet, useLocation } from "@tanstack/react-router";
-import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import ScrollSmoother from "gsap/ScrollSmoother";
 import { setLightColor } from "./components/Experiences/lightStore";
 import { lightColorForPathname } from "./pageLightColors";
 import {
-  GSAP_PAGE_CONTENT_SELECTOR,
   gsapScrollToHashIdWhenReady,
   gsapScrollToTop,
 } from "./utils/gsapScroll";
@@ -36,7 +34,6 @@ export default function RootLayout() {
   const isHome = pathname === "/";
   const isAbout = pathname === "/about";
   const prevPathRef = useRef<string | null>(null);
-  const transitionPathRef = useRef(pathname);
 
   useEffect(() => {
     const { title: pageTitle, description: pageDescription } = getSeoForPath(
@@ -202,75 +199,6 @@ export default function RootLayout() {
     });
   }, [pathname, locationHash]);
 
-  useGSAP(
-    () => {
-      const transitionLayer =
-        document.querySelector<HTMLElement>("#page-transition");
-      if (transitionLayer) {
-        const isIncomingTransition = transitionPathRef.current !== pathname;
-        gsap.killTweensOf([
-          transitionLayer,
-          "#page-transition-cover",
-          "#page-transition-reveal",
-        ]);
-        if (!isIncomingTransition) {
-          gsap.set(transitionLayer, { autoAlpha: 0, yPercent: 0 });
-        } else {
-          gsap
-            .timeline()
-            .to("#page-transition-reveal", {
-              yPercent: 0,
-              duration: 0.55,
-              ease: "power3.inOut",
-            })
-            .fromTo(
-              GSAP_PAGE_CONTENT_SELECTOR,
-              { autoAlpha: 0, y: 20 },
-              {
-                autoAlpha: 1,
-                y: 0,
-                duration: 0.65,
-                ease: "power2.out",
-              },
-              "-=.1",
-            )
-            .to(
-              "#page-transition-cover",
-              { yPercent: -100, duration: 0.75, ease: "power3.inOut" },
-              "-=.35",
-            )
-            .to(
-              "#page-transition-title",
-              { autoAlpha: 0, y: -12, duration: 0.3 },
-              "-=.6",
-            )
-            .set(transitionLayer, { autoAlpha: 0 })
-            .call(() => {
-              transitionPathRef.current = pathname;
-            });
-        }
-      }
-      const pageContent = gsap.utils.toArray<HTMLElement>(
-        GSAP_PAGE_CONTENT_SELECTOR,
-      );
-
-      gsap.killTweensOf(pageContent);
-      gsap.fromTo(
-        pageContent,
-        { autoAlpha: 0, y: 20 },
-        {
-          autoAlpha: 1,
-          y: 0,
-          duration: 0.6,
-          ease: "power2.out",
-          overwrite: "auto",
-          onComplete: () => ScrollTrigger.refresh(),
-        },
-      );
-    },
-    { dependencies: [pathname], revertOnUpdate: true },
-  );
-
   return (
     <PointerProvider>
       <PermissionProvider />
@@ -279,18 +207,6 @@ export default function RootLayout() {
           <SimpleAnalytics />
 
           <ProgressiveBackground />
-          <div
-            id="page-transition"
-            className="page-transition"
-            aria-hidden="true"
-          >
-            <div id="page-transition-cover" className="page-transition-cover" />
-            <div
-              id="page-transition-reveal"
-              className="page-transition-reveal"
-            />
-            <span id="page-transition-title">KJ / 67°N</span>
-          </div>
           <Suspense fallback={null}>
             <Nav />
           </Suspense>

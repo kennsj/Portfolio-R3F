@@ -17,7 +17,8 @@ type HeaderProps = {
 };
 
 const Header = ({ signalNavIntroAfterHero = false }: HeaderProps) => {
-  const { homeHeroSceneReady, markHomeHeroIntroComplete } = useHeroIntro();
+  const { homeHeroSceneReady, homeHeroIntroReady, markHomeHeroIntroComplete } =
+    useHeroIntro();
   const { locale } = useI18n();
   const { data } = useKpIndex();
   const kp = data?.latest ?? 0;
@@ -49,6 +50,19 @@ const Header = ({ signalNavIntroAfterHero = false }: HeaderProps) => {
     () => {
       const header = headerRef.current;
       if (!header || !signalNavIntroAfterHero || !homeHeroSceneReady) return;
+
+      if (homeHeroIntroReady) {
+        gsap.set(header, { autoAlpha: 1, visibility: "visible" });
+        gsap.set(header.querySelectorAll<HTMLElement>("[data-hero-support]"), {
+          autoAlpha: 1,
+          filter: "none",
+        });
+        if (headingRef.current) {
+          gsap.set(headingRef.current, { autoAlpha: 1, filter: "none" });
+        }
+        setHeroIntroStarted(true);
+        return;
+      }
 
       let cancelled = false;
       let timeline: gsap.core.Timeline | null = null;
@@ -210,7 +224,11 @@ const Header = ({ signalNavIntroAfterHero = false }: HeaderProps) => {
     },
     {
       scope: headerRef,
-      dependencies: [signalNavIntroAfterHero, homeHeroSceneReady],
+      dependencies: [
+        signalNavIntroAfterHero,
+        homeHeroSceneReady,
+        homeHeroIntroReady,
+      ],
     },
   );
 

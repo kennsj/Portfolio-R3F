@@ -21,7 +21,7 @@
 
   --tertiary-color: #91e6b2;
   --tertiary-color-50: #91e6b280;
-  --aurora-mint: #9df5bf;
+  --aurora-mint: #74a36d;
   --signal-black: #070908;
 
   --color-black: #050706;
@@ -93,27 +93,6 @@ html,
 body {
   font-family: var(--font-family-syne);
   color: var(--primary-color);
-}
-
-.page-transition {
-  position: fixed;
-  inset: 0;
-  z-index: 500;
-  display: flex;
-  align-items: flex-end;
-  justify-content: flex-end;
-  padding: var(--page-gutter);
-  background: var(--aurora-mint);
-  color: var(--signal-black);
-  transform: translateY(100%);
-  pointer-events: none;
-
-  span {
-    font-family: var(--font-family-ibm);
-    font-size: 0.65rem;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-  }
 }
 
 .home-intro-curtain {

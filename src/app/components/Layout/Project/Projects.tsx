@@ -3,9 +3,6 @@ import gsap from "gsap";
 import styles from "./Projects.module.scss";
 import { usePageTransition } from "../../../hooks/usePageTransition";
 import { useI18n } from "../../../hooks/useI18n";
-import ArrowIcon from "../../UI/ArrowIcon/ArrowIcon";
-import EditorialRail from "../../UI/EditorialRail/EditorialRail";
-import HeadingAnimation from "../../UI/HeadingAnimation/HeadingAnimation";
 import AnimatedLink from "../../UI/AnimatedLink/AnimatedLink";
 
 const projectData = [
@@ -260,26 +257,17 @@ const Projects = () => {
         data-aurora-state
         data-aurora-presence=".72"
       >
-        <EditorialRail
-          className={styles.projectIntro}
-          label={
-            <>
-              <span>{locale === "nb" ? "Arbeid" : "Work"}</span>
-              <span>( 01—04 )</span>
-            </>
-          }
-          copy={
-            <p>
-              {locale === "nb"
-                ? "Fire utvalgte digitale opplevelser formet gjennom retning, design og frontend."
-                : "Four selected digital experiences shaped through direction, design, and front-end."}
-            </p>
-          }
-        >
-          <HeadingAnimation level={2}>
-            {locale === "nb" ? "Utvalgte arbeider" : "Selected work"}
-          </HeadingAnimation>
-        </EditorialRail>
+        <header className={styles["project-intro"]}>
+          <p className={styles["project-label"]}>
+            <span>{locale === "nb" ? "Arbeid" : "Work"}</span>
+            <span>( 01—04 )</span>
+          </p>
+          <p className={styles["project-summary"]}>
+            {locale === "nb"
+              ? "Fire utvalgte digitale opplevelser formet gjennom retning, design og frontend."
+              : "Four selected digital experiences shaped through direction, design, and front-end."}
+          </p>
+        </header>
         <ol
           className={styles.index}
           data-project-list
@@ -316,8 +304,8 @@ const Projects = () => {
                   <i>{project.work[locale]}</i>
                   <p>{project.description[locale]}</p>
                   <span>
-                    {locale === "nb" ? "Se prosjekt" : "View project"}{" "}
-                    <ArrowIcon />
+                    {locale === "nb" ? "Se prosjekt" : "View project"}
+                    <i aria-hidden="true" />
                   </span>
                 </div>
               </AnimatedLink>
