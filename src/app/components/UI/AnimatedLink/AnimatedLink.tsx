@@ -29,6 +29,7 @@ type ActiveAnimation = {
 
 type AnimatedLinkProps = AnchorHTMLAttributes<HTMLAnchorElement> & {
   animationTarget?: string;
+  animateText?: boolean;
 };
 
 function getTextNodes(root: HTMLElement) {
@@ -66,6 +67,7 @@ function getTypography(element: HTMLElement): TypographyProperties {
 
 const AnimatedLink = ({
   animationTarget,
+  animateText = true,
   onPointerEnter,
   onPointerLeave,
   onFocus,
@@ -176,19 +178,19 @@ const AnimatedLink = ({
       ref={linkRef}
       onPointerEnter={(event: PointerEvent<HTMLAnchorElement>) => {
         onPointerEnter?.(event);
-        if (event.pointerType !== "touch") animate();
+        if (animateText && event.pointerType !== "touch") animate();
       }}
       onPointerLeave={(event: PointerEvent<HTMLAnchorElement>) => {
         onPointerLeave?.(event);
-        reverse();
+        if (animateText) reverse();
       }}
       onFocus={(event: FocusEvent<HTMLAnchorElement>) => {
         onFocus?.(event);
-        animate();
+        if (animateText) animate();
       }}
       onBlur={(event: FocusEvent<HTMLAnchorElement>) => {
         onBlur?.(event);
-        reverse();
+        if (animateText) reverse();
       }}
     >
       {children}

@@ -1,7 +1,12 @@
 .heading {
-	visibility: visible;
-	position: relative;
-	display: block;
-	margin-bottom: 0;
-	perspective: 25vw;
+  visibility: visible;
+  position: relative;
+  display: block;
+  margin-bottom: 0;
+  perspective: 25vw;
+
+  :global(.heading-word) {
+    display: inline-block;
+    will-change: clip-path, transform, opacity;
+  }
 }

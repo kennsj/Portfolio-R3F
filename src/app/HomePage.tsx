@@ -1,7 +1,4 @@
-import { Suspense, useEffect, useRef } from "react";
-import { useGSAP } from "@gsap/react";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { Suspense, useEffect } from "react";
 import Header from "./components/Layout/Header/Header";
 import Aurora from "./components/Layout/Aurora/Aurora";
 import Expertise from "./components/Layout/Expertise/Expertise";
@@ -12,41 +9,10 @@ import {
   setLightColor,
 } from "./components/Experiences/lightStore";
 import styles from "./styles/Homepage.module.scss";
-import HeadingAnimation from "./components/UI/HeadingAnimation/HeadingAnimation";
-import { usePageTransition } from "./hooks/usePageTransition";
-import ArrowIcon from "./components/UI/ArrowIcon/ArrowIcon";
-import EditorialRail from "./components/UI/EditorialRail/EditorialRail";
-import AnimatedLink from "./components/UI/AnimatedLink/AnimatedLink";
-
-gsap.registerPlugin(ScrollTrigger);
+import HomeAbout from "./components/Layout/HomeAbout/HomeAbout";
 
 export default function HomePage() {
   const { t } = useI18n();
-  const { transitionTo } = usePageTransition();
-  const aboutRef = useRef<HTMLElement>(null);
-
-  useGSAP(
-    () => {
-      const section = aboutRef.current;
-      if (
-        !section ||
-        window.matchMedia("(prefers-reduced-motion: reduce)").matches
-      )
-        return;
-      const pathways =
-        section.querySelectorAll<HTMLElement>("[data-about-copy]");
-      gsap.from(pathways, {
-        yPercent: 22,
-        autoAlpha: 0,
-        immediateRender: false,
-        duration: 0.9,
-        stagger: 0.1,
-        ease: "shiftReveal",
-        scrollTrigger: { trigger: pathways[0], start: "top 88%", once: true },
-      });
-    },
-    { scope: aboutRef },
-  );
 
   useEffect(() => {
     const sections = Array.from(
@@ -88,33 +54,7 @@ export default function HomePage() {
         <Header signalNavIntroAfterHero />
       </div>
 
-      <section
-        ref={aboutRef}
-        id="about"
-        data-aurora-state
-        data-aurora-presence="0.72"
-        data-aurora-color="#86cfa3"
-      >
-        <div className={styles.about}>
-          <EditorialRail
-            label={<span>01 / {t.homeAboutLabel}</span>}
-            copy={<p data-about-copy>{t.homeAboutBody}</p>}
-            action={
-              <AnimatedLink
-                href="/about"
-                onClick={(event) => {
-                  event.preventDefault();
-                  transitionTo("/about");
-                }}
-              >
-                {t.homeAboutCta} <ArrowIcon />
-              </AnimatedLink>
-            }
-          >
-            <HeadingAnimation level={2}>{t.homeAboutTitle}</HeadingAnimation>
-          </EditorialRail>
-        </div>
-      </section>
+      <HomeAbout />
 
       <Suspense>
         <Projects />

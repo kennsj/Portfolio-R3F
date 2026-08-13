@@ -297,6 +297,7 @@ const Projects = () => {
             >
               <AnimatedLink
                 animationTarget="strong"
+                animateText={false}
                 href={`/project/${project.slug}`}
                 onPointerEnter={(event) =>
                   event.pointerType !== "touch" &&

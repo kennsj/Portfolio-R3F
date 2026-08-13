@@ -37,7 +37,7 @@ const Expertise = () => {
       timeline
         .from(leadCopy, {
           autoAlpha: 0,
-          filter: "blur(10px)",
+          y: 28,
           duration: 0.65,
           stagger: 0.08,
           ease: "power2.out",
@@ -46,7 +46,7 @@ const Expertise = () => {
           section.querySelectorAll(`.${styles.discipline}`),
           {
             autoAlpha: 0,
-            filter: "blur(10px)",
+            y: 28,
             duration: 0.65,
             stagger: 0.08,
             ease: "power2.out",

@@ -86,7 +86,6 @@ const Aurora = () => {
 
           timeline.from(loc, {
             opacity: 0,
-            filter: "blur(25px)",
             yPercent: 35,
             duration: 0.9,
             ease: "power2.out",

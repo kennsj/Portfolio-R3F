@@ -225,10 +225,10 @@ export default function RootLayout() {
             })
             .fromTo(
               GSAP_PAGE_CONTENT_SELECTOR,
-              { opacity: 0, filter: "blur(12px)" },
+              { autoAlpha: 0, y: 20 },
               {
-                opacity: 1,
-                filter: "blur(0px)",
+                autoAlpha: 1,
+                y: 0,
                 duration: 0.65,
                 ease: "power2.out",
               },
@@ -241,7 +241,7 @@ export default function RootLayout() {
             )
             .to(
               "#page-transition-title",
-              { autoAlpha: 0, filter: "blur(10px)", duration: 0.3 },
+              { autoAlpha: 0, y: -12, duration: 0.3 },
               "-=.6",
             )
             .set(transitionLayer, { autoAlpha: 0 })
@@ -254,17 +254,13 @@ export default function RootLayout() {
         GSAP_PAGE_CONTENT_SELECTOR,
       );
 
-      // The outgoing route tween finishes on the persistent <main>/<footer>
-      // nodes with blur(25px). The new route must explicitly take ownership
-      // of both opacity and filter; animating opacity alone leaves that
-      // completed inline blur behind.
       gsap.killTweensOf(pageContent);
       gsap.fromTo(
         pageContent,
-        { opacity: 0.72, filter: "blur(8px)" },
+        { autoAlpha: 0, y: 20 },
         {
-          opacity: 1,
-          filter: "blur(0px)",
+          autoAlpha: 1,
+          y: 0,
           duration: 0.6,
           ease: "power2.out",
           overwrite: "auto",

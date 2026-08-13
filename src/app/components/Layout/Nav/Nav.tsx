@@ -84,24 +84,24 @@ const Nav = () => {
       if (!navRef.current) return;
       if (!homeHeroIntroReady) {
         if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-          gsap.set(navRef.current, { autoAlpha: 1, filter: "none" });
+          gsap.set(navRef.current, { autoAlpha: 1, y: 0 });
         } else {
-          gsap.set(navRef.current, { autoAlpha: 0, filter: "blur(10px)" });
+          gsap.set(navRef.current, { autoAlpha: 0, y: -12 });
         }
         return;
       }
       if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-        gsap.set(navRef.current, { autoAlpha: 1, filter: "none" });
+        gsap.set(navRef.current, { autoAlpha: 1, y: 0 });
         setNavIntroStarted(true);
         return;
       }
-      gsap.set(navRef.current, { autoAlpha: 0, filter: "blur(10px)" });
+      gsap.set(navRef.current, { autoAlpha: 0, y: -12 });
       gsap.fromTo(
         navRef.current,
-        { autoAlpha: 0, filter: "blur(10px)" },
+        { autoAlpha: 0, y: -12 },
         {
           autoAlpha: 1,
-          filter: "blur(0px)",
+          y: 0,
           duration: 0.8,
           ease: "power2.out",
         },

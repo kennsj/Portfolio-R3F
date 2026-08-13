@@ -20,13 +20,13 @@ export function deterministicCharacterOrder(length: number) {
   });
 }
 
-export function getCharacterRevealTiming(length: number) {
-  const excessCharacters = Math.max(0, length - 8);
-  const speedFactor = Math.max(1.42, Math.exp(-excessCharacters * 0.035));
+function getWordRevealTiming(length: number) {
+  const additionalWords = Math.max(0, length - 5);
+  const durationScale = Math.max(0.68, 1 - additionalWords * 0.035);
 
   return {
-    duration: 0.8 * speedFactor,
-    stagger: 0.022 * speedFactor,
+    duration: 0.8 * durationScale,
+    stagger: Math.max(0.045, 0.09 - additionalWords * 0.003),
   };
 }
 
@@ -45,7 +45,7 @@ export function useCharacterReveal(
         gsap.set(heading, {
           autoAlpha: 1,
           filter: "none",
-          clearProps: "transform",
+          clearProps: "transform,clipPath",
         });
         return;
       }
@@ -57,40 +57,45 @@ export function useCharacterReveal(
       document.fonts.ready.then(() => {
         if (cancelled || !heading.isConnected) return;
         try {
-          split = SplitText.create(heading, { type: "words,chars" });
+          split = SplitText.create(heading, {
+            type: "words",
+            wordsClass: "heading-word",
+          });
         } catch {
           gsap.set(heading, {
             autoAlpha: 1,
             filter: "none",
-            clearProps: "transform",
+            clearProps: "transform,clipPath",
           });
           return;
         }
-        const units = split.chars;
-        const order = deterministicCharacterOrder(units.length);
-        const rank = new Map(
-          order.map((characterIndex, position) => [characterIndex, position]),
-        );
-        const timing = getCharacterRevealTiming(units.length);
+        const units = split.words;
+        const timing = getWordRevealTiming(units.length);
 
         gsap.set(heading, { autoAlpha: 1 });
         if (!immediate) {
-          gsap.set(units, { autoAlpha: 0, filter: "blur(12px)" });
+          gsap.set(units, {
+            autoAlpha: 0,
+            yPercent: 105,
+            clipPath: "inset(0 0 100% 0)",
+          });
         }
         tween = gsap.fromTo(
           units,
           {
             autoAlpha: 0,
-            filter: "blur(12px)",
+            yPercent: 105,
+            clipPath: "inset(0 0 100% 0)",
           },
           {
             autoAlpha: 1,
-            filter: "blur(0px)",
+            yPercent: 0,
+            clipPath: "inset(0 0 0% 0)",
             duration: timing.duration,
             delay,
             immediateRender: immediate,
             ease: "power2.out",
-            stagger: (index) => (rank.get(index) ?? index) * timing.stagger,
+            stagger: timing.stagger,
             scrollTrigger: immediate
               ? undefined
               : {
