@@ -35,11 +35,11 @@ const Footer = () => {
             <AnimatedLink href="/" onClick={goTo("/")}>
               {t.footerHome}
             </AnimatedLink>
+            <AnimatedLink href="/#about" onClick={goTo("/#about")}>
+              {t.footerAbout}
+            </AnimatedLink>
             <AnimatedLink href="/#work" onClick={goTo("/#work")}>
               {t.footerWork}
-            </AnimatedLink>
-            <AnimatedLink href="/about" onClick={goTo("/about")}>
-              {t.footerAbout}
             </AnimatedLink>
             <AnimatedLink href="/#contact" onClick={goTo("/#contact")}>
               {t.footerContact}

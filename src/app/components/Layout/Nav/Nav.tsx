@@ -213,18 +213,18 @@ const Nav = () => {
         </AnimatedLink>
         <div className={styles.topLinks} aria-hidden={scrolled}>
           <AnimatedLink
+            href="/#about"
+            onClick={(event) => go(event, "/#about")}
+            tabIndex={scrolled ? -1 : 0}
+          >
+            {t.navAbout}
+          </AnimatedLink>
+          <AnimatedLink
             href="/#work"
             onClick={(event) => go(event, "/#work")}
             tabIndex={scrolled ? -1 : 0}
           >
             {t.navWork}
-          </AnimatedLink>
-          <AnimatedLink
-            href="/about"
-            onClick={(event) => go(event, "/about")}
-            tabIndex={scrolled ? -1 : 0}
-          >
-            {t.navAbout}
           </AnimatedLink>
           <AnimatedLink
             href="/#contact"
@@ -323,18 +323,18 @@ const Nav = () => {
         <div className={styles.menuInner}>
           <div className={styles.menuLinks}>
             <AnimatedLink
+              href="/#about"
+              onClick={(event) => go(event, "/#about")}
+            >
+              <span>( 01 )</span>
+              {t.navAbout}
+            </AnimatedLink>
+            <AnimatedLink
               href="/#work"
               onClick={(event) => go(event, "/#work")}
             >
-              <span>( 01 )</span>
-              {t.navWork}
-            </AnimatedLink>
-            <AnimatedLink
-              href="/about"
-              onClick={(event) => go(event, "/about")}
-            >
               <span>( 02 )</span>
-              {t.navAbout}
+              {t.navWork}
             </AnimatedLink>
             <AnimatedLink
               href="/#contact"

@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, type CSSProperties } from "react";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -8,6 +8,7 @@ import { useI18n } from "../../../hooks/useI18n";
 import { gsapScrollToHashIdWhenReady } from "../../../utils/gsapScroll";
 import { getKpLabel, useKpIndex } from "../../../hooks/useKpIndex";
 import { deterministicCharacterOrder } from "../../../hooks/use-character-reveal";
+import { useManualKp } from "../../../hooks/KpContext";
 import styles from "./Header.module.scss";
 
 gsap.registerPlugin(ScrollTrigger, SplitText);
@@ -16,13 +17,24 @@ type HeaderProps = {
   signalNavIntroAfterHero?: boolean;
 };
 
+type HeroStyle = CSSProperties & {
+  "--aurora-stroke-opacity": number;
+  "--aurora-stroke-glow": string;
+};
+
 const Header = ({ signalNavIntroAfterHero = false }: HeaderProps) => {
   const { homeHeroSceneReady, homeHeroIntroReady, markHomeHeroIntroComplete } =
     useHeroIntro();
   const { locale } = useI18n();
   const { data } = useKpIndex();
-  const kp = data?.latest ?? 0;
+  const { manualKp } = useManualKp();
+  const kp = manualKp ?? data?.latest ?? 0;
   const { label: kpLabel } = getKpLabel(kp, locale);
+  const normalizedKp = Math.min(1, Math.max(0, kp / 9));
+  const heroStyle: HeroStyle = {
+    "--aurora-stroke-opacity": 0.2 + normalizedKp * 0.35,
+    "--aurora-stroke-glow": `${0.5 + normalizedKp * 1.6}px`,
+  };
   const [localTime, setLocalTime] = useState("--:--");
   const [heroIntroStarted, setHeroIntroStarted] = useState(false);
   const headerRef = useRef<HTMLElement>(null);
@@ -262,6 +274,7 @@ const Header = ({ signalNavIntroAfterHero = false }: HeaderProps) => {
   return (
     <header
       ref={headerRef}
+      id="home-hero"
       className={`${styles["hero"]} ${
         signalNavIntroAfterHero && !heroIntroStarted
           ? styles["hero-pending"]
@@ -269,8 +282,8 @@ const Header = ({ signalNavIntroAfterHero = false }: HeaderProps) => {
       }`}
       style={
         signalNavIntroAfterHero && !heroIntroStarted
-          ? { opacity: 0, visibility: "hidden" }
-          : undefined
+          ? { ...heroStyle, opacity: 0, visibility: "hidden" }
+          : heroStyle
       }
     >
       <div className={styles["hero-main"]}>
@@ -291,7 +304,12 @@ const Header = ({ signalNavIntroAfterHero = false }: HeaderProps) => {
 
           <h1 ref={headingRef} aria-describedby="hero-role">
             <span className={styles["first-name"]}>Kenneth</span>
-            <span className={styles["last-name"]}>Jørgensen</span>
+            <span
+              className={styles["last-name"]}
+              data-text="Jørgensen"
+            >
+              Jørgensen
+            </span>
           </h1>
         </div>
       </div>

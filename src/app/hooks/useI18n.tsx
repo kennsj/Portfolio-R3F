@@ -7,6 +7,8 @@ import {
 	useState,
 	type ReactNode,
 } from "react"
+import { useLocation, useNavigate } from "@tanstack/react-router"
+import { localeFromPathname, localizePath } from "../utils/locale-path"
 
 export type AppLocale = "en" | "nb"
 
@@ -20,10 +22,7 @@ function detectLocale(): AppLocale {
 	const urlLang = new URLSearchParams(window.location.search).get("lang")
 	if (urlLang === "en") return "en"
 	if (urlLang === "nb") return "nb"
-	const storedLang = window.localStorage.getItem("portfolio-locale")
-	if (storedLang === "en" || storedLang === "nb") return storedLang
-	// Norwegian first: default for all visitors unless ?lang=en is present.
-	return "nb"
+	return localeFromPathname(window.location.pathname)
 }
 
 export type Translations = {
@@ -477,12 +476,8 @@ export const SEO_DEFAULT_OG_IMAGE_PATH = "/og.jpg"
 
 export function getSeoForPath(
 	pathname: string,
-	isAbout: boolean,
 	t: Translations,
 ): { title: string; description: string } {
-	if (isAbout) {
-		return { title: t.seoAboutTitle, description: t.seoAboutDescription }
-	}
 	const path = pathname.replace(/\/$/, "") || "/"
 	if (path === "/project") {
 		return {
@@ -511,30 +506,49 @@ const I18nContext = createContext<I18nContextValue | null>(null)
 
 export function I18nProvider({ children }: { children: ReactNode }) {
 	const [locale, setLocale] = useState<AppLocale>(detectLocale)
+	const navigate = useNavigate()
+	const { pathname, hash } = useLocation()
 
 	useEffect(() => {
-		setLocale(detectLocale())
-		const onPopState = () => setLocale(detectLocale())
-		window.addEventListener("popstate", onPopState)
-		return () => window.removeEventListener("popstate", onPopState)
-	}, [])
+		const queryLocale = new URLSearchParams(window.location.search).get("lang")
+		const pathLocale = localeFromPathname(pathname)
+		const nextLocale = queryLocale === "en" || queryLocale === "nb"
+			? queryLocale
+			: pathLocale
+		const targetPath = localizePath(pathname, nextLocale)
+
+		setLocale(nextLocale)
+		if (queryLocale || targetPath !== pathname) {
+			void navigate({
+				to: targetPath,
+				hash: hash.replace(/^#/, "") || undefined,
+				search: {},
+				replace: true,
+			})
+		}
+	}, [hash, navigate, pathname])
 
 	useEffect(() => {
 		document.documentElement.lang = locale === "nb" ? "nb-NO" : "en"
 		window.localStorage.setItem("portfolio-locale", locale)
-		const url = new URL(window.location.href)
-		if (url.searchParams.get("lang") !== locale) {
-			url.searchParams.set("lang", locale)
-			window.history.replaceState(window.history.state, "", url)
-		}
 	}, [locale])
+
+	const changeLocale = (nextLocale: AppLocale) => {
+		setLocale(nextLocale)
+		document.cookie = `portfolio-locale=${nextLocale}; Max-Age=31536000; Path=/; SameSite=Lax`
+		void navigate({
+			to: localizePath(pathname, nextLocale),
+			hash: hash.replace(/^#/, "") || undefined,
+			search: {},
+		})
+	}
 
 	const value = useMemo(
 		() => ({
 			locale,
 			t: translations[locale],
-			setLocale,
-			toggleLocale: () => setLocale((current) => current === "nb" ? "en" : "nb"),
+			setLocale: changeLocale,
+			toggleLocale: () => changeLocale(locale === "nb" ? "en" : "nb"),
 			renderText: (value: string) => {
 				const parts = value.split(/<br\s*\/?>/gi)
 				if (parts.length === 1) return value
@@ -546,7 +560,7 @@ export function I18nProvider({ children }: { children: ReactNode }) {
 				))
 			},
 		}),
-		[locale],
+		[hash, locale, pathname],
 	)
 
 	return <I18nContext.Provider value={value}>{children}</I18nContext.Provider>

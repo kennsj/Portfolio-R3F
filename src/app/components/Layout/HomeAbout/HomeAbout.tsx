@@ -49,7 +49,7 @@ const HomeAbout = () => {
       ).matches;
       const compactLayout = window.matchMedia("(max-width: 760px)").matches;
 
-      if (reducedMotion || compactLayout) {
+      if (reducedMotion) {
         gsap.set([statement, supporting], {
           autoAlpha: 1,
           clearProps: "clipPath,filter,transform",
@@ -58,6 +58,7 @@ const HomeAbout = () => {
       }
 
       let split: SplitText | null = null;
+      let timeline: gsap.core.Timeline | null = null;
 
       try {
         split = SplitText.create(statement, { type: "words,chars" });
@@ -66,17 +67,49 @@ const HomeAbout = () => {
         gsap.set(characters, { autoAlpha: 0, filter: "blur(14px)" });
         gsap.set(supporting, {
           autoAlpha: 0,
-          clipPath: "inset(100% 0 0)",
+          clipPath: "inset(0 0 100% 0)",
         });
 
-        const timeline = gsap.timeline({
+        if (compactLayout) {
+          const timeline = gsap.timeline({
+            scrollTrigger: {
+              trigger: statement,
+              start: "top 82%",
+              once: true,
+            },
+          });
+
+          timeline
+            .to(characters, {
+              autoAlpha: 1,
+              filter: "blur(0px)",
+              duration: 0.9,
+              stagger: 0.018,
+              ease: "power2.out",
+            })
+            .to(supporting, {
+              autoAlpha: 1,
+              clipPath: "inset(0 0 0% 0)",
+              duration: 0.7,
+              ease: "power3.out",
+            });
+
+          return () => {
+            timeline.scrollTrigger?.kill();
+            timeline.kill();
+            split?.revert();
+          };
+        }
+
+        const hero = document.querySelector<HTMLElement>("#home-hero");
+        timeline = gsap.timeline({
           scrollTrigger: {
-            trigger: section,
-            start: "top top",
-            end: "bottom bottom",
+            trigger: hero ?? section,
+            start: hero ? "70% top" : "top top",
+            end: hero ? () => `+=${window.innerHeight}` : "bottom top",
             pin: content,
             pinSpacing: false,
-            scrub: 0.8,
+            scrub: 0.7,
             invalidateOnRefresh: true,
           },
         });
@@ -84,13 +117,13 @@ const HomeAbout = () => {
         timeline.to(characters, {
           autoAlpha: 1,
           filter: "blur(0px)",
-          duration: 1.1,
-          stagger: 0.004,
+          duration: 2.2,
+          stagger: 0.008,
           ease: "power2.out",
         });
         timeline.to(supporting, {
           autoAlpha: 1,
-          clipPath: "inset(0% 0 0)",
+          clipPath: "inset(0 0 0% 0)",
           duration: 0.8,
           ease: "power3.out",
         });
@@ -101,7 +134,11 @@ const HomeAbout = () => {
         });
       }
 
-      return () => split?.revert();
+      return () => {
+        timeline?.scrollTrigger?.kill();
+        timeline?.kill();
+        split?.revert();
+      };
     },
     { scope: sectionRef, dependencies: [locale] },
   );
@@ -123,11 +160,11 @@ const HomeAbout = () => {
         <div ref={supportingRef} className={styles["supporting"]}>
           <p>{content.supporting}</p>
           <AnimatedLink
-            href="/about"
+            href="/#about"
             className={styles["about-link"]}
             onClick={(event) => {
               event.preventDefault();
-              transitionTo("/about");
+              transitionTo("/#about");
             }}
           >
             {content.link} <i aria-hidden="true" />

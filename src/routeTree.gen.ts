@@ -9,22 +9,25 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './app/__root'
+import { Route as EnRouteImport } from './app/en'
 import { Route as ProjectRouteRouteImport } from './app/project/route'
-import { Route as AboutRouteRouteImport } from './app/about/route'
 import { Route as IndexRouteImport } from './app/index'
 import { Route as ProjectVerchiaRouteImport } from './app/project/verchia'
+import { Route as ProjectTorrfeskenRouteImport } from './app/project/torrfesken'
 import { Route as ProjectPradelnaRouteImport } from './app/project/pradelna'
 import { Route as ProjectManshausenRouteImport } from './app/project/manshausen'
-import { Route as ProjectDialogExeRouteImport } from './app/project/dialog-exe'
+import { Route as EnProjectVerchiaRouteImport } from './app/en_.project.verchia'
+import { Route as EnProjectPradelnaRouteImport } from './app/en_.project.pradelna'
+import { Route as EnProjectManshausenRouteImport } from './app/en_.project.manshausen'
 
+const EnRoute = EnRouteImport.update({
+  id: '/en',
+  path: '/en',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ProjectRouteRoute = ProjectRouteRouteImport.update({
   id: '/project',
   path: '/project',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AboutRouteRoute = AboutRouteRouteImport.update({
-  id: '/about',
-  path: '/about',
   getParentRoute: () => rootRouteImport,
 } as any)
 const IndexRoute = IndexRouteImport.update({
@@ -37,6 +40,11 @@ const ProjectVerchiaRoute = ProjectVerchiaRouteImport.update({
   path: '/verchia',
   getParentRoute: () => ProjectRouteRoute,
 } as any)
+const ProjectTorrfeskenRoute = ProjectTorrfeskenRouteImport.update({
+  id: '/torrfesken',
+  path: '/torrfesken',
+  getParentRoute: () => ProjectRouteRoute,
+} as any)
 const ProjectPradelnaRoute = ProjectPradelnaRouteImport.update({
   id: '/pradelna',
   path: '/pradelna',
@@ -47,90 +55,121 @@ const ProjectManshausenRoute = ProjectManshausenRouteImport.update({
   path: '/manshausen',
   getParentRoute: () => ProjectRouteRoute,
 } as any)
-const ProjectDialogExeRoute = ProjectDialogExeRouteImport.update({
-  id: '/dialog-exe',
-  path: '/dialog-exe',
-  getParentRoute: () => ProjectRouteRoute,
+const EnProjectVerchiaRoute = EnProjectVerchiaRouteImport.update({
+  id: '/en_/project/verchia',
+  path: '/en/project/verchia',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const EnProjectPradelnaRoute = EnProjectPradelnaRouteImport.update({
+  id: '/en_/project/pradelna',
+  path: '/en/project/pradelna',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const EnProjectManshausenRoute = EnProjectManshausenRouteImport.update({
+  id: '/en_/project/manshausen',
+  path: '/en/project/manshausen',
+  getParentRoute: () => rootRouteImport,
 } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/about': typeof AboutRouteRoute
   '/project': typeof ProjectRouteRouteWithChildren
-  '/project/dialog-exe': typeof ProjectDialogExeRoute
+  '/en': typeof EnRoute
   '/project/manshausen': typeof ProjectManshausenRoute
   '/project/pradelna': typeof ProjectPradelnaRoute
+  '/project/torrfesken': typeof ProjectTorrfeskenRoute
   '/project/verchia': typeof ProjectVerchiaRoute
+  '/en/project/manshausen': typeof EnProjectManshausenRoute
+  '/en/project/pradelna': typeof EnProjectPradelnaRoute
+  '/en/project/verchia': typeof EnProjectVerchiaRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/about': typeof AboutRouteRoute
   '/project': typeof ProjectRouteRouteWithChildren
-  '/project/dialog-exe': typeof ProjectDialogExeRoute
+  '/en': typeof EnRoute
   '/project/manshausen': typeof ProjectManshausenRoute
   '/project/pradelna': typeof ProjectPradelnaRoute
+  '/project/torrfesken': typeof ProjectTorrfeskenRoute
   '/project/verchia': typeof ProjectVerchiaRoute
+  '/en/project/manshausen': typeof EnProjectManshausenRoute
+  '/en/project/pradelna': typeof EnProjectPradelnaRoute
+  '/en/project/verchia': typeof EnProjectVerchiaRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/about': typeof AboutRouteRoute
   '/project': typeof ProjectRouteRouteWithChildren
-  '/project/dialog-exe': typeof ProjectDialogExeRoute
+  '/en': typeof EnRoute
   '/project/manshausen': typeof ProjectManshausenRoute
   '/project/pradelna': typeof ProjectPradelnaRoute
+  '/project/torrfesken': typeof ProjectTorrfeskenRoute
   '/project/verchia': typeof ProjectVerchiaRoute
+  '/en_/project/manshausen': typeof EnProjectManshausenRoute
+  '/en_/project/pradelna': typeof EnProjectPradelnaRoute
+  '/en_/project/verchia': typeof EnProjectVerchiaRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
-    | '/about'
     | '/project'
-    | '/project/dialog-exe'
+    | '/en'
     | '/project/manshausen'
     | '/project/pradelna'
+    | '/project/torrfesken'
     | '/project/verchia'
+    | '/en/project/manshausen'
+    | '/en/project/pradelna'
+    | '/en/project/verchia'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
-    | '/about'
     | '/project'
-    | '/project/dialog-exe'
+    | '/en'
     | '/project/manshausen'
     | '/project/pradelna'
+    | '/project/torrfesken'
     | '/project/verchia'
+    | '/en/project/manshausen'
+    | '/en/project/pradelna'
+    | '/en/project/verchia'
   id:
     | '__root__'
     | '/'
-    | '/about'
     | '/project'
-    | '/project/dialog-exe'
+    | '/en'
     | '/project/manshausen'
     | '/project/pradelna'
+    | '/project/torrfesken'
     | '/project/verchia'
+    | '/en_/project/manshausen'
+    | '/en_/project/pradelna'
+    | '/en_/project/verchia'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  AboutRouteRoute: typeof AboutRouteRoute
   ProjectRouteRoute: typeof ProjectRouteRouteWithChildren
+  EnRoute: typeof EnRoute
+  EnProjectManshausenRoute: typeof EnProjectManshausenRoute
+  EnProjectPradelnaRoute: typeof EnProjectPradelnaRoute
+  EnProjectVerchiaRoute: typeof EnProjectVerchiaRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/en': {
+      id: '/en'
+      path: '/en'
+      fullPath: '/en'
+      preLoaderRoute: typeof EnRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/project': {
       id: '/project'
       path: '/project'
       fullPath: '/project'
       preLoaderRoute: typeof ProjectRouteRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/about': {
-      id: '/about'
-      path: '/about'
-      fullPath: '/about'
-      preLoaderRoute: typeof AboutRouteRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/': {
@@ -147,6 +186,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProjectVerchiaRouteImport
       parentRoute: typeof ProjectRouteRoute
     }
+    '/project/torrfesken': {
+      id: '/project/torrfesken'
+      path: '/torrfesken'
+      fullPath: '/project/torrfesken'
+      preLoaderRoute: typeof ProjectTorrfeskenRouteImport
+      parentRoute: typeof ProjectRouteRoute
+    }
     '/project/pradelna': {
       id: '/project/pradelna'
       path: '/pradelna'
@@ -161,27 +207,41 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProjectManshausenRouteImport
       parentRoute: typeof ProjectRouteRoute
     }
-    '/project/dialog-exe': {
-      id: '/project/dialog-exe'
-      path: '/dialog-exe'
-      fullPath: '/project/dialog-exe'
-      preLoaderRoute: typeof ProjectDialogExeRouteImport
-      parentRoute: typeof ProjectRouteRoute
+    '/en_/project/verchia': {
+      id: '/en_/project/verchia'
+      path: '/en/project/verchia'
+      fullPath: '/en/project/verchia'
+      preLoaderRoute: typeof EnProjectVerchiaRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/en_/project/pradelna': {
+      id: '/en_/project/pradelna'
+      path: '/en/project/pradelna'
+      fullPath: '/en/project/pradelna'
+      preLoaderRoute: typeof EnProjectPradelnaRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/en_/project/manshausen': {
+      id: '/en_/project/manshausen'
+      path: '/en/project/manshausen'
+      fullPath: '/en/project/manshausen'
+      preLoaderRoute: typeof EnProjectManshausenRouteImport
+      parentRoute: typeof rootRouteImport
     }
   }
 }
 
 interface ProjectRouteRouteChildren {
-  ProjectDialogExeRoute: typeof ProjectDialogExeRoute
   ProjectManshausenRoute: typeof ProjectManshausenRoute
   ProjectPradelnaRoute: typeof ProjectPradelnaRoute
+  ProjectTorrfeskenRoute: typeof ProjectTorrfeskenRoute
   ProjectVerchiaRoute: typeof ProjectVerchiaRoute
 }
 
 const ProjectRouteRouteChildren: ProjectRouteRouteChildren = {
-  ProjectDialogExeRoute: ProjectDialogExeRoute,
   ProjectManshausenRoute: ProjectManshausenRoute,
   ProjectPradelnaRoute: ProjectPradelnaRoute,
+  ProjectTorrfeskenRoute: ProjectTorrfeskenRoute,
   ProjectVerchiaRoute: ProjectVerchiaRoute,
 }
 
@@ -191,8 +251,11 @@ const ProjectRouteRouteWithChildren = ProjectRouteRoute._addFileChildren(
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  AboutRouteRoute: AboutRouteRoute,
   ProjectRouteRoute: ProjectRouteRouteWithChildren,
+  EnRoute: EnRoute,
+  EnProjectManshausenRoute: EnProjectManshausenRoute,
+  EnProjectPradelnaRoute: EnProjectPradelnaRoute,
+  EnProjectVerchiaRoute: EnProjectVerchiaRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

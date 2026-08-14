@@ -3,7 +3,10 @@
 import { Effect } from "postprocessing";
 import { Uniform } from "three";
 import { linkInteraction } from "./linkInteractionStore";
-import { targetAuroraSpeedMultiplier } from "./lightStore";
+import {
+  targetAuroraSpeedMultiplier,
+  targetScrollSpeedMultiplier,
+} from "./lightStore";
 
 const fragmentShader = /* glsl */ `
 	uniform float uFrequency;
@@ -43,11 +46,12 @@ export default class WaveEffect extends Effect {
     this.interactionStrength +=
       (linkInteraction.strength - this.interactionStrength) * damping;
     const calm = this.interactionStrength;
-    const speedRate =
-      targetAuroraSpeedMultiplier > this.speedMultiplier ? 8 : 3.5;
+    const targetSpeedMultiplier =
+      targetAuroraSpeedMultiplier * targetScrollSpeedMultiplier;
+    const speedRate = targetSpeedMultiplier > this.speedMultiplier ? 12 : 2;
     const speedDamping = 1 - Math.exp(-deltaTime * speedRate);
     this.speedMultiplier +=
-      (targetAuroraSpeedMultiplier - this.speedMultiplier) * speedDamping;
+      (targetSpeedMultiplier - this.speedMultiplier) * speedDamping;
 
     this.uniforms.get("uAmplitude").value =
       this.baseAmplitude * (1 - calm * 0.9);

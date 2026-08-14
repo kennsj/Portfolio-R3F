@@ -41,7 +41,7 @@ export default function LightSource() {
       interactionDamping;
     const strength = interactionStrength.current;
     const surgeRate =
-      targetTransitionLightSurge > transitionSurge.current ? 5 : 2.4;
+      targetTransitionLightSurge > transitionSurge.current ? 8 : 1.8;
     const surgeDamping = 1 - Math.exp(-delta * surgeRate);
     transitionSurge.current +=
       (targetTransitionLightSurge - transitionSurge.current) * surgeDamping;
@@ -62,13 +62,13 @@ export default function LightSource() {
     cursorLight.current.intensity +=
       (targetCursorIntensity - cursorLight.current.intensity) *
       interactionDamping;
-    const surgeProgress = (surge - 1) / 0.65;
-    const targetTransitionIntensity = surgeProgress * (isMobile ? 14 : 22);
+    const surgeProgress = (surge - 1) / 1.6;
+    const targetTransitionIntensity = surgeProgress * (isMobile ? 34 : 55);
     transitionLight.current.intensity +=
       (targetTransitionIntensity - transitionLight.current.intensity) *
       surgeDamping;
     transitionLight.current.distance +=
-      (4.5 + surgeProgress * 8.5 - transitionLight.current.distance) *
+      (4.5 + surgeProgress * 13.5 - transitionLight.current.distance) *
       surgeDamping;
     easing.damp3(
       cursorLight.current.position,

@@ -8,6 +8,8 @@ import {
 } from "react";
 import gsap from "gsap";
 import SplitText from "gsap/SplitText";
+import { useI18n } from "../../../hooks/useI18n";
+import { localizePath } from "../../../utils/locale-path";
 import styles from "./animated-link.module.css";
 
 gsap.registerPlugin(SplitText);
@@ -73,10 +75,15 @@ const AnimatedLink = ({
   onFocus,
   onBlur,
   children,
+  href,
   ...props
 }: AnimatedLinkProps) => {
+  const { locale } = useI18n();
   const linkRef = useRef<HTMLAnchorElement>(null);
   const activeAnimationRef = useRef<ActiveAnimation | null>(null);
+  const localizedHref = href?.startsWith("/")
+    ? localizePath(href, locale)
+    : href;
 
   useEffect(() => () => activeAnimationRef.current?.cleanup(), []);
 
@@ -175,6 +182,7 @@ const AnimatedLink = ({
   return (
     <a
       {...props}
+      href={localizedHref}
       ref={linkRef}
       onPointerEnter={(event: PointerEvent<HTMLAnchorElement>) => {
         onPointerEnter?.(event);

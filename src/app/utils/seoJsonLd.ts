@@ -1,4 +1,5 @@
 import type { AppLocale, ProjectSlug, Translations } from "../hooks/useI18n"
+import { localizePath } from "./locale-path"
 
 type JsonLdThing = Record<string, unknown>
 
@@ -18,22 +19,14 @@ function breadcrumbItems(
 	t: Translations,
 ): { position: number; name: string; item: string }[] | null {
 	const path = pathname.replace(/\/$/, "") || "/"
-	const q = `${locale}`
-	const home = `${origin}/${q}`
+	const home = `${origin}${localizePath("/", locale)}`
 
 	if (path === "/") return null
-
-	if (path === "/about") {
-		return [
-			{ position: 1, name: t.footerHome, item: home },
-			{ position: 2, name: t.footerAbout, item: `${origin}/about${q}` },
-		]
-	}
 
 	if (path === "/project") {
 		return [
 			{ position: 1, name: t.footerHome, item: home },
-			{ position: 2, name: t.footerWork, item: `${origin}/project${q}` },
+			{ position: 2, name: t.footerWork, item: `${origin}${localizePath("/project", locale)}` },
 		]
 	}
 
@@ -44,7 +37,7 @@ function breadcrumbItems(
 		const label = entry ? projectNameFromSeoTitle(entry.title) : slug
 		return [
 			{ position: 1, name: t.footerHome, item: home },
-			{ position: 2, name: t.footerWork, item: `${origin}/project${q}` },
+			{ position: 2, name: t.footerWork, item: `${origin}${localizePath("/project", locale)}` },
 			{ position: 3, name: label, item: canonicalUrl },
 		]
 	}

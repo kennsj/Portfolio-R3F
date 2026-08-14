@@ -74,10 +74,10 @@ const Expertise = () => {
       <header className={styles.header}>
         <span className={styles.eyebrow}>02 / {t.expertiseEyebrow}</span>
         <AnimatedLink
-          href="/about"
+          href="/#about"
           onClick={(event) => {
             event.preventDefault();
-            transitionTo("/about");
+            transitionTo("/#about");
           }}
         >
           {t.expertiseAboutCta}

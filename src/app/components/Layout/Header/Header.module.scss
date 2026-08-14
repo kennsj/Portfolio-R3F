@@ -65,15 +65,29 @@
 }
 
 .last-name {
+  position: relative;
   align-self: flex-end;
   margin-top: 0.28em;
   padding-right: 0.035em;
   color: transparent !important;
-  -webkit-text-stroke: 1px var(--primary-color);
+  -webkit-text-stroke: 1px color-mix(in srgb, var(--primary-color) 58%, transparent);
 
   * {
     color: transparent !important;
     -webkit-text-stroke: inherit;
+  }
+
+  &::after {
+    content: attr(data-text);
+    position: absolute;
+    inset: 0;
+
+    color: transparent;
+    -webkit-text-stroke: 1.1px rgb(199 238 195 / 72%);
+    filter: drop-shadow(0 0 var(--aurora-stroke-glow) rgb(166 239 190 / 45%));
+    mix-blend-mode: screen;
+    opacity: var(--aurora-stroke-opacity);
+    pointer-events: none;
   }
 }
 

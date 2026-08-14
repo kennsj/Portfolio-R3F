@@ -1,14 +1,16 @@
-import { useLayoutEffect } from "react";
+import { useLayoutEffect, useRef } from "react";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import SplitText from "gsap/SplitText";
 import { useI18n } from "../../../hooks/useI18n";
 import { usePageTransition } from "../../../hooks/usePageTransition";
+import { deterministicCharacterOrder } from "../../../hooks/use-character-reveal";
 import styles from "./ProjectCase.module.scss";
 import HeadingAnimation from "../../UI/HeadingAnimation/HeadingAnimation";
 import AnimatedLink from "../../UI/AnimatedLink/AnimatedLink";
 
-gsap.registerPlugin(ScrollTrigger);
+gsap.registerPlugin(ScrollTrigger, SplitText);
 
 type Copy = { en: string; nb: string };
 type Project = {
@@ -56,8 +58,8 @@ const projects: Record<string, Project> = {
       en: "Visual direction, interface design, interaction concept and front-end exploration.",
       nb: "Visuell retning, grensesnittdesign, interaksjonskonsept og frontend-utforskning.",
     },
-    video: "/videos/manshausen.webm",
-    poster: "/images/kenneth-aurora.jpg",
+    video: "/images/work/manshausen-preview.png",
+    poster: "/images/work/manshausen-preview.png",
     next: { title: "Verchia", slug: "verchia" },
   },
   verchia: {
@@ -90,13 +92,13 @@ const projects: Record<string, Project> = {
       en: "Visual direction, UX and UI design, interaction design and React front-end development.",
       nb: "Visuell retning, UX- og UI-design, interaksjonsdesign og frontend-utvikling i React.",
     },
-    video: "/videos/verchia.webm",
+    video: "/images/work/verchia-preview.png",
     poster: "/images/verchia.webp",
-    next: { title: "Pradelna", slug: "pradelna" },
+    next: { title: "Tørrfesken", slug: "torrfesken" },
   },
   pradelna: {
-    slug: "pradelna",
-    title: "Pradelna",
+    slug: "torrfesken",
+    title: "Tørrfesken",
     role: { en: "Front-end development", nb: "Frontendutvikling" },
     type: { en: "Services / Website", nb: "Tjenester / Nettside" },
     status: { en: "Live project", nb: "Publisert prosjekt" },
@@ -118,9 +120,9 @@ const projects: Record<string, Project> = {
       en: "Responsive front-end development, component implementation and interaction detailing.",
       nb: "Responsiv frontend-utvikling, komponentimplementasjon og detaljering av interaksjon.",
     },
-    video: "/videos/pradelna.webm",
-    poster: "/images/pradelna.webp",
-    next: { title: "Dialog eXe", slug: "dialog-exe" },
+    video: "/images/work/tørrfesken-preview.png",
+    poster: "/images/work/tørrfesken-preview.png",
+    next: { title: "Verchia", slug: "verchia" },
   },
   "dialog-exe": {
     slug: "dialog-exe",
@@ -145,7 +147,7 @@ const projects: Record<string, Project> = {
       en: "User-flow exploration, information architecture, interaction design and interface concept.",
       nb: "Utforskning av brukerflyt, informasjonsarkitektur, interaksjonsdesign og grensesnittkonsept.",
     },
-    video: "/videos/dx.webm",
+    video: "/images/work/verchia-preview.png",
     poster: "/images/dx-kino.webp",
     next: { title: "Manshausen", slug: "manshausen" },
   },
@@ -155,6 +157,10 @@ export default function ProjectCase({ slug }: { slug: keyof typeof projects }) {
   const project = projects[slug];
   const { locale } = useI18n();
   const { transitionTo } = usePageTransition();
+  const heroHeadingRef = useRef<HTMLDivElement>(null);
+  const continuityArrival = useRef(
+    document.documentElement.dataset.projectContinuityArrival === "true",
+  ).current;
   const copy = (value: Copy) => value[locale];
   const details = [
     {
@@ -177,7 +183,92 @@ export default function ProjectCase({ slug }: { slug: keyof typeof projects }) {
 
   useLayoutEffect(() => {
     window.scrollTo(0, 0);
-  }, []);
+    delete document.documentElement.dataset.projectContinuityArrival;
+
+    if (!continuityArrival || !heroHeadingRef.current) return;
+
+    const heading = heroHeadingRef.current.querySelector("h1");
+    const role = heroHeadingRef.current.querySelector<HTMLElement>(
+      `.${styles["hero-type"]}`,
+    );
+    const reducedMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)",
+    ).matches;
+
+    if (reducedMotion) return;
+
+    gsap.set([heading, role], { autoAlpha: 0 });
+
+    let headingSplit: SplitText | null = null;
+    let revealTimeline: gsap.core.Timeline | null = null;
+
+    const revealHeading = () => {
+      void document.fonts.ready.then(() => {
+        if (!heading?.isConnected) return;
+
+        try {
+          headingSplit = SplitText.create(heading, {
+            type: "words,chars",
+          });
+          const characters = headingSplit.chars;
+          const characterOrder = deterministicCharacterOrder(
+            characters.length,
+          );
+          const characterRank = new Map(
+            characterOrder.map((characterIndex, rank) => [
+              characterIndex,
+              rank,
+            ]),
+          );
+
+          gsap.set(heading, { autoAlpha: 1, filter: "none" });
+          gsap.set(characters, {
+            autoAlpha: 0,
+            filter: "blur(32px)",
+          });
+
+          revealTimeline = gsap
+            .timeline()
+            .fromTo(
+              characters,
+              { autoAlpha: 0, filter: "blur(32px)" },
+              {
+                autoAlpha: 1,
+                filter: "blur(0px)",
+                duration: 1.05,
+                stagger: (characterIndex) =>
+                  (characterRank.get(characterIndex) ?? characterIndex) *
+                  0.028,
+                ease: "power2.out",
+              },
+            )
+            .fromTo(
+              role,
+              { autoAlpha: 0, filter: "blur(10px)" },
+              {
+                autoAlpha: 1,
+                filter: "blur(0px)",
+                duration: 0.7,
+                ease: "power2.out",
+              },
+              0.55,
+            );
+        } catch {
+          gsap.set([heading, role], { autoAlpha: 1, filter: "none" });
+        }
+      });
+    };
+
+    window.addEventListener("page-transition-enter", revealHeading, {
+      once: true,
+    });
+
+    return () => {
+      window.removeEventListener("page-transition-enter", revealHeading);
+      revealTimeline?.kill();
+      headingSplit?.revert();
+    };
+  }, [continuityArrival]);
   useGSAP(() => {
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
     gsap.utils.toArray<HTMLElement>("[data-case-reveal]").forEach((element) => {
@@ -206,24 +297,41 @@ export default function ProjectCase({ slug }: { slug: keyof typeof projects }) {
       style={{ "--case-color": project.color } as React.CSSProperties}
     >
       <header className={styles.hero}>
-        <div className={styles.heroMeta}>
+        {/* <div className={styles.heroMeta}>
           <span>
             {copy(project.type)} / {copy(project.status)}
           </span>
           <span>Bodø / 67°17′N</span>
+        </div> */}
+        <div ref={heroHeadingRef} className={styles["hero-heading-row"]}>
+          <HeadingAnimation
+            level={1}
+            immediate={!continuityArrival}
+            enabled={!continuityArrival}
+          >
+            {project.title}
+          </HeadingAnimation>
+          <p className={styles["hero-type"]}>{copy(project.role)}</p>
         </div>
-        <HeadingAnimation level={1} immediate>
-          {project.title}
-        </HeadingAnimation>
-        <p>{copy(project.intro)}</p>
+        <div
+          className={styles["hero-transition-media"]}
+          data-project-hero-media
+        >
+          {project.video.endsWith(".png") ? (
+            <img src={project.video} alt={`${project.title} project preview`} />
+          ) : (
+            <video
+              src={project.video}
+              poster={project.poster}
+              muted
+              loop
+              autoPlay
+              playsInline
+            />
+          )}
+        </div>
+        <p className={styles["hero-intro"]}>{copy(project.intro)}</p>
       </header>
-
-      <figure className={styles.heroMedia} data-case-reveal>
-        <img
-          src={`/images/placeholders/${project.slug}-hero.svg`}
-          alt={`${project.title} project placeholder`}
-        />
-      </figure>
 
       <section className={styles.overview} data-case-reveal>
         <dl>

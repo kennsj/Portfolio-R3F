@@ -23,6 +23,7 @@ import {
 } from "./hooks/useI18n";
 import { buildSeoJsonLd } from "./utils/seoJsonLd";
 import "./utils/motion";
+import { localizePath, stripLocalePrefix } from "./utils/locale-path";
 const Nav = lazy(() => import("./components/Layout/Nav/Nav"));
 const Cursor = lazy(() => import("./components/UI/Cursor/Cursor"));
 
@@ -31,18 +32,17 @@ gsap.registerPlugin(ScrollTrigger, ScrollSmoother);
 export default function RootLayout() {
   const { pathname, hash: locationHash } = useLocation();
   const { locale, t } = useI18n();
-  const isHome = pathname === "/";
-  const isAbout = pathname === "/about";
+  const logicalPathname = stripLocalePrefix(pathname);
+  const isHome = logicalPathname === "/";
   const prevPathRef = useRef<string | null>(null);
 
   useEffect(() => {
     const { title: pageTitle, description: pageDescription } = getSeoForPath(
-      pathname,
-      isAbout,
+      logicalPathname,
       t,
     );
     const origin = window.location.origin;
-    const canonicalUrl = `${origin}${pathname}?lang=${locale}`;
+    const canonicalUrl = `${origin}${localizePath(logicalPathname, locale)}`;
     const ogImageUrl = `${origin}${SEO_DEFAULT_OG_IMAGE_PATH}`;
 
     document.title = pageTitle;
@@ -106,9 +106,8 @@ export default function RootLayout() {
       link.href = href;
     };
 
-    const basePath = `${origin}${pathname}`;
-    setAlternate("en", `${basePath}?lang=en`);
-    setAlternate("nb", `${basePath}?lang=nb`);
+    setAlternate("en", `${origin}${localizePath(logicalPathname, "en")}`);
+    setAlternate("nb", `${origin}${localizePath(logicalPathname, "nb")}`);
 
     let xDefault = document.head.querySelector<HTMLLinkElement>(
       'link[rel="alternate"][hreflang="x-default"]',
@@ -119,7 +118,7 @@ export default function RootLayout() {
       xDefault.setAttribute("hreflang", "x-default");
       document.head.appendChild(xDefault);
     }
-    xDefault.href = `${basePath}?lang=nb`;
+    xDefault.href = `${origin}${localizePath(logicalPathname, "nb")}`;
 
     const id = "seo-jsonld";
     let schemaScript = document.getElementById(id) as HTMLScriptElement | null;
@@ -133,7 +132,7 @@ export default function RootLayout() {
     schemaScript.text = JSON.stringify(
       buildSeoJsonLd({
         origin,
-        pathname,
+        pathname: logicalPathname,
         locale,
         canonicalUrl,
         ogImageUrl,
@@ -142,11 +141,11 @@ export default function RootLayout() {
         t,
       }),
     );
-  }, [isAbout, locale, pathname, t]);
+  }, [locale, logicalPathname, t]);
 
   useLayoutEffect(() => {
-    setLightColor(lightColorForPathname(pathname));
-  }, [pathname]);
+    setLightColor(lightColorForPathname(logicalPathname));
+  }, [logicalPathname]);
 
   useLayoutEffect(() => {
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
@@ -181,14 +180,14 @@ export default function RootLayout() {
     const prev = prevPathRef.current;
     prevPathRef.current = pathname;
 
-    if (pathname !== "/") return;
+    if (logicalPathname !== "/") return;
 
     const raw = (locationHash || "").replace(/^#/, "");
 
     const run = () => {
       if (raw) {
         gsapScrollToHashIdWhenReady(raw, () => ScrollTrigger.refresh());
-      } else if (prev !== null && prev !== "/") {
+      } else if (prev !== null && stripLocalePrefix(prev) !== "/") {
         gsapScrollToTop();
         requestAnimationFrame(() => ScrollTrigger.refresh());
       }
@@ -197,7 +196,7 @@ export default function RootLayout() {
     requestAnimationFrame(() => {
       requestAnimationFrame(run);
     });
-  }, [pathname, locationHash]);
+  }, [pathname, logicalPathname, locationHash]);
 
   return (
     <PointerProvider>

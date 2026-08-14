@@ -2,5 +2,46 @@
 	"framework": null,
 	"buildCommand": "npm run build",
 	"outputDirectory": "dist",
+	"redirects": [
+		{
+			"source": "/",
+			"has": [
+				{
+					"type": "header",
+					"key": "x-vercel-ip-country",
+					"value": { "neq": "NO" }
+				}
+			],
+			"missing": [{ "type": "cookie", "key": "portfolio-locale" }],
+			"destination": "/en",
+			"permanent": false
+		},
+		{
+			"source": "/about",
+			"has": [
+				{
+					"type": "header",
+					"key": "x-vercel-ip-country",
+					"value": { "neq": "NO" }
+				}
+			],
+			"missing": [{ "type": "cookie", "key": "portfolio-locale" }],
+			"destination": "/en/about",
+			"permanent": false
+		},
+		{
+			"source": "/project/:path*",
+			"has": [
+				{
+					"type": "header",
+					"key": "x-vercel-ip-country",
+					"value": { "neq": "NO" }
+				}
+			],
+			"missing": [{ "type": "cookie", "key": "portfolio-locale" }],
+			"destination": "/en/project/:path*",
+			"permanent": false
+		}
+	],
 	"rewrites": [{ "source": "/(.*)", "destination": "/index.html" }]
 }

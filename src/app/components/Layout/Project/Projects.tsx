@@ -13,48 +13,39 @@ const projectData = [
       nb: "Digitalt konsept og frontend for et arkitektonisk øyretreat.",
       en: "Digital concept and front-end for an architectural island retreat.",
     },
-    video: "/videos/manshausen.webm",
+    video: "/images/work/manshausen-preview.png",
     poster: undefined,
     slug: "manshausen",
     color: "#78c69a",
   },
   {
-    name: "Verchia",
+    name: "Tørrfesken",
     work: { nb: "Visuell retning / Kode", en: "Visual direction / Code" },
     description: {
       nb: "Visuell retning og digital opplevelse utviklet fra konsept til kode.",
       en: "Visual direction and a digital experience developed from concept to code.",
     },
-    video: "/videos/verchia.webm",
-    poster: "/images/verchia.webp",
-    slug: "verchia",
-    color: "#b6a6ee",
+    video: "/images/work/tørrfesken-preview.png",
+    poster: "/images/work/tørrfesken-preview.png",
+    slug: "torrfesken",
+    color: "#e2cf9d",
+    comingSoon: true,
   },
   {
-    name: "Pradelna",
+    name: "Verchia",
     work: { nb: "Frontendutvikling", en: "Front-end development" },
     description: {
       nb: "Frontendimplementasjon med fokus på typografi, rytme og responsivitet.",
       en: "Front-end implementation focused on type, rhythm, and responsiveness.",
     },
-    video: "/videos/pradelna.webm",
-    poster: "/images/pradelna.webp",
-    slug: "pradelna",
-    color: "#e2cf9d",
-  },
-  {
-    name: "Dialog eXe",
-    work: { nb: "UX / UI", en: "UX / UI" },
-    description: {
-      nb: "UX- og UI-arbeid for et tydeligere og mer effektivt digitalt produkt.",
-      en: "UX and UI work for a clearer, more efficient digital product.",
-    },
-    video: "/videos/dx.webm",
-    poster: "/images/dx-kino.webp",
-    slug: "dialog-exe",
-    color: "#8bb8dc",
+    video: "/images/work/verchia-preview.png",
+    poster: "/images/work/verchia-preview.png",
+    slug: "verchia",
+    color: "#b6a6ee",
   },
 ] as const;
+
+const orderedProjectData = [projectData[1], projectData[0], projectData[2]] as const;
 
 const Projects = () => {
   const { locale } = useI18n();
@@ -65,12 +56,13 @@ const Projects = () => {
   const previewPositionRef = useRef<HTMLDivElement>(null);
   const previewRevealRef = useRef<HTMLDivElement>(null);
   const previewMediaRef = useRef<HTMLDivElement>(null);
-  const videoRefs = useRef<Array<HTMLVideoElement | null>>([]);
+  const videoRefs = useRef<Array<HTMLVideoElement | HTMLImageElement | null>>([]);
   const currentIndexRef = useRef<number | null>(null);
   const previewOpenRef = useRef(false);
   const concealTimerRef = useRef<number | null>(null);
   const pointerRef = useRef({ x: 0, y: 0 });
   const settleTiltRef = useRef<gsap.core.Tween | null>(null);
+  const projectTransitionRef = useRef(false);
 
   const getLocalPointer = useCallback((clientX: number, clientY: number) => {
     const section = sectionRef.current;
@@ -109,7 +101,8 @@ const Projects = () => {
       gsap.killTweensOf(preview);
       const previousIndex = currentIndexRef.current;
       const nextVideo = videoRefs.current[index];
-      if (nextVideo) void nextVideo.play().catch(() => undefined);
+      if (nextVideo instanceof HTMLVideoElement)
+        void nextVideo.play().catch(() => undefined);
 
       const localPointer = getLocalPointer(
         clientX ?? window.innerWidth * 0.64,
@@ -157,7 +150,8 @@ const Projects = () => {
           autoAlpha: videoIndex === index ? 1 : 0,
           yPercent: 0,
         });
-        if (videoIndex !== index) video.pause();
+        if (videoIndex !== index && video instanceof HTMLVideoElement)
+          video.pause();
       });
       currentIndexRef.current = index;
       previewOpenRef.current = true;
@@ -219,6 +213,7 @@ const Projects = () => {
   }, [activeIndex, follow]);
 
   const conceal = useCallback(() => {
+    if (projectTransitionRef.current) return;
     if (concealTimerRef.current !== null)
       window.clearTimeout(concealTimerRef.current);
     concealTimerRef.current = window.setTimeout(() => {
@@ -239,7 +234,9 @@ const Projects = () => {
         ease: "shiftReveal",
         onComplete: () => {
           gsap.set(preview, { autoAlpha: 0 });
-          videoRefs.current.forEach((video) => video?.pause());
+        videoRefs.current.forEach((video) => {
+          if (video instanceof HTMLVideoElement) video.pause();
+        });
           previewOpenRef.current = false;
           currentIndexRef.current = null;
           setActiveIndex(null);
@@ -247,6 +244,164 @@ const Projects = () => {
       });
     }, 90);
   }, []);
+
+  const transitionFromPreview = useCallback(
+    (index: number, href: string) => {
+      const previewPosition = previewPositionRef.current;
+      const sourceVideo = videoRefs.current[index];
+      const canAnimate =
+        previewOpenRef.current &&
+        currentIndexRef.current === index &&
+        previewPosition &&
+        sourceVideo &&
+        window.matchMedia("(hover: hover) and (pointer: fine)").matches &&
+        !window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+      if (!canAnimate || projectTransitionRef.current) {
+        transitionTo(href);
+        return;
+      }
+
+      projectTransitionRef.current = true;
+      document.documentElement.dataset.projectContinuityArrival = "true";
+      settleTiltRef.current?.kill();
+      const sourceRect = previewPosition.getBoundingClientRect();
+      const overlay = document.createElement("div");
+      const video = document.createElement(
+        sourceVideo instanceof HTMLVideoElement ? "video" : "img",
+      );
+      const targetWidth = window.innerWidth * 0.9;
+      const targetHeight = targetWidth / 1.6;
+      const targetLeft = (window.innerWidth - targetWidth) / 2;
+      const rootFontSize = Number.parseFloat(
+        window.getComputedStyle(document.documentElement).fontSize,
+      );
+      const clampValue = (minimum: number, preferred: number, maximum: number) =>
+        Math.min(maximum, Math.max(minimum, preferred));
+      const heroPaddingTop = clampValue(
+        14 * rootFontSize,
+        window.innerHeight * 0.25,
+        20 * rootFontSize,
+      );
+      const heroTitleHeight =
+        clampValue(
+          3.25 * rootFontSize,
+          window.innerWidth * 0.065,
+          7 * rootFontSize,
+        ) * 0.9;
+      const heroMediaMarginTop = clampValue(
+        2.5 * rootFontSize,
+        window.innerWidth * 0.05,
+        4.5 * rootFontSize,
+      );
+      const targetTop =
+        heroPaddingTop + heroTitleHeight + heroMediaMarginTop;
+
+      overlay.className = styles["project-transition-overlay"];
+      video.src = sourceVideo.currentSrc || sourceVideo.src;
+      if (sourceVideo instanceof HTMLVideoElement) {
+        if (sourceVideo.poster) video.poster = sourceVideo.poster;
+        video.muted = true;
+        video.loop = true;
+        video.playsInline = true;
+        video.currentTime = sourceVideo.currentTime;
+      }
+      overlay.appendChild(video);
+      document.body.appendChild(overlay);
+      if (video instanceof HTMLVideoElement)
+        void video.play().catch(() => undefined);
+
+      gsap.set(overlay, {
+        left: sourceRect.left,
+        top: sourceRect.top,
+        width: sourceRect.width,
+        height: sourceRect.height,
+        rotation: gsap.getProperty(previewPosition, "rotation"),
+      });
+      gsap.set(previewRef.current, { autoAlpha: 0 });
+
+      let destinationReady = false;
+      let enterStarted = false;
+      let destinationChecks = 0;
+      let destination: HTMLElement | null = null;
+      let handoffFrame: number | null = null;
+      const alignOverlayToDestination = () => {
+        if (!destination) return;
+        const destinationRect = destination.getBoundingClientRect();
+        gsap.set(overlay, {
+          left: destinationRect.left,
+          top: destinationRect.top,
+          width: destinationRect.width,
+          height: destinationRect.height,
+          rotation: 0,
+        });
+      };
+      const completeHandoff = () => {
+        if (!destinationReady || !enterStarted) return;
+        window.removeEventListener("page-transition-enter", onPageEnter);
+        // ScrollSmoother and ScrollTrigger settle immediately after the enter
+        // event. Keep the continuity layer alive until that layout has settled,
+        // then measure once more so its final frame exactly matches the hero.
+        handoffFrame = window.requestAnimationFrame(() => {
+          handoffFrame = window.requestAnimationFrame(() => {
+            alignOverlayToDestination();
+            overlay.remove();
+            handoffFrame = null;
+          });
+        });
+      };
+      const onPageEnter = () => {
+        enterStarted = true;
+        completeHandoff();
+      };
+      const findDestination = () => {
+        destination = document.querySelector<HTMLElement>(
+          "[data-project-hero-media]",
+        );
+        destinationChecks += 1;
+        if (!destination && destinationChecks < 120) {
+          window.requestAnimationFrame(findDestination);
+          return;
+        }
+        if (destination) {
+          alignOverlayToDestination();
+        }
+        destinationReady = true;
+        completeHandoff();
+      };
+
+      window.addEventListener("page-transition-enter", onPageEnter, {
+        once: true,
+      });
+
+      gsap.to(overlay, {
+        left: targetLeft,
+        top: targetTop,
+        width: targetWidth,
+        height: targetHeight,
+        rotation: 0,
+        duration: 1.2,
+        ease: "shiftReveal",
+      });
+      window.setTimeout(
+        () => transitionTo(href, { skipEnterAnimation: true }),
+        180,
+      );
+      window.setTimeout(findDestination, 850);
+      window.setTimeout(() => {
+        window.removeEventListener("page-transition-enter", onPageEnter);
+        if (handoffFrame !== null) window.cancelAnimationFrame(handoffFrame);
+        if (document.body.contains(overlay)) {
+          gsap.to(overlay, {
+            autoAlpha: 0,
+            duration: 0.35,
+            onComplete: () => overlay.remove(),
+          });
+        }
+      }, 5000);
+    },
+    [transitionTo],
+  );
 
   return (
     <>
@@ -276,7 +431,7 @@ const Projects = () => {
             !event.currentTarget.contains(event.relatedTarget) && conceal()
           }
         >
-          {projectData.map((project, index) => (
+          {orderedProjectData.map((project, index) => (
             <li
               key={project.slug}
               className={
@@ -294,7 +449,8 @@ const Projects = () => {
                 onFocus={() => reveal(index)}
                 onClick={(event) => {
                   event.preventDefault();
-                  transitionTo(`/project/${project.slug}`);
+                  if (project.comingSoon) return;
+                  transitionFromPreview(index, `/project/${project.slug}`);
                 }}
                 data-cursor="explore"
               >
@@ -304,7 +460,9 @@ const Projects = () => {
                   <i>{project.work[locale]}</i>
                   <p>{project.description[locale]}</p>
                   <span>
-                    {locale === "nb" ? "Se prosjekt" : "View project"}
+                    {project.comingSoon
+                      ? locale === "nb" ? "Kommer snart" : "Coming soon"
+                      : locale === "nb" ? "Se prosjekt" : "View project"}
                     <i aria-hidden="true" />
                   </span>
                 </div>
@@ -320,8 +478,18 @@ const Projects = () => {
           <div ref={previewPositionRef} className={styles.previewPosition}>
             <div ref={previewRevealRef} className={styles.previewReveal}>
               <div ref={previewMediaRef} className={styles.previewMedia}>
-                {projectData.map((project, index) => (
-                  <video
+                {orderedProjectData.map((project, index) => (
+                  project.video.endsWith(".png") ? (
+                    <img
+                      key={project.video}
+                      ref={(node) => {
+                        videoRefs.current[index] = node;
+                      }}
+                      src={project.video}
+                      alt=""
+                    />
+                  ) : (
+                    <video
                     key={project.video}
                     ref={(node) => {
                       videoRefs.current[index] = node;
@@ -332,7 +500,8 @@ const Projects = () => {
                     loop
                     playsInline
                     preload="auto"
-                  />
+                    />
+                  )
                 ))}
               </div>
             </div>

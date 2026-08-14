@@ -1,6 +1,14 @@
 import { createRootRoute } from "@tanstack/react-router"
 import RootLayout from "./RootLayout"
-import { useI18n } from "./hooks/useI18n"
+import { I18nProvider, useI18n } from "./hooks/useI18n"
+
+function RootComponent() {
+	return (
+		<I18nProvider>
+			<RootLayout />
+		</I18nProvider>
+	)
+}
 
 function RootError({ error }: { error: Error }) {
 	const { t } = useI18n()
@@ -16,6 +24,10 @@ function RootError({ error }: { error: Error }) {
 }
 
 export const Route = createRootRoute({
-	component: RootLayout,
-	errorComponent: ({ error }) => <RootError error={error} />,
+	component: RootComponent,
+	errorComponent: ({ error }) => (
+		<I18nProvider>
+			<RootError error={error} />
+		</I18nProvider>
+	),
 })

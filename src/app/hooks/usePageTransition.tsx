@@ -1,6 +1,7 @@
 import { useNavigate, useLocation } from "@tanstack/react-router";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import ScrollSmoother from "gsap/ScrollSmoother";
 import {
   setAuroraSpeedMultiplier,
   setLightColor,
@@ -11,7 +12,10 @@ import {
   PAGE_LIGHT_COLORS,
 } from "../pageLightColors";
 import { gsapScrollToTop } from "../utils/gsapScroll";
+import { useManualKp } from "./KpContext";
 import { useI18n } from "./useI18n";
+import { getKpWaveSpeedMultiplier, useKpIndex } from "./useKpIndex";
+import { localizePath, stripLocalePrefix } from "../utils/locale-path";
 
 function normalizePath(p: string) {
   const t = p.replace(/\/$/, "") || "/";
@@ -42,11 +46,18 @@ export function usePageTransition() {
   const navigate = useNavigate();
   const { pathname } = useLocation();
   const { locale } = useI18n();
+  const { data } = useKpIndex();
+  const { manualKp } = useManualKp();
 
-  function transitionTo(href: string) {
+  function transitionTo(
+    href: string,
+    options: { skipEnterAnimation?: boolean } = {},
+  ) {
     const { to, hash } = splitInternalHref(href);
-    const targetPath = normalizePath(to);
+    const localizedTarget = localizePath(to, locale);
+    const targetPath = normalizePath(localizedTarget);
     const currentPath = normalizePath(pathname);
+    const logicalTargetPath = normalizePath(stripLocalePrefix(targetPath));
 
     // Same route: never fade main out (that left opacity at 0 when pathname did not change).
     if (targetPath === currentPath) {
@@ -54,7 +65,7 @@ export function usePageTransition() {
         void navigate({
           to: targetPath,
           hash,
-          search: { lang: locale },
+          search: {},
           replace: true,
           resetScroll: false,
           hashScrollIntoView: false,
@@ -63,7 +74,7 @@ export function usePageTransition() {
       } else {
         void navigate({
           to: targetPath,
-          search: { lang: locale },
+          search: {},
           replace: true,
         });
         gsapScrollToTop();
@@ -80,15 +91,25 @@ export function usePageTransition() {
     ).matches;
 
     const changeRoute = async () => {
-      setLightColor(PAGE_LIGHT_COLORS[targetPath] ?? DEFAULT_PAGE_LIGHT_COLOR);
+      setLightColor(
+        PAGE_LIGHT_COLORS[logicalTargetPath] ?? DEFAULT_PAGE_LIGHT_COLOR,
+      );
       await navigate({
-        to,
-        search: { lang: locale },
+        to: targetPath,
+        search: {},
         ...(hash
           ? { hash, resetScroll: false, hashScrollIntoView: false }
           : {}),
       });
-      if (!hash) gsapScrollToTop();
+      if (!hash) {
+        if (options.skipEnterAnimation) {
+          const smoother = ScrollSmoother.get();
+          if (smoother) smoother.scrollTop(0);
+          window.scrollTo(0, 0);
+        } else {
+          gsapScrollToTop();
+        }
+      }
     };
 
     if (reducedMotion || !content) {
@@ -99,18 +120,22 @@ export function usePageTransition() {
     }
 
     transitionInProgress = true;
-    setAuroraSpeedMultiplier(5.5);
-    setTransitionLightSurge(1.65);
+    const kp = manualKp ?? data?.latest ?? 5;
+    const kpWaveSpeed = getKpWaveSpeedMultiplier(kp);
+    const transitionSpeed = Math.min(9, 10 / kpWaveSpeed);
+
+    setAuroraSpeedMultiplier(transitionSpeed);
+    setTransitionLightSurge(2.6);
 
     gsap.to(content, {
       opacity: 0,
-      duration: 0.6,
+      duration: 0.75,
       ease: "power2.in",
       onStart: () => {
         content.style.pointerEvents = "none";
       },
       onComplete: () => {
-        void wait(200)
+        void wait(325)
           .then(changeRoute)
           .then(
             () =>
@@ -120,13 +145,22 @@ export function usePageTransition() {
                 ),
               ),
           )
-          .then(() => wait(200))
+          .then(() => wait(325))
           .then(() => {
             setAuroraSpeedMultiplier(1);
             setTransitionLightSurge(1);
+            if (options.skipEnterAnimation) {
+              gsap.set(content, { opacity: 1 });
+              content.style.pointerEvents = "";
+              window.dispatchEvent(new Event("page-transition-enter"));
+              ScrollTrigger.refresh();
+              transitionInProgress = false;
+              return;
+            }
+            window.dispatchEvent(new Event("page-transition-enter"));
             gsap.to(content, {
               opacity: 1,
-              duration: 0.8,
+              duration: 1,
               ease: "power3.out",
               onComplete: () => {
                 content.style.pointerEvents = "";

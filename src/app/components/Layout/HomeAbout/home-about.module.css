@@ -1,6 +1,8 @@
 .home-about {
   position: relative;
-  min-height: 250svh;
+  z-index: 1;
+  min-height: 200svh;
+  margin-top: -20svh;
   color: var(--primary-color);
 }
 
@@ -75,6 +77,7 @@
 @media (max-width: 760px) {
   .home-about {
     min-height: auto;
+    margin-top: 0;
   }
 
   .home-about-inner {
