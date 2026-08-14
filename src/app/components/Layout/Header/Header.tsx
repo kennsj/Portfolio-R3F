@@ -143,10 +143,15 @@ const Header = ({ signalNavIntroAfterHero = false }: HeaderProps) => {
           reducedMotion ? 0 : 0.3,
         );
 
+        let headingRevealEnd = 0.45;
+
         if (heading && !reducedMotion) {
           gsap.set(heading, { autoAlpha: 1, filter: "none" });
 
           try {
+            const characterDuration = 1.05;
+            const characterStagger = 0.028;
+            let firstNameRevealDuration = characterDuration;
             const nameLines = [
               heading.querySelector<HTMLElement>(`.${styles["first-name"]}`),
               heading.querySelector<HTMLElement>(`.${styles["last-name"]}`),
@@ -169,28 +174,60 @@ const Header = ({ signalNavIntroAfterHero = false }: HeaderProps) => {
                   rank,
                 ]),
               );
-              const initialBlur = lineIndex === 0 ? "32px" : "18px";
+              const initialBlur = "32px";
+
+              if (lineIndex === 0) {
+                firstNameRevealDuration =
+                  characterDuration +
+                  Math.max(0, characters.length - 1) * characterStagger;
+              } else {
+                nameLine.dataset.revealing = "true";
+              }
 
               gsap.set(characters, {
                 autoAlpha: 0,
                 filter: `blur(${initialBlur})`,
               });
+              const characterRevealStart =
+                lineIndex === 0
+                  ? 0.45
+                  : 0.45 + firstNameRevealDuration * 0.5;
+              const characterRevealEnd =
+                characterRevealStart +
+                characterDuration +
+                Math.max(0, characters.length - 1) * characterStagger;
+              headingRevealEnd = Math.max(
+                headingRevealEnd,
+                characterRevealEnd,
+              );
+
               timeline?.fromTo(
                 characters,
                 { autoAlpha: 0, filter: `blur(${initialBlur})` },
                 {
                   autoAlpha: 1,
                   filter: "blur(0px)",
-                  duration: 1.05,
+                  duration: characterDuration,
                   stagger: (characterIndex) =>
                     (characterRank.get(characterIndex) ?? characterIndex) *
-                    0.028,
+                    characterStagger,
                   ease: "power2.out",
                 },
-                lineIndex === 0 ? 0.45 : 0.75,
+                characterRevealStart,
               );
+
+              if (lineIndex === 1) {
+                timeline?.call(
+                  () => nameLine.removeAttribute("data-revealing"),
+                  [],
+                  characterRevealEnd,
+                );
+              }
             });
           } catch {
+            heading
+              .querySelector<HTMLElement>(`.${styles["last-name"]}`)
+              ?.removeAttribute("data-revealing");
             headingSplits.forEach((split) => split.revert());
             headingSplits.length = 0;
             timeline.fromTo(
@@ -204,13 +241,18 @@ const Header = ({ signalNavIntroAfterHero = false }: HeaderProps) => {
               },
               0.45,
             );
+            headingRevealEnd = 1.5;
           }
         } else if (heading) {
           gsap.set(heading, { autoAlpha: 1, filter: "none" });
         }
 
-        const supportingStart = reducedMotion ? 0.15 : 1.35;
-        timeline.call(markHomeHeroIntroComplete, [], supportingStart);
+        const supportingStart = reducedMotion ? 0.15 : headingRevealEnd + 0.15;
+        const supportingEnd = reducedMotion
+          ? supportingStart
+          : supportingStart +
+            0.7 +
+            Math.max(0, supporting.length - 1) * 0.06;
 
         if (!reducedMotion) {
           timeline.fromTo(
@@ -226,11 +268,16 @@ const Header = ({ signalNavIntroAfterHero = false }: HeaderProps) => {
             supportingStart,
           );
         }
+
+        timeline.call(markHomeHeroIntroComplete, [], supportingEnd);
       });
 
       return () => {
         cancelled = true;
         timeline?.kill();
+        headingRef.current
+          ?.querySelector<HTMLElement>(`.${styles["last-name"]}`)
+          ?.removeAttribute("data-revealing");
         headingSplits.forEach((split) => split.revert());
       };
     },

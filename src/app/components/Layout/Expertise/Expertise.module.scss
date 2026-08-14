@@ -2,7 +2,7 @@
 	position: relative;
 	overflow: hidden;
 	padding: clamp(4rem, 8vw, 8rem) var(--page-gutter) clamp(6rem, 11vw, 10rem) !important;
-	background: color-mix(in srgb, var(--signal-black) 94%, transparent);
+	background: transparent;
 	color: var(--primary-color);
 }
 
@@ -13,6 +13,7 @@
 	max-width: var(--max-width);
 	margin-inline: auto;
 }
+
 
 .header {
 	display: flex;

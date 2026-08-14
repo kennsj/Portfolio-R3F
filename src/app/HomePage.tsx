@@ -18,22 +18,49 @@ export default function HomePage() {
     const sections = Array.from(
       document.querySelectorAll<HTMLElement>("[data-aurora-state]"),
     );
-    const observer = new IntersectionObserver(
-      (entries) => {
-        const active = entries
-          .filter((entry) => entry.isIntersecting)
-          .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
-        if (!active) return;
-        const el = active.target as HTMLElement;
-        setAuroraPresence(Number(el.dataset.auroraPresence || 1));
-        if (el.dataset.auroraColor) setLightColor(el.dataset.auroraColor);
-      },
-      { rootMargin: "-28% 0px -28%", threshold: [0, 0.25, 0.5, 0.75] },
-    );
-    sections.forEach((section) => observer.observe(section));
+    let activeSection: HTMLElement | null = null;
+    let frame: number | null = null;
+
+    const updateAuroraState = () => {
+      frame = null;
+      const activationLine = window.innerHeight * 0.5;
+      const active =
+        sections.find((section) => {
+          const { top, bottom } = section.getBoundingClientRect();
+          return top <= activationLine && bottom > activationLine;
+        }) ??
+        sections.reduce<HTMLElement | null>((closest, section) => {
+          if (!closest) return section;
+          const closestDistance = Math.abs(
+            closest.getBoundingClientRect().top - activationLine,
+          );
+          const sectionDistance = Math.abs(
+            section.getBoundingClientRect().top - activationLine,
+          );
+          return sectionDistance < closestDistance ? section : closest;
+        }, null);
+
+      if (!active || active === activeSection) return;
+      activeSection = active;
+      setAuroraPresence(Number(active.dataset.auroraPresence || 1));
+      if (active.dataset.auroraColor) setLightColor(active.dataset.auroraColor);
+    };
+
+    const scheduleUpdate = () => {
+      if (frame !== null) return;
+      frame = window.requestAnimationFrame(updateAuroraState);
+    };
+
+    updateAuroraState();
+    window.addEventListener("scroll", scheduleUpdate, { passive: true });
+    window.addEventListener("resize", scheduleUpdate);
+
     return () => {
-      observer.disconnect();
+      window.removeEventListener("scroll", scheduleUpdate);
+      window.removeEventListener("resize", scheduleUpdate);
+      if (frame !== null) window.cancelAnimationFrame(frame);
       setAuroraPresence(1);
+      setLightColor("#a6d59e");
     };
   }, []);
 

@@ -6,6 +6,7 @@ import { useFrame, useThree } from "@react-three/fiber"
 import * as THREE from "three"
 import Effects from "./Effects"
 import { linkInteraction } from "./linkInteractionStore"
+import { workTransition } from "./workTransitionStore"
 
 const REF_ASPECT = 16 / 9
 
@@ -30,6 +31,7 @@ function Experience({ onReady }) {
 	const surfaceRef = useRef()
 	const materialRef = useRef()
 	const interactionStrength = useRef(0)
+	const workCalm = useRef(0)
 
 	useEffect(() => {
 		const aspect = viewport.width / viewport.height
@@ -60,24 +62,30 @@ function Experience({ onReady }) {
 		interactionStrength.current +=
 			(linkInteraction.strength - interactionStrength.current) * strengthDamping
 		const strength = interactionStrength.current
+		const calmDamping = 1 - Math.exp(-delta * 4)
+		workCalm.current +=
+			(workTransition.calm - workCalm.current) * calmDamping
+		const calm = workCalm.current
 		const horizontal = linkInteraction.x * 2 - 1
 		const vertical = linkInteraction.y * 2 - 1
 		const transformDamping = 1 - Math.exp(-delta * 2.8)
-		material.displacementScale = baseDisplacement * (1 - strength * 0.82)
-		material.roughness = 0.5 + strength * 0.18
+		material.displacementScale =
+			baseDisplacement * (1 - strength * 0.82) * (1 - calm * 0.72)
+		material.normalScale.setScalar((isMobile ? 0.2 : 0.1) * (1 - calm * 0.65))
+		material.roughness = 0.5 + strength * 0.18 + calm * 0.1
 
 		surface.rotation.x +=
-			(-vertical * 0.032 * strength - surface.rotation.x) * transformDamping
+			(-vertical * 0.032 * strength * (1 - calm) - surface.rotation.x) * transformDamping
 		surface.rotation.y +=
-			(horizontal * 0.045 * strength - surface.rotation.y) * transformDamping
+			(horizontal * 0.045 * strength * (1 - calm) - surface.rotation.y) * transformDamping
 		surface.position.x +=
-			(horizontal * viewport.width * 0.018 * strength - surface.position.x)
+			(horizontal * viewport.width * 0.018 * strength * (1 - calm) - surface.position.x)
 			* transformDamping
 		surface.position.y +=
-			(vertical * viewport.height * 0.014 * strength - surface.position.y)
+			(vertical * viewport.height * 0.014 * strength * (1 - calm) - surface.position.y)
 			* transformDamping
 		surface.position.z +=
-			(0.1 * strength - surface.position.z) * transformDamping
+			(0.1 * strength * (1 - calm) - surface.position.z) * transformDamping
 	})
 
 	return (

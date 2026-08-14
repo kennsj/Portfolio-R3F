@@ -31,6 +31,7 @@ export default function LightSource() {
     }
     easing.dampC(currentColor.current, targetColor.current, 0.15, delta);
     light.current.color.copy(currentColor.current);
+    ambient.current.color.copy(currentColor.current);
     cursorLight.current.color.copy(currentColor.current);
 
     const interactionRate =

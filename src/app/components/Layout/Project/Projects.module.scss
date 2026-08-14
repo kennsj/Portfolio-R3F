@@ -1,8 +1,8 @@
 .section {
   position: relative;
   padding: clamp(4rem, 7vw, 6rem) var(--page-gutter) clamp(5rem, 9vw, 8rem) !important;
-  background: var(--primary-color);
-  color: var(--signal-black);
+  background: transparent;
+  color: var(--primary-color);
   overflow: clip;
 }
 .project-intro {
@@ -19,7 +19,7 @@
   font-size: 0.65rem;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: color-mix(in srgb, var(--signal-black) 66%, transparent);
+  color: color-mix(in srgb, var(--primary-color) 66%, transparent);
 }
 
 .project-summary {
@@ -42,8 +42,6 @@
   gap: clamp(1rem, 3vw, 3rem);
   padding: clamp(1.5rem, 2.6vw, 2.5rem) 0;
   border: 0;
-  border-bottom: 1px solid
-    color-mix(in srgb, var(--signal-black) 28%, transparent);
   background: transparent;
   color: inherit;
   text-align: left;
@@ -51,9 +49,6 @@
   min-width: 0;
   color: inherit;
   text-decoration: none;
-}
-.index li:last-child a {
-  border-bottom: 0;
 }
 .index span,
 .index i {
@@ -64,7 +59,7 @@
   text-transform: uppercase;
 }
 
-.index li {
+.project-item {
   position: relative;
   z-index: 1;
 }
@@ -84,7 +79,7 @@
   text-transform: inherit !important;
   color: inherit !important;
 }
-.index strong {
+.project-title {
   min-width: 0;
   font-size: clamp(2.6rem, 4.7vw, 5.4rem);
   font-weight: 400;
@@ -96,13 +91,21 @@
     transform 0.55s var(--shift-ease),
     opacity 0.3s ease;
 }
-.index a:hover strong,
-.index a:focus-visible strong {
+.index a:hover .project-title,
+.index a:focus-visible .project-title {
   opacity: 1;
 }
 
+.project-rule {
+  display: block;
+  height: 1px;
+  background: color-mix(in srgb, var(--primary-color) 28%, transparent);
+  transform: scaleX(0);
+  transform-origin: left;
+}
+
 .index a:focus-visible {
-  outline: 2px solid var(--signal-black);
+  outline: 2px solid var(--primary-color);
   outline-offset: 0.35rem;
 }
 .details {
@@ -112,7 +115,7 @@
   justify-items: start;
 }
 .details i {
-  color: color-mix(in srgb, var(--signal-black) 42%, transparent);
+  color: color-mix(in srgb, var(--primary-color) 58%, transparent);
 }
 
 .details p {
@@ -122,7 +125,7 @@
   line-height: 1.35;
   letter-spacing: -0.025em;
   text-transform: none;
-  color: color-mix(in srgb, var(--signal-black) 78%, transparent);
+  color: color-mix(in srgb, var(--primary-color) 78%, transparent);
 }
 
 .details span {
@@ -231,7 +234,7 @@
     grid-template-columns: 2rem 1fr;
     gap: 0.75rem;
   }
-  .index strong {
+  .project-title {
     font-size: clamp(
       2rem,
       calc((100vw - (4 * var(--page-gutter))) / 9),
@@ -262,7 +265,7 @@
     gap: 0.55rem;
   }
 
-  .index strong {
+  .project-title {
     font-size: clamp(1.65rem, 8.5vw, 2.2rem);
   }
 
@@ -271,7 +274,7 @@
   }
 }
 @media (prefers-reduced-motion: reduce) {
-  .index strong {
+  .project-title {
     transition: none;
   }
   .hoverPreview {

@@ -89,6 +89,10 @@
     opacity: var(--aurora-stroke-opacity);
     pointer-events: none;
   }
+
+  &[data-revealing]::after {
+    opacity: 0;
+  }
 }
 
 .hero-utility {

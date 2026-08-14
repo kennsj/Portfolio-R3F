@@ -1,9 +1,15 @@
 import { useCallback, useEffect, useRef, useState } from "react";
+import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 import styles from "./Projects.module.scss";
 import { usePageTransition } from "../../../hooks/usePageTransition";
 import { useI18n } from "../../../hooks/useI18n";
 import AnimatedLink from "../../UI/AnimatedLink/AnimatedLink";
+import HeadingAnimation from "../../UI/HeadingAnimation/HeadingAnimation";
+import { workTransition } from "../../Experiences/workTransitionStore";
+
+gsap.registerPlugin(ScrollTrigger);
 
 const projectData = [
   {
@@ -81,6 +87,92 @@ const Projects = () => {
       settleTiltRef.current?.kill();
     },
     [],
+  );
+
+  useEffect(() => {
+    const section = sectionRef.current;
+    if (
+      !section ||
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches
+    )
+      return;
+
+    const timeline = gsap.timeline({
+      scrollTrigger: {
+        trigger: section,
+        start: "top 220%",
+        end: "top 115%",
+        scrub: 0.7,
+      },
+    });
+
+    timeline
+      .to(workTransition, { calm: 1, duration: 0.55, ease: "none" })
+      .to(workTransition, { calm: 0, duration: 0.45, ease: "none" });
+
+    return () => {
+      timeline.scrollTrigger?.kill();
+      timeline.kill();
+      workTransition.calm = 0;
+    };
+  }, []);
+
+  useGSAP(
+    () => {
+      const section = sectionRef.current;
+      if (
+        !section ||
+        window.matchMedia("(prefers-reduced-motion: reduce)").matches
+      )
+        return;
+
+      const timelines = Array.from(
+        section.querySelectorAll<HTMLElement>(`.${styles["project-item"]}`),
+      ).map((item) => {
+        const details = item.querySelector<HTMLElement>(`.${styles.details}`);
+        const rule = item.querySelector<HTMLElement>(`.${styles["project-rule"]}`);
+        const targets = [details, rule].filter(
+          (target): target is HTMLElement => target !== null,
+        );
+
+        gsap.set(targets, { willChange: "transform, opacity" });
+        const timeline = gsap.timeline({
+          scrollTrigger: {
+            trigger: item,
+            start: "top 68%",
+            once: true,
+            fastScrollEnd: true,
+          },
+        });
+
+        if (details) {
+          timeline.fromTo(
+            details,
+            { autoAlpha: 0, y: 18 },
+            { autoAlpha: 1, y: 0, duration: 1.1, ease: "power2.out" },
+          );
+        }
+
+        if (rule) {
+          timeline.fromTo(
+            rule,
+            { scaleX: 0 },
+            { scaleX: 1, duration: 0.85, ease: "power2.out" },
+            details ? "-=.35" : 0,
+          );
+        }
+
+        return timeline;
+      });
+
+      return () => {
+        timelines.forEach((timeline) => {
+          timeline.scrollTrigger?.kill();
+          timeline.kill();
+        });
+      };
+    },
+    { scope: sectionRef },
   );
 
   const reveal = useCallback(
@@ -410,7 +502,8 @@ const Projects = () => {
         className={styles.section}
         id="work"
         data-aurora-state
-        data-aurora-presence=".72"
+        data-aurora-presence=".82"
+        data-aurora-color="#d7a2bb"
       >
         <header className={styles["project-intro"]}>
           <p className={styles["project-label"]}>
@@ -435,11 +528,13 @@ const Projects = () => {
             <li
               key={project.slug}
               className={
-                activeIndex === index ? styles.projectItemActive : undefined
+                `${styles["project-item"]} ${
+                  activeIndex === index ? styles.projectItemActive : ""
+                }`.trim()
               }
             >
               <AnimatedLink
-                animationTarget="strong"
+                animationTarget="h3"
                 animateText={false}
                 href={`/project/${project.slug}`}
                 onPointerEnter={(event) =>
@@ -455,7 +550,9 @@ const Projects = () => {
                 data-cursor="explore"
               >
                 <span>{String(index + 1).padStart(2, "0")}</span>
-                <strong>{project.name}</strong>
+                <HeadingAnimation level={3} className={styles["project-title"]}>
+                  {project.name}
+                </HeadingAnimation>
                 <div className={styles.details}>
                   <i>{project.work[locale]}</i>
                   <p>{project.description[locale]}</p>
@@ -467,6 +564,9 @@ const Projects = () => {
                   </span>
                 </div>
               </AnimatedLink>
+              {index < orderedProjectData.length - 1 && (
+                <span className={styles["project-rule"]} aria-hidden="true" />
+              )}
             </li>
           ))}
         </ol>

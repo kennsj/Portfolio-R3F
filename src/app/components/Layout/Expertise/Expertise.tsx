@@ -68,8 +68,8 @@ const Expertise = () => {
       className={styles.section}
       aria-label={t.expertiseEyebrow}
       data-aurora-state
-      data-aurora-presence="0.92"
-      data-aurora-color="#8ed7ad"
+      data-aurora-presence="0.88"
+      data-aurora-color="#7ba7d6"
     >
       <header className={styles.header}>
         <span className={styles.eyebrow}>02 / {t.expertiseEyebrow}</span>

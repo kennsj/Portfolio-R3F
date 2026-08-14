@@ -4,6 +4,7 @@
   min-height: 200svh;
   margin-top: -20svh;
   color: var(--primary-color);
+  pointer-events: none;
 }
 
 :global(main) .home-about {
@@ -58,6 +59,7 @@
   font-size: clamp(1.1rem, 1.55vw, 1.45rem);
   letter-spacing: -0.04em;
   color: var(--primary-color);
+  pointer-events: auto;
 
   i {
     display: block;
