@@ -275,7 +275,7 @@ const Nav = () => {
           className={styles.contactAction}
         >
           <span className={styles.contactIdentity} aria-hidden="true">
-            <img src="/kj-logo.svg" alt="" />
+            <img src="/images/haio.webp" alt="" />
           </span>
           <span>{locale === "nb" ? "Ta kontakt" : "Get in touch"}</span>
         </AnimatedLink>

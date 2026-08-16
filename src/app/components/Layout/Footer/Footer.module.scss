@@ -1,178 +1,245 @@
 .footer {
-	max-width: var(--max-width);
-	margin-inline: auto;
-	padding-inline: var(--page-gutter);
+  max-width: var(--max-width);
+  margin-inline: auto;
+  padding-inline: var(--page-gutter);
 }
 
 .inner {
-	display: grid;
-	grid-template-columns: minmax(0, 1.25fr) minmax(18rem, .75fr);
-	grid-template-rows: auto auto auto auto;
-	gap: clamp(3rem, 8vw, 9rem);
-	row-gap: 0;
-	padding-block: clamp(4rem, 9vw, 8rem) 1.75rem;
-	border-top: 1px solid color-mix(in srgb, var(--primary-color) 28%, transparent);
+  display: grid;
+  grid-template-columns: minmax(0, 1.25fr) minmax(18rem, 0.75fr);
+  grid-template-rows: auto auto auto auto;
+  gap: clamp(3rem, 8vw, 9rem);
+  row-gap: 0;
+  padding-block: clamp(4rem, 9vw, 8rem) 1.75rem;
+  border-top: 1px solid
+    color-mix(in srgb, var(--primary-color) 28%, transparent);
 }
 
 .intro {
-	display: contents;
+  display: contents;
 }
 
 .availability {
-	grid-column: 1 / -1;
-	grid-row: 1;
-	display: flex;
-	align-items: flex-start;
-	gap: .65rem;
-	font-family: var(--font-family-ibm);
-	font-size: .65rem;
-	line-height: 1.5;
-	letter-spacing: .06em;
-	text-transform: uppercase;
+  grid-column: 1 / -1;
+  grid-row: 1;
+  display: flex;
+  align-items: flex-start;
+  gap: 0.65rem;
+  font-family: var(--font-family-ibm);
+  font-size: 0.65rem;
+  line-height: 1.5;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
 
-	i {
-		width: .45rem;
-		height: .45rem;
-		margin-top: .23rem;
-		flex: 0 0 .45rem;
-		border-radius: 50%;
-		background: var(--aurora-mint);
-		box-shadow: 0 0 1.25rem color-mix(in srgb, var(--aurora-mint) 60%, transparent);
-	}
+  i {
+    width: 0.45rem;
+    height: 0.45rem;
+    margin-top: 0.23rem;
+    flex: 0 0 0.45rem;
+    border-radius: 50%;
+    background: var(--aurora-mint);
+    box-shadow: 0 0 1.25rem
+      color-mix(in srgb, var(--aurora-mint) 60%, transparent);
+  }
 }
 
 .intro h2 {
-	grid-column: 1;
-	grid-row: 2;
-	max-width: 12ch;
-	margin: clamp(4rem, 10vw, 9rem) 0 0;
-	font-size: clamp(3.4rem, 7.6vw, 7.5rem);
-	font-weight: 400;
-	line-height: .9;
-	letter-spacing: -.055em;
+  grid-column: 1;
+  grid-row: 2;
+  max-width: 12ch;
+  margin: clamp(4rem, 10vw, 9rem) 0 0;
+  font-size: clamp(3.4rem, 7.6vw, 7.5rem);
+  font-weight: 400;
+  line-height: 0.9;
+  letter-spacing: -0.055em;
 }
 
 .details {
-	display: contents;
+  display: contents;
 }
 
 .details nav {
-	grid-column: 2;
-	grid-row: 2;
-	align-self: start;
-	display: grid;
-	grid-template-columns: 1fr 1fr;
-	gap: .8rem 2rem;
-	margin-top: clamp(4rem, 10vw, 9rem);
-	font-size: clamp(1.15rem, 1.9vw, 1.6rem);
+  grid-column: 2;
+  grid-row: 2;
+  align-self: start;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.8rem 2rem;
+  margin-top: clamp(4rem, 10vw, 9rem);
+  font-size: clamp(1.15rem, 1.9vw, 1.6rem);
 
-	a {
-		min-height: 44px;
-		color: inherit;
-		transition: color 220ms ease;
+  a {
+    min-height: 44px;
+    color: inherit;
+    transition: color 220ms ease;
 
-		&:hover,
-		&:focus-visible { color: var(--aurora-mint); }
-	}
+    &:hover,
+    &:focus-visible {
+      color: var(--aurora-mint);
+    }
+  }
 }
 
 .email {
-	grid-column: 1;
-	grid-row: 3;
-	display: flex;
-	align-items: center;
-	justify-content: flex-start;
-	width: max-content;
-	max-width: 100%;
-	gap: 1rem;
-	margin-top: clamp(2.5rem, 5vw, 4.5rem);
-	padding-bottom: .75rem;
-	border-bottom: 1px solid color-mix(in srgb, var(--primary-color) 45%, transparent);
-	color: inherit;
-	font-size: clamp(1.35rem, 2.4vw, 2.35rem);
-	letter-spacing: -.035em;
-	white-space: nowrap;
+  grid-column: 1;
+  grid-row: 3;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  width: max-content;
+  max-width: 100%;
+  gap: 1rem;
+  margin-top: clamp(2.5rem, 5vw, 4.5rem);
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid
+    color-mix(in srgb, var(--primary-color) 45%, transparent);
+  color: inherit;
+  font-size: clamp(1.35rem, 2.4vw, 2.35rem);
+  letter-spacing: -0.035em;
+  white-space: nowrap;
 
-	i {
-		width: .55rem;
-		height: .55rem;
-		flex: 0 0 .55rem;
-		border-radius: 50%;
-		background: var(--aurora-mint);
-	}
+  i {
+    width: 0.55rem;
+    height: 0.55rem;
+    flex: 0 0 0.55rem;
+    border-radius: 50%;
+    background: var(--aurora-mint);
+  }
 }
 
 .meta {
-	grid-column: 2;
-	grid-row: 4;
-	display: grid;
-	grid-template-columns: 1fr 1fr;
-	gap: 2rem;
-	margin-top: clamp(3rem, 6vw, 5rem);
+  grid-column: 2;
+  grid-row: 4;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+  // margin-top: clamp(1rem, 2vw, 2rem);
 
-	div { display: grid; align-content: start; gap: .5rem; }
-	span { font-family: var(--font-family-ibm); font-size: .62rem; letter-spacing: .08em; text-transform: uppercase; color: var(--text-muted); }
-	p { margin: 0; }
-	a { width: fit-content; min-height: 32px; color: inherit; }
+  div {
+    display: grid;
+    align-content: start;
+    gap: 0.5rem;
+  }
+  span {
+    font-family: var(--font-family-ibm);
+    font-size: 0.62rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+  }
+  p {
+    margin: 0;
+  }
+  a {
+    width: fit-content;
+    min-height: 32px;
+    color: inherit;
+  }
 }
 
 .utility {
-	grid-row: 5;
-	grid-column: 1 / -1;
-	display: grid;
-	grid-template-columns: 1fr auto 1fr;
-	align-items: center;
-	gap: 2rem;
-	margin-top: clamp(2rem, 5vw, 4rem);
-	padding-top: 1.25rem;
-	border-top: 1px solid color-mix(in srgb, var(--primary-color) 20%, transparent);
-	font-family: var(--font-family-ibm);
-	font-size: .62rem;
-	letter-spacing: .06em;
-	text-transform: uppercase;
+  grid-row: 5;
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: 2rem;
+  margin-top: clamp(2rem, 5vw, 4rem);
+  padding-top: 1.25rem;
+  border-top: 1px solid
+    color-mix(in srgb, var(--primary-color) 20%, transparent);
+  font-family: var(--font-family-ibm);
+  font-size: 0.62rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
 
-	p { margin: 0; }
-	a { color: inherit; }
+  p {
+    margin: 0;
+  }
+  a {
+    color: inherit;
+  }
 }
 
 .languages {
-	display: flex;
-	align-items: center;
-	gap: .45rem;
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
 
-	button {
-		min-width: 44px;
-		min-height: 44px;
-		border: 0;
-		background: transparent;
-		color: color-mix(in srgb, var(--primary-color) 52%, transparent);
-		font: inherit;
-		letter-spacing: inherit;
-		cursor: pointer;
+  button {
+    min-width: 44px;
+    min-height: 44px;
+    border: 0;
+    background: transparent;
+    color: color-mix(in srgb, var(--primary-color) 52%, transparent);
+    font: inherit;
+    letter-spacing: inherit;
+    cursor: pointer;
 
-		&:hover,
-		&:focus-visible,
-		&.active { color: var(--primary-color); }
-		&.active { text-decoration: underline; text-underline-offset: .3rem; }
-	}
+    &:hover,
+    &:focus-visible,
+    &.active {
+      color: var(--primary-color);
+    }
+    &.active {
+      text-decoration: underline;
+      text-underline-offset: 0.3rem;
+    }
+  }
 }
 
-.top { justify-self: end; min-height: 44px; display: inline-flex; align-items: center; }
+.top {
+  justify-self: end;
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+}
 
 @media (max-width: 760px) {
-	.inner { display: block; }
-	.intro { display: flex; flex-direction: column; gap: 3rem; }
-	.intro h2 { margin-top: 0; }
-	.details { display: flex; flex-direction: column; margin-top: 4rem; }
-	.details nav { margin-top: 0; }
-	.details nav { font-size: 1.2rem; }
-	.email { font-size: clamp(1.2rem, 5.8vw, 1.7rem); }
-	.utility { grid-template-columns: 1fr auto; gap: 1rem; }
-	.languages { justify-self: end; }
-	.top { grid-column: 1 / -1; justify-self: start; }
+  .inner {
+    display: block;
+  }
+  .intro {
+    display: flex;
+    flex-direction: column;
+    gap: 3rem;
+  }
+  .intro h2 {
+    margin-top: 0;
+  }
+  .details {
+    display: flex;
+    flex-direction: column;
+    margin-top: 4rem;
+  }
+  .details nav {
+    margin-top: 0;
+  }
+  .details nav {
+    font-size: 1.2rem;
+  }
+  .email {
+    font-size: clamp(1.2rem, 5.8vw, 1.7rem);
+  }
+  .utility {
+    grid-template-columns: 1fr auto;
+    gap: 1rem;
+  }
+  .languages {
+    justify-self: end;
+  }
+  .top {
+    grid-column: 1 / -1;
+    justify-self: start;
+  }
 }
 
 @media (max-width: 390px) {
-	.meta { grid-template-columns: 1fr; }
-	.email { gap: .6rem; font-size: clamp(.95rem, 4.8vw, 1.15rem); }
+  .meta {
+    grid-template-columns: 1fr;
+  }
+  .email {
+    gap: 0.6rem;
+    font-size: clamp(0.95rem, 4.8vw, 1.15rem);
+  }
 }

@@ -221,6 +221,7 @@ const Header = ({ signalNavIntroAfterHero = false }: HeaderProps) => {
         );
 
         let headingRevealEnd = 0.45;
+        let metadataStart = headingRevealEnd;
 
         if (heading && !reducedMotion) {
           gsap.set(heading, { autoAlpha: 1, filter: "none" });
@@ -273,6 +274,11 @@ const Header = ({ signalNavIntroAfterHero = false }: HeaderProps) => {
                 characterRevealStart +
                 characterDuration +
                 Math.max(0, characters.length - 1) * characterStagger;
+              if (lineIndex === 1) {
+                metadataStart =
+                  characterRevealStart +
+                  (characterRevealEnd - characterRevealStart) * 0.5;
+              }
               headingRevealEnd = Math.max(
                 headingRevealEnd,
                 characterRevealEnd,
@@ -347,7 +353,7 @@ const Header = ({ signalNavIntroAfterHero = false }: HeaderProps) => {
         }
 
         if (!reducedMotion) {
-          timeline.call(() => buildMetadataTimeline(), [], headingRevealEnd);
+          timeline.call(() => buildMetadataTimeline(), [], metadataStart);
         }
 
         timeline.call(
@@ -355,7 +361,7 @@ const Header = ({ signalNavIntroAfterHero = false }: HeaderProps) => {
           [],
           reducedMotion
             ? supportingEnd
-            : Math.max(supportingEnd, headingRevealEnd + 1.77),
+            : metadataStart,
         );
       });
 
@@ -492,6 +498,7 @@ const Header = ({ signalNavIntroAfterHero = false }: HeaderProps) => {
         >
           <button
             type="button"
+            className={`${styles["language-switch"]} ${locale === "en" ? styles["language-switch-en"] : ""}`}
             onClick={toggleLocale}
             aria-label={`${t.languageSwitchLabel}: ${locale === "nb" ? "English" : "Norsk"}`}
           >

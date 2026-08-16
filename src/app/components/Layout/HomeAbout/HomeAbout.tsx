@@ -58,6 +58,7 @@ const HomeAbout = () => {
 
       let split: SplitText | null = null;
       let timeline: gsap.core.Timeline | null = null;
+      let refreshFrame: number | null = null;
 
       try {
         split = SplitText.create(statement, { type: "words,chars" });
@@ -97,6 +98,11 @@ const HomeAbout = () => {
           duration: 0.8,
           ease: "power3.out",
         });
+
+        refreshFrame = window.requestAnimationFrame(() => {
+          ScrollTrigger.refresh();
+          timeline?.scrollTrigger?.update();
+        });
       } catch {
         gsap.set([statement, supporting, metadata], {
           autoAlpha: 1,
@@ -105,12 +111,20 @@ const HomeAbout = () => {
       }
 
       return () => {
-        timeline?.scrollTrigger?.kill();
+        timeline?.scrollTrigger?.kill(true);
         timeline?.kill();
         split?.revert();
+        gsap.set(content, {
+          clearProps: "position,top,left,right,bottom,width,height,transform",
+        });
+        if (refreshFrame !== null) window.cancelAnimationFrame(refreshFrame);
       };
     },
-    { scope: sectionRef, dependencies: [locale] },
+    {
+      scope: sectionRef,
+      dependencies: [locale],
+      revertOnUpdate: true,
+    },
   );
 
   return (
@@ -124,14 +138,26 @@ const HomeAbout = () => {
     >
       <div ref={contentRef} className={styles["home-about-pin"]}>
         <div className={styles["home-about-inner"]}>
-          <h2 ref={statementRef} className={styles["statement"]}>
+          <h2
+            key={`statement-${locale}`}
+            ref={statementRef}
+            className={styles["statement"]}
+          >
             {content.statement}
           </h2>
 
-          <div ref={supportingRef} className={styles["supporting"]}>
+          <div
+            key={`supporting-${locale}`}
+            ref={supportingRef}
+            className={styles["supporting"]}
+          >
             <p>{content.supporting}</p>
           </div>
-          <dl ref={metadataRef} className={styles["metadata"]}>
+          <dl
+            key={`metadata-${locale}`}
+            ref={metadataRef}
+            className={styles["metadata"]}
+          >
             <div>
               <dt>{locale === "nb" ? "Bakgrunn" : "Background"}</dt>
               <dd>{locale === "nb" ? "Grafisk +\ninteraksjonsdesign" : "Graphic +\nInteraction design"}</dd>

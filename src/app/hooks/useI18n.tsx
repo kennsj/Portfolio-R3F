@@ -536,10 +536,12 @@ export function I18nProvider({ children }: { children: ReactNode }) {
 	const changeLocale = (nextLocale: AppLocale) => {
 		setLocale(nextLocale)
 		document.cookie = `portfolio-locale=${nextLocale}; Max-Age=31536000; Path=/; SameSite=Lax`
-		void navigate({
+	void navigate({
 			to: localizePath(pathname, nextLocale),
 			hash: hash.replace(/^#/, "") || undefined,
 			search: {},
+			resetScroll: false,
+			hashScrollIntoView: false,
 		})
 	}
 

@@ -116,35 +116,35 @@
   min-height: 3rem;
   padding: 0.65rem 0.85rem;
   border-radius: 0.32rem;
-  background: color-mix(in srgb, var(--aurora-mint) 88%, white 12%);
+  border: 1px solid rgb(214 246 215 / 34%);
+  background: var(--aurora-mint);
+  backdrop-filter: blur(18px);
   color: var(--signal-black);
-  font-size: 0.62rem;
+  font-size: 0.75rem;
   letter-spacing: 0.04em;
   text-transform: uppercase;
   box-shadow: 0 0.7rem 2.5rem rgb(0 0 0 / 12%);
-  transition:
-    background var(--motion-ui) var(--ease-out),
-    transform var(--motion-ui) var(--ease-out);
+  transition: border-color var(--motion-ui) var(--ease-out);
 
   &:hover,
   &:focus-visible {
-    background: var(--tertiary-color);
-    transform: translateY(-2px);
+    border-color: rgb(214 246 215 / 64%);
   }
 }
 
 .contactIdentity {
   display: grid;
   place-items: center;
-  width: 1.75rem;
+  width: 2rem;
   aspect-ratio: 1;
   overflow: hidden;
   background: var(--primary-color);
+  border-radius: 50%;
 
   img {
-    width: 62%;
-    height: auto;
-    filter: brightness(0.22);
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
   }
 }
 

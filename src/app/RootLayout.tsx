@@ -183,9 +183,13 @@ export default function RootLayout() {
     if (logicalPathname !== "/") return;
 
     const raw = (locationHash || "").replace(/^#/, "");
+    const isLocaleOnlyChange =
+      prev !== null &&
+      stripLocalePrefix(prev) === logicalPathname &&
+      prev !== pathname;
 
     const run = () => {
-      if (raw) {
+      if (raw && !isLocaleOnlyChange) {
         gsapScrollToHashIdWhenReady(raw, () => ScrollTrigger.refresh());
       } else if (prev !== null && stripLocalePrefix(prev) !== "/") {
         gsapScrollToTop();
