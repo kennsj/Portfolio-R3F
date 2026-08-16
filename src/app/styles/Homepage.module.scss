@@ -102,7 +102,16 @@
 }
 
 .aurora {
+  display: flex;
+  align-items: center;
+  min-height: 88svh;
   max-width: var(--max-width);
   margin-inline: auto;
-  padding-block: clamp(5rem, 12vw, 10rem) clamp(5rem, 10vw, 8rem);
+  padding-block: clamp(4.5rem, 7vw, 6rem) clamp(4.5rem, 7vw, 6rem);
+
+  @media (max-width: 768px) {
+    display: block;
+    min-height: auto;
+    padding-block: clamp(5rem, 20vw, 6rem) clamp(4rem, 18vw, 5rem);
+  }
 }

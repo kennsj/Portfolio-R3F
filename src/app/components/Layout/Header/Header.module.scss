@@ -16,7 +16,8 @@
   visibility: hidden;
 
   [data-hero-support] {
-    opacity: 0;
+    visibility: hidden;
+    opacity: 0 !important;
   }
 }
 
@@ -32,6 +33,8 @@
   perspective: 40vw;
 
   .role {
+    visibility: hidden;
+    opacity: 0;
     margin: 0 0 clamp(1.5rem, 3vh, 2.5rem);
     font-family: var(--font-family-ibm);
     font-size: clamp(0.65rem, 0.78vw, 0.78rem);

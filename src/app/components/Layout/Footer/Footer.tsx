@@ -25,7 +25,7 @@ const Footer = () => {
           </div>
           <HeadingAnimation level={2}>
             {locale === "nb"
-              ? "La oss lage noe som varer."
+              ? "Har du et prosjekt på gang, eller ser du etter noen som kan jobbe på tvers av design og frontend?"
               : "Let’s build something that lasts."}
           </HeadingAnimation>
         </div>

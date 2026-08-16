@@ -6,7 +6,7 @@
 
 .inner {
   display: grid;
-  grid-template-columns: minmax(0, 1.25fr) minmax(18rem, 0.75fr);
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
   grid-template-rows: auto auto auto auto;
   gap: clamp(3rem, 8vw, 9rem);
   row-gap: 0;
@@ -44,9 +44,9 @@
 }
 
 .intro h2 {
-  grid-column: 1;
+  grid-column: 1 / -1;
   grid-row: 2;
-  max-width: 12ch;
+  max-width: none;
   margin: clamp(4rem, 10vw, 9rem) 0 0;
   font-size: clamp(3.4rem, 7.6vw, 7.5rem);
   font-weight: 400;
@@ -59,8 +59,8 @@
 }
 
 .details nav {
-  grid-column: 2;
-  grid-row: 2;
+  grid-column: 1;
+  grid-row: 4;
   align-self: start;
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -81,7 +81,7 @@
 }
 
 .email {
-  grid-column: 1;
+  grid-column: 1 / -1;
   grid-row: 3;
   display: flex;
   align-items: center;

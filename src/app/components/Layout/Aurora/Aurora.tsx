@@ -48,6 +48,12 @@ const Aurora = () => {
       const loc = locationRef.current;
       if (!wrap || !kpEl || !loc) return;
 
+      if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+        kpEl.textContent = displayKpRef.current.toFixed(1);
+        hasCountPlayedRef.current = true;
+        return;
+      }
+
       let cancelled = false;
       let timeline: gsap.core.Timeline | null = null;
 
@@ -169,54 +175,56 @@ const Aurora = () => {
               <p>{t.auroraExplanation}</p>
             </div>
           </div>
-          <div className={styles.signal}>
-            <div ref={locationRef} className={styles.location}>
-              {t.auroraLocationCity}
-              <span>{t.auroraLocationRegion} / 67°N</span>
+          <div className={styles.instrument}>
+            <div className={styles.signal}>
+              <div ref={locationRef} className={styles.location}>
+                {t.auroraLocationCity}
+                <span>{t.auroraLocationRegion} / 67°N</span>
+              </div>
+              <div className={styles.kp}>
+                <span>{t.auroraKpIndex}</span>
+                <strong ref={kpNumRef}>{displayKp.toFixed(1)}</strong>
+                <small>
+                  <i style={{ background: getKpColor(displayKp) }} />
+                  {label}
+                  {visible ? ` / ${t.auroraVisibleTonight}` : ""}
+                </small>
+              </div>
             </div>
-            <div className={styles.kp}>
-              <span>{t.auroraKpIndex}</span>
-              <strong ref={kpNumRef}>{displayKp.toFixed(1)}</strong>
-              <small>
-                <i style={{ background: getKpColor(displayKp) }} />
-                {label}
-                {visible ? ` / ${t.auroraVisibleTonight}` : ""}
-              </small>
-            </div>
-          </div>
-          <div className={styles.index}>
-            <div className={styles.scale}>
-              <span>00 / {t.auroraCalm}</span>
-              <span>09 / {t.auroraActive}</span>
-            </div>
-            <input
-              type="range"
-              min={0}
-              max={9}
-              step={0.1}
-              value={displayKp}
-              style={
-                {
-                  "--range-progress": `${(displayKp / 9) * 100}%`,
-                } as React.CSSProperties
-              }
-              onChange={(e) => {
-                const next = Number(e.target.value);
-                setManualKp(Number.isFinite(next) ? next : 0);
-              }}
-              aria-label={t.auroraSliderLabel}
-              aria-valuetext={`KP ${displayKp.toFixed(1)}, ${label}`}
-            />
-            <div className={styles["index-meta"]}>
-              <p>{t.auroraDisclaimer}</p>
-              {manualKp !== null && (
-                <button
-                  onClick={() => setManualKp(null)}
-                  aria-label={t.auroraResetAria}
-                >
-                  {t.auroraReset}
-                </button>
-              )}
+            <div className={styles.index}>
+              <div className={styles.scale}>
+                <span>00 / {t.auroraCalm}</span>
+                <span>09 / {t.auroraActive}</span>
+              </div>
+              <input
+                type="range"
+                min={0}
+                max={9}
+                step={0.1}
+                value={displayKp}
+                style={
+                  {
+                    "--range-progress": `${(displayKp / 9) * 100}%`,
+                  } as React.CSSProperties
+                }
+                onChange={(e) => {
+                  const next = Number(e.target.value);
+                  setManualKp(Number.isFinite(next) ? next : 0);
+                }}
+                aria-label={t.auroraSliderLabel}
+                aria-valuetext={`KP ${displayKp.toFixed(1)}, ${label}`}
+              />
+              <div className={styles["index-meta"]}>
+                <p>{t.auroraDisclaimer}</p>
+                {manualKp !== null && (
+                  <button
+                    onClick={() => setManualKp(null)}
+                    aria-label={t.auroraResetAria}
+                  >
+                    {t.auroraReset}
+                  </button>
+                )}
+              </div>
             </div>
           </div>
         </>

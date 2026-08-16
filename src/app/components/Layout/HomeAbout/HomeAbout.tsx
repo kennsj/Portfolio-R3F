@@ -32,7 +32,14 @@ const HomeAbout = () => {
   const statementRef = useRef<HTMLHeadingElement>(null);
   const supportingRef = useRef<HTMLDivElement>(null);
   const metadataRef = useRef<HTMLDListElement>(null);
-  const content = copy[locale];
+  const content =
+    locale === "nb"
+      ? {
+          ...copy[locale],
+          supporting:
+            "Jeg har bakgrunn fra grafisk design, interaksjonsdesign og frontendutvikling. Tidligere har jeg designet og utviklet nettsider for kinoer og kulturhus rundt om i Norge. Nå jobber jeg med egne prosjekter og er åpen for både frilansoppdrag og en fast stilling.",
+        }
+      : copy[locale];
 
   useGSAP(
     () => {
@@ -164,7 +171,7 @@ const HomeAbout = () => {
             </div>
             <div>
               <dt>{locale === "nb" ? "Erfaring" : "Experience"}</dt>
-              <dd>Dialog EXE<br />Trigger</dd>
+              <dd>Dialog EXE</dd>
             </div>
             <div>
               <dt>{locale === "nb" ? "Praksis" : "Internship"}</dt>

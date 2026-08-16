@@ -140,7 +140,7 @@ const Projects = () => {
         const timeline = gsap.timeline({
           scrollTrigger: {
             trigger: item,
-            start: "top 68%",
+            start: "top 80%",
             once: true,
             fastScrollEnd: true,
           },
@@ -536,7 +536,9 @@ const Projects = () => {
           </p>
         </header>
         <ol
-          className={styles.index}
+          className={`${styles.index} ${
+            activeIndex !== null ? styles["has-active"] : ""
+          }`.trim()}
           data-project-list
           onPointerLeave={conceal}
           onBlur={(event) =>

@@ -19,6 +19,8 @@
 .home-about-inner {
   position: relative;
   display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-rows: 1fr auto;
   align-items: center;
   width: 100%;
   max-width: var(--max-width);
@@ -30,6 +32,7 @@
 
 .statement {
   grid-column: 1 / -1;
+  width: 100%;
   margin: 0;
   transform: none;
   font-size: clamp(2.8rem, 4.3vw, 5rem);
@@ -40,10 +43,10 @@
 }
 
 .supporting {
-  position: absolute;
-  right: var(--page-gutter);
-  bottom: clamp(4rem, 10vh, 8rem);
-  transform: translateY(-2.5rem);
+  grid-column: 2;
+  grid-row: 2;
+  justify-self: end;
+  align-self: start;
   width: min(29rem, calc(100% - (2 * var(--page-gutter))));
   max-width: 100%;
   overflow-wrap: anywhere;
@@ -58,8 +61,10 @@
 }
 
 .metadata {
-  position: absolute;
-  bottom: clamp(4rem, 10vh, 8rem);
+  position: static;
+  grid-column: 1;
+  grid-row: 2;
+  align-self: start;
   left: var(--page-gutter);
   display: grid;
   grid-template-columns: repeat(3, minmax(7rem, 1fr));

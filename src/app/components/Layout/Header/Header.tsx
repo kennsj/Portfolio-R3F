@@ -214,12 +214,6 @@ const Header = ({ signalNavIntroAfterHero = false }: HeaderProps) => {
           { autoAlpha: 1, visibility: "visible" },
           reducedMotion ? 0 : 0.3,
         );
-        timeline.call(
-          () => setHeroIntroStarted(true),
-          [],
-          reducedMotion ? 0 : 0.3,
-        );
-
         let headingRevealEnd = 0.45;
         let metadataStart = headingRevealEnd;
 
@@ -356,12 +350,16 @@ const Header = ({ signalNavIntroAfterHero = false }: HeaderProps) => {
           timeline.call(() => buildMetadataTimeline(), [], metadataStart);
         }
 
+        const heroIntroRelease = reducedMotion ? supportingEnd : metadataStart;
         timeline.call(
           markHomeHeroIntroComplete,
           [],
-          reducedMotion
-            ? supportingEnd
-            : metadataStart,
+          heroIntroRelease,
+        );
+        timeline.call(
+          () => setHeroIntroStarted(true),
+          [],
+          reducedMotion ? supportingEnd : supportingStart,
         );
       });
 

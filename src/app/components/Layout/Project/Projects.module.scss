@@ -62,10 +62,17 @@
 .project-item {
   position: relative;
   z-index: 1;
+  opacity: 1;
+  transition: opacity 0.3s ease;
+}
+
+.has-active .project-item:not(.projectItemActive) {
+  opacity: 0.25;
 }
 
 .projectItemActive {
   z-index: 90 !important;
+  opacity: 1;
 }
 
 .mobile-preview {

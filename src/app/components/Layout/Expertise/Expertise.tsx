@@ -4,19 +4,14 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useI18n } from "../../../hooks/useI18n";
 import styles from "./Expertise.module.scss";
-import { usePageTransition } from "../../../hooks/usePageTransition";
-import ArrowIcon from "../../UI/ArrowIcon/ArrowIcon";
 import HeadingAnimation from "../../UI/HeadingAnimation/HeadingAnimation";
-import AnimatedLink from "../../UI/AnimatedLink/AnimatedLink";
 
 gsap.registerPlugin(ScrollTrigger);
 
 const Expertise = () => {
   const { t } = useI18n();
-  const { transitionTo } = usePageTransition();
   const sectionRef = useRef<HTMLElement>(null);
-  const [activeIndex, setActiveIndex] = useState(1);
-  const activeMode = t.expertiseModes[activeIndex];
+  const [activeIndex, setActiveIndex] = useState<number | null>(null);
 
   useGSAP(
     () => {
@@ -71,20 +66,6 @@ const Expertise = () => {
       data-aurora-presence="0.88"
       data-aurora-color="#7ba7d6"
     >
-      <header className={styles.header}>
-        <span className={styles.eyebrow}>02 / {t.expertiseEyebrow}</span>
-        <AnimatedLink
-          href="/#about"
-          onClick={(event) => {
-            event.preventDefault();
-            transitionTo("/#about");
-          }}
-        >
-          {t.expertiseAboutCta}
-          <ArrowIcon />
-        </AnimatedLink>
-      </header>
-
       <div className={styles.lead}>
         <span>/ {t.expertiseFieldsLabel}</span>
         <HeadingAnimation level={2}>
@@ -92,12 +73,28 @@ const Expertise = () => {
           <br />
           {t.expertiseTitleLineTwo}
         </HeadingAnimation>
-        <p>{t.expertiseIntro}</p>
       </div>
 
-      <ol className={styles.disciplines}>
+      <ol
+        className={`${styles.disciplines} ${
+          activeIndex !== null ? styles["has-active"] : ""
+        }`.trim()}
+        onMouseLeave={() => setActiveIndex(null)}
+        onBlur={(event) => {
+          if (!event.currentTarget.contains(event.relatedTarget)) {
+            setActiveIndex(null);
+          }
+        }}
+      >
         {t.expertiseModes.map((mode, index) => (
-          <li key={mode.title} className={styles.discipline}>
+          <li
+            key={mode.title}
+            className={`${styles.discipline} ${activeIndex === index ? styles["active-row"] : ""}`.trim()}
+            style={{
+              opacity:
+                activeIndex !== null && activeIndex !== index ? 0.25 : 1,
+            }}
+          >
             <button
               type="button"
               className={activeIndex === index ? styles.active : ""}
@@ -105,15 +102,14 @@ const Expertise = () => {
               onFocus={() => setActiveIndex(index)}
               onClick={() => setActiveIndex(index)}
             >
-              <strong>{mode.title}</strong>
               <span>{String(index + 1).padStart(2, "0")}</span>
+              <strong>{mode.title}</strong>
+              <div className={styles.details}>
+                <span>{mode.description}</span>
+              </div>
             </button>
           </li>
         ))}
-        <li className={styles.activeCopy} aria-live="polite">
-          <span>{activeMode.meta}</span>
-          <p>{activeMode.description}</p>
-        </li>
       </ol>
     </section>
   );
