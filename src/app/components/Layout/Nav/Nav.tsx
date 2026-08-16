@@ -17,6 +17,7 @@ const Nav = () => {
   const [open, setOpen] = useState(false);
   const [kpOpen, setKpOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [activeSection, setActiveSection] = useState<string | null>(null);
   const [navIntroStarted, setNavIntroStarted] = useState(false);
   const { data } = useKpIndex();
   const { manualKp } = useManualKp();
@@ -43,6 +44,40 @@ const Nav = () => {
   useEffect(() => {
     if (!scrolled && open) setOpen(false);
   }, [scrolled, open]);
+
+  useEffect(() => {
+    if (window.location.pathname !== "/" && window.location.pathname !== "") {
+      setActiveSection("page");
+      return;
+    }
+
+    const sectionIds = ["about", "work", "contact"];
+    let frame: number | null = null;
+    const updateActiveSection = () => {
+      frame = null;
+      const line = window.innerHeight * 0.5;
+      const active = sectionIds
+        .map((id) => document.getElementById(id))
+        .filter((section): section is HTMLElement => section !== null)
+        .find((section) => {
+          const rect = section.getBoundingClientRect();
+          return rect.top <= line && rect.bottom > line;
+        });
+      setActiveSection(active?.id ?? null);
+    };
+    const scheduleUpdate = () => {
+      if (frame === null) frame = window.requestAnimationFrame(updateActiveSection);
+    };
+
+    updateActiveSection();
+    window.addEventListener("scroll", scheduleUpdate, { passive: true });
+    window.addEventListener("resize", scheduleUpdate);
+    return () => {
+      window.removeEventListener("scroll", scheduleUpdate);
+      window.removeEventListener("resize", scheduleUpdate);
+      if (frame !== null) window.cancelAnimationFrame(frame);
+    };
+  }, []);
 
   useEffect(() => {
     const panel = panelRef.current;
@@ -201,7 +236,7 @@ const Nav = () => {
       />
       <nav
         ref={navRef}
-        className={`${styles.nav} ${scrolled ? styles.scrolled : styles.atTop} ${!homeHeroIntroReady || !navIntroStarted ? styles.navIntroPending : ""}`}
+        className={`${styles.nav} ${scrolled ? styles.scrolled : ""} ${!homeHeroIntroReady || !navIntroStarted ? styles.navIntroPending : ""}`}
         aria-label={locale === "nb" ? "Hovednavigasjon" : "Main navigation"}
       >
         <AnimatedLink
@@ -211,38 +246,39 @@ const Nav = () => {
         >
           <img src="/kj-logo.svg" alt="Kenneth Jørgensen" />
         </AnimatedLink>
-        <div className={styles.topLinks} aria-hidden={scrolled}>
+        <div className={styles.topLinks}>
+          <AnimatedLink
+            href="/#work"
+            onClick={(event) => go(event, "/#work")}
+            className={activeSection === "work" ? styles.active : undefined}
+          >
+            {locale === "nb" ? "Prosjekter" : "Work"}
+          </AnimatedLink>
           <AnimatedLink
             href="/#about"
             onClick={(event) => go(event, "/#about")}
-            tabIndex={scrolled ? -1 : 0}
+            className={activeSection === "about" ? styles.active : undefined}
           >
             {t.navAbout}
           </AnimatedLink>
           <AnimatedLink
-            href="/#work"
-            onClick={(event) => go(event, "/#work")}
-            tabIndex={scrolled ? -1 : 0}
-          >
-            {t.navWork}
-          </AnimatedLink>
-          <AnimatedLink
             href="/#contact"
             onClick={(event) => go(event, "/#contact")}
-            tabIndex={scrolled ? -1 : 0}
+            className={activeSection === "contact" ? styles.active : undefined}
           >
             {t.navContact}
           </AnimatedLink>
-          <button
-            type="button"
-            onClick={toggleLocale}
-            aria-label={`${t.languageSwitchLabel}: ${locale === "nb" ? "English" : "Norsk"}`}
-            lang={locale === "nb" ? "en" : "nb"}
-            tabIndex={scrolled ? -1 : 0}
-          >
-            {locale === "nb" ? "EN" : "NO"}
-          </button>
         </div>
+        <AnimatedLink
+          href="/#contact"
+          onClick={(event) => go(event, "/#contact")}
+          className={styles.contactAction}
+        >
+          <span className={styles.contactIdentity} aria-hidden="true">
+            <img src="/kj-logo.svg" alt="" />
+          </span>
+          <span>{locale === "nb" ? "Ta kontakt" : "Get in touch"}</span>
+        </AnimatedLink>
         <div className={styles.navMeta} aria-hidden={!scrolled && !open}>
           <div
             className={styles.kpWrap}
@@ -261,7 +297,6 @@ const Nav = () => {
               onKeyDown={(event) => event.key === "Escape" && setKpOpen(false)}
               aria-expanded={kpOpen}
               aria-describedby="kp-explainer"
-              tabIndex={scrolled || open ? 0 : -1}
             >
               <i style={{ background: getKpColor(kp) }} />
               KP {kp.toFixed(1)}
@@ -294,7 +329,6 @@ const Nav = () => {
             onClick={toggleLocale}
             aria-label={`${t.languageSwitchLabel}: ${locale === "nb" ? "English" : "Norsk"}`}
             lang={locale === "nb" ? "en" : "nb"}
-            tabIndex={scrolled || open ? 0 : -1}
           >
             {locale === "nb" ? "EN" : "NO"}
           </button>
@@ -304,7 +338,6 @@ const Nav = () => {
             onClick={() => setOpen((value) => !value)}
             aria-expanded={open}
             aria-controls="site-menu"
-            tabIndex={scrolled || open ? 0 : -1}
           >
             {open ? t.menuClose : t.menuOpen}
           </button>
@@ -323,18 +356,18 @@ const Nav = () => {
         <div className={styles.menuInner}>
           <div className={styles.menuLinks}>
             <AnimatedLink
-              href="/#about"
-              onClick={(event) => go(event, "/#about")}
-            >
-              <span>( 01 )</span>
-              {t.navAbout}
-            </AnimatedLink>
-            <AnimatedLink
               href="/#work"
               onClick={(event) => go(event, "/#work")}
             >
+              <span>( 01 )</span>
+              {locale === "nb" ? "Prosjekter" : "Work"}
+            </AnimatedLink>
+            <AnimatedLink
+              href="/#about"
+              onClick={(event) => go(event, "/#about")}
+            >
               <span>( 02 )</span>
-              {t.navWork}
+              {t.navAbout}
             </AnimatedLink>
             <AnimatedLink
               href="/#contact"

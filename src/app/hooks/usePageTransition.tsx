@@ -51,7 +51,7 @@ export function usePageTransition() {
 
   function transitionTo(
     href: string,
-    options: { skipEnterAnimation?: boolean } = {},
+    options: { skipEnterAnimation?: boolean; exitDuration?: number } = {},
   ) {
     const { to, hash } = splitInternalHref(href);
     const localizedTarget = localizePath(to, locale);
@@ -129,7 +129,7 @@ export function usePageTransition() {
 
     gsap.to(content, {
       opacity: 0,
-      duration: 0.75,
+      duration: options.exitDuration ?? 0.75,
       ease: "power2.in",
       onStart: () => {
         content.style.pointerEvents = "none";

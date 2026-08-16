@@ -49,8 +49,10 @@ const Footer = () => {
           <AnimatedLink
             className={styles.email}
             href="mailto:hei@kennethjorgensen.no"
+            animationSpeed={0.8}
+            blurReveal="characters"
           >
-            hei@kennethjorgensen.no <ArrowIcon />
+            hei@kennethjorgensen.no <i aria-hidden="true" />
           </AnimatedLink>
 
           <div className={styles.meta}>

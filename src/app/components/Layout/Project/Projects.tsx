@@ -63,6 +63,7 @@ const Projects = () => {
   const previewRevealRef = useRef<HTMLDivElement>(null);
   const previewMediaRef = useRef<HTMLDivElement>(null);
   const videoRefs = useRef<Array<HTMLVideoElement | HTMLImageElement | null>>([]);
+  const mobilePreviewRefs = useRef<Array<HTMLImageElement | null>>([]);
   const currentIndexRef = useRef<number | null>(null);
   const previewOpenRef = useRef(false);
   const concealTimerRef = useRef<number | null>(null);
@@ -340,13 +341,18 @@ const Projects = () => {
   const transitionFromPreview = useCallback(
     (index: number, href: string) => {
       const previewPosition = previewPositionRef.current;
-      const sourceVideo = videoRefs.current[index];
+      const mobileLayout = window.matchMedia(
+        "(max-width: 768px), (hover: none)",
+      ).matches;
+      const sourceMedia = mobileLayout
+        ? mobilePreviewRefs.current[index]
+        : videoRefs.current[index];
+      const sourceFrame = mobileLayout ? sourceMedia : previewPosition;
       const canAnimate =
-        previewOpenRef.current &&
-        currentIndexRef.current === index &&
-        previewPosition &&
-        sourceVideo &&
-        window.matchMedia("(hover: hover) and (pointer: fine)").matches &&
+        sourceMedia &&
+        sourceFrame &&
+        (mobileLayout ||
+          (previewOpenRef.current && currentIndexRef.current === index)) &&
         !window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
       if (!canAnimate || projectTransitionRef.current) {
@@ -357,29 +363,38 @@ const Projects = () => {
       projectTransitionRef.current = true;
       document.documentElement.dataset.projectContinuityArrival = "true";
       settleTiltRef.current?.kill();
-      const sourceRect = previewPosition.getBoundingClientRect();
+      const sourceRect = sourceFrame.getBoundingClientRect();
       const overlay = document.createElement("div");
       const video = document.createElement(
-        sourceVideo instanceof HTMLVideoElement ? "video" : "img",
+        sourceMedia instanceof HTMLVideoElement ? "video" : "img",
       );
-      const targetWidth = window.innerWidth * 0.9;
-      const targetHeight = targetWidth / 1.6;
-      const targetLeft = (window.innerWidth - targetWidth) / 2;
       const rootFontSize = Number.parseFloat(
         window.getComputedStyle(document.documentElement).fontSize,
       );
       const clampValue = (minimum: number, preferred: number, maximum: number) =>
         Math.min(maximum, Math.max(minimum, preferred));
+      const viewportGutter = clampValue(
+        1.25 * rootFontSize,
+        window.innerWidth * 0.04,
+        3.5 * rootFontSize,
+      );
+      const targetWidth = mobileLayout
+        ? window.innerWidth - viewportGutter * 2
+        : window.innerWidth * 0.9;
+      const targetHeight = targetWidth / 1.6;
+      const targetLeft = mobileLayout
+        ? viewportGutter
+        : (window.innerWidth - targetWidth) / 2;
       const heroPaddingTop = clampValue(
-        14 * rootFontSize,
-        window.innerHeight * 0.25,
-        20 * rootFontSize,
+        (mobileLayout ? 10 : 20) * rootFontSize,
+        window.innerHeight * (mobileLayout ? 0.24 : 0.4),
+        (mobileLayout ? 16 : 32) * rootFontSize,
       );
       const heroTitleHeight =
         clampValue(
-          3.25 * rootFontSize,
-          window.innerWidth * 0.065,
-          7 * rootFontSize,
+          (mobileLayout ? 2.8 : 3.25) * rootFontSize,
+          window.innerWidth * (mobileLayout ? 0.125 : 0.065),
+          (mobileLayout ? 5 : 7) * rootFontSize,
         ) * 0.9;
       const heroMediaMarginTop = clampValue(
         2.5 * rootFontSize,
@@ -390,13 +405,13 @@ const Projects = () => {
         heroPaddingTop + heroTitleHeight + heroMediaMarginTop;
 
       overlay.className = styles["project-transition-overlay"];
-      video.src = sourceVideo.currentSrc || sourceVideo.src;
-      if (sourceVideo instanceof HTMLVideoElement) {
-        if (sourceVideo.poster) video.poster = sourceVideo.poster;
+      video.src = sourceMedia.currentSrc || sourceMedia.src;
+      if (sourceMedia instanceof HTMLVideoElement) {
+        if (sourceMedia.poster) video.poster = sourceMedia.poster;
         video.muted = true;
         video.loop = true;
         video.playsInline = true;
-        video.currentTime = sourceVideo.currentTime;
+        video.currentTime = sourceMedia.currentTime;
       }
       overlay.appendChild(video);
       document.body.appendChild(overlay);
@@ -408,9 +423,9 @@ const Projects = () => {
         top: sourceRect.top,
         width: sourceRect.width,
         height: sourceRect.height,
-        rotation: gsap.getProperty(previewPosition, "rotation"),
+        rotation: mobileLayout ? 0 : gsap.getProperty(previewPosition, "rotation"),
       });
-      gsap.set(previewRef.current, { autoAlpha: 0 });
+      gsap.set(mobileLayout ? sourceFrame : previewRef.current, { autoAlpha: 0 });
 
       let destinationReady = false;
       let enterStarted = false;
@@ -476,8 +491,12 @@ const Projects = () => {
         ease: "shiftReveal",
       });
       window.setTimeout(
-        () => transitionTo(href, { skipEnterAnimation: true }),
-        180,
+        () =>
+          transitionTo(href, {
+            skipEnterAnimation: true,
+            exitDuration: 0.42,
+          }),
+        100,
       );
       window.setTimeout(findDestination, 850);
       window.setTimeout(() => {
@@ -553,6 +572,15 @@ const Projects = () => {
                 <HeadingAnimation level={3} className={styles["project-title"]}>
                   {project.name}
                 </HeadingAnimation>
+                <div className={styles["mobile-preview"]} aria-hidden="true">
+                  <img
+                    ref={(node) => {
+                      mobilePreviewRefs.current[index] = node;
+                    }}
+                    src={project.video}
+                    alt=""
+                  />
+                </div>
                 <div className={styles.details}>
                   <i>{project.work[locale]}</i>
                   <p>{project.description[locale]}</p>

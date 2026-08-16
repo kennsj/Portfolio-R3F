@@ -5,7 +5,6 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import SplitText from "gsap/SplitText";
 import { useHeroIntro } from "../../../hooks/HeroIntroContext";
 import { useI18n } from "../../../hooks/useI18n";
-import { gsapScrollToHashIdWhenReady } from "../../../utils/gsapScroll";
 import { getKpLabel, useKpIndex } from "../../../hooks/useKpIndex";
 import { deterministicCharacterOrder } from "../../../hooks/use-character-reveal";
 import { useManualKp } from "../../../hooks/KpContext";
@@ -25,35 +24,47 @@ type HeroStyle = CSSProperties & {
 const Header = ({ signalNavIntroAfterHero = false }: HeaderProps) => {
   const { homeHeroSceneReady, homeHeroIntroReady, markHomeHeroIntroComplete } =
     useHeroIntro();
-  const { locale } = useI18n();
+  const { locale, t, toggleLocale } = useI18n();
   const { data } = useKpIndex();
   const { manualKp } = useManualKp();
   const kp = manualKp ?? data?.latest ?? 0;
   const { label: kpLabel } = getKpLabel(kp, locale);
+  const kpDescription =
+    locale === "nb"
+      ? "KP-indeksen måler global geomagnetisk aktivitet fra 0 til 9. Høyere verdi betyr sterkere nordlysaktivitet."
+      : "The KP index measures global geomagnetic activity from 0 to 9. A higher value means stronger aurora activity.";
   const normalizedKp = Math.min(1, Math.max(0, kp / 9));
   const heroStyle: HeroStyle = {
     "--aurora-stroke-opacity": 0.2 + normalizedKp * 0.35,
     "--aurora-stroke-glow": `${0.5 + normalizedKp * 1.6}px`,
   };
-  const [localTime, setLocalTime] = useState("--:--");
+  const [localTime, setLocalTime] = useState("-- : -- : --");
   const [heroIntroStarted, setHeroIntroStarted] = useState(false);
   const headerRef = useRef<HTMLElement>(null);
   const headingRef = useRef<HTMLHeadingElement>(null);
+  const metadataRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const updateLocalTime = () => {
-      setLocalTime(
-        new Intl.DateTimeFormat(locale === "nb" ? "nb-NO" : "en-GB", {
+      const parts = new Intl.DateTimeFormat(
+        locale === "nb" ? "nb-NO" : "en-GB",
+        {
           hour: "2-digit",
           minute: "2-digit",
+          second: "2-digit",
           timeZone: "Europe/Oslo",
           hour12: false,
-        }).format(new Date()),
+        },
+      ).formatToParts(new Date());
+      const readPart = (type: Intl.DateTimeFormatPartTypes) =>
+        parts.find((part) => part.type === type)?.value ?? "--";
+      setLocalTime(
+        `${readPart("hour")} : ${readPart("minute")} : ${readPart("second")}`,
       );
     };
 
     updateLocalTime();
-    const timer = window.setInterval(updateLocalTime, 30_000);
+    const timer = window.setInterval(updateLocalTime, 1_000);
 
     return () => window.clearInterval(timer);
   }, [locale]);
@@ -78,6 +89,8 @@ const Header = ({ signalNavIntroAfterHero = false }: HeaderProps) => {
 
       let cancelled = false;
       let timeline: gsap.core.Timeline | null = null;
+      let metadataTimeline: gsap.core.Timeline | null = null;
+      let metadataObserver: ResizeObserver | null = null;
       const headingSplits: SplitText[] = [];
 
       document.fonts.ready.then(() => {
@@ -94,8 +107,72 @@ const Header = ({ signalNavIntroAfterHero = false }: HeaderProps) => {
         const reducedMotion = window.matchMedia(
           "(prefers-reduced-motion: reduce)",
         ).matches;
+        const metadata = metadataRef.current;
+        const metadataLine = metadata?.querySelector<HTMLElement>(
+          `.${styles["metadata-line"]}`,
+        );
+        const metadataItems = metadata
+          ? Array.from(
+              metadata.querySelectorAll<HTMLElement>("[data-metadata-item]"),
+            )
+          : [];
+
+        const buildMetadataTimeline = (progress = 0) => {
+          if (!metadata || !metadataLine || metadataItems.length === 0) return;
+
+          metadataTimeline?.kill();
+          const railRect = metadata.getBoundingClientRect();
+          const lineDuration = 1.35;
+          metadataTimeline = gsap.timeline();
+          metadataTimeline.fromTo(
+            metadataLine,
+            { scaleX: 0 },
+            {
+              scaleX: 1,
+              duration: lineDuration,
+              transformOrigin: "left center",
+              ease: "power2.out",
+            },
+          );
+
+          metadataItems.forEach((item) => {
+            const itemRect = item.getBoundingClientRect();
+            const itemCenter = itemRect.left + itemRect.width / 2;
+            const itemProgress = gsap.utils.clamp(
+              0,
+              1,
+              (itemCenter - railRect.left) / Math.max(railRect.width, 1),
+            );
+            metadataTimeline?.fromTo(
+              item,
+              { autoAlpha: 0, y: 6 },
+              {
+                autoAlpha: 1,
+                y: 0,
+                duration: 0.42,
+                ease: "power2.out",
+              },
+              lineDuration * itemProgress,
+            );
+          });
+
+          metadataTimeline.progress(progress);
+        };
 
         timeline = gsap.timeline();
+
+        if (reducedMotion && metadata && metadataLine) {
+          gsap.set(metadataLine, { scaleX: 1, transformOrigin: "left center" });
+          gsap.set(metadataItems, { autoAlpha: 1, y: 0 });
+        } else if (metadata && metadataLine) {
+          gsap.set(metadataLine, { scaleX: 0, transformOrigin: "left center" });
+          gsap.set(metadataItems, { autoAlpha: 0, y: 6 });
+          metadataObserver = new ResizeObserver(() => {
+            if (!metadataTimeline) return;
+            buildMetadataTimeline(metadataTimeline.progress());
+          });
+          metadataObserver.observe(metadata);
+        }
 
         if (!reducedMotion) {
           gsap.set(supporting, { autoAlpha: 0, filter: "blur(10px)" });
@@ -269,12 +346,24 @@ const Header = ({ signalNavIntroAfterHero = false }: HeaderProps) => {
           );
         }
 
-        timeline.call(markHomeHeroIntroComplete, [], supportingEnd);
+        if (!reducedMotion) {
+          timeline.call(() => buildMetadataTimeline(), [], headingRevealEnd);
+        }
+
+        timeline.call(
+          markHomeHeroIntroComplete,
+          [],
+          reducedMotion
+            ? supportingEnd
+            : Math.max(supportingEnd, headingRevealEnd + 1.77),
+        );
       });
 
       return () => {
         cancelled = true;
         timeline?.kill();
+        metadataTimeline?.kill();
+        metadataObserver?.disconnect();
         headingRef.current
           ?.querySelector<HTMLElement>(`.${styles["last-name"]}`)
           ?.removeAttribute("data-revealing");
@@ -361,30 +450,60 @@ const Header = ({ signalNavIntroAfterHero = false }: HeaderProps) => {
         </div>
       </div>
 
-      <div className={styles["hero-utility"]} data-hero-support>
-        <button
-          type="button"
-          className={styles["discover"]}
-          onClick={() => gsapScrollToHashIdWhenReady("work")}
+      <div ref={metadataRef} className={styles["metadata-rail"]}>
+        <span className={styles["metadata-line"]} aria-hidden="true" />
+        <div className={styles["metadata-item"]} data-metadata-item>
+          {locale === "nb" ? "Bodø, Norge — 67°N" : "Bodø, Norway — 67°N"}
+        </div>
+        <div
+          className={`${styles["metadata-item"]} ${styles["clock"]}`}
+          data-metadata-item
+          aria-live="off"
         >
-          <span>{locale === "nb" ? "Oppdag" : "Discover"}</span>
-          <i aria-hidden="true" />
-        </button>
-
-        <dl className={styles["environment"]}>
-          <div>
-            <dt>{locale === "nb" ? "Lokal tid" : "Local time"}</dt>
-            <dd>{localTime}</dd>
-          </div>
-          <div>
-            <dt>KP Index</dt>
-            <dd>{kp.toFixed(1)}</dd>
-          </div>
-          <div>
-            <dt>{locale === "nb" ? "Nordlys" : "Aurora"}</dt>
-            <dd>{kpLabel}</dd>
-          </div>
-        </dl>
+          <span aria-hidden="true">( </span>
+          <i className={styles["clock-dot"]} aria-hidden="true" />
+          <time>{localTime}</time>
+          <span aria-hidden="true"> )</span>
+        </div>
+        <div
+          className={`${styles["metadata-item"]} ${styles["kp-metric"]}`}
+          data-metadata-item
+        >
+          <button
+            type="button"
+            className={styles["kp-trigger"]}
+            aria-describedby="hero-kp-explainer"
+          >
+            {locale === "nb" ? "KP-indeks" : "KP index"}: {kp.toFixed(1)}
+            <i aria-hidden="true" />
+          </button>
+          <span
+            id="hero-kp-explainer"
+            role="tooltip"
+            className={styles["kp-tooltip"]}
+          >
+            <strong>{kpLabel}</strong>
+            {kpDescription}
+          </span>
+        </div>
+        <div
+          className={`${styles["metadata-item"]} ${styles["language"]}`}
+          data-metadata-item
+        >
+          <button
+            type="button"
+            onClick={toggleLocale}
+            aria-label={`${t.languageSwitchLabel}: ${locale === "nb" ? "English" : "Norsk"}`}
+          >
+            <span className={locale === "nb" ? styles["active-locale"] : ""}>
+              NO
+            </span>
+            <i aria-hidden="true" />
+            <span className={locale === "en" ? styles["active-locale"] : ""}>
+              EN
+            </span>
+          </button>
+        </div>
       </div>
     </header>
   );

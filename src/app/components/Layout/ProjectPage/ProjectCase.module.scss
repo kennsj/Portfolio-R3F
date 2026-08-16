@@ -20,7 +20,7 @@
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto;
   align-items: end;
-  padding-block: clamp(14rem, 25vh, 20rem) clamp(5rem, 9vw, 8rem);
+  padding-block: clamp(20rem, 40vh, 32rem) clamp(5rem, 9vw, 8rem);
 
   .heroMeta {
     grid-column: 1 / -1;
@@ -268,6 +268,8 @@
   }
 
   .hero {
+    padding-block: clamp(10rem, 24vh, 16rem) clamp(4rem, 10vw, 7rem);
+
     .hero-heading-row,
     .hero-intro {
       grid-column: 1;
@@ -305,8 +307,10 @@
   }
 
   .hero-transition-media {
-    width: 90vw;
-    aspect-ratio: 4 / 5;
+    justify-self: stretch;
+    width: 100%;
+    max-width: 100%;
+    aspect-ratio: 16 / 10;
   }
 
   .manifesto,

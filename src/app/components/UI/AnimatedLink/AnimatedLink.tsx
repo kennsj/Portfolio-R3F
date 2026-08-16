@@ -32,6 +32,8 @@ type ActiveAnimation = {
 type AnimatedLinkProps = AnchorHTMLAttributes<HTMLAnchorElement> & {
   animationTarget?: string;
   animateText?: boolean;
+  animationSpeed?: number;
+  blurReveal?: "characters" | "whole";
 };
 
 function getTextNodes(root: HTMLElement) {
@@ -70,6 +72,8 @@ function getTypography(element: HTMLElement): TypographyProperties {
 const AnimatedLink = ({
   animationTarget,
   animateText = true,
+  animationSpeed = 1,
+  blurReveal = "characters",
   onPointerEnter,
   onPointerLeave,
   onFocus,
@@ -101,6 +105,39 @@ const AnimatedLink = ({
       : link;
     if (!textRoot) return;
 
+    if (blurReveal === "whole") {
+      let cleaned = false;
+      const timeline = gsap.timeline({ paused: true });
+      const cleanup = () => {
+        if (cleaned) return;
+        cleaned = true;
+        timeline.kill();
+        gsap.set(textRoot, {
+          opacity: 1,
+          yPercent: 0,
+          clipPath: "inset(0 0 0% 0)",
+        });
+        activeAnimationRef.current = null;
+      };
+
+      activeAnimationRef.current = { timeline, cleanup };
+      timeline
+        .fromTo(
+          textRoot,
+          { opacity: 1, filter: "blur(6px)" },
+          {
+            opacity: 1,
+            filter: "blur(0px)",
+            duration: 0.7 * animationSpeed,
+            ease: "power2.out",
+            immediateRender: false,
+          },
+        )
+        .eventCallback("onReverseComplete", cleanup)
+        .play();
+      return;
+    }
+
     const wrappers = getTextNodes(textRoot).map((textNode) => {
       const parent = textNode.parentElement ?? textRoot;
       const wrapper = document.createElement("span");
@@ -124,7 +161,15 @@ const AnimatedLink = ({
       wrappers.forEach((wrapper) => wrapper.replaceWith(...wrapper.childNodes));
       return;
     }
+    const isLongLink = characters.length > 16;
     const enterOrder = gsap.utils.shuffle([...characters]);
+    const revealGroups = isLongLink
+      ? enterOrder.reduce<HTMLElement[][]>((groups, character, index) => {
+          const groupIndex = Math.floor(index / 3);
+          (groups[groupIndex] ??= []).push(character);
+          return groups;
+        }, [])
+      : [];
     const shortLinkSpeedFactor = gsap.utils.clamp(
       0.8,
       1,
@@ -132,8 +177,14 @@ const AnimatedLink = ({
     );
     const longLinkDurationFactor =
       1 + Math.min(0.45, Math.max(0, characters.length - 8) * 0.04);
-    const staggerAmount = Math.min(0.72, characters.length * 0.026);
-    const revealDuration = 1.2 * shortLinkSpeedFactor * longLinkDurationFactor;
+    const staggerAmount = isLongLink
+      ? Math.min(0.34, characters.length * 0.014)
+      : Math.min(0.72, characters.length * 0.026);
+    const revealDuration =
+      (isLongLink ? 0.38 : 1.2) *
+      shortLinkSpeedFactor *
+      longLinkDurationFactor *
+      animationSpeed;
     let cleaned = false;
     const timeline = gsap.timeline({ paused: true });
 
@@ -149,13 +200,28 @@ const AnimatedLink = ({
     };
 
     activeAnimationRef.current = { timeline, cleanup };
-    timeline
-      .fromTo(
+    if (isLongLink) {
+      revealGroups.forEach((group, index) => {
+        timeline.fromTo(
+          group,
+          // Keep every character present while it resolves. Driving grouped
+          // characters to autoAlpha: 0 made long links look like they were
+          // losing letters instead of getting a blur reveal.
+          { opacity: 0.72, filter: "blur(4px)" },
+          {
+            opacity: 1,
+            filter: "blur(0px)",
+            duration: revealDuration,
+            ease: "power2.out",
+            immediateRender: false,
+          },
+          index * revealDuration * 0.09,
+        );
+      });
+    } else {
+      timeline.fromTo(
         enterOrder,
-        {
-          autoAlpha: 0,
-          filter: "blur(9px)",
-        },
+        { autoAlpha: 0, filter: "blur(9px)" },
         {
           autoAlpha: 1,
           filter: "blur(0px)",
@@ -164,9 +230,9 @@ const AnimatedLink = ({
           ease: "power2.out",
           immediateRender: false,
         },
-      )
-      .eventCallback("onReverseComplete", cleanup)
-      .play();
+      );
+    }
+    timeline.eventCallback("onReverseComplete", cleanup).play();
   };
 
   const reverse = () => {

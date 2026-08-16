@@ -4,8 +4,6 @@ import gsap from "gsap";
 import SplitText from "gsap/SplitText";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useI18n } from "../../../hooks/useI18n";
-import { usePageTransition } from "../../../hooks/usePageTransition";
-import AnimatedLink from "../../UI/AnimatedLink/AnimatedLink";
 import styles from "./home-about.module.css";
 
 gsap.registerPlugin(SplitText, ScrollTrigger);
@@ -29,11 +27,11 @@ const copy = {
 
 const HomeAbout = () => {
   const { locale } = useI18n();
-  const { transitionTo } = usePageTransition();
   const sectionRef = useRef<HTMLElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
   const statementRef = useRef<HTMLHeadingElement>(null);
   const supportingRef = useRef<HTMLDivElement>(null);
+  const metadataRef = useRef<HTMLDListElement>(null);
   const content = copy[locale];
 
   useGSAP(
@@ -42,7 +40,8 @@ const HomeAbout = () => {
       const content = contentRef.current;
       const statement = statementRef.current;
       const supporting = supportingRef.current;
-      if (!section || !content || !statement || !supporting) return;
+      const metadata = metadataRef.current;
+      if (!section || !content || !statement || !supporting || !metadata) return;
 
       const reducedMotion = window.matchMedia(
         "(prefers-reduced-motion: reduce)",
@@ -50,7 +49,7 @@ const HomeAbout = () => {
       const compactLayout = window.matchMedia("(max-width: 760px)").matches;
 
       if (reducedMotion) {
-        gsap.set([statement, supporting], {
+        gsap.set([statement, supporting, metadata], {
           autoAlpha: 1,
           clearProps: "clipPath,filter,transform",
         });
@@ -65,48 +64,19 @@ const HomeAbout = () => {
         const characters = split.chars;
 
         gsap.set(characters, { autoAlpha: 0, filter: "blur(14px)" });
-        gsap.set(supporting, {
+        gsap.set([supporting, metadata], {
           autoAlpha: 0,
           clipPath: "inset(0 0 100% 0)",
         });
-
-        if (compactLayout) {
-          const timeline = gsap.timeline({
-            scrollTrigger: {
-              trigger: statement,
-              start: "top 82%",
-              once: true,
-            },
-          });
-
-          timeline
-            .to(characters, {
-              autoAlpha: 1,
-              filter: "blur(0px)",
-              duration: 0.9,
-              stagger: 0.018,
-              ease: "power2.out",
-            })
-            .to(supporting, {
-              autoAlpha: 1,
-              clipPath: "inset(0 0 0% 0)",
-              duration: 0.7,
-              ease: "power3.out",
-            });
-
-          return () => {
-            timeline.scrollTrigger?.kill();
-            timeline.kill();
-            split?.revert();
-          };
-        }
 
         const hero = document.querySelector<HTMLElement>("#home-hero");
         timeline = gsap.timeline({
           scrollTrigger: {
             trigger: hero ?? section,
             start: hero ? "70% top" : "top top",
-            end: hero ? () => `+=${window.innerHeight}` : "bottom top",
+            end: hero
+              ? () => `+=${window.innerHeight * (compactLayout ? 1.4 : 1)}`
+              : "bottom top",
             pin: content,
             pinSpacing: false,
             scrub: 0.7,
@@ -121,14 +91,14 @@ const HomeAbout = () => {
           stagger: 0.008,
           ease: "power2.out",
         });
-        timeline.to(supporting, {
+        timeline.to([supporting, metadata], {
           autoAlpha: 1,
           clipPath: "inset(0 0 0% 0)",
           duration: 0.8,
           ease: "power3.out",
         });
       } catch {
-        gsap.set([statement, supporting], {
+        gsap.set([statement, supporting, metadata], {
           autoAlpha: 1,
           clearProps: "clipPath,filter",
         });
@@ -152,23 +122,29 @@ const HomeAbout = () => {
       data-aurora-presence="0.72"
       data-aurora-color="#86cfa3"
     >
-      <div ref={contentRef} className={styles["home-about-inner"]}>
-        <h2 ref={statementRef} className={styles["statement"]}>
-          {content.statement}
-        </h2>
+      <div ref={contentRef} className={styles["home-about-pin"]}>
+        <div className={styles["home-about-inner"]}>
+          <h2 ref={statementRef} className={styles["statement"]}>
+            {content.statement}
+          </h2>
 
-        <div ref={supportingRef} className={styles["supporting"]}>
-          <p>{content.supporting}</p>
-          <AnimatedLink
-            href="/#about"
-            className={styles["about-link"]}
-            onClick={(event) => {
-              event.preventDefault();
-              transitionTo("/#about");
-            }}
-          >
-            {content.link} <i aria-hidden="true" />
-          </AnimatedLink>
+          <div ref={supportingRef} className={styles["supporting"]}>
+            <p>{content.supporting}</p>
+          </div>
+          <dl ref={metadataRef} className={styles["metadata"]}>
+            <div>
+              <dt>{locale === "nb" ? "Bakgrunn" : "Background"}</dt>
+              <dd>{locale === "nb" ? "Grafisk +\ninteraksjonsdesign" : "Graphic +\nInteraction design"}</dd>
+            </div>
+            <div>
+              <dt>{locale === "nb" ? "Erfaring" : "Experience"}</dt>
+              <dd>Dialog EXE<br />Trigger</dd>
+            </div>
+            <div>
+              <dt>{locale === "nb" ? "Praksis" : "Internship"}</dt>
+              <dd>Unfold AS<br />Trigger Oslo</dd>
+            </div>
+          </dl>
         </div>
       </div>
     </section>
