@@ -1,0 +1,23 @@
+.flag {
+  position: fixed;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 100;
+  display: flex;
+  width: 100%;
+  height: 10px;
+}
+
+.blue,
+.yellow {
+  width: 100%;
+}
+
+.blue {
+  background: #0057b7;
+}
+
+.yellow {
+  background: #ffd700;
+}

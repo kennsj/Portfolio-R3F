@@ -113,11 +113,15 @@
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 2rem;
+  width: min(100%, 28rem);
+  justify-self: end;
+  text-align: right;
   margin-top: clamp(4rem, 10vw, 9rem);
 
   div {
     display: grid;
     align-content: start;
+    justify-items: end;
     gap: 0.5rem;
   }
   span {

@@ -1,5 +1,6 @@
 import { lazy, Suspense, useEffect, useLayoutEffect, useRef } from "react";
 import Footer from "./components/Layout/Footer/Footer";
+import SupportUkraine from "./components/UI/SupportUkraine/SupportUkraine";
 import { Outlet, useLocation } from "@tanstack/react-router";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -220,6 +221,7 @@ export default function RootLayout() {
                 <Outlet />
               </main>
               <Footer />
+              <SupportUkraine />
             </div>
           </div>
           <Suspense fallback={null}>
