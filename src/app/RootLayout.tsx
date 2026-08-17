@@ -158,6 +158,13 @@ export default function RootLayout() {
       smoothTouch: 0,
       effects: false,
       normalizeScroll: true,
+      onUpdate: (instance) => {
+        window.dispatchEvent(
+          new CustomEvent("smoothscroll", {
+            detail: instance.scrollTop(),
+          }),
+        );
+      },
     });
 
     requestAnimationFrame(() => ScrollTrigger.refresh());

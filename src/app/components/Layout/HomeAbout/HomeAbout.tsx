@@ -11,16 +11,16 @@ gsap.registerPlugin(SplitText, ScrollTrigger);
 const copy = {
   en: {
     statement:
-      "Digital designer and creative frontend developer, shaping expressive digital experiences from early ideas and UX to visual direction and production-ready code.",
+      "I design and build distinctive digital experiences—from early ideas and UX to visual direction, motion and production-ready code.",
     supporting:
-      "I work with businesses and creative teams that need the idea to hold up all the way to launch — from early direction and interface design to refined, production-ready front-end.",
+      "I work with businesses and creative teams that want design and development to feel like one continuous process. The result is thoughtful, responsive work that stays true to the original idea all the way to launch.",
     link: "More about me",
   },
   nb: {
     statement:
-      "Digital designer og kreativ frontendutvikler som former uttrykksfulle digitale opplevelser fra tidlige ideer og UX til visuell retning og produksjonsklar kode.",
+      "Jeg designer og bygger særegne digitale opplevelser, fra de første ideene og brukeropplevelsen til visuell retning, bevegelse og ferdig kode.",
     supporting:
-      "Jeg jobber med virksomheter og kreative team som trenger at idéen holder hele veien til lansering — fra tidlig retning og grensesnittdesign til raffinert, produksjonsklar frontend.",
+      "Jeg samarbeider med bedrifter og kreative team som ønsker at design og utvikling skal være én sammenhengende prosess. Resultatet er gjennomarbeidede, responsive løsninger som beholder den opprinnelige ideen helt frem til lansering.",
     link: "Mer om meg",
   },
 } as const;
@@ -39,7 +39,11 @@ const HomeAbout = () => {
           supporting:
             "Jeg har bakgrunn fra grafisk design, interaksjonsdesign og frontendutvikling. Tidligere har jeg designet og utviklet nettsider for kinoer og kulturhus rundt om i Norge. Nå jobber jeg med egne prosjekter og er åpen for både frilansoppdrag og en fast stilling.",
         }
-      : copy[locale];
+      : {
+          ...copy[locale],
+          supporting:
+            "I have designed and developed websites for cinemas and cultural venues across Norway. I now work on independent projects and am open to freelance assignments and a permanent role.",
+        };
 
   useGSAP(
     () => {
@@ -48,7 +52,8 @@ const HomeAbout = () => {
       const statement = statementRef.current;
       const supporting = supportingRef.current;
       const metadata = metadataRef.current;
-      if (!section || !content || !statement || !supporting || !metadata) return;
+      if (!section || !content || !statement || !supporting || !metadata)
+        return;
 
       const reducedMotion = window.matchMedia(
         "(prefers-reduced-motion: reduce)",
@@ -167,7 +172,11 @@ const HomeAbout = () => {
           >
             <div>
               <dt>{locale === "nb" ? "Bakgrunn" : "Background"}</dt>
-              <dd>{locale === "nb" ? "Grafisk +\ninteraksjonsdesign" : "Graphic +\nInteraction design"}</dd>
+              <dd>
+                {locale === "nb"
+                  ? "Grafisk +\ninteraksjonsdesign"
+                  : "Graphic +\nInteraction design"}
+              </dd>
             </div>
             <div>
               <dt>{locale === "nb" ? "Erfaring" : "Experience"}</dt>
@@ -175,7 +184,11 @@ const HomeAbout = () => {
             </div>
             <div>
               <dt>{locale === "nb" ? "Praksis" : "Internship"}</dt>
-              <dd>Unfold AS<br />Trigger Oslo</dd>
+              <dd>
+                Unfold AS
+                <br />
+                Trigger Oslo
+              </dd>
             </div>
           </dl>
         </div>

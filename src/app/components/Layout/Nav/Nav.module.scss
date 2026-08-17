@@ -36,6 +36,15 @@
   visibility: hidden;
 }
 
+.compact {
+  top: 1.5rem;
+
+  .topLinks {
+    opacity: 0;
+    pointer-events: none;
+  }
+}
+
 .identity {
   display: block;
   color: var(--primary-color);
@@ -81,10 +90,6 @@
   display: flex;
   align-items: center;
   gap: clamp(1.4rem, 3vw, 3.25rem);
-  transition:
-    opacity 280ms ease,
-    transform 420ms cubic-bezier(0.32, 0.94, 0.6, 1);
-
   a,
   button {
     position: relative;
@@ -132,6 +137,30 @@
   }
 }
 
+.menuToggle {
+  position: absolute;
+  right: calc(var(--page-gutter) + clamp(9rem, 15vw, 12rem));
+  display: none;
+  min-height: 2.75rem;
+  border: 0;
+  background: transparent;
+  color: var(--primary-color);
+  font: inherit;
+  letter-spacing: inherit;
+  text-transform: uppercase;
+  cursor: pointer;
+
+  &:hover,
+  &:focus-visible {
+    color: var(--aurora-mint);
+  }
+}
+
+.compact .menuToggle {
+  display: inline-flex;
+  align-items: center;
+}
+
 .contactIdentity {
   display: grid;
   place-items: center;
@@ -156,20 +185,6 @@
 
 .navMeta {
   display: none;
-}
-
-.scrolled {
-  .topLinks {
-    opacity: 0;
-    transform: translateY(-0.7rem);
-    pointer-events: none;
-  }
-
-  .navMeta {
-    opacity: 1;
-    transform: translateY(0);
-    pointer-events: auto;
-  }
 }
 
 .kpWrap {
@@ -301,7 +316,8 @@
     }
 
     &:hover,
-    &:focus-visible {
+    &:focus-visible,
+    &.active {
       color: var(--aurora-mint);
     }
   }
@@ -336,7 +352,7 @@
   }
 
   .navMeta {
-    display: flex;
+    display: none;
     opacity: 1;
     transform: none;
     pointer-events: auto;
@@ -345,6 +361,12 @@
     > :not(:last-child) {
       display: none;
     }
+  }
+
+  .menuToggle {
+    display: inline-flex;
+    align-items: center;
+    right: calc(var(--page-gutter) + 7.2rem);
   }
 
   .contactAction {

@@ -51,7 +51,11 @@ const projectData = [
   },
 ] as const;
 
-const orderedProjectData = [projectData[1], projectData[0], projectData[2]] as const;
+const orderedProjectData = [
+  projectData[1],
+  projectData[0],
+  projectData[2],
+] as const;
 
 const Projects = () => {
   const { locale } = useI18n();
@@ -62,7 +66,9 @@ const Projects = () => {
   const previewPositionRef = useRef<HTMLDivElement>(null);
   const previewRevealRef = useRef<HTMLDivElement>(null);
   const previewMediaRef = useRef<HTMLDivElement>(null);
-  const videoRefs = useRef<Array<HTMLVideoElement | HTMLImageElement | null>>([]);
+  const videoRefs = useRef<Array<HTMLVideoElement | HTMLImageElement | null>>(
+    [],
+  );
   const mobilePreviewRefs = useRef<Array<HTMLImageElement | null>>([]);
   const currentIndexRef = useRef<number | null>(null);
   const previewOpenRef = useRef(false);
@@ -131,7 +137,9 @@ const Projects = () => {
         section.querySelectorAll<HTMLElement>(`.${styles["project-item"]}`),
       ).map((item) => {
         const details = item.querySelector<HTMLElement>(`.${styles.details}`);
-        const rule = item.querySelector<HTMLElement>(`.${styles["project-rule"]}`);
+        const rule = item.querySelector<HTMLElement>(
+          `.${styles["project-rule"]}`,
+        );
         const targets = [details, rule].filter(
           (target): target is HTMLElement => target !== null,
         );
@@ -327,9 +335,9 @@ const Projects = () => {
         ease: "shiftReveal",
         onComplete: () => {
           gsap.set(preview, { autoAlpha: 0 });
-        videoRefs.current.forEach((video) => {
-          if (video instanceof HTMLVideoElement) video.pause();
-        });
+          videoRefs.current.forEach((video) => {
+            if (video instanceof HTMLVideoElement) video.pause();
+          });
           previewOpenRef.current = false;
           currentIndexRef.current = null;
           setActiveIndex(null);
@@ -371,8 +379,11 @@ const Projects = () => {
       const rootFontSize = Number.parseFloat(
         window.getComputedStyle(document.documentElement).fontSize,
       );
-      const clampValue = (minimum: number, preferred: number, maximum: number) =>
-        Math.min(maximum, Math.max(minimum, preferred));
+      const clampValue = (
+        minimum: number,
+        preferred: number,
+        maximum: number,
+      ) => Math.min(maximum, Math.max(minimum, preferred));
       const viewportGutter = clampValue(
         1.25 * rootFontSize,
         window.innerWidth * 0.04,
@@ -401,8 +412,7 @@ const Projects = () => {
         window.innerWidth * 0.05,
         4.5 * rootFontSize,
       );
-      const targetTop =
-        heroPaddingTop + heroTitleHeight + heroMediaMarginTop;
+      const targetTop = heroPaddingTop + heroTitleHeight + heroMediaMarginTop;
 
       overlay.className = styles["project-transition-overlay"];
       video.src = sourceMedia.currentSrc || sourceMedia.src;
@@ -423,9 +433,13 @@ const Projects = () => {
         top: sourceRect.top,
         width: sourceRect.width,
         height: sourceRect.height,
-        rotation: mobileLayout ? 0 : gsap.getProperty(previewPosition, "rotation"),
+        rotation: mobileLayout
+          ? 0
+          : gsap.getProperty(previewPosition, "rotation"),
       });
-      gsap.set(mobileLayout ? sourceFrame : previewRef.current, { autoAlpha: 0 });
+      gsap.set(mobileLayout ? sourceFrame : previewRef.current, {
+        autoAlpha: 0,
+      });
 
       let destinationReady = false;
       let enterStarted = false;
@@ -526,13 +540,12 @@ const Projects = () => {
       >
         <header className={styles["project-intro"]}>
           <p className={styles["project-label"]}>
-            <span>{locale === "nb" ? "Arbeid" : "Work"}</span>
-            <span>( 01—04 )</span>
+            <span>01 / {locale === "nb" ? "Prosjekter" : "Projects"}</span>
           </p>
           <p className={styles["project-summary"]}>
             {locale === "nb"
-              ? "Fire utvalgte digitale opplevelser formet gjennom retning, design og frontend."
-              : "Four selected digital experiences shaped through direction, design, and front-end."}
+              ? "Utvalgte prosjekter innen visuell retning, digital design og kreativ frontendutvikling."
+              : "Selected work across visual direction, interface design and creative frontend development."}
           </p>
         </header>
         <ol
@@ -548,11 +561,9 @@ const Projects = () => {
           {orderedProjectData.map((project, index) => (
             <li
               key={project.slug}
-              className={
-                `${styles["project-item"]} ${
-                  activeIndex === index ? styles.projectItemActive : ""
-                }`.trim()
-              }
+              className={`${styles["project-item"]} ${
+                activeIndex === index ? styles.projectItemActive : ""
+              }`.trim()}
             >
               <AnimatedLink
                 animationTarget="h3"
@@ -584,12 +595,19 @@ const Projects = () => {
                   />
                 </div>
                 <div className={styles.details}>
-                  <i>{project.work[locale]}</i>
+                  <i>
+                    {locale === "nb" ? "Rolle" : "Role"} /{" "}
+                    {project.work[locale]}
+                  </i>
                   <p>{project.description[locale]}</p>
                   <span>
                     {project.comingSoon
-                      ? locale === "nb" ? "Kommer snart" : "Coming soon"
-                      : locale === "nb" ? "Se prosjekt" : "View project"}
+                      ? locale === "nb"
+                        ? "Kommer snart"
+                        : "Coming soon"
+                      : locale === "nb"
+                        ? "Se prosjekt"
+                        : "View project"}
                     <i aria-hidden="true" />
                   </span>
                 </div>
@@ -608,7 +626,7 @@ const Projects = () => {
           <div ref={previewPositionRef} className={styles.previewPosition}>
             <div ref={previewRevealRef} className={styles.previewReveal}>
               <div ref={previewMediaRef} className={styles.previewMedia}>
-                {orderedProjectData.map((project, index) => (
+                {orderedProjectData.map((project, index) =>
                   project.video.endsWith(".png") ? (
                     <img
                       key={project.video}
@@ -620,19 +638,19 @@ const Projects = () => {
                     />
                   ) : (
                     <video
-                    key={project.video}
-                    ref={(node) => {
-                      videoRefs.current[index] = node;
-                    }}
-                    src={project.video}
-                    poster={project.poster}
-                    muted
-                    loop
-                    playsInline
-                    preload="auto"
+                      key={project.video}
+                      ref={(node) => {
+                        videoRefs.current[index] = node;
+                      }}
+                      src={project.video}
+                      poster={project.poster}
+                      muted
+                      loop
+                      playsInline
+                      preload="auto"
                     />
-                  )
-                ))}
+                  ),
+                )}
               </div>
             </div>
           </div>

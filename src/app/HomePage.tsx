@@ -90,6 +90,7 @@ export default function HomePage() {
         <Expertise />
       </Suspense>
       <section
+        id="signal"
         className={styles.aurora}
         data-aurora-state
         data-aurora-presence="1.16"

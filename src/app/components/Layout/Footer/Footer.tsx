@@ -21,12 +21,12 @@ const Footer = () => {
         <div className={styles.intro}>
           <div className={styles.availability}>
             <i aria-hidden="true" />
-            <span>{t.footerAvailability}</span>
+            <span>04 / {locale === "nb" ? "Kontakt" : "Contact"}</span>
           </div>
           <HeadingAnimation level={2}>
             {locale === "nb"
               ? "Har du et prosjekt på gang, eller ser du etter noen som kan jobbe på tvers av design og frontend?"
-              : "Let’s build something that lasts."}
+              : "Are you working on a project, or looking for someone who can work across design and front-end?"}
           </HeadingAnimation>
         </div>
 
@@ -58,7 +58,7 @@ const Footer = () => {
           <div className={styles.meta}>
             <div>
               <span>{locale === "nb" ? "Sted" : "Location"}</span>
-              <p>Bodø / 67°17′N</p>
+              <p>Bodø / 67° N 14° E</p>
             </div>
             <div>
               <span>{locale === "nb" ? "Sosialt" : "Social"}</span>

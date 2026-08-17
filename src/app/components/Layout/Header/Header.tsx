@@ -261,9 +261,7 @@ const Header = ({ signalNavIntroAfterHero = false }: HeaderProps) => {
                 filter: `blur(${initialBlur})`,
               });
               const characterRevealStart =
-                lineIndex === 0
-                  ? 0.45
-                  : 0.45 + firstNameRevealDuration * 0.5;
+                lineIndex === 0 ? 0.45 : 0.45 + firstNameRevealDuration * 0.5;
               const characterRevealEnd =
                 characterRevealStart +
                 characterDuration +
@@ -273,10 +271,7 @@ const Header = ({ signalNavIntroAfterHero = false }: HeaderProps) => {
                   characterRevealStart +
                   (characterRevealEnd - characterRevealStart) * 0.5;
               }
-              headingRevealEnd = Math.max(
-                headingRevealEnd,
-                characterRevealEnd,
-              );
+              headingRevealEnd = Math.max(headingRevealEnd, characterRevealEnd);
 
               timeline?.fromTo(
                 characters,
@@ -327,9 +322,7 @@ const Header = ({ signalNavIntroAfterHero = false }: HeaderProps) => {
         const supportingStart = reducedMotion ? 0.15 : headingRevealEnd + 0.15;
         const supportingEnd = reducedMotion
           ? supportingStart
-          : supportingStart +
-            0.7 +
-            Math.max(0, supporting.length - 1) * 0.06;
+          : supportingStart + 0.7 + Math.max(0, supporting.length - 1) * 0.06;
 
         if (!reducedMotion) {
           timeline.fromTo(
@@ -351,11 +344,7 @@ const Header = ({ signalNavIntroAfterHero = false }: HeaderProps) => {
         }
 
         const heroIntroRelease = reducedMotion ? supportingEnd : metadataStart;
-        timeline.call(
-          markHomeHeroIntroComplete,
-          [],
-          heroIntroRelease,
-        );
+        timeline.call(markHomeHeroIntroComplete, [], heroIntroRelease);
         timeline.call(
           () => setHeroIntroStarted(true),
           [],
@@ -444,10 +433,7 @@ const Header = ({ signalNavIntroAfterHero = false }: HeaderProps) => {
 
           <h1 ref={headingRef} aria-describedby="hero-role">
             <span className={styles["first-name"]}>Kenneth</span>
-            <span
-              className={styles["last-name"]}
-              data-text="Jørgensen"
-            >
+            <span className={styles["last-name"]} data-text="Jørgensen">
               Jørgensen
             </span>
           </h1>
@@ -457,7 +443,9 @@ const Header = ({ signalNavIntroAfterHero = false }: HeaderProps) => {
       <div ref={metadataRef} className={styles["metadata-rail"]}>
         <span className={styles["metadata-line"]} aria-hidden="true" />
         <div className={styles["metadata-item"]} data-metadata-item>
-          {locale === "nb" ? "Bodø, Norge — 67°N" : "Bodø, Norway — 67°N"}
+          {locale === "nb"
+            ? "Bodø, Norge — 67° N 14° E"
+            : "Bodø, Norway — 67° N 14° E"}
         </div>
         <div
           className={`${styles["metadata-item"]} ${styles["clock"]}`}

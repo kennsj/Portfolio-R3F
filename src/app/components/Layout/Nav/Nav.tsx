@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState, type MouseEvent } from "react";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
+import ScrollSmoother from "gsap/ScrollSmoother";
 import { useKpIndex, getKpColor } from "../../../hooks/useKpIndex";
 import { useManualKp } from "../../../hooks/KpContext";
 import { usePageTransition } from "../../../hooks/usePageTransition";
@@ -11,12 +12,13 @@ import AnimatedLink from "../../UI/AnimatedLink/AnimatedLink";
 
 const Nav = () => {
   const navRef = useRef<HTMLElement>(null);
-  const scrollSentinelRef = useRef<HTMLDivElement>(null);
   const panelRef = useRef<HTMLDivElement>(null);
   const menuButtonRef = useRef<HTMLButtonElement>(null);
+  const previousFocusRef = useRef<HTMLElement | null>(null);
   const [open, setOpen] = useState(false);
   const [kpOpen, setKpOpen] = useState(false);
-  const [scrolled, setScrolled] = useState(false);
+  const [pastHero, setPastHero] = useState(false);
+  const [navHidden, setNavHidden] = useState(false);
   const [activeSection, setActiveSection] = useState<string | null>(null);
   const [navIntroStarted, setNavIntroStarted] = useState(false);
   const { data } = useKpIndex();
@@ -31,19 +33,34 @@ const Nav = () => {
       : "KP measures global geomagnetic activity from 0–9. A higher reading means a stronger aurora with a better chance of visibility farther south.";
 
   useEffect(() => {
-    const sentinel = scrollSentinelRef.current;
-    if (!sentinel) return;
-    const observer = new IntersectionObserver(
-      ([entry]) => setScrolled(!entry.isIntersecting),
-      { threshold: 0 },
-    );
-    observer.observe(sentinel);
-    return () => observer.disconnect();
-  }, []);
+    let previousScrollY = ScrollSmoother.get()?.scrollTop() ?? window.scrollY;
+    const updateHeaderState = () => {
+      const scrollY = ScrollSmoother.get()?.scrollTop() ?? window.scrollY;
+      const scrollingDown = scrollY > previousScrollY + 1;
+      const scrollingUp = scrollY < previousScrollY - 1;
+      previousScrollY = scrollY;
 
-  useEffect(() => {
-    if (!scrolled && open) setOpen(false);
-  }, [scrolled, open]);
+      setPastHero((current) => {
+        const next = scrollY > window.innerHeight * 0.8;
+        return current === next ? current : next;
+      });
+
+      setNavHidden((current) => {
+        if (open) return false;
+        if (scrollY <= window.innerHeight * 0.8) return false;
+        if (scrollingDown) return true;
+        if (scrollingUp) return false;
+        return current;
+      });
+    };
+
+    const onScroll = () => updateHeaderState();
+    updateHeaderState();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+    };
+  }, [open]);
 
   useEffect(() => {
     if (window.location.pathname !== "/" && window.location.pathname !== "") {
@@ -51,10 +68,9 @@ const Nav = () => {
       return;
     }
 
-    const sectionIds = ["about", "work", "contact"];
-    let frame: number | null = null;
+    const sectionIds = ["about", "work", "expertise", "signal", "contact"];
+    let frame = 0;
     const updateActiveSection = () => {
-      frame = null;
       const line = window.innerHeight * 0.5;
       const active = sectionIds
         .map((id) => document.getElementById(id))
@@ -64,18 +80,11 @@ const Nav = () => {
           return rect.top <= line && rect.bottom > line;
         });
       setActiveSection(active?.id ?? null);
+      frame = window.requestAnimationFrame(updateActiveSection);
     };
-    const scheduleUpdate = () => {
-      if (frame === null) frame = window.requestAnimationFrame(updateActiveSection);
-    };
-
-    updateActiveSection();
-    window.addEventListener("scroll", scheduleUpdate, { passive: true });
-    window.addEventListener("resize", scheduleUpdate);
+    frame = window.requestAnimationFrame(updateActiveSection);
     return () => {
-      window.removeEventListener("scroll", scheduleUpdate);
-      window.removeEventListener("resize", scheduleUpdate);
-      if (frame !== null) window.cancelAnimationFrame(frame);
+      window.cancelAnimationFrame(frame);
     };
   }, []);
 
@@ -83,7 +92,11 @@ const Nav = () => {
     const panel = panelRef.current;
     if (!panel) return;
     panel.inert = !open;
-    if (!open) return;
+    if (!open) {
+      previousFocusRef.current?.focus();
+      previousFocusRef.current = null;
+      return;
+    }
 
     const focusable = Array.from(
       panel.querySelectorAll<HTMLElement>("a, button"),
@@ -127,6 +140,9 @@ const Nav = () => {
       }
       if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
         gsap.set(navRef.current, { autoAlpha: 1, y: 0 });
+        gsap.set(navRef.current, {
+          clearProps: "opacity,visibility,transform",
+        });
         setNavIntroStarted(true);
         return;
       }
@@ -139,6 +155,10 @@ const Nav = () => {
           y: 0,
           duration: 0.8,
           ease: "power2.out",
+          onComplete: () =>
+            gsap.set(navRef.current, {
+              clearProps: "opacity,visibility,transform",
+            }),
         },
       );
       setNavIntroStarted(true);
@@ -227,16 +247,16 @@ const Nav = () => {
     window.setTimeout(() => transitionTo(href), 180);
   };
 
+  const toggleMenu = () => {
+    if (!open) previousFocusRef.current = document.activeElement as HTMLElement;
+    setOpen((value) => !value);
+  };
+
   return (
     <>
-      <div
-        ref={scrollSentinelRef}
-        className={styles.scrollSentinel}
-        aria-hidden="true"
-      />
       <nav
         ref={navRef}
-        className={`${styles.nav} ${scrolled ? styles.scrolled : ""} ${!homeHeroIntroReady || !navIntroStarted ? styles.navIntroPending : ""}`}
+        className={`${styles.nav} ${navHidden ? styles.navHidden : ""} ${!homeHeroIntroReady || !navIntroStarted ? styles.navIntroPending : ""}`}
         aria-label={locale === "nb" ? "Hovednavigasjon" : "Main navigation"}
       >
         <AnimatedLink
@@ -270,8 +290,7 @@ const Nav = () => {
           </AnimatedLink>
         </div>
         <AnimatedLink
-          href="/#contact"
-          onClick={(event) => go(event, "/#contact")}
+          href="mailto:hei@kennethjorgensen.no"
           className={styles.contactAction}
         >
           <span className={styles.contactIdentity} aria-hidden="true">
@@ -279,7 +298,7 @@ const Nav = () => {
           </span>
           <span>{locale === "nb" ? "Ta kontakt" : "Get in touch"}</span>
         </AnimatedLink>
-        <div className={styles.navMeta} aria-hidden={!scrolled && !open}>
+        <div className={styles.navMeta} aria-hidden={!pastHero && !open}>
           <div
             className={styles.kpWrap}
             onMouseEnter={() => setKpOpen(true)}
@@ -333,15 +352,24 @@ const Nav = () => {
             {locale === "nb" ? "EN" : "NO"}
           </button>
           <button
-            ref={menuButtonRef}
             type="button"
-            onClick={() => setOpen((value) => !value)}
+            onClick={toggleMenu}
             aria-expanded={open}
             aria-controls="site-menu"
           >
             {open ? t.menuClose : t.menuOpen}
           </button>
         </div>
+        <button
+          ref={menuButtonRef}
+          type="button"
+          className={styles.menuToggle}
+          onClick={toggleMenu}
+          aria-expanded={open}
+          aria-controls="site-menu"
+        >
+          {open ? t.menuClose : locale === "nb" ? "Meny" : "Menu"}
+        </button>
       </nav>
 
       <div
@@ -352,33 +380,59 @@ const Nav = () => {
         role="dialog"
         aria-modal="true"
         aria-label={t.menuOpen}
+        onPointerDown={(event) => {
+          if (event.target === event.currentTarget) setOpen(false);
+        }}
       >
         <div className={styles.menuInner}>
           <div className={styles.menuLinks}>
             <AnimatedLink
+              href="/#about"
+              onClick={(event) => go(event, "/#about")}
+              className={activeSection === "about" ? styles.active : undefined}
+            >
+              <span>00 /</span>
+              {locale === "nb" ? "Om" : "About"}
+            </AnimatedLink>
+            <AnimatedLink
               href="/#work"
               onClick={(event) => go(event, "/#work")}
+              className={activeSection === "work" ? styles.active : undefined}
             >
-              <span>( 01 )</span>
+              <span>01 /</span>
               {locale === "nb" ? "Prosjekter" : "Work"}
             </AnimatedLink>
             <AnimatedLink
-              href="/#about"
-              onClick={(event) => go(event, "/#about")}
+              href="/#expertise"
+              onClick={(event) => go(event, "/#expertise")}
+              className={
+                activeSection === "expertise" ? styles.active : undefined
+              }
             >
-              <span>( 02 )</span>
-              {t.navAbout}
+              <span>02 /</span>
+              {locale === "nb" ? "Ekspertise" : "Expertise"}
+            </AnimatedLink>
+            <AnimatedLink
+              href="/#signal"
+              onClick={(event) => go(event, "/#signal")}
+              className={activeSection === "signal" ? styles.active : undefined}
+            >
+              <span>03 /</span>
+              {locale === "nb" ? "Levende signal" : "Live signal"}
             </AnimatedLink>
             <AnimatedLink
               href="/#contact"
               onClick={(event) => go(event, "/#contact")}
+              className={
+                activeSection === "contact" ? styles.active : undefined
+              }
             >
-              <span>( 03 )</span>
+              <span>04 /</span>
               {t.navContact}
             </AnimatedLink>
           </div>
           <div className={styles.menuFooter}>
-            <span>Bodø / 67°17′N</span>
+            <span>Bodø / 67° N 14° E</span>
             <button
               type="button"
               onClick={toggleLocale}

@@ -179,7 +179,7 @@ const Aurora = () => {
             <div className={styles.signal}>
               <div ref={locationRef} className={styles.location}>
                 {t.auroraLocationCity}
-                <span>{t.auroraLocationRegion} / 67°N</span>
+                <span>{t.auroraLocationRegion} - 67° N 14° E</span>
               </div>
               <div className={styles.kp}>
                 <span>{t.auroraKpIndex}</span>

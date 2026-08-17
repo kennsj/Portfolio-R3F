@@ -211,9 +211,7 @@ export default function ProjectCase({ slug }: { slug: keyof typeof projects }) {
             type: "words,chars",
           });
           const characters = headingSplit.chars;
-          const characterOrder = deterministicCharacterOrder(
-            characters.length,
-          );
+          const characterOrder = deterministicCharacterOrder(characters.length);
           const characterRank = new Map(
             characterOrder.map((characterIndex, rank) => [
               characterIndex,
@@ -237,8 +235,7 @@ export default function ProjectCase({ slug }: { slug: keyof typeof projects }) {
                 filter: "blur(0px)",
                 duration: 1.05,
                 stagger: (characterIndex) =>
-                  (characterRank.get(characterIndex) ?? characterIndex) *
-                  0.028,
+                  (characterRank.get(characterIndex) ?? characterIndex) * 0.028,
                 ease: "power2.out",
               },
             )
@@ -301,7 +298,7 @@ export default function ProjectCase({ slug }: { slug: keyof typeof projects }) {
           <span>
             {copy(project.type)} / {copy(project.status)}
           </span>
-          <span>Bodø / 67°17′N</span>
+          <span>Bodø / 67N, 14E</span>
         </div> */}
         <div ref={heroHeadingRef} className={styles["hero-heading-row"]}>
           <HeadingAnimation

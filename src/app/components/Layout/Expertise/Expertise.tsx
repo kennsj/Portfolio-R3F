@@ -9,7 +9,7 @@ import HeadingAnimation from "../../UI/HeadingAnimation/HeadingAnimation";
 gsap.registerPlugin(ScrollTrigger);
 
 const Expertise = () => {
-  const { t } = useI18n();
+  const { locale, t } = useI18n();
   const sectionRef = useRef<HTMLElement>(null);
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
 
@@ -61,13 +61,14 @@ const Expertise = () => {
     <section
       ref={sectionRef}
       className={styles.section}
+      id="expertise"
       aria-label={t.expertiseEyebrow}
       data-aurora-state
       data-aurora-presence="0.88"
       data-aurora-color="#7ba7d6"
     >
       <div className={styles.lead}>
-        <span>/ {t.expertiseFieldsLabel}</span>
+        <span>02 / {locale === "nb" ? "Ekspertise" : "Expertise"}</span>
         <HeadingAnimation level={2}>
           {t.expertiseTitleLineOne}
           <br />
@@ -91,8 +92,7 @@ const Expertise = () => {
             key={mode.title}
             className={`${styles.discipline} ${activeIndex === index ? styles["active-row"] : ""}`.trim()}
             style={{
-              opacity:
-                activeIndex !== null && activeIndex !== index ? 0.25 : 1,
+              opacity: activeIndex !== null && activeIndex !== index ? 0.25 : 1,
             }}
           >
             <button
