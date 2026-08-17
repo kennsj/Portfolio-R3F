@@ -346,6 +346,7 @@ export default function ProjectCase({ slug }: { slug: keyof typeof projects }) {
             {locale === "nb" ? "Kort fortalt" : "In brief"}
           </span>
           <p>{copy(project.brief)}</p>
+          <p>{locale === "nb" ? "Mer kommer" : "More to come"}</p>
           {project.live && (
             <AnimatedLink
               className={styles.textLink}
@@ -359,7 +360,7 @@ export default function ProjectCase({ slug }: { slug: keyof typeof projects }) {
           )}
         </div>
       </section>
-
+      {/*
       <section
         className={styles.context}
         data-case-reveal
@@ -373,7 +374,7 @@ export default function ProjectCase({ slug }: { slug: keyof typeof projects }) {
         ))}
       </section>
 
-      <section className={styles.manifesto} data-case-reveal>
+       <section className={styles.manifesto} data-case-reveal>
         <span className={styles.label}>
           {locale === "nb" ? "Definerende valg" : "Defining decision"}
         </span>
@@ -415,7 +416,7 @@ export default function ProjectCase({ slug }: { slug: keyof typeof projects }) {
               : "The work shown here reflects my actual scope, without attributing undocumented outcomes to the project."}
           </p>
         </div>
-      </section>
+      </section> */}
 
       <AnimatedLink
         className={styles.next}

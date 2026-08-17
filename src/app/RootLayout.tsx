@@ -228,9 +228,9 @@ export default function RootLayout() {
                 <Outlet />
               </main>
               <Footer />
-              <SupportUkraine />
             </div>
           </div>
+          <SupportUkraine />
           <Suspense fallback={null}>
             <Cursor />
           </Suspense>

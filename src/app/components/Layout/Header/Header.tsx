@@ -80,6 +80,14 @@ const Header = ({ signalNavIntroAfterHero = false }: HeaderProps) => {
           autoAlpha: 1,
           filter: "none",
         });
+        gsap.set(
+          header.querySelectorAll<HTMLElement>("[data-metadata-item]"),
+          { autoAlpha: 1, y: 0 },
+        );
+        gsap.set(header.querySelector<HTMLElement>(`.${styles["metadata-line"]}`), {
+          scaleX: 1,
+          transformOrigin: "left center",
+        });
         if (headingRef.current) {
           gsap.set(headingRef.current, { autoAlpha: 1, filter: "none" });
         }
@@ -145,14 +153,15 @@ const Header = ({ signalNavIntroAfterHero = false }: HeaderProps) => {
             );
             metadataTimeline?.fromTo(
               item,
-              { autoAlpha: 0, y: 6 },
+              { autoAlpha: 0 },
               {
                 autoAlpha: 1,
-                y: 0,
-                duration: 0.42,
+                // Each item should complete as the line reaches its end,
+                // rather than continuing after the rail has finished.
+                duration: 0.2,
                 ease: "power2.out",
               },
-              lineDuration * itemProgress,
+              lineDuration,
             );
           });
 
@@ -343,7 +352,10 @@ const Header = ({ signalNavIntroAfterHero = false }: HeaderProps) => {
           timeline.call(() => buildMetadataTimeline(), [], metadataStart);
         }
 
-        const heroIntroRelease = reducedMotion ? supportingEnd : metadataStart;
+        // Keep the hero in its intro state until the support copy has fully
+        // revealed. Releasing earlier at metadataStart causes the ready-state
+        // rerender to force-show the copy before its fade timeline runs.
+        const heroIntroRelease = supportingEnd;
         timeline.call(markHomeHeroIntroComplete, [], heroIntroRelease);
         timeline.call(
           () => setHeroIntroStarted(true),
