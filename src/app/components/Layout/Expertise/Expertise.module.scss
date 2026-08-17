@@ -1,6 +1,7 @@
 .section { position: relative; overflow: hidden; padding: clamp(4rem, 8vw, 8rem) var(--page-gutter) clamp(6rem, 11vw, 10rem) !important; color: var(--primary-color); }
 .lead, .disciplines { max-width: var(--max-width); margin-inline: auto; }
-.lead > span { color: var(--aurora-mint); font-family: var(--font-family-ibm); font-size: .875rem; letter-spacing: .08em; text-transform: uppercase; }
+.eyebrow::before { content: ""; display: inline-block; width: .45rem; height: .45rem; margin-right: .7rem; border-radius: 50%; background: var(--aurora-mint); }
+.lead > span { color: color-mix(in srgb, var(--primary-color) 66%, transparent); font-family: var(--font-family-ibm); font-size: .65rem; line-height: 1.5; letter-spacing: .06em; text-transform: uppercase; }
 .lead h2 { max-width: none; margin: 1.5rem 0 clamp(4rem, 8vw, 7rem); font-size: clamp(2.5rem, 5vw, 5rem); font-weight: 400; line-height: .95; letter-spacing: -.055em; text-transform: uppercase; }
 .disciplines { display: grid; margin-top: 0; padding: 0; list-style: none; }
 .discipline { position: relative; z-index: 1; opacity: 1; transition: opacity .3s ease; }

@@ -431,7 +431,13 @@ const Nav = () => {
               {t.navContact}
             </AnimatedLink>
           </div>
-          <div className={styles.menuFooter}>
+          {/* <div className={styles.menuFooter}>
+            <AnimatedLink
+              href="mailto:hei@kennethjorgensen.no"
+              className={styles.menuContact}
+            >
+              {locale === "nb" ? "Ta kontakt" : "Get in touch"}
+            </AnimatedLink>
             <span>Bodø / 67° N 14° E</span>
             <button
               type="button"
@@ -440,7 +446,7 @@ const Nav = () => {
             >
               {locale === "nb" ? "English" : "Norsk"}
             </button>
-          </div>
+          </div> */}
         </div>
       </div>
     </>

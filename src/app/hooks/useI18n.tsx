@@ -180,8 +180,8 @@ const translations: Record<AppLocale, Translations> = {
     aboutWorkCta: "View selected work",
     aboutWorkTitle: "Work",
     expertiseEyebrow: "Expertise",
-    expertiseTitleLineOne: "Where design",
-    expertiseTitleLineTwo: "meets code",
+    expertiseTitleLineOne: "I design it.",
+    expertiseTitleLineTwo: "I build it.",
     expertiseAboutCta: "About me ",
     expertiseIntro: "Four areas. One connected practice.",
     expertiseCapabilitiesLabel: "Expertise",
@@ -190,25 +190,25 @@ const translations: Record<AppLocale, Translations> = {
       {
         title: "Visual direction",
         description:
-          "Shape a distinct point of view, hierarchy, and visual language around the right idea.",
+          "I find the visual approach that gives each project direction, clarity and personality.",
         meta: "01 / direction",
       },
       {
         title: "UX/UI & Interactions",
         description:
-          "Make structure, feedback, and movement clear enough to guide people naturally.",
+          "I make complex things easier through structure, flow and thoughtful interaction.",
         meta: "02 / interaction",
       },
       {
         title: "Digital products",
         description:
-          "Turn the direction into responsive interfaces and systems built for real content.",
+          "I design websites and digital experiences around real content, needs and users.",
         meta: "03 / product",
       },
       {
         title: "Creative frontend",
         description:
-          "Carry the decisions into components, motion, and production-ready front-end.",
+          "I take the design all the way into code, with components, animation and details built for production.",
         meta: "04 / development",
       },
     ],
@@ -380,8 +380,8 @@ const translations: Record<AppLocale, Translations> = {
     aboutWorkCta: "Se utvalgte prosjekter",
     aboutWorkTitle: "Arbeid",
     expertiseEyebrow: "Ekspertise",
-    expertiseTitleLineOne: "Der design",
-    expertiseTitleLineTwo: "møter kode",
+    expertiseTitleLineOne: "Jeg designer det.",
+    expertiseTitleLineTwo: "Jeg bygger det.",
     expertiseAboutCta: "Om meg ",
     expertiseIntro: "Fire områder. Én sammenhengende praksis.",
     expertiseCapabilitiesLabel: "Ekspertise",
@@ -390,25 +390,25 @@ const translations: Record<AppLocale, Translations> = {
       {
         title: "Visuell retning",
         description:
-          "Jeg former et tydelig ståsted, hierarki og visuelt språk rundt den riktige idéen.",
+          "Jeg finner det visuelle grepet som gir prosjektet retning, tydelighet og personlighet.",
         meta: "01 / retning",
       },
       {
-        title: "UX/UI & Interactions",
+        title: "UX/UI & Interaksjon",
         description:
-          "Struktur, respons og bevegelse gjør grensesnittet enkelt å forstå og bruke.",
+          "Jeg gjør komplekse ting enklere gjennom struktur, flyt og gjennomtenkte interaksjoner.",
         meta: "02 / interaksjon",
       },
       {
         title: "Digitale produkter",
         description:
-          "Retningen blir til responsive nettsider og systemer bygget for reelt innhold.",
+          "Jeg designer nettsider og digitale løsninger rundt ekte innhold, behov og brukere.",
         meta: "03 / produkt",
       },
       {
         title: "Kreativ frontend",
         description:
-          "Jeg tar designet inn i komponenter, animasjon og produksjonsklar frontend.",
+          "Jeg tar designet helt ut i kode, med komponenter, animasjon og detaljer som holder i produksjon.",
         meta: "04 / utvikling",
       },
     ],

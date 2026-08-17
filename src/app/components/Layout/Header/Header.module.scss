@@ -316,6 +316,13 @@
     margin-top: 0.18em;
   }
 
+  .metadata-rail {
+    .clock,
+    .kp-metric {
+      display: none;
+    }
+  }
+
   .kp-tooltip {
     left: 0;
     width: min(16rem, calc(100vw - 2rem));

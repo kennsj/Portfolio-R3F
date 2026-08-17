@@ -166,7 +166,7 @@ const Aurora = () => {
       ) : (
         <>
           <div className={styles.intro}>
-            <span>03 / {t.auroraEyebrow}</span>
+            <span className={styles.eyebrow}>03 - {t.auroraEyebrow}</span>
             <div>
               <HeadingAnimation level={3}>
                 <span>{t.auroraTitleLineOne}</span>

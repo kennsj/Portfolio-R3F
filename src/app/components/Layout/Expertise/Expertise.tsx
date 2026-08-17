@@ -68,7 +68,7 @@ const Expertise = () => {
       data-aurora-color="#7ba7d6"
     >
       <div className={styles.lead}>
-        <span>02 / {locale === "nb" ? "Ekspertise" : "Expertise"}</span>
+        <span className={styles.eyebrow}>02 - {locale === "nb" ? "Ekspertise" : "Expertise"}</span>
         <HeadingAnimation level={2}>
           {t.expertiseTitleLineOne}
           <br />

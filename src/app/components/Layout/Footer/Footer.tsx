@@ -18,19 +18,27 @@ const Footer = () => {
   return (
     <footer id="contact" className={styles.footer}>
       <div className={styles.inner}>
-        <div className={styles.intro}>
+        <div className={styles.primary}>
           <div className={styles.availability}>
             <i aria-hidden="true" />
-            <span>04 / {locale === "nb" ? "Kontakt" : "Contact"}</span>
+            <span>04 - {locale === "nb" ? "Kontakt" : "Contact"}</span>
           </div>
           <HeadingAnimation level={2}>
             {locale === "nb"
               ? "Har du et prosjekt på gang, eller ser du etter noen som kan jobbe på tvers av design og frontend?"
               : "Are you working on a project, or looking for someone who can work across design and front-end?"}
           </HeadingAnimation>
+          <AnimatedLink
+            className={styles.email}
+            href="mailto:hei@kennethjorgensen.no"
+            animationSpeed={0.8}
+            blurReveal="characters"
+          >
+            hei@kennethjorgensen.no <i aria-hidden="true" />
+          </AnimatedLink>
         </div>
 
-        <div className={styles.details}>
+        <div className={styles.secondary}>
           <nav aria-label={t.footerNavigationLabel}>
             <AnimatedLink href="/" onClick={goTo("/")}>
               {t.footerHome}
@@ -45,15 +53,6 @@ const Footer = () => {
               {t.footerContact}
             </AnimatedLink>
           </nav>
-
-          <AnimatedLink
-            className={styles.email}
-            href="mailto:hei@kennethjorgensen.no"
-            animationSpeed={0.8}
-            blurReveal="characters"
-          >
-            hei@kennethjorgensen.no <i aria-hidden="true" />
-          </AnimatedLink>
 
           <div className={styles.meta}>
             <div>

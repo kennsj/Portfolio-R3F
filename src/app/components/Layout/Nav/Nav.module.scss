@@ -138,8 +138,6 @@
 }
 
 .menuToggle {
-  position: absolute;
-  right: calc(var(--page-gutter) + clamp(9rem, 15vw, 12rem));
   display: none;
   min-height: 2.75rem;
   border: 0;
@@ -293,6 +291,7 @@
   display: flex;
   flex-direction: column;
   align-items: flex-start;
+  gap: 1rem;
 
   a {
     display: grid;
@@ -346,6 +345,18 @@
   }
 }
 
+.menuContact {
+  display: none;
+  color: var(--primary-color);
+  text-decoration: underline;
+  text-underline-offset: 0.3rem;
+
+  &:hover,
+  &:focus-visible {
+    color: var(--aurora-mint);
+  }
+}
+
 @media (max-width: 600px) {
   .topLinks {
     display: none;
@@ -366,7 +377,14 @@
   .menuToggle {
     display: inline-flex;
     align-items: center;
-    right: calc(var(--page-gutter) + 7.2rem);
+  }
+
+  .contactAction {
+    display: none;
+  }
+
+  .menuContact {
+    display: inline-flex;
   }
 
   .contactAction {

@@ -80,14 +80,17 @@ const Header = ({ signalNavIntroAfterHero = false }: HeaderProps) => {
           autoAlpha: 1,
           filter: "none",
         });
-        gsap.set(
-          header.querySelectorAll<HTMLElement>("[data-metadata-item]"),
-          { autoAlpha: 1, y: 0 },
-        );
-        gsap.set(header.querySelector<HTMLElement>(`.${styles["metadata-line"]}`), {
-          scaleX: 1,
-          transformOrigin: "left center",
+        gsap.set(header.querySelectorAll<HTMLElement>("[data-metadata-item]"), {
+          autoAlpha: 1,
+          y: 0,
         });
+        gsap.set(
+          header.querySelector<HTMLElement>(`.${styles["metadata-line"]}`),
+          {
+            scaleX: 1,
+            transformOrigin: "left center",
+          },
+        );
         if (headingRef.current) {
           gsap.set(headingRef.current, { autoAlpha: 1, filter: "none" });
         }
@@ -464,10 +467,8 @@ const Header = ({ signalNavIntroAfterHero = false }: HeaderProps) => {
           data-metadata-item
           aria-live="off"
         >
-          <span aria-hidden="true">( </span>
           <i className={styles["clock-dot"]} aria-hidden="true" />
           <time>{localTime}</time>
-          <span aria-hidden="true"> )</span>
         </div>
         <div
           className={`${styles["metadata-item"]} ${styles["kp-metric"]}`}

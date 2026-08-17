@@ -540,7 +540,7 @@ const Projects = () => {
       >
         <header className={styles["project-intro"]}>
           <p className={styles["project-label"]}>
-            <span>01 / {locale === "nb" ? "Prosjekter" : "Projects"}</span>
+            <span>01 - {locale === "nb" ? "Prosjekter" : "Projects"}</span>
           </p>
           <p className={styles["project-summary"]}>
             {locale === "nb"

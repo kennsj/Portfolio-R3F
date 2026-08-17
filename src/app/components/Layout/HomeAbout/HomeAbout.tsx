@@ -91,7 +91,7 @@ const HomeAbout = () => {
               ? () => `+=${window.innerHeight * (compactLayout ? 1.4 : 1)}`
               : "bottom top",
             pin: content,
-            pinSpacing: false,
+            pinSpacing: compactLayout,
             scrub: 0.7,
             invalidateOnRefresh: true,
           },

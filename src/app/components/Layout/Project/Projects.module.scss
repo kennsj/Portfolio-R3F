@@ -20,6 +20,16 @@
   letter-spacing: 0.08em;
   text-transform: uppercase;
   color: color-mix(in srgb, var(--primary-color) 66%, transparent);
+
+  span::before {
+    content: "";
+    display: inline-block;
+    width: 0.45rem;
+    height: 0.45rem;
+    margin-right: 0.7rem;
+    border-radius: 50%;
+    background: var(--aurora-mint);
+  }
 }
 
 .project-summary {
