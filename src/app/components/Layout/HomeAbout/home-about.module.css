@@ -75,17 +75,6 @@
   font-family: var(--font-family-mono);
 }
 
-.section-label {
-  position: absolute;
-  top: clamp(4.5rem, 9vh, 6rem);
-  left: var(--page-gutter);
-  font-family: var(--font-family-ibm);
-  font-size: 0.875rem;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--aurora-mint);
-}
-
 .metadata dt {
   margin-bottom: 0.8rem;
   font-family: var(--font-family-sans);
@@ -120,10 +109,6 @@
     height: 100%;
     min-height: 0;
     padding-block: clamp(4.5rem, 10vh, 6rem) clamp(2rem, 5vh, 3.5rem);
-  }
-
-  .section-label {
-    top: clamp(2.5rem, 7vh, 4rem);
   }
 
   .supporting {

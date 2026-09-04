@@ -1,12 +1,3 @@
-.scrollSentinel {
-  position: absolute;
-  top: 80svh;
-  left: 0;
-  width: 1px;
-  height: 1px;
-  pointer-events: none;
-}
-
 .nav {
   visibility: visible;
   position: fixed;
@@ -34,15 +25,6 @@
 
 .nav-intro-pending {
   visibility: hidden;
-}
-
-.compact {
-  top: 1.5rem;
-
-  .topLinks {
-    opacity: 0;
-    pointer-events: none;
-  }
 }
 
 .identity {
@@ -152,11 +134,6 @@
   &:focus-visible {
     color: var(--aurora-mint);
   }
-}
-
-.compact .menuToggle {
-  display: inline-flex;
-  align-items: center;
 }
 
 .contactIdentity {
@@ -275,6 +252,7 @@
   opacity: 0;
   pointer-events: none;
   overflow: hidden;
+  overscroll-behavior: contain;
 }
 
 .menuInner {
@@ -322,41 +300,6 @@
   }
 }
 
-.menuFooter {
-  display: flex;
-  justify-content: space-between;
-  gap: 2rem;
-  font-family: var(--font-family-ibm);
-  font-size: 0.68rem;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-
-  a,
-  button {
-    color: var(--primary-color);
-  }
-  button {
-    border: 0;
-    background: transparent;
-    font: inherit;
-    letter-spacing: inherit;
-    text-transform: inherit;
-    cursor: pointer;
-  }
-}
-
-.menuContact {
-  display: none;
-  color: var(--primary-color);
-  text-decoration: underline;
-  text-underline-offset: 0.3rem;
-
-  &:hover,
-  &:focus-visible {
-    color: var(--aurora-mint);
-  }
-}
-
 @media (max-width: 600px) {
   .topLinks {
     display: none;
@@ -383,10 +326,6 @@
     display: none;
   }
 
-  .menuContact {
-    display: inline-flex;
-  }
-
   .contactAction {
     gap: 0.55rem;
     min-height: 2.75rem;
@@ -404,10 +343,6 @@
   .menuLinks a {
     font-size: clamp(2.8rem, 12vw, 4.25rem);
     grid-template-columns: 2.5rem 1fr;
-  }
-  .menuFooter {
-    flex-direction: column;
-    gap: 0.6rem;
   }
 }
 

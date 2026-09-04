@@ -14,14 +14,12 @@ const copy = {
       "I design and build distinctive digital experiences—from early ideas and UX to visual direction, motion and production-ready code.",
     supporting:
       "I work with businesses and creative teams that want design and development to feel like one continuous process. The result is thoughtful, responsive work that stays true to the original idea all the way to launch.",
-    link: "More about me",
   },
   nb: {
     statement:
       "Jeg designer og bygger særegne digitale opplevelser, fra de første ideene og brukeropplevelsen til visuell retning, bevegelse og ferdig kode.",
     supporting:
       "Jeg samarbeider med bedrifter og kreative team som ønsker at design og utvikling skal være én sammenhengende prosess. Resultatet er gjennomarbeidede, responsive løsninger som beholder den opprinnelige ideen helt frem til lansering.",
-    link: "Mer om meg",
   },
 } as const;
 
@@ -44,6 +42,23 @@ const HomeAbout = () => {
           supporting:
             "I have designed and developed websites for cinemas and cultural venues across Norway. I now work on independent projects and am open to freelance assignments and a permanent role.",
         };
+  const metadata = [
+    {
+      label: locale === "nb" ? "Bakgrunn" : "Background",
+      value:
+        locale === "nb"
+          ? "Grafisk +\ninteraksjonsdesign"
+          : "Graphic +\nInteraction design",
+    },
+    {
+      label: locale === "nb" ? "Erfaring" : "Experience",
+      value: "Dialog EXE",
+    },
+    {
+      label: locale === "nb" ? "Praksis" : "Internship",
+      value: "Unfold AS\nTrigger Oslo",
+    },
+  ];
 
   useGSAP(
     () => {
@@ -170,26 +185,12 @@ const HomeAbout = () => {
             ref={metadataRef}
             className={styles["metadata"]}
           >
-            <div>
-              <dt>{locale === "nb" ? "Bakgrunn" : "Background"}</dt>
-              <dd>
-                {locale === "nb"
-                  ? "Grafisk +\ninteraksjonsdesign"
-                  : "Graphic +\nInteraction design"}
-              </dd>
-            </div>
-            <div>
-              <dt>{locale === "nb" ? "Erfaring" : "Experience"}</dt>
-              <dd>Dialog EXE</dd>
-            </div>
-            <div>
-              <dt>{locale === "nb" ? "Praksis" : "Internship"}</dt>
-              <dd>
-                Unfold AS
-                <br />
-                Trigger Oslo
-              </dd>
-            </div>
+            {metadata.map((item) => (
+              <div key={item.label}>
+                <dt>{item.label}</dt>
+                <dd>{item.value}</dd>
+              </div>
+            ))}
           </dl>
         </div>
       </div>

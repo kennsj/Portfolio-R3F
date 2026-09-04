@@ -24,10 +24,7 @@ function breadcrumbItems(
 	if (path === "/") return null
 
 	if (path === "/project") {
-		return [
-			{ position: 1, name: t.footerHome, item: home },
-			{ position: 2, name: t.footerWork, item: `${origin}${localizePath("/project", locale)}` },
-		]
+		return null
 	}
 
 	const match = /^\/project\/([^/]+)$/.exec(path)
@@ -37,8 +34,7 @@ function breadcrumbItems(
 		const label = entry ? projectNameFromSeoTitle(entry.title) : slug
 		return [
 			{ position: 1, name: t.footerHome, item: home },
-			{ position: 2, name: t.footerWork, item: `${origin}${localizePath("/project", locale)}` },
-			{ position: 3, name: label, item: canonicalUrl },
+			{ position: 2, name: label, item: canonicalUrl },
 		]
 	}
 
@@ -77,8 +73,14 @@ export function buildSeoJsonLd(params: {
 		name: "Kenneth Jørgensen",
 		url: origin,
 		image: `${origin}/images/kenneth-aurora.jpg`,
-		jobTitle: t.headerTagline,
+		jobTitle: locale === "nb" ? "Designer og webutvikler" : "Designer and front-end developer",
 		description: t.seoDescription,
+		knowsAbout: [
+			"Visual direction",
+			"Web design",
+			"UX/UI design",
+			"Front-end development",
+		],
 		email: "hei@kennethjorgensen.no",
 		address: {
 			"@type": "PostalAddress",

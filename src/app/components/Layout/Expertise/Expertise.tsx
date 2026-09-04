@@ -5,6 +5,7 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useI18n } from "../../../hooks/useI18n";
 import styles from "./Expertise.module.scss";
 import HeadingAnimation from "../../UI/HeadingAnimation/HeadingAnimation";
+import ExpertiseItem from "./expertise-item";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -88,27 +89,15 @@ const Expertise = () => {
         }}
       >
         {t.expertiseModes.map((mode, index) => (
-          <li
+          <ExpertiseItem
             key={mode.title}
-            className={`${styles.discipline} ${activeIndex === index ? styles["active-row"] : ""}`.trim()}
-            style={{
-              opacity: activeIndex !== null && activeIndex !== index ? 0.25 : 1,
-            }}
-          >
-            <button
-              type="button"
-              className={activeIndex === index ? styles.active : ""}
-              onMouseEnter={() => setActiveIndex(index)}
-              onFocus={() => setActiveIndex(index)}
-              onClick={() => setActiveIndex(index)}
-            >
-              <span>{String(index + 1).padStart(2, "0")}</span>
-              <strong>{mode.title}</strong>
-              <div className={styles.details}>
-                <span>{mode.description}</span>
-              </div>
-            </button>
-          </li>
+            index={index}
+            title={mode.title}
+            description={mode.description}
+            isActive={activeIndex === index}
+            isDimmed={activeIndex !== null && activeIndex !== index}
+            onActivate={setActiveIndex}
+          />
         ))}
       </ol>
     </section>

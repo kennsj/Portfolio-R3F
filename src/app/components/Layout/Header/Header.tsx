@@ -8,6 +8,8 @@ import { useI18n } from "../../../hooks/useI18n";
 import { getKpLabel, useKpIndex } from "../../../hooks/useKpIndex";
 import { deterministicCharacterOrder } from "../../../hooks/use-character-reveal";
 import { useManualKp } from "../../../hooks/KpContext";
+import HeroContent from "./hero-content";
+import HeroMetadata from "./hero-metadata";
 import styles from "./Header.module.scss";
 
 gsap.registerPlugin(ScrollTrigger, SplitText);
@@ -430,87 +432,17 @@ const Header = ({ signalNavIntroAfterHero = false }: HeaderProps) => {
           : heroStyle
       }
     >
-      <div className={styles["hero-main"]}>
-        <div className={styles["name-lockup"]}>
-          <p id="hero-role" className={styles["role"]} data-hero-support>
-            {locale === "nb" ? (
-              <>
-                Digital designer &amp;
-                <br /> kreativ frontend-utvikler
-              </>
-            ) : (
-              <>
-                Digital designer &amp;
-                <br /> creative frontend developer
-              </>
-            )}
-          </p>
-
-          <h1 ref={headingRef} aria-describedby="hero-role">
-            <span className={styles["first-name"]}>Kenneth</span>
-            <span className={styles["last-name"]} data-text="Jørgensen">
-              Jørgensen
-            </span>
-          </h1>
-        </div>
-      </div>
-
-      <div ref={metadataRef} className={styles["metadata-rail"]}>
-        <span className={styles["metadata-line"]} aria-hidden="true" />
-        <div className={styles["metadata-item"]} data-metadata-item>
-          {locale === "nb"
-            ? "Bodø, Norge — 67° N 14° E"
-            : "Bodø, Norway — 67° N 14° E"}
-        </div>
-        <div
-          className={`${styles["metadata-item"]} ${styles["clock"]}`}
-          data-metadata-item
-          aria-live="off"
-        >
-          <i className={styles["clock-dot"]} aria-hidden="true" />
-          <time>{localTime}</time>
-        </div>
-        <div
-          className={`${styles["metadata-item"]} ${styles["kp-metric"]}`}
-          data-metadata-item
-        >
-          <button
-            type="button"
-            className={styles["kp-trigger"]}
-            aria-describedby="hero-kp-explainer"
-          >
-            {locale === "nb" ? "KP-indeks" : "KP index"}: {kp.toFixed(1)}
-            <i aria-hidden="true" />
-          </button>
-          <span
-            id="hero-kp-explainer"
-            role="tooltip"
-            className={styles["kp-tooltip"]}
-          >
-            <strong>{kpLabel}</strong>
-            {kpDescription}
-          </span>
-        </div>
-        <div
-          className={`${styles["metadata-item"]} ${styles["language"]}`}
-          data-metadata-item
-        >
-          <button
-            type="button"
-            className={`${styles["language-switch"]} ${locale === "en" ? styles["language-switch-en"] : ""}`}
-            onClick={toggleLocale}
-            aria-label={`${t.languageSwitchLabel}: ${locale === "nb" ? "English" : "Norsk"}`}
-          >
-            <span className={locale === "nb" ? styles["active-locale"] : ""}>
-              NO
-            </span>
-            <i aria-hidden="true" />
-            <span className={locale === "en" ? styles["active-locale"] : ""}>
-              EN
-            </span>
-          </button>
-        </div>
-      </div>
+      <HeroContent locale={locale} headingRef={headingRef} />
+      <HeroMetadata
+        locale={locale}
+        localTime={localTime}
+        kp={kp}
+        kpLabel={kpLabel}
+        kpDescription={kpDescription}
+        languageSwitchLabel={t.languageSwitchLabel}
+        metadataRef={metadataRef}
+        onToggleLocale={toggleLocale}
+      />
     </header>
   );
 };

@@ -5,57 +5,12 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import styles from "./Projects.module.scss";
 import { usePageTransition } from "../../../hooks/usePageTransition";
 import { useI18n } from "../../../hooks/useI18n";
-import AnimatedLink from "../../UI/AnimatedLink/AnimatedLink";
-import HeadingAnimation from "../../UI/HeadingAnimation/HeadingAnimation";
 import { workTransition } from "../../Experiences/workTransitionStore";
+import { orderedProjectData, type ProjectSummary } from "./project-data";
+import ProjectList from "./project-list";
+import ProjectPreview from "./project-preview";
 
 gsap.registerPlugin(ScrollTrigger);
-
-const projectData = [
-  {
-    name: "Manshausen",
-    work: { nb: "Design / Frontend", en: "Design / Front-end" },
-    description: {
-      nb: "Digitalt konsept og frontend for et arkitektonisk øyretreat.",
-      en: "Digital concept and front-end for an architectural island retreat.",
-    },
-    video: "/images/work/manshausen-preview.png",
-    poster: undefined,
-    slug: "manshausen",
-    color: "#78c69a",
-  },
-  {
-    name: "Tørrfesken",
-    work: { nb: "Visuell retning / Kode", en: "Visual direction / Code" },
-    description: {
-      nb: "Visuell retning og digital opplevelse utviklet fra konsept til kode.",
-      en: "Visual direction and a digital experience developed from concept to code.",
-    },
-    video: "/images/work/tørrfesken-preview.png",
-    poster: "/images/work/tørrfesken-preview.png",
-    slug: "torrfesken",
-    color: "#e2cf9d",
-    comingSoon: true,
-  },
-  {
-    name: "Verchia",
-    work: { nb: "Frontendutvikling", en: "Front-end development" },
-    description: {
-      nb: "Frontendimplementasjon med fokus på typografi, rytme og responsivitet.",
-      en: "Front-end implementation focused on type, rhythm, and responsiveness.",
-    },
-    video: "/images/work/verchia-preview.png",
-    poster: "/images/work/verchia-preview.png",
-    slug: "verchia",
-    color: "#b6a6ee",
-  },
-] as const;
-
-const orderedProjectData = [
-  projectData[1],
-  projectData[0],
-  projectData[2],
-] as const;
 
 const Projects = () => {
   const { locale } = useI18n();
@@ -66,9 +21,7 @@ const Projects = () => {
   const previewPositionRef = useRef<HTMLDivElement>(null);
   const previewRevealRef = useRef<HTMLDivElement>(null);
   const previewMediaRef = useRef<HTMLDivElement>(null);
-  const videoRefs = useRef<Array<HTMLVideoElement | HTMLImageElement | null>>(
-    [],
-  );
+  const videoRefs = useRef<Array<HTMLImageElement | null>>([]);
   const mobilePreviewRefs = useRef<Array<HTMLImageElement | null>>([]);
   const currentIndexRef = useRef<number | null>(null);
   const previewOpenRef = useRef(false);
@@ -202,8 +155,6 @@ const Projects = () => {
       gsap.killTweensOf(preview);
       const previousIndex = currentIndexRef.current;
       const nextVideo = videoRefs.current[index];
-      if (nextVideo instanceof HTMLVideoElement)
-        void nextVideo.play().catch(() => undefined);
 
       const localPointer = getLocalPointer(
         clientX ?? window.innerWidth * 0.64,
@@ -239,8 +190,7 @@ const Projects = () => {
           .timeline({ defaults: { duration: 0.6, ease: "shiftReveal" } })
           .to(previousVideo, { yPercent: travel }, 0)
           .to(nextVideo, { yPercent: 0 }, 0)
-          .set(previousVideo, { autoAlpha: 0, yPercent: 0 })
-          .call(() => previousVideo?.pause());
+          .set(previousVideo, { autoAlpha: 0, yPercent: 0 });
         currentIndexRef.current = index;
         return;
       }
@@ -251,8 +201,6 @@ const Projects = () => {
           autoAlpha: videoIndex === index ? 1 : 0,
           yPercent: 0,
         });
-        if (videoIndex !== index && video instanceof HTMLVideoElement)
-          video.pause();
       });
       currentIndexRef.current = index;
       previewOpenRef.current = true;
@@ -373,9 +321,7 @@ const Projects = () => {
       settleTiltRef.current?.kill();
       const sourceRect = sourceFrame.getBoundingClientRect();
       const overlay = document.createElement("div");
-      const video = document.createElement(
-        sourceMedia instanceof HTMLVideoElement ? "video" : "img",
-      );
+      const transitionImage = document.createElement("img");
       const rootFontSize = Number.parseFloat(
         window.getComputedStyle(document.documentElement).fontSize,
       );
@@ -415,18 +361,10 @@ const Projects = () => {
       const targetTop = heroPaddingTop + heroTitleHeight + heroMediaMarginTop;
 
       overlay.className = styles["project-transition-overlay"];
-      video.src = sourceMedia.currentSrc || sourceMedia.src;
-      if (sourceMedia instanceof HTMLVideoElement) {
-        if (sourceMedia.poster) video.poster = sourceMedia.poster;
-        video.muted = true;
-        video.loop = true;
-        video.playsInline = true;
-        video.currentTime = sourceMedia.currentTime;
-      }
-      overlay.appendChild(video);
+      transitionImage.src = sourceMedia.currentSrc || sourceMedia.src;
+      transitionImage.alt = "";
+      overlay.appendChild(transitionImage);
       document.body.appendChild(overlay);
-      if (video instanceof HTMLVideoElement)
-        void video.play().catch(() => undefined);
 
       gsap.set(overlay, {
         left: sourceRect.left,
@@ -528,6 +466,11 @@ const Projects = () => {
     [transitionTo],
   );
 
+  const selectProject = (index: number, project: ProjectSummary) => {
+    if (project.comingSoon) return;
+    transitionFromPreview(index, `/project/${project.slug}`);
+  };
+
   return (
     <>
       <section
@@ -548,113 +491,27 @@ const Projects = () => {
               : "Selected work across visual direction, interface design and creative frontend development."}
           </p>
         </header>
-        <ol
-          className={`${styles.index} ${
-            activeIndex !== null ? styles["has-active"] : ""
-          }`.trim()}
-          data-project-list
-          onPointerLeave={conceal}
-          onBlur={(event) =>
-            !event.currentTarget.contains(event.relatedTarget) && conceal()
-          }
-        >
-          {orderedProjectData.map((project, index) => (
-            <li
-              key={project.slug}
-              className={`${styles["project-item"]} ${
-                activeIndex === index ? styles.projectItemActive : ""
-              }`.trim()}
-            >
-              <AnimatedLink
-                animationTarget="h3"
-                animateText={false}
-                href={`/project/${project.slug}`}
-                onPointerEnter={(event) =>
-                  event.pointerType !== "touch" &&
-                  reveal(index, event.clientX, event.clientY)
-                }
-                onFocus={() => reveal(index)}
-                onClick={(event) => {
-                  event.preventDefault();
-                  if (project.comingSoon) return;
-                  transitionFromPreview(index, `/project/${project.slug}`);
-                }}
-                data-cursor="explore"
-              >
-                <span>{String(index + 1).padStart(2, "0")}</span>
-                <HeadingAnimation level={3} className={styles["project-title"]}>
-                  {project.name}
-                </HeadingAnimation>
-                <div className={styles["mobile-preview"]} aria-hidden="true">
-                  <img
-                    ref={(node) => {
-                      mobilePreviewRefs.current[index] = node;
-                    }}
-                    src={project.video}
-                    alt=""
-                  />
-                </div>
-                <div className={styles.details}>
-                  <i>
-                    {locale === "nb" ? "Rolle" : "Role"} /{" "}
-                    {project.work[locale]}
-                  </i>
-                  <p>{project.description[locale]}</p>
-                  <span>
-                    {project.comingSoon
-                      ? locale === "nb"
-                        ? "Kommer snart"
-                        : "Coming soon"
-                      : locale === "nb"
-                        ? "Se prosjekt"
-                        : "View project"}
-                    <i aria-hidden="true" />
-                  </span>
-                </div>
-              </AnimatedLink>
-              {index < orderedProjectData.length - 1 && (
-                <span className={styles["project-rule"]} aria-hidden="true" />
-              )}
-            </li>
-          ))}
-        </ol>
-        <div
-          ref={previewRef}
-          className={styles.hoverPreview}
-          aria-hidden="true"
-        >
-          <div ref={previewPositionRef} className={styles.previewPosition}>
-            <div ref={previewRevealRef} className={styles.previewReveal}>
-              <div ref={previewMediaRef} className={styles.previewMedia}>
-                {orderedProjectData.map((project, index) =>
-                  project.video.endsWith(".png") ? (
-                    <img
-                      key={project.video}
-                      ref={(node) => {
-                        videoRefs.current[index] = node;
-                      }}
-                      src={project.video}
-                      alt=""
-                    />
-                  ) : (
-                    <video
-                      key={project.video}
-                      ref={(node) => {
-                        videoRefs.current[index] = node;
-                      }}
-                      src={project.video}
-                      poster={project.poster}
-                      muted
-                      loop
-                      playsInline
-                      preload="auto"
-                    />
-                  ),
-                )}
-              </div>
-            </div>
-          </div>
-        </div>
+        <ProjectList
+          projects={orderedProjectData}
+          locale={locale}
+          activeIndex={activeIndex}
+          onConceal={conceal}
+          onReveal={reveal}
+          onSelect={selectProject}
+          setMobilePreviewRef={(index, node) => {
+            mobilePreviewRefs.current[index] = node;
+          }}
+        />
+        <ProjectPreview
+          projects={orderedProjectData}
+          previewRef={previewRef}
+          positionRef={previewPositionRef}
+          revealRef={previewRevealRef}
+          mediaRef={previewMediaRef}
+          setImageRef={(index, node) => {
+            videoRefs.current[index] = node;
+          }}
+        />
       </section>
     </>
   );

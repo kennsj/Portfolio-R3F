@@ -108,6 +108,23 @@ body {
   overflow-x: clip;
 }
 
+.skip-link {
+  position: fixed;
+  top: 1rem;
+  left: 1rem;
+  z-index: 1000;
+  padding: 0.75rem 1rem;
+  background: var(--text-light);
+  color: var(--signal-black);
+  font-family: var(--font-family-ibm);
+  transform: translateY(calc(-100% - 2rem));
+  transition: transform var(--motion-micro) var(--ease-out);
+
+  &:focus-visible {
+    transform: translateY(0);
+  }
+}
+
 a {
   text-decoration: none;
   border: 0;

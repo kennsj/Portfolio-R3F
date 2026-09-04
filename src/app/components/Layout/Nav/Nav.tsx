@@ -69,23 +69,33 @@ const Nav = () => {
     }
 
     const sectionIds = ["about", "work", "expertise", "signal", "contact"];
-    let frame = 0;
-    const updateActiveSection = () => {
-      const line = window.innerHeight * 0.5;
-      const active = sectionIds
-        .map((id) => document.getElementById(id))
-        .filter((section): section is HTMLElement => section !== null)
-        .find((section) => {
-          const rect = section.getBoundingClientRect();
-          return rect.top <= line && rect.bottom > line;
+    const sections = sectionIds
+      .map((id) => document.getElementById(id))
+      .filter((section): section is HTMLElement => section !== null);
+    const visibleSections = new Map<string, IntersectionObserverEntry>();
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            visibleSections.set(entry.target.id, entry);
+          } else {
+            visibleSections.delete(entry.target.id);
+          }
         });
-      setActiveSection(active?.id ?? null);
-      frame = window.requestAnimationFrame(updateActiveSection);
-    };
-    frame = window.requestAnimationFrame(updateActiveSection);
-    return () => {
-      window.cancelAnimationFrame(frame);
-    };
+
+        const active = [...visibleSections.values()].sort(
+          (a, b) => b.intersectionRatio - a.intersectionRatio,
+        )[0];
+        setActiveSection(active?.target.id ?? null);
+      },
+      {
+        rootMargin: "-45% 0px -45% 0px",
+        threshold: [0, 0.01, 0.5, 1],
+      },
+    );
+
+    sections.forEach((section) => observer.observe(section));
+    return () => observer.disconnect();
   }, []);
 
   useEffect(() => {
@@ -256,7 +266,7 @@ const Nav = () => {
     <>
       <nav
         ref={navRef}
-        className={`${styles.nav} ${navHidden ? styles.navHidden : ""} ${!homeHeroIntroReady || !navIntroStarted ? styles.navIntroPending : ""}`}
+        className={`${styles.nav} ${navHidden ? styles.navHidden : ""} ${!homeHeroIntroReady || !navIntroStarted ? styles["nav-intro-pending"] : ""}`}
         aria-label={locale === "nb" ? "Hovednavigasjon" : "Main navigation"}
       >
         <AnimatedLink
@@ -264,7 +274,12 @@ const Nav = () => {
           onClick={(event) => go(event, "/")}
           className={styles.identity}
         >
-          <img src="/kj-logo.svg" alt="Kenneth Jørgensen" />
+          <img
+            src="/kj-logo.svg"
+            alt="Kenneth Jørgensen"
+            width="156"
+            height="188"
+          />
         </AnimatedLink>
         <div className={styles.topLinks}>
           <AnimatedLink
@@ -294,7 +309,12 @@ const Nav = () => {
           className={styles.contactAction}
         >
           <span className={styles.contactIdentity} aria-hidden="true">
-            <img src="/images/haio.webp" alt="" />
+            <img
+              src="/images/haio.webp"
+              alt=""
+              width="284"
+              height="284"
+            />
           </span>
           <span>{locale === "nb" ? "Ta kontakt" : "Get in touch"}</span>
         </AnimatedLink>
@@ -431,22 +451,6 @@ const Nav = () => {
               {t.navContact}
             </AnimatedLink>
           </div>
-          {/* <div className={styles.menuFooter}>
-            <AnimatedLink
-              href="mailto:hei@kennethjorgensen.no"
-              className={styles.menuContact}
-            >
-              {locale === "nb" ? "Ta kontakt" : "Get in touch"}
-            </AnimatedLink>
-            <span>Bodø / 67° N 14° E</span>
-            <button
-              type="button"
-              onClick={toggleLocale}
-              aria-label={`${t.languageSwitchLabel}: ${locale === "nb" ? "English" : "Norsk"}`}
-            >
-              {locale === "nb" ? "English" : "Norsk"}
-            </button>
-          </div> */}
         </div>
       </div>
     </>

@@ -162,29 +162,22 @@ const AnimatedLink = ({
       return;
     }
     const isLongLink = characters.length > 16;
+    const renderedFontSize = Number.parseFloat(
+      window.getComputedStyle(textRoot).fontSize,
+    );
+    const fontScale = gsap.utils.clamp(1, 2.5, renderedFontSize / 16);
     const enterOrder = gsap.utils.shuffle([...characters]);
-    const revealGroups = isLongLink
-      ? enterOrder.reduce<HTMLElement[][]>((groups, character, index) => {
-          const groupIndex = Math.floor(index / 3);
-          (groups[groupIndex] ??= []).push(character);
-          return groups;
-        }, [])
-      : [];
     const shortLinkSpeedFactor = gsap.utils.clamp(
       0.8,
       1,
       0.8 + Math.max(0, characters.length - 4) * 0.05,
     );
-    const longLinkDurationFactor =
-      1 + Math.min(0.45, Math.max(0, characters.length - 8) * 0.04);
     const staggerAmount = isLongLink
-      ? Math.min(0.34, characters.length * 0.014)
+      ? Math.min(0.3, characters.length * 0.012)
       : Math.min(0.72, characters.length * 0.026);
     const revealDuration =
-      (isLongLink ? 0.38 : 1.2) *
-      shortLinkSpeedFactor *
-      longLinkDurationFactor *
-      animationSpeed;
+      (isLongLink ? 0.52 : 1.2) * shortLinkSpeedFactor * animationSpeed;
+    const initialBlur = isLongLink ? 8 / Math.sqrt(fontScale) : 9;
     let cleaned = false;
     const timeline = gsap.timeline({ paused: true });
 
@@ -200,38 +193,21 @@ const AnimatedLink = ({
     };
 
     activeAnimationRef.current = { timeline, cleanup };
-    if (isLongLink) {
-      revealGroups.forEach((group, index) => {
-        timeline.fromTo(
-          group,
-          // Keep every character present while it resolves. Driving grouped
-          // characters to autoAlpha: 0 made long links look like they were
-          // losing letters instead of getting a blur reveal.
-          { opacity: 0.72, filter: "blur(4px)" },
-          {
-            opacity: 1,
-            filter: "blur(0px)",
-            duration: revealDuration,
-            ease: "power2.out",
-            immediateRender: false,
-          },
-          index * revealDuration * 0.09,
-        );
-      });
-    } else {
-      timeline.fromTo(
-        enterOrder,
-        { autoAlpha: 0, filter: "blur(9px)" },
-        {
-          autoAlpha: 1,
-          filter: "blur(0px)",
-          duration: revealDuration,
-          stagger: { amount: staggerAmount },
-          ease: "power2.out",
-          immediateRender: false,
-        },
-      );
-    }
+    timeline.fromTo(
+      enterOrder,
+      {
+        autoAlpha: isLongLink ? 0.28 : 0,
+        filter: `blur(${initialBlur}px)`,
+      },
+      {
+        autoAlpha: 1,
+        filter: "blur(0px)",
+        duration: revealDuration,
+        stagger: { amount: staggerAmount },
+        ease: "power2.out",
+        immediateRender: false,
+      },
+    );
     timeline.eventCallback("onReverseComplete", cleanup).play();
   };
 
